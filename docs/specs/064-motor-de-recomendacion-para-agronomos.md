@@ -2,7 +2,7 @@
 
 **Estado:** implementado en rama, sin merge ni Render (14/11/2026, durante el hackatón)
 **Pedido por:** Hernán, 14/11/2026: "Este sería el motor de recomendación para agrónomos; luego tendríamos otro motor de rotación completo como ya lo teníamos".
-**Base:** ficha técnica de los 5 cultivos (14/11/2026) y el documento "Cosas a agregar" de Leandro y la Ing. Agrónoma del equipo (14/11/2026).
+**Base:** ficha técnica de los 5 cultivos (14/11/2026) y el criterio agronómico del equipo (14/11/2026).
 
 ## 1. Qué hace
 
@@ -39,14 +39,14 @@ Cada regla se evalúa en **todas las campañas de la serie** (1991/92 a 2024/25)
 
 | # | Regla | Qué mira | Resultado | Fuente |
 |---|---|---|---|---|
-| 1 | Temperatura del suelo | Los 3 días antes de la siembra con TSOIL1 (0–10 cm) por encima del mínimo. Da la fecha desde la que se cumple en 8 de cada 10 campañas. | Aviso. Descarta si ni al 31/01 se cumple en la mitad de las campañas. | Revisión de Alicia (08/11); INTA San Luis IT 183 (sorgo) |
-| 2 | Grados día | Suma ((Tmáx+Tmín)/2 − Tb), con Tmáx tope 30 °C en maíz, hasta el ciclo mínimo, antes de una helada que mata o del 30/04. | Aviso | Leandro y Alicia (totales); Tb: MAIZAR, UNRC, INTA SL, ASAGIR |
-| 3 | Humedad a la siembra | % del agua útil **de 2 a 8 cm** (Hernán, 14/11): la medida o un balance diario de la capa de 0 a 8 cm (lluvia y evaporación de barbecho con rastrojo, Ke 0,9, FAO-56). Como se siembra después de una lluvia, mira si hay al menos un día con humedad suficiente en los 15 días antes o después de la fecha. | Aviso | Leandro y Alicia (sin fuente publicada) |
-| 4 | Agua del ciclo | Agua útil a la siembra + lluvia del ciclo + riego, contra el 60 % de la demanda. | Descarta en secano si no llega en el año medio. Avisa si falla en 3 de cada 10 campañas. | Revisión de Alicia (08/11); descarte confirmado por Hernán (14/11) |
-| 5 | Textura y profundidad | Arenoso de 0 a 30 cm en maíz y soja de secano (solo la clase arenoso, código 1 de GeoINTA; areno franco no descarta, Hernán 14/11); maní con más de 35 % de arcilla (franco arcilloso avisa); girasol con menos de 40 cm de suelo. | Descarta | Leandro y Alicia; definido por Hernán; ASAGIR (profundidad) |
+| 1 | Temperatura del suelo | Los 3 días antes de la siembra con TSOIL1 (0–10 cm) por encima del mínimo. Da la fecha desde la que se cumple en 8 de cada 10 campañas. | Aviso. Descarta si ni al 31/01 se cumple en la mitad de las campañas. | Criterio agronómico del equipo; INTA San Luis IT 183 (sorgo); ASAGIR (girasol) |
+| 2 | Grados día | Suma ((Tmáx+Tmín)/2 − Tb), con Tmáx tope 30 °C en maíz, hasta el ciclo mínimo, antes de una helada que mata o del 30/04. | Aviso | Criterio agronómico del equipo (totales); Tb: MAIZAR, UNRC, INTA SL, ASAGIR |
+| 3 | Humedad a la siembra | % del agua útil **de 2 a 8 cm** (Hernán, 14/11): la medida o un balance diario de la capa de 0 a 8 cm (lluvia y evaporación de barbecho con rastrojo, Ke 0,9, FAO-56). Como se siembra después de una lluvia, mira si hay al menos un día con humedad suficiente en los 15 días antes o después de la fecha. | Aviso | Criterio agronómico del equipo (sin fuente publicada) |
+| 4 | Agua del ciclo | Agua útil a la siembra + lluvia del ciclo + riego, contra el 60 % de la demanda. | Descarta en secano si no llega en el año medio. Avisa si falla en 3 de cada 10 campañas. | Criterio agronómico del equipo; descarte confirmado por Hernán (14/11) |
+| 5 | Textura y profundidad | Arenoso de 0 a 30 cm en maíz y soja de secano (solo la clase arenoso, código 1 de GeoINTA; areno franco no descarta, Hernán 14/11); maní con más de 35 % de arcilla (franco arcilloso avisa); girasol con menos de 40 cm de suelo. | Descarta | Criterio agronómico del equipo; definido por Hernán; ASAGIR (profundidad) |
 | 6 | pH | Regla escalonada del motor de rotación (`ph_del_lote.evaluar_ph`): el laboratorio decide, el mapa solo avisa, tolerancia de 0,3. | Descarta o avisa | FAO Ecocrop; UNLP; INTA |
 | 7 | Sales | Maíz con más de 2 dS/m. Soja con más de 0,5 dS/m y pH mayor de 8. | Aviso | INTA SL IT 188; INTA Marcos Juárez |
-| 8 | Helada y calor | Helada en los 20 días después de sembrar; días de más de 35 °C en el período crítico. | Riesgo del clima: no cambia el estado | INTA Ascasubi BT 36; Riglos 2023 |
+| 8 | Helada y calor | Helada en los 20 días después de sembrar; días de más de 35 °C en el período crítico. | Riesgo del clima: no cambia el estado | INTA Ascasubi BT 36; Riglos 2023; INTA SL IT 183 (sorgo, 38 °C) |
 
 Hay dos datos que no coincidían con lo publicado. Hernán los decidió el 14/11
 
@@ -75,11 +75,11 @@ En el maní además avisa el suelo frío al 05/11. Los 18 °C se dan en 8 de cad
 
 `tests/test_agronomos.py`: 23 casos con clima sintético (lluvia en pulsos semanales).
 
-## 7. Cambios con el "Final de Leandro" (14/11/2026)
+## 7. Cambios con la tabla final del equipo (14/11/2026)
 
-Tabla de parámetros duros por cultivo. Se cargó en `catalogo_agronomos.json` (fuente `leandro_final_2026_11_14`):
+Tabla de parámetros duros por cultivo. Se cargó en `catalogo_agronomos.json` (fuente `criterio_agronomico_equipo`):
 
-- **Temperatura del suelo:** se agrega el óptimo de cada cultivo como dato (maíz 22, soja 22, sorgo 19, maní 28 y girasol 15 °C). El mínimo del maní queda en 18 °C, el valor de Alicia (Hernán: "conservar los datos de Alicia, agregar solo lo nuevo de Leandro"); Leandro proponía 16 °C.
+- **Temperatura del suelo:** se agrega el óptimo de cada cultivo como dato (maíz 22, soja 22, sorgo 19, maní 28 y girasol 15 °C). El mínimo del maní queda en 18 °C, el valor que ya estaba (Hernán: conservar los datos anteriores y agregar solo lo nuevo); la tabla proponía 16 °C.
 - **Calor por cultivo, con temperatura letal:**
 
   | Cultivo | Umbral | Letal |
@@ -95,4 +95,11 @@ Tabla de parámetros duros por cultivo. Se cargó en `catalogo_agronomos.json` (
 - **pH:** mínimo y máximo de la tabla (maíz 5,0–8,5; soja 5,0–8,4; sorgo 5,0–8,8; maní 5,5–8,5; girasol 5,5–8,7), con la misma tolerancia de 0,3. Reemplazan a los topes de FAO Ecocrop **solo en este motor**.
 - **Regla 1 en 3 (no repetir la especie):** maíz, soja, sorgo y girasol con 2 campañas libres; maní con 3. Usa el nuevo campo `historial`. Si no hay historial, la regla queda como "falta el dato".
 - **Texturas:** coinciden con lo que ya estaba. La fuente OpenLandMap sigue rechazada, y la textura sale de GeoINTA o del análisis del productor.
-- **Temperaturas base y grados día:** quedan los de Alicia con las decisiones de Hernán (maní Tb 11; girasol 1.600–1.700 de ASAGIR). No se usan los de la tabla de Leandro (maíz Tb 10; sorgo 10,6; maní 13,3; girasol 1.300 con Tb 6).
+- **Temperaturas base y grados día:** quedan los anteriores con las decisiones de Hernán (maní Tb 11; girasol 1.600–1.700 de ASAGIR). No se usan los de la tabla final (maíz Tb 10; sorgo 10,6; maní 13,3; girasol 1.300 con Tb 6).
+
+## 8. Fuentes sin nombres de personas (Hernán, 14/11/2026)
+
+En el motor ya no aparecen nombres de personas como fuente. Los datos del equipo quedan con la fuente publicada que los respalda
+cuando el valor coincide (INTA San Luis IT 183 para el calor del sorgo, ASAGIR para el suelo del girasol, Riglos 2023 para el calor
+del maíz, MAIZAR/UNRC para las temperaturas base). Lo que ningún documento publicado respalda queda como
+"Criterio agronómico del equipo Rotaterra, sin fuente publicada". No se atribuye al INTA nada que el INTA no publicó.

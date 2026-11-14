@@ -12,13 +12,13 @@ Reglas (todas en `catalogo_agronomos.json`, con su fuente):
    MERRA-2) por encima del mínimo. Avisa si falla en 1 de cada 5 campañas o más; descarta si en la mayoría de las campañas
    el suelo no llega antes de fin de enero.
 2. Grados día: ((Tmáx + Tmín) / 2) − Tbase, 0 si da negativo, con la Tmáx cortada en 30 °C en maíz (MAIZAR ec. 2.1;
-   criterio de la agrónoma). ¿Junta los grados día del ciclo antes de la primera helada fuerte o del 30 de abril? Avisa.
+   criterio agronómico del equipo). ¿Junta los grados día del ciclo antes de la primera helada fuerte o del 30 de abril? Avisa.
 3. Humedad del suelo a la siembra (% del agua útil de 2 a 8 cm, Hernán 14/11/2026): la medida si el agrónomo la carga;
    si no, un balance diario de la capa de 0 a 8 cm con lluvia y evaporación de barbecho con rastrojo (FAO-56). Avisa.
 4. Agua del ciclo: agua útil a la siembra + lluvia del ciclo (+ riego) contra el 60 % de la demanda (revisión agronómica
    del equipo). Descarta en secano si no llega en el año medio; avisa si falla en 3 de cada 10 campañas o más.
 5. Textura y profundidad: arenoso (no areno franco) de 0 a 30 cm en maíz y soja de secano, maní con más de 35 % de arcilla, girasol con menos de
-   40 cm de suelo. Descarta (criterio de la agrónoma, falta que lo confirme).
+   40 cm de suelo. Descarta (criterio agronómico del equipo, falta que lo confirme).
 6. pH: la misma regla escalonada del motor de rotación (laboratorio decide; mapa solo avisa).
 7. Sales: maíz con más de 2 dS/m (INTA San Luis); soja con pH > 8 y más de 0,5 dS/m (INTA Marcos Juárez). Avisa.
 8. Helada después de sembrar y días de más de 35 °C en el período crítico: riesgos del clima, con su frecuencia; no
@@ -332,9 +332,14 @@ def simular(dias: dict, anios: list[int], cultivo: dict, siembra: tuple[int, int
 
 # ---------------------------------------------------------------- reglas
 
-def _regla(id_: str, nombre: str, resultado: str, dato: str, umbral: str, fuentes: list[str], cat: dict, detalle: str = "") -> dict:
+def _regla(id_: str, nombre: str, resultado: str, dato: str, umbral: str, fuentes: list, cat: dict, detalle: str = "") -> dict:
+    claves: list[str] = []
+    for f in fuentes:  # una regla puede tener una fuente o una lista de fuentes
+        for k in (f if isinstance(f, list) else [f]):
+            if k in cat["fuentes"] and k not in claves:
+                claves.append(k)
     return {"id": id_, "regla": nombre, "resultado": resultado, "dato_del_lote": dato, "umbral": umbral,
-            "fuente": "; ".join(cat["fuentes"][f] for f in fuentes if f in cat["fuentes"]), "detalle": detalle}
+            "fuente": "; ".join(cat["fuentes"][k] for k in claves), "detalle": detalle}
 
 
 def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], pedido: PedidoAgronomos, suelo: dict,
@@ -383,7 +388,7 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
     umbral = (f"{gd['ciclo_cd'][0]:,}–{gd['ciclo_cd'][1]:,} °Cd, Tb {gd['tb_c']} °C".replace(",", ".")
               + (f", Tmáx tope {gd['tope_tmax_c']} °C" if gd["tope_tmax_c"] else ""))
     reglas.append(_regla("grados_dia", "Grados día: llega a madurar", res, dato, umbral, [gd["fuente"], gd["fuente_tb"], *fuentes_clima], cat,
-                         gd["contraste"] + (f". EN REVISIÓN con la agrónoma: {gd['en_revision']}" if gd.get("en_revision") else "")))
+                         gd["contraste"] + (f". EN REVISIÓN con el equipo: {gd['en_revision']}" if gd.get("en_revision") else "")))
 
     # 3) humedad a la siembra
     h = c["humedad_siembra_pct_au"]
@@ -401,7 +406,7 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
     else:
         res, dato = "sin_dato", "Sin dato"
     reglas.append(_regla("humedad_siembra", "Humedad del suelo a la siembra", res, dato, f"≥ {h['rango']} del agua útil, de 2 a 8 cm",
-                         [h["fuente"], "fao56"], cat, "Sin fuente publicada: criterio de la agrónoma"))
+                         [h["fuente"], "fao56"], cat, "Sin fuente publicada: criterio agronómico del equipo"))
 
     # 4) agua del ciclo contra el 60 % de la demanda
     reg_agua = cat_rot["reglas_secuencia"]
@@ -426,7 +431,7 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
         ag = c.get("agua_ciclo", {})
         umbral_txt = f"mínimo {umbral_mm} mm (60 % de {demanda} mm)" + (f"; óptimo {ag['optimo_mm']} mm; máximo {ag['maximo_mm']:,} mm".replace(",", ".") if ag else "")
         reglas.append(_regla("agua_ciclo", "Agua del ciclo (60 % de la demanda)", res, dato, umbral_txt,
-                             ["revision_agronomica_equipo", *([ag["fuente"]] if ag else []), *fuentes_clima], cat))
+                             ["criterio_agronomico_equipo", *([ag["fuente"]] if ag else []), *fuentes_clima], cat))
 
     # 5) textura y profundidad
     tx = c["textura"]
@@ -439,7 +444,7 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
             res, dato = "ok", f"Areno franco ({suelo['textura_fuente']}): no es arenoso puro, no se descarta"
         else:
             res, dato = "ok", f"{suelo['textura'].replace('_', ' ')} ({suelo['textura_fuente']})"
-        reglas.append(_regla("textura", "Textura", res, dato, tx["texto"], [tx["fuente"]], cat, "Criterio de la agrónoma; solo la clase arenoso, no areno franco (Hernán, 14/11/2026)"))
+        reglas.append(_regla("textura", "Textura", res, dato, tx["texto"], [tx["fuente"]], cat, "Criterio agronómico del equipo; solo la clase arenoso, no areno franco (Hernán, 14/11/2026)"))
     if tx.get("arcilla_max_pct"):
         arc = pedido.analisis_suelo.arcilla_pct if pedido.analisis_suelo else None
         if arc is not None:
@@ -453,7 +458,7 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
         else:
             res, dato = "ok", f"{suelo['textura'].replace('_', ' ')} ({suelo['textura_fuente']})"
         reglas.append(_regla("textura", "Textura (arcilla)", res, dato, tx["texto"], [tx["fuente"]], cat,
-                             "El límite de 35 % es criterio de la agrónoma; falta que confirme el descarte"))
+                             "El límite de 35 % es criterio agronómico del equipo; falta que confirme el descarte"))
     if tx.get("profundidad_min_cm"):
         p = pedido.profundidad_cm
         res = "sin_dato" if p is None else ("no" if p < tx["profundidad_min_cm"] else "ok")
@@ -476,7 +481,7 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
                      else "Tope por cultivo (FAO Ecocrop); hasta 0,3 por encima es tolerable")
         reglas.append(_regla("ph", "pH", res, dato, umbral_ph, [p["fuente"]] if p else [], cat, detalle))
 
-    # 6 bis) regla 1 en 3: no repetir la especie (Leandro, 14/11/2026)
+    # 6 bis) regla 1 en 3: no repetir la especie (criterio agronómico del equipo)
     nr = c.get("no_repetir")
     if nr:
         if not pedido.historial:
@@ -541,7 +546,7 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
 
 
 def catalogo_ph(cat: dict) -> dict:
-    """La base de cultivos del motor de recomendación con los pH mínimo y máximo de la tabla de Leandro (14/11/2026) en
+    """La base de cultivos del motor de recomendación con los pH mínimo y máximo del criterio agronómico del equipo (14/11/2026) en
     lugar de los topes de FAO Ecocrop. Solo para este motor: el de rotación sigue con los suyos."""
     import copy
     from rotaterra.recomendacion.motor import cargar_catalogo as cargar_rec
@@ -552,9 +557,9 @@ def catalogo_ph(cat: dict) -> dict:
             continue
         cu["reglas"] = [r for r in cu["reglas"] if r["indicador"] != "ph"] + [
             {"id": "ph_minimo", "tipo": "excluyente", "indicador": "ph", "operador": ">=", "valor": p["minimo"], "unidad": "pH",
-             "texto": f"pH desde {p['minimo']:g}", "fuente_umbral": "Tabla de Leandro (14/11/2026)"},
+             "texto": f"pH desde {p['minimo']:g}", "fuente_umbral": "Criterio agronómico del equipo (14/11/2026)"},
             {"id": "ph_maximo", "tipo": "excluyente", "indicador": "ph", "operador": "<=", "valor": p["maximo"], "unidad": "pH",
-             "texto": f"pH hasta {p['maximo']:g}", "fuente_umbral": "Tabla de Leandro (14/11/2026)"}]
+             "texto": f"pH hasta {p['maximo']:g}", "fuente_umbral": "Criterio agronómico del equipo (14/11/2026)"}]
     return rec
 
 
@@ -600,6 +605,6 @@ def recomendar(pedido: PedidoAgronomos, power: dict, cat: dict | None = None, ca
         "como_leer": ("Recomendable: pasa todas las reglas. Con cuidado: alguna regla avisa (falla en 1 de cada 5 campañas o más, "
                       "o el dato está fuera del rango). No recomendable: alguna regla descarta. La helada y el calor van aparte, "
                       "como riesgos del clima del lugar: dicen en cuántas campañas pasó, pero no cambian el estado. Cada regla dice el dato del lote, "
-                      "el umbral y la fuente. Las reglas sin fuente publicada son criterio de la agrónoma del equipo."),
+                      "el umbral y la fuente. Las reglas sin fuente publicada son criterio agronómico del equipo."),
         "aviso": cat["aviso"], "catalogo_version": cat["version"], "estado_catalogo": cat["estado"],
     }
