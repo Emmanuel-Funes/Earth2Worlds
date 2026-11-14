@@ -1,6 +1,6 @@
 # Spec 059 · Cobertura y estructura de la vegetación de la zona con GEDI
 
-**Estado:** construida y probada con datos reales (30/10/2026) · **Aprobada por:** Hernán, 30/10/2026 (tarjeta "¿Sumamos GEDI como referencia de la zona alrededor del lote?" → "Sí, después del clima futuro") · **Rama:** `GEDI-cobertura_de_la_zona` · **Depende de:** PR #24 (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** Earthdata (ya cargado)
+**Estado:** construida y probada con datos reales · **Aprobada por:** Hernán, 30/10/2026 (tarjeta "¿Sumamos GEDI como referencia de la zona alrededor del lote?" → "Sí, después del clima futuro") · **Rama:** `GEDI-cobertura_de_la_zona` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** Earthdata (ya cargado)
 
 ## Objetivo
 
