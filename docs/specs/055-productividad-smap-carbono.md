@@ -62,7 +62,7 @@ Cada archivo pesa ~140 MB. El conector no lo baja: pide por OPeNDAP solo las 4 c
 
 ## Prueba real
 
-Workflow `Probar SMAP (productividad)` y `probar_smap_carbono.py`. Por defecto usa el lote de prueba de San Luis, del 1/8 al 27/10/2026.
+Workflow `Probar SMAP (productividad)` y `probar_smap_carbono.py`. Por defecto usa el lote de prueba de San Luis, con un período automático que se cuenta desde el día en que corre.
 
 ## Resultado de la prueba real
 
