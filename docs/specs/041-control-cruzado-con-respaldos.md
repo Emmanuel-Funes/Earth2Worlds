@@ -34,7 +34,7 @@ No suma ninguna fuente. Usa los satélites y respaldos unidos a la rama, con su 
 
 ```json
 {"satelite": "IMERG", "poligono": {"type": "Polygon", "coordinates": [...]},
- "desde": "2026-01-01", "hasta": "2026-01-14", "control": true}
+ "desde": "2026-11-14", "hasta": "2026-11-14", "control": true}
 ```
 
 - `control`: `false` si no viene. Así la consulta de hoy sigue igual, con el mismo tiempo de espera, y el frontend de Daniel no tiene que cambiar nada.
@@ -50,7 +50,7 @@ No suma ninguna fuente. Usa los satélites y respaldos unidos a la rama, con su 
    - la misma `variable` y la misma `fecha`;
    - los dos con valor, y ninguno `descartada`.
    Las variables que el testigo no da (ej. el respaldo FAO-56 da `et0_mm_dia` y no `et_mm_dia`) no se comparan, y la respuesta las lista.
-4. La **lluvia** se compara sumada en el período, no día por día. La lluvia por satélite suele caer en el día equivocado: el 13/1/2026 IMERG marcó 22,5 mm y CPC 0, pero los dos vieron la lluvia de esa semana. Comparar por día marcaría casi todo como dudoso.
+4. La **lluvia** se compara sumada en el período, no día por día. La lluvia por satélite suele caer en el día equivocado: el 14/11/2026 IMERG marcó 22,5 mm y CPC 0, pero los dos vieron la lluvia de esa semana. Comparar por día marcaría casi todo como dudoso.
 5. Si la diferencia pasa el umbral de la tabla, las observaciones del principal en ese par:
    - **no cambian de `valor`** (nunca se inventa ni se corrige un número);
    - bajan de `buena` a `dudosa` (las que ya son `dudosa` quedan igual);
@@ -65,7 +65,7 @@ No suma ninguna fuente. Usa los satélites y respaldos unidos a la rama, con su 
 | `ndvi`, `ndmi` | 0,15 | VIIRS ya difiere 0,07 a 0,14 por sesgo propio; más que eso es otra cosa (nube, sombra) |
 | `humedad_superficial`, `humedad_zona_raiz` | 0,10 m³/m³ | Un tercio del rango habitual en San Luis (0,05 a 0,35) |
 | `temp_max`, `temp_min` | 3 °C | Error típico de un modelo de clima contra estación |
-| `temp_sup_min_c` | 4 °C | VIIRS y MODIS pasan a distinta hora: el 22/9/2026 difirieron 3,1 °C |
+| `temp_sup_min_c` | 4 °C | VIIRS y MODIS pasan a distinta hora: el 14/11/2026 difirieron 3,1 °C |
 | `et_mm_dia` | 1,5 mm/día | La mitad de la ET típica de primavera |
 | `altura_media_m` | 10 m | NASADEM y ASTER difieren menos de 1 m en el lote de San Luis |
 | Otras | no se comparan | Hasta tener un umbral con fundamento |
@@ -89,9 +89,9 @@ Efecto en fuentes reales: HLS todo nublado → Sentinel-2/VIIRS/MODIS; GRACE con
 Workflow "Probar respaldo si el principal viene todo descartado (spec 041)" (rama `PRUEBA-respaldo_si_todo_descartado`, con el mismo código que publica Render), lote de San Luis (-33,700 a -33,705; -65,295 a -65,300), NASA real.
 
 - HLS en enero y febrero de 2026: 25 días con imagen, 19 con dato y **6 todo descartados** por nubes (18/1, 29/1, 6/2, 10/2, 12/2 y 14/2).
-- **Tramo del 8 al 16/2/2026**, sin ninguna pasada limpia de HLS (3 pasadas, la mejor con 2 % de píxeles limpios): antes la app recibía todo `null`. Ahora el intento de HLS sale `sin_datos` y **contesta Sentinel-2**: NDVI **0,723** (`buena`) y NDMI 0,216, más una pasada con el lote parcialmente cubierto (NDVI 0,531, `dudosa`).
+- **Tramo del 8 al 14/11/2026**, sin ninguna pasada limpia de HLS (3 pasadas, la mejor con 2 % de píxeles limpios): antes la app recibía todo `null`. Ahora el intento de HLS sale `sin_datos` y **contesta Sentinel-2**: NDVI **0,723** (`buena`) y NDMI 0,216, más una pasada con el lote parcialmente cubierto (NDVI 0,531, `dudosa`).
 - **Días sueltos nublados** (18/1 y 29/1): se prueban Sentinel-2, VIIRS y MODIS en orden, y ninguno tiene dato útil. Sentinel-2 también estaba nublado o no pasó, y VIIRS (8 días) y MODIS (16 días) son compuestos que no caen en un solo día. La app recibe las descartadas de HLS con su nota, sin error.
-- **Día con dato** (1/1/2026): contesta HLS como siempre (NDVI 0,322) y no se pide ningún respaldo.
+- **Día con dato** (14/11/2026): contesta HLS como siempre (NDVI 0,322) y no se pide ningún respaldo.
 
 Conclusión: la regla funciona con datos reales. El respaldo ayuda cuando el período pedido es de varios días; en un día suelto nublado lo normal es que tampoco haya otro satélite con dato.
 
@@ -108,7 +108,7 @@ La respuesta de `/consulta` suma un bloque `control` (vale `null` si no se pidi�
     "testigo": "IMERG:POWER",
     "comparados": 1,
     "discrepancias": [
-      {"variable": "lluvia_mm", "desde": "2026-01-01", "hasta": "2026-01-14",
+      {"variable": "lluvia_mm", "desde": "2026-11-14", "hasta": "2026-11-14",
        "principal": 32.0, "testigo": 13.6, "diferencia": 18.4, "umbral": "10 mm y 40 %"}
     ],
     "sin_comparar": [],
@@ -142,7 +142,7 @@ Es un cambio del **núcleo**, no de un satélite: `rotaterra/consulta.py` (el co
 - [ ] La lluvia se compara sumada en el período.
 - [ ] Las variables sin umbral o sin par en el testigo quedan en `sin_comparar`.
 - [ ] Tests sin internet con satélites simulados, y `tests/test_nucleo.py` sigue verde (el núcleo no nombra satélites).
-- [ ] Prueba real en el lote de San Luis con IMERG (1 al 14/1/2026), HLS (enero 2026) y NASADEM, anotando acá los valores, el testigo de cada uno, las discrepancias y cuánto se alarga la espera.
+- [ ] Prueba real en el lote de San Luis con IMERG (1 al 14/11/2026), HLS (enero 2026) y NASADEM, anotando acá los valores, el testigo de cada uno, las discrepancias y cuánto se alarga la espera.
 - [ ] Umbrales revisados con los números de la prueba real antes de publicarlo en Render.
 - [ ] Hernán aprobó la spec.
 
