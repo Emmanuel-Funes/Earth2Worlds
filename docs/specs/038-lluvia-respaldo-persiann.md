@@ -79,7 +79,7 @@ PERSIANN queda entre IMERG y CPC en el acumulado: ve bien el patrón de la quinc
 
 ## Criterios de aceptación
 
-- [x] Con el lote de prueba real (centro -33,7025; -65,2975), del 1 al 14 de enero de 2026, se obtiene un valor de PERSIANN por día, todos `buena`, con total **25,3 mm** (PR #54, workflow en verde), igual a lo estimado en la investigación 028.
+- [x] Con el lote de prueba real (centro -33,7025; -65,2975), del 1 al 14 de enero de 2026, se obtiene un valor de PERSIANN por día, todos `buena`, con total **25,3 mm**, igual a lo estimado en la investigación 028.
 - [x] La comparación con IMERG (32,0 mm), CPC (17,5 mm) y POWER (13,6 mm) en el mismo período queda anotada en "Resultado de la prueba real".
 - [x] Un día sin publicar queda `descartada` ("todavía no tiene"), un píxel sin dato queda `descartada` ("sin dato"), el 0,0 es un dato real `buena`, y un valor fuera de 0-500 mm/día queda `dudosa` sin corregir (tests en `tests/test_persiann.py`).
 - [x] Devuelve un valor por cada día pedido, con `variable: "lluvia_mm"`, `unidad: "mm/día"`, `fuente: "PERSIANN"`, `resolucion_m: 27000`.
