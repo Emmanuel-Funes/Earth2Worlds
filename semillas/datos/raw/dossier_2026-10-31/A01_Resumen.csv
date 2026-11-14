@@ -1,0 +1,97 @@
+ROTATERRA | TEMPERATURA Y SUELO — PRIMERA AMPLIACIÓN
+Cobertura a nivel de especie (24 perfiles del SDD + caupí complementario). No reemplaza las fichas varietales ni el diagnóstico del lote. Los rangos ecológicos de FAO EcoCrop son referencias generales; las temperaturas de siembra y los datos de ensayos se conservan con contexto y fuente.
+INDICADORES DE COBERTURA
+Perfiles de cultivo en temperatura,25,,Cultivos con umbral mínimo de suelo para siembra,3
+Perfiles de cultivo en suelo,25,,Cultivos con rango térmico ecológico general,24
+Fuentes técnicas registradas,42,,Cultivos sin umbral térmico específico verificado,1
+Indicadores/criterios físicos de suelo,11,,Cultivos con vacíos en textura/drenaje,2
+,,,Lotes: diagnóstico recomendado,No inferir con textura sola
+LECTURA Y REGLAS DE USO
+1. Temperatura del aire ≠ temperatura del suelo. No usar los valores de EcoCrop como umbral de siembra.
+"2. Temperatura base (Tb) y tiempo térmico (°C·día) describen modelos de emergencia, no una recomendación directa de fecha de siembra."
+3. Temperatura de elongación de raíz no es temperatura de germinación. Mantener cada variable separada.
+"4. Preferencia textural FAO/EEAOC ≠ tolerancia absoluta ni descarte automático. Confirmar con ensayo local, horizonte y sistema."
+"5. Umbrales ORA (profundidad/textura/drenaje/sodicidad) son criterios de cartografía de aptitud, no límites universales por cultivar."
+6. Para evaluar un lote: calicata + textura por horizonte + profundidad efectiva + RMP con humedad + densidad aparente + infiltración + drenaje/napa.
+7. Caña de azúcar y triticale conservan vacíos de evidencia física; no copiar valores de otras especies.
+8. Lupino se limita a Lupinus angustifolius. No extender a L. albus ni L. luteus sin sus fichas.
+ALCANCE DE ESTA ENTREGA
+"Incluye temperatura/clima y suelo físico. No incluye todavía un cierre de pH/salinidad, agua requerida por etapa, fertilidad ni validación por los 460 cultivares. El banco varietal anterior contiene dos lotes parciales y 34 cultivares; esta matriz de especie es una capa complementaria, no su sustituto. No se modificaron SQLite, GitHub, PR, main ni Render."
+AMPLIACIÓN 2 | INVESTIGACIÓN PROFUNDA (31/10/2026)
+Nuevas fuentes técnicas registradas,10,,Datos térmicos Tb/GDD,12
+Registros térmicos de emergencia/raíz,20,,Cultivos con Tb/GDD,6
+Registros de heladas por etapa,49,,Cultivos en tabla INTA local,7
+Cultivos con referencias FAO históricas de heladas,10,,Ventanas reproductivas de calor,4
+Registros climáticos mes × región × campaña,42,,Series de suelo de San Luis,3
+Escenarios de recarga hídrica derivados,9,,Indicadores físicos ampliados,10
+Campañas climáticas de la tesis,2016/17 y 2017/18,,Área local de referencia,Villa Mercedes / Región Semiárida Central
+Advertencia térmica,Tb/GDD ≠ umbral de siembra,,Advertencia de heladas,Contexto regional y duración de exposición
+Advertencia de suelo,Series de suelo específicas; no extrapolar a todo San Luis,,Integración,Archivos de investigación; no desplegados
+"AMPLIACIÓN 3/4 | TEMPERATURA, SUELO Y APTITUD (31/10/2026)"
+Registros nuevos de aptitud por cultivo,13,,Perfiles regionales de agua útil,8
+Factores del índice de productividad documentados,10,,Protocolos de diagnóstico físico,8
+Nuevas fuentes técnicas,7,,Cultivos con observaciones nuevas,7
+Perfiles de agua útil regional medidos,2,,Cultivos con nuevas observaciones,7
+Advertencia RSP,Datos de Anguil / La Pampa; conservar región y perfil,,Advertencia legumbres,Capítulo técnico 2013; evidencia C y observación anecdótica D
+Advertencia IP,Método de Salta: no copiar puntajes ni fórmula a San Luis,,Integración,Matriz de investigación; no desplegada
+"AMPLIACIÓN 5 | SALINIDAD, pH, Kc Y DISPONIBILIDAD HÍDRICA (31/10/2026)"
+"Registros de ECe, rating o ensayos de salinidad",29,,Taxones/materiales representados,24
+Cultivos con rango pH óptimo en FAO Figure 18,12,,Cultivos sin rango pH en esa fuente,13
+Cultivos con rango ESP comparativo,17,,Cultivos sin rango ESP en esa tabla,8
+Registros de Kc por cultivo/destino,24,,Registros Zr/p RAW,22
+Ventanas hídricas ORA,2,,Perfiles de agua útil FAO de ejemplo,3
+Advertencia ECe,CE del extracto saturado del suelo; no mezclar con EC1:5 ni EC del agua.,,Advertencia ESP,Comparativo internacional; no es límite seguro.
+Advertencia Kc,"FAO 56 estándar sin estrés; ajustar por RH, viento, cobertura, riego y cosecha.",,Advertencia Zr/p,Raíz y p genéricos; reducir profundidad por capas restrictivas reales.
+Vacíos conservados,Triticale/centeno/lupino sin algunos coeficientes FAO específicos; cultivar-specific gaps remain.,,Criterio,No completar por analogía ni convertir en descarte automático.
+Integración,"Archivos de investigación para revisión. Sin modificación a SQLite, GitHub, PR, main o Render.",,Fuentes registradas,9
+Ampliación 06 — datos adicionales de cultivos y diagnóstico
+Datos específicos nuevos,43 registros,"Garbanzo, poroto, lupino, cártamo y caña de azúcar",Fuentes argentinas técnicas/oficiales,31/10/2026
+Evidencia regional,4 cultivos,"Maíz, sorgo, soja y maní",INTA San Luis (2 campañas; nota institucional),31/10/2026
+Diagnóstico salino-sódico,5 criterios,"EC, PSI/ESP, RAS/SAR, pH y superficie afectada",INTA Alto Valle 2025,31/10/2026
+Cultivos con datos nuevos de pH,"Garbanzo, poroto, cártamo",Garbanzo rango 6–9; poroto neutro cualitativo; cártamo neutro a levemente alcalino,Fuentes distintas; no mezclar alcance,31/10/2026
+Advertencia,NO es cierre total de brechas,Datos generales por especie o población experimental; faltan umbrales específicos por cultivar,Sin cambios en SQLite/GitHub/Render,31/10/2026
+AMPLIACIÓN 07 | ECOCROP — BASE GLOBAL Y AUDITORÍA DEL MODELO (31/10/2026)
+Taxones relevantes presentes en CSV reducido,25,Especies distintas verificadas en EcoCrop_DB_secondtrim v1.0,Índice de fila OpenCLIM 0-based conservado,31/10/2026
+Fichas FAO con campos de suelo transcritos,24 de 25,Se extrajeron pH y varias características de suelo,Avena byzantina queda sin esos campos en este lote,31/10/2026
+Tamaño del CSV reducido,635 filas de datos,Archivo de 636 líneas contando encabezado,No equivale a la base completa EcoCrop,31/10/2026
+Base completa depurada (DataHub),2.568 especies / 55 campos,Fuente complementaria para futuros campos edáficos,Copia depurada 2026; campos con vacíos y calidad desigual,31/10/2026
+Campos del suelo que faltan en secondtrim,"pH, profundidad, fertilidad, Al, salinidad, drenaje",Sí existen en diccionario/base completa y fichas FAO,OpenCLIM no los evalúa en su score climático,31/10/2026
+Alerta crítica 1,Lluvia anual ≠ agua del ciclo,La ficha EcoCrop expresa R* como mm/año; el código acumula precipitación en ventanas GMIN–GMAX,No portar el score sin auditoría de unidades/base temporal,31/10/2026
+Alerta crítica 2,KTMPR ≠ KTMP,El diccionario distingue letal en reposo vs crecimiento temprano; el script usa KTMPR en la penalidad de Tmin,Mantener ambas variables separadas y validar por etapa,31/10/2026
+Uso Rotaterra,Referencia por especie y filtro climático exploratorio,"No es ficha de cultivar, fecha de siembra, ETc ni recomendación de lote",No modificar SQLite/GitHub/PR/main/Render,31/10/2026
+AMPLIACIÓN 08 | AUDITORÍA DE 24 PERFILES Y NUTRICIÓN (31/10/2026)
+Cultivos principales auditados,24,Perfiles definidos por el SDD agrícola; caupí se mantiene complementario.,Ninguno se considera completo,31/10/2026
+Perfiles con banda térmica EcoCrop,23,"Rango global de temperatura del aire, no umbral de implantación.",Triticale: sin ficha directa,31/10/2026
+Cultivos con umbral de temperatura del suelo,4,"Soja, girasol, sorgo y arroz en registros actuales.",Faltan valores directos para 20 cultivos,31/10/2026
+Cultivos con Tb/GDD de emergencia,6,"Maíz, sorgo, maní, trigo, cebada y avena.",No equivale a fecha de siembra,31/10/2026
+Rango pH FAO Figure 18,11,Comparación general por cultivo; método no indicado.,EcoCrop complementa otros 23/24 perfiles a nivel global,31/10/2026
+Sodicidad ESP comparativa,16,Tabla FAO comparativa basada en referencias de India.,No es límite seguro ni calibración argentina,31/10/2026
+Kc por etapa / Zr-p RAW,21 / 21,Datos FAO56; poroto seco agrupa Phaseolus y arroz es paddy.,"Centeno, triticale y lupino sin fila directa",31/10/2026
+Ventanas de estrés hídrico ORA,2,Maíz y soja.,No cubrir todos los cultivos ni cultivares,31/10/2026
+Cultivos con alguna evidencia nutricional nueva,12,"Diagnóstico P/N/S/Zn, tablas legumbres y ensayo maní/lupino.",Parcial; no implica plan de fertilización,31/10/2026
+Fichas varietales profundas lotes 01/02,34 cultivares / 11 cultivos,236 datos específicos; no equivale al total del banco.,151/460 cultivares tienen ficha en base,31/10/2026
+Fichas de cultivar en banco INTA,151 / 460,"752 hechos/datos en fichas, según SDD semilla.",32.8% tienen ficha; ficha ≠ completa,31/10/2026
+Manejo registrado en SDD,276 datos / 17 temas,Falta auditoría cultivo × tema para cuantificar vacíos por cultivo.,No suponer cobertura uniforme,31/10/2026
+Nueva evidencia de nutrición,50 registros,"INTA Anguil, INTA Balcarce 2026, BPA legumbres, MAGyP/ReTAA, INTA Famaillá.","Diferenciar requerimiento, extracción, dosis aplicada y respuesta",31/10/2026
+Nueva evidencia de lupino,16 registros,"Ensayo INTA Barrow 2024; población amarga, especie botánica no declarada.",No transferir a L. angustifolius sin confirmar especie,31/10/2026
+Estado global,INCOMPLETO,"No hay un perfil cerrado con todos los campos principales, evidencias y validación regional/varietal.",Ver Auditoria_24 y Reglas_Auditoria,31/10/2026
+Integración técnica,Solo archivos de investigación,"No se alteraron SQLite, GitHub, PR, main ni Render.",Esperar autorización explícita para integrar/desplegar,31/10/2026
+AMPLIACIÓN 09 | CULTIVOS CON MENOR COBERTURA (31/10/2026)
+Registros agronómicos incorporados,68,"Centeno, triticale, lupino, arveja, lenteja, arroz, colza/canola y cártamo.",Datos con contexto de campaña/sitio y limitación.,31/10/2026
+Registros varietales/ensayos,61,"Incluye 18 materiales de triticale en dos fechas, 3 centenos, Barbol INTA y arroz.",Rendimiento/biomasa en ensayos; no ranking nacional.,31/10/2026
+Fuentes técnicas,10,"INTA, INASE/SISA, EEAOC y FCA-UNNE.",URLs y límites en L09_fuentes.,31/10/2026
+Perfiles revisados a fondo,7,"Centeno, triticale, lupino, arveja, lenteja, arroz y colza/canola.",Todos siguen incompletos en distinto grado.,31/10/2026
+Brecha crítica,Lupino,Confirmar especie botánica y cultivar de la población experimental/comercial.,No aplicar datos de una especie a otra.,31/10/2026
+Alerta de extrapolación,San Luis vs. otros ambientes,Solo centeno 2021–2023 es evidencia directa en cercanías de Villa Mercedes.,"Marcos Juárez, Barrow, San Pedro, NOA y Corrientes permanecen como sitios distintos.",31/10/2026
+Estado global,INCOMPLETO,No hay perfiles completos en los 24 cultivos; esta tanda refuerza 7 perfiles prioritarios.,Ver Auditoria_24 y L09_faltantes.,31/10/2026
+AMPLIACIÓN 10 | EVIDENCIA PRIMARIA Y CONTROL ESTRICTO (31/10/2026)
+Registros agronómicos L10,73,Nuevos datos para 9 cultivos; cada fila enlaza a su fuente y contexto.,Ver L10_agro,31/10/2026
+Registros varietales y ensayos L10,67,"Datos experimentales de arveja, lino, colza, sorgo, avena, triticale, girasol y papa.",Ver L10_varietales,31/10/2026
+Registros de nutrición/suelo L10,35,"Análisis de suelo, nutrición y tratamientos experimentales; no son recetas generales.",Ver L10_nutricion,31/10/2026
+Fuentes L10,11,11 referencias; 9 con registros numéricos y 2 para trazabilidad/pendiente documental.,Ver L10_fuentes,31/10/2026
+Cobertura de cultivos L10,9,"Garbanzo, arveja seca, lino, colza/canola, sorgo granífero, avena, triticale, girasol y papa.",Lupino solo trazabilidad,31/10/2026
+Lupino: control de procedencia,Lupinus spp.,Verificación de fuente primaria INTA; la identidad botánica no queda confirmada; no duplicar filas numéricas de L09.,Ver L10_lupino_ref,31/10/2026
+Auditoría de perfiles,24,Los 24 perfiles siguen INCOMPLETOS; una nueva fuente no equivale a ficha completa.,Ver L10_auditoria,31/10/2026
+Datos retenidos / ambiguos,10,"No inferir año de girasol, especie de lupino, dosis/ha de papa ni cifras no transcritas del INTA San Luis 2025/26.",Ver L10_control,31/10/2026
+Brecha San Luis 2025/26,Pendiente,"Registro institucional localizado; tablas del PDF original aún no verificadas, por eso no se cargan cifras secundarias.",Fuente S11,31/10/2026
+Integración técnica,Solo documental,"No se modificaron código, SQLite, GitHub, ramas, PR, main ni Render.",No desplegado,31/10/2026

@@ -1,0 +1,18 @@
+Campo_principal,Cultivos_con_dato,Total_cultivos_core,Cobertura_pct,Estado,Qué cuenta como dato,Limitación/lectura
+Rango térmico ecológico general,23,24,0.9583333333333334,Parcial,Banda EcoCrop para temperatura del aire a escala de especie,No es umbral de siembra ni por cultivar; Triticale sin referencia directa.
+Temperatura de suelo de siembra,4,24,0.16666666666666666,Baja,Umbral o condición específica en suelo,"Soja, girasol, sorgo y arroz; faltan valores directos en la mayoría."
+Tb y tiempo térmico de emergencia,6,24,0.25,Baja,Tb y °C·día de emergencia publicados,"Maíz, sorgo, maní, trigo, cebada y avena."
+Perfil físico de suelo (3 componentes),20,24,0.8333333333333334,Parcial,"Textura, profundidad y drenaje documentados conjuntamente","Además: 3 perfiles parciales (arroz, lupino, caña) y 1 sin dato directo (triticale)."
+pH óptimo – FAO Figure 18,11,24,0.4583333333333333,Parcial,Rango directo de la figura comparativa,Solo 11 de 24 categorías core; método analítico no especificado.
+pH – ficha EcoCrop/FAO general,23,24,0.9583333333333334,Parcial,Rango global de especie transcrito de ficha,"Un caso parcial (L. angustifolius, banco sin especie confirmada) y Triticale sin dato."
+Salinidad ECe (numérica o cualitativa),23,24,0.9583333333333334,Parcial,Umbral/rating o ensayo de etapa temprana,"Lupino sin dato; algunas respuestas son espiga fresca, paddy, semilla fresca o shoot dry matter."
+Sodicidad ESP comparativa,16,24,0.6666666666666666,Parcial / débil,Rango ESP asociado a rendimiento relativo en tabla FAO,Basado en referencias de India; no es límite seguro ni calibración argentina.
+Kc por etapa,21,24,0.875,Parcial,Kc inicial/medio/final FAO56,"Faltan centeno, triticale y lupino; arroz paddy solo para inundado."
+Zr y p / RAW,21,24,0.875,Parcial,Profundidad radicular y fracción de agotamiento FAO56,"Faltan centeno, triticale y lupino; ajustar por suelo y estrés."
+Ventanas de estrés hídrico ORA,2,24,0.08333333333333333,Muy baja,Déficit/exceso por etapa en tabla ORA,Solo maíz y soja; no cultivar-específico.
+Exposición al calor reproductivo,4,24,0.16666666666666666,Baja,Indicador >35°C en ventanas reproductivas,"Maíz, soja, maní y sorgo; no es umbral universal de daño."
+Nutrición/fertilidad con algún dato numérico o ensayo,12,24,0.5,Parcial / débil,Al menos un dato numérico o ensayo de nutrientes por cultivo,No implica plan de fertilización; faltan perfiles completos N-P-K-S-micros por etapa y región.
+Categorías INTA con investigación varietal profunda (lotes 01/02),11,27,0.4074074074074074,Parcial,Cultivos con al menos un cultivar investigado en los lotes 01/02,Poroto se conserva como grupo común; no demuestra desagregación de las tres clases comerciales.
+Cultivares INTA con ficha,151,460,0.3282608695652174,Parcial,Variedades con ficha (752 datos agregados en total),151/460; la presencia de ficha no significa ficha completa.
+Cultivares investigados a profundidad en lotes 01/02,34,460,0.07391304347826087,Baja,Cultivares con atributos específicos investigados,34/460; 236 atributos estructurados en 11 categorías.
+Registros de manejo del SDD,276,17,,Cobertura agregada,Datos de manejo registrados en 17 temas,Falta cruce de cobertura por cultivo × tema; no calcular porcentaje sobre 17.

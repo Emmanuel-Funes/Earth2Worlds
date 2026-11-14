@@ -1,0 +1,4 @@
+Textura ejemplo FAO,qFC (m³/m³),qWP (m³/m³),TAW (mm/m) — fórmula,Método y advertencia,Fuente,URL
+Arena franca (loamy sand),0.15,0.06,90,Ejemplo didáctico de FAO 56. No representa cualquier suelo franco-arenoso.,"FAO 56, Chapter 8, Example 36",https://www.fao.org/4/x0490e/x0490e0e.htm
+Limo (silt),0.32,0.15,170,Ejemplo didáctico de FAO 56. No representa cualquier suelo limoso.,"FAO 56, Chapter 8, Example 36",https://www.fao.org/4/x0490e/x0490e0e.htm
+Arcilla limosa (silty clay),0.35,0.23,119.99999999999997,Ejemplo didáctico de FAO 56. No representa cualquier arcilla limosa.,"FAO 56, Chapter 8, Example 36",https://www.fao.org/4/x0490e/x0490e0e.htm

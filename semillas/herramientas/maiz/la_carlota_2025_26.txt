@@ -1,0 +1,24 @@
+Cuadro 3. Promedio de rendimiento y comparación de medias.
+                                                 Rto.
+       Empresa                Híbrido          (kg ha-1)
+  Bayer              LT3-02TRE                 9502,09     A
+  Illinois           IS 7.24 TRE               9478,70     A
+  Brevant            BRV 8184 PWU              9434,70     A
+  Bayer              DK72-72TRE                9234,57     A   B
+  ACA                ACA 471 VT3P              9087,90     A   B    C
+  Bayer              DK69-62TRE                9073,61     A   B    C
+  Bayá Casal         EBC Puma                  8931,22     A   B    C   D
+  NORD               ACRUX PWUE                8753,74         B    C   D   E
+  Bayer              DK73-73TRE                8743,34         B    C   D   E
+  ACA                ACA 476 Trecepta          8722,55         B    C   D   E    F
+  Basf               7349 VT3P                 8654,97         B    C   D   E    F
+  Brevant            BRV 8421 PWUE             8654,97         B    C   D   E    F
+  Produsem           PROZEA 70F25              8562,24              C   D   E    F
+  Syngenta           NK 855 VIP3               8509,14              C   D   E    F
+  Syngenta           NK 825 VIP3 CL            8468,67              C   D   E    F
+  Pioneer            P2021PWUE                 8402,67                  D   E    F
+  Ruralco            Orizea 16.24              8380,95                  D   E    F
+  Nidera             NS 7765 VIP3              8324,14                  D   E    F
+  NEXSEM             NXM 5122 PWUE             8136,36                      E    F
+  ACA                ACA 477 VIP3CL            8089,85                            F
+                         Promedio general      8757,32

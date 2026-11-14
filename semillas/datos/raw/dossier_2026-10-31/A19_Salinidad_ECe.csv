@@ -1,0 +1,30 @@
+Cultivo o material,Taxón,ECe umbral (dS/m) o rango,Pendiente (% por dS/m),Rating FAO,Variable de respuesta,Contexto y método,Limitación para Rotaterra
+Cebada,Hordeum vulgare,8.0,5,T,Rendimiento de grano,FAO Maas & Grattan; tolerancia relativa; exposición uniforme desde plántula tardía a madurez.,"No tratar como condición de suelo apta sin revisar etapa, cultivar, drenaje y composición iónica."
+Colza/canola (Brassica napus),Brassica napus,11.0,13,T,Rendimiento de semilla,Usar fila B. napus; no confundir con B. rapa.,"Valor general de especie, no cultivar INTA específico."
+Colza/rapeseed (Brassica rapa),Brassica rapa,9.7,14,T,Rendimiento de semilla,Taxón distinto a B. napus; usar solo si el cultivar corresponde.,No fusionar ambas especies.
+Garbanzo,Cicer arietinum,,,MS,Rendimiento de semilla,"FAO asigna calificación moderadamente sensible, sin umbral numérico ni pendiente calculable.",No interpolar el umbral numérico.
+Maíz,Zea mays,1.7,12,MS,Peso fresco de espiga / ear fresh weight,Dato antiguo de híbrido DeKalb XL-75 en suelo orgánico; nota FAO refiere descenso ~26% por dS/m sobre umbral 1.9.,No interpretar como umbral universal de rendimiento de grano argentino.
+Algodón,Gossypium hirsutum,7.7,5.2,T,Rendimiento de algodón semilla,Datos de campo/bibliografía resumidos por FAO.,"Validar cultivar, sales específicas, agua de riego y etapa."
+Lino,Linum usitatissimum,1.7,12,MS,Rendimiento de semilla,Referencia global de tolerancia relativa.,No equivale a valor varietal de Aguará INTA u otro material.
+Avena,Avena sativa,,,T,Rendimiento de grano,"FAO indica tolerante cualitativamente, pero sin umbral numérico ni pendiente.",No inventar valor numérico.
+Maní,Arachis hypogaea,3.2,29,MS,Rendimiento de semilla,Referencia experimental de rendimiento de semilla.,La pendiente alta indica posible caída de rendimiento por encima del umbral; validar ambientes.
+Arroz inundado,Oryza sativa,3.0,12,S,Rendimiento de grano,Excepción: valor referido a CE del agua del suelo bajo inundación; menos tolerante en plántula.,No comparar directamente con ECe de suelo seco ni CE del agua de riego.
+Centeno,Secale cereale,11.4,10.8,T,Rendimiento de grano,Datos de rendimiento de grano.,Validar ambiente y método ECe.
+Cártamo,Carthamus tinctorius,,,MT,Rendimiento de semilla,"Calificación moderadamente tolerante, sin valor numérico.",No asignar umbral dS/m no informado.
+Sorgo granífero,Sorghum bicolor,6.8,16,MT,Rendimiento de grano,Referencia global para sorgo granífero.,No asumir igual respuesta para sorgo silero/azucarado/forrajero.
+Soja,Glycine max,5.0,20,MT,Rendimiento de semilla,"Referencia global; FAO señala que las tolerancias absolutas varían con clima, suelo y prácticas.",No reemplaza respuesta varietal ni efecto de sodicidad.
+Caña de azúcar,Saccharum officinarum,1.7,5.9,MS,Peso seco de brotes (shoot dry weight),"Medición vegetativa, no rendimiento de azúcar o tallos comercial.",No usar como criterio directo de rendimiento industrial.
+Girasol,Helianthus annuus,4.8,5,MT,Rendimiento de semilla,Referencia global de rendimiento de semilla.,No equivale a umbral para aceite o calidad confitera.
+Triticale,× Triticosecale,6.1,2.5,T,Rendimiento de grano,Dato específico de triticale recogido por FAO.,No asumir transferible a todos los cultivares.
+Trigo pan,Triticum aestivum,6.0,7.1,MT,Rendimiento de grano,Fila general de trigo pan.,FAO también presenta datos separados para trigo semienano y trigo candeal.
+Trigo semienano,Triticum aestivum,8.6,3,T,Rendimiento de grano,Subgrupo semienano con respuesta distinta.,Solo para el tipo documentado; confirmar cultivar.
+Trigo candeal,Triticum turgidum subsp. durum,5.9,3.8,T,Rendimiento de grano,Dato separado de trigo candeal.,No confundir con trigo pan.
+Caupí,Vigna unguiculata,4.9,12,MT,Rendimiento de semilla,FAO: semilla; especie distinta de poroto común.,No transferir a Phaseolus vulgaris.
+Arveja (Pisum sativum),Pisum sativum,3.4,10.6,MS,Peso fresco de semilla (seed fresh weight),"Estudio en peso fresco, no evidencia específica para arveja seca de cosecha de grano seco.",Usar solo como antecedente; no como límite para cultivares argentinos.
+Papa,Solanum tuberosum,1.7,12,MS,Rendimiento de tubérculo,Referencia de rendimiento de tubérculo.,No discrimina cultivar ni fase de tuberización.
+Lenteja - emergencia 20% de penalidad,Lens culinaris,3.6,,,Emergencia (plántula 22 días),"Ensayo SAGIT en Australia: cv. Thunder, invernáculo, tres suelos; ECe convertida desde EC1:5.","Evidencia extranjera, temprana y varietal puntual; no trasladar como umbral de rendimiento argentino."
+Lenteja - emergencia 50% de penalidad,Lens culinaris,7.7,,,Emergencia (plántula 22 días),"Ensayo SAGIT en Australia: cv. Thunder, invernáculo, tres suelos; ECe convertida desde EC1:5.","Evidencia extranjera, temprana y varietal puntual."
+Lenteja - 50% reducción materia seca,Lens culinaris,6.1,,,Materia seca temprana,"Ensayo SAGIT en Australia: cv. Thunder, plantas de 22 días.",No equivale a rendimiento final de grano.
+Garbanzo - emergencia 20% penalidad,Cicer arietinum,8.3–9.4,,,Emergencia (plántula 22 días),"Ensayo SAGIT en Australia: cv. CBA Captain, invernáculo, tres suelos; ECe convertida desde EC1:5.","Dato extranjero y de emergencia temprana, no umbral final."
+Garbanzo - emergencia 50% penalidad,Cicer arietinum,12.2–14,,,Emergencia (plántula 22 días),"Ensayo SAGIT en Australia: cv. CBA Captain, invernáculo, tres suelos.","Dato extranjero y de emergencia temprana, no umbral final."
+Poroto común (referencia Phaseolus vulgaris),Phaseolus vulgaris,1.0,19,S,Rendimiento de semilla,Valor del cuadro FAO anterior de Water Quality Assessment / tabla de cultivos herbáceos; no coincide exactamente con los datos de especie de la tabla A1.1 Maas & Grattan.,Registrar como fuente histórica alternativa y no fusionar con datos de cultivares Leales/CEGRO sin validación.

@@ -1,0 +1,45 @@
+ensayo_id,campana,sitio,provincia,fecha_siembra,n_cultivares,rinde_medio_kg_ha,referencia_san_luis,archivo,hoja,fuente_url
+GIR-76aea181,2023/24,Reconquista,Santa Fe,25/08/2023,38,1822,OTRA_REGION,860_Reconquista.xlsx,Reconquista,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-443124e8,2023/24,Florencia,Santa Fe,16/08/2023,38,2263,OTRA_REGION,861_Florencia.xlsx,Florencia,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-bcfd1ddb,2023/24,Miramar,Buenos Aires,27/10/23,45,3013,OTRA_REGION,862_Miramar.xlsx,Miramar,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-cb5b291b,2023/24,Pieres,Buenos Aires,01/11/2023,50,3213,OTRA_REGION,863_Pieres.xlsx,Pieres,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-6cbc115b,2023/24,Coronel Suárez,Buenos Aires,30/10/2023,47,2851,OTRA_REGION,865_Coronel_Suarez.xlsx,Suarez,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-741d0107,2023/24,Anguil,La Pampa,01/11/2023,46,2919,SEMIARIDA_VECINA (centro-este de La Pampa),866_Anguil.xlsx,Anguil,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-d6ceb3b2,2023/24,Pergamino,Buenos Aires,08/11/23,46,3367,OTRA_REGION,868_Pergamino.xlsx,Pergamino,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-b1abf93a,2023/24,Bolívar,Buenos Aires,10/10/23,46,4601,OTRA_REGION,869_Bol_var.xlsx,Bolivar,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-156ebf52,2024/25,Sáenz Peña,Chaco,12/08/2024,36,3822,OTRA_REGION,872_Saenz_Pe_a.xlsx,Sáenz Peña,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-1775ebbd,2024/25,Villa Ocampo,Santa Fe,17/08/2024,40,3890,OTRA_REGION,873_Villa_Ocampo.xlsx,Villa Ocampo,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-398a3dd8,2024/25,Rafaela,Santa Fe,18/10/2024,40,4928,OTRA_REGION,874_Rafaela.xlsx,Rafaela,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-460802c2,2024/25,Ceres,Santa Fe,09/10/2024,38,2827,OTRA_REGION,876_Ceres.xlsx,Ceres,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-cf63373a,2024/25,Laboulaye,Córdoba,31/10/2024,21,3797,SEMIARIDA_VECINA (sur de Córdoba),880_Laboulaye.xlsx,Laboulaye,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-057437fe,2024/25,Pergamino,Buenos Aires,13/11/2024,34,3047,OTRA_REGION,881_Buenos_Aires_Norte.xlsx,Pergamino,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-425e1bb7,2024/25,Bolívar,Buenos Aires,09/10/24,36,4829,OTRA_REGION,881_Buenos_Aires_Norte.xlsx,Bolivar,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-87a5c1f5,2024/25,Trenque Lauquen,Buenos Aires,31/10/24,36,4323,OESTE_BONAERENSE,881_Buenos_Aires_Norte.xlsx,Trenque Lauquen,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-7d18b1c3,2024/25,Pehuajó,Buenos Aires,30/10/24,34,3436,OESTE_BONAERENSE,881_Buenos_Aires_Norte.xlsx,Pehuajo,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-2d06f401,2024/25,Balcarce,Buenos Aires,22/10/2024,39,3043,OTRA_REGION,882_Buenos_Aires_Sur_y_La_Pampa.xlsx,Balcarce,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-e8726269,2024/25,Miramar,Buenos Aires,09/11/24,39,3655,OTRA_REGION,882_Buenos_Aires_Sur_y_La_Pampa.xlsx,Miramar,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-f1508f02,2024/25,Pieres,Buenos Aires,13/11/2024,39,5268,OTRA_REGION,882_Buenos_Aires_Sur_y_La_Pampa.xlsx,Pieres,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-8e4a6bbb,2024/25,Coronel Suárez,Buenos Aires,31/10/2024,36,2673,OTRA_REGION,882_Buenos_Aires_Sur_y_La_Pampa.xlsx,Suarez,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-a69d30b7,2024/25,General Pico,La Pampa,04/11/2024,36,3311,SEMIARIDA_VECINA (noreste de La Pampa),882_Buenos_Aires_Sur_y_La_Pampa.xlsx,Gral Pico,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-95f339f7,2025/26,Reconquista,Santa Fe,11/08/2025,28,2303,OTRA_REGION,884_Reconquista.xlsx,Hoja1,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-bab40a54,2025/26,Ceres,Santa Fe,03/09/2025,28,1957,OTRA_REGION,886_Ceres.xlsx,Hoja1,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-28cff959,2025/26,General Pinedo,Chaco,26/08/2025,31,2870,OTRA_REGION,887_General_Pinedo.xlsx,Hoja1,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-c8f8464c,2025/26,Los Juríes,Santiago del Estero,14/08/2025,31,3094,OTRA_REGION,888_Los_Juries.xlsx,Hoja1,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-43f72462,2025/26,Sáenz Peña,Chaco,25/08/2025,31,2210,OTRA_REGION,891_Saenz_Pe_a.xlsx,Hoja1,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-324712d7,2025/26,Bolívar,Buenos Aires,21/10/25,39,5543,OTRA_REGION,892_Bol_var.xlsx,Bolivar,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-c9f36aaa,2025/26,Pehuajó,Buenos Aires,16/10/24,39,3676,OESTE_BONAERENSE,893_Pehuaj_.xlsx,Pehuajo,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-632d1e80,2025/26,Pergamino,Buenos Aires,21/10/2025,39,2538,OTRA_REGION,894_Pergamino.xlsx,Pergamino,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-52f23f52,2025/26,Salliqueló,Buenos Aires,17/11/25,39,2889,OESTE_BONAERENSE,895_Saliquel_.xlsx,Saliquelo,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-cd5b21b8,2025/26,Trenque Lauquen,Buenos Aires,21/10/25,39,2694,OESTE_BONAERENSE,896_Trenque_Lauquen.xlsx,Trenque Lauquen,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-ed5b3051,2025/26,Anguil,La Pampa,03/11/2025,39,2756,SEMIARIDA_VECINA (centro-este de La Pampa),897_Anguil.xlsx,Anguil,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-9fb50012,2025/26,Balcarce,Buenos Aires,31/10/2025,36,3011,OTRA_REGION,898_Balcarce_1era_poca.xlsx,Balcarce Te,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-7e81f8d8,2025/26,Laprida,Buenos Aires,30/10/2025,34,1529,OTRA_REGION,900_Laprida.xlsx,Laprida,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-5ae0f619,2025/26,Pieres,Buenos Aires,11/11/2025,36,2779,OTRA_REGION,901_Pieres.xlsx,Pieres,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-84696aeb,2025/26,Coronel Suárez,Buenos Aires,29/10/2025,40,4060,OTRA_REGION,903_Suarez.xlsx,Suarez,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-cf8ce222,2025/26,Tandil,Buenos Aires,21/10/2025,36,1966,OTRA_REGION,904_Tandil.xlsx,Tandil,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-4237c75d,2025/26,Jesús María,Córdoba,1/10/2025,20,2918,OTRA_REGION,905_Jes_s_Mar_a.xlsx,Hoja1,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-32df05d0,2025/26,Laboulaye,Córdoba,10/11/2025,23,2354,SEMIARIDA_VECINA (sur de Córdoba),906_Laboulaye.xlsx,Hoja1,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-43cb5eb0,2025/26,Manfredi,Córdoba,20/10/2025,20,1213,OTRA_REGION,907_Manfredi.xlsx,Hoja1,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-a981bf9a,2025/26,Villa Ocampo,Santa Fe,14/08/2025,28,3989,OTRA_REGION,908_Villa_Ocampo.xlsx,Hoja1,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-e837ce48,2025/26,Humboldt,Santa Fe,06/09/2025,28,3264,OTRA_REGION,909_Humboldt.xlsx,Humboldt,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
+GIR-c601b243,2025/26,General Pico,La Pampa,17/10/2025,39,2694,SEMIARIDA_VECINA (noreste de La Pampa),910_Pico.xlsx,Gral Pico,https://asagir.org.ar/acerca-de-red-de-ensayos-de-girasol-inta-asagir-463
