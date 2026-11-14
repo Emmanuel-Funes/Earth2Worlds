@@ -179,7 +179,7 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
 
   app.post<{ Body: unknown }>('/api/v1/queries', async (request, reply) => {
     const parsed = parseQueryRequest(request.body)
-    if (!parsed.ok) {
+    if ('error' in parsed) {
       return reply.status(parsed.error.statusCode).send({
         error: {
           code: parsed.error.code,

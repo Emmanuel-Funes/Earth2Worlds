@@ -1,5 +1,5 @@
 import './App.css'
-import { useCallback, useEffect, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useState, type SubmitEvent } from 'react'
 import {
   ApiError,
   getCatalog,
@@ -59,7 +59,7 @@ function App() {
     }
   }, [])
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
     if (!geometry || !itemId || !from || !to || isSubmitting) {
       return
