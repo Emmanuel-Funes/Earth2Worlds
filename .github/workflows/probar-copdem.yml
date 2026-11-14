@@ -1,0 +1,28 @@
+name: Probar Copernicus DEM (altimetría de respaldo)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/copdem.py"
+      - "probar_copdem.py"
+      - ".github/workflows/probar-copdem.yml"
+  workflow_dispatch:
+    inputs:
+      esquinas:
+        description: "Esquinas del lote como 'lat, lon; lat, lon; lat, lon; lat, lon' (copiadas de Google Maps)"
+        default: "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Pedir la altimetría a Copernicus DEM (ESA, sin credenciales)
+        env:
+          # en un PR no hay inputs: se usa el lote de ejemplo
+          ESQUINAS: ${{ inputs.esquinas || '-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300' }}
+        run: python probar_copdem.py "$ESQUINAS"
