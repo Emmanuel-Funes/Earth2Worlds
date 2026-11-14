@@ -69,15 +69,18 @@ echo [Earth2Worlds] Deteniendo servicios en puertos 8000, 3000 y 5173...
 taskkill /FI "WINDOWTITLE eq Earth2Worlds*" /T /F >nul 2>&1
 
 for %%P in (8000 3000 5173) do (
-    for /f "tokens=5" %%A in ('netstat -aon ^| findstr /R "[:\.]%%P[ ]" ^| findstr "LISTENING"') do (
+    for /f "tokens=5" %%A in ('netstat -aon ^| findstr /r /c:"[:\.]%%P " ^| findstr "LISTENING"') do (
         if not "%%A"=="0" (
-            echo   - Terminando proceso en puerto %%P (PID %%A)...
-            taskkill /PID %%A /T /F >nul 2>&1
+            tasklist /FI "PID eq %%A" 2>nul | findstr /i /r "python uvicorn node cmd" >nul
+            if not errorlevel 1 (
+                echo   - Terminando proceso en puerto %%P (PID %%A)...
+                taskkill /PID %%A /T /F >nul 2>&1
+            )
         )
     )
 )
 
-echo [OK] Servicios detenidos.
+echo [OK] Servicios detenidos de forma segura.
 echo.
 if "%~1"=="" pause & goto :MENU
 exit /b 0
@@ -88,7 +91,7 @@ echo [Earth2Worlds] Estado actual de los puertos:
 echo ------------------------------------------------------------
 for %%P in (8000 3000 5173) do (
     set "FOUND="
-    for /f "tokens=5" %%A in ('netstat -aon ^| findstr /R "[:\.]%%P[ ]" ^| findstr "LISTENING"') do (
+    for /f "tokens=5" %%A in ('netstat -aon ^| findstr /r /c:"[:\.]%%P " ^| findstr "LISTENING"') do (
         set "FOUND=%%A"
     )
     if defined FOUND (
