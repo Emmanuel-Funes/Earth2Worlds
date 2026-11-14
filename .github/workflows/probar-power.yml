@@ -1,0 +1,40 @@
+name: Probar POWER (clima)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/power.py"
+      - "probar_power.py"
+      - ".github/workflows/probar-power.yml"
+  workflow_dispatch:
+    inputs:
+      lat:
+        description: "Latitud del lote (ej. -33.68 para Villa Mercedes)"
+        default: "-33.68"
+      lon:
+        description: "Longitud del lote (ej. -65.46)"
+        default: "-65.46"
+      desde:
+        description: "Desde (AAAA-MM-DD)"
+        default: "2026-09-01"
+      hasta:
+        description: "Hasta (AAAA-MM-DD)"
+        default: "2026-09-10"
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Pedir el clima a NASA POWER
+        env:
+          # en un PR no hay inputs: se usa el lote de ejemplo
+          LAT: ${{ inputs.lat || '-33.68' }}
+          LON: ${{ inputs.lon || '-65.46' }}
+          DESDE: ${{ inputs.desde || '2026-09-01' }}
+          HASTA: ${{ inputs.hasta || '2026-09-10' }}
+        run: python probar_power.py "$LAT" "$LON" "$DESDE" "$HASTA"
