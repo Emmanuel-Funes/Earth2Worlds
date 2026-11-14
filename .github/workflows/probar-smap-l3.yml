@@ -1,0 +1,43 @@
+name: Probar SMAP L3 (humedad de respaldo)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/smap_l3.py"
+      - "probar_smap_l3.py"
+      - ".github/workflows/probar-smap-l3.yml"
+  workflow_dispatch:
+    inputs:
+      lat:
+        description: "Latitud del centro del lote (ej. -33.7025)"
+        default: "-33.7025"
+      lon:
+        description: "Longitud del centro del lote (ej. -65.2975)"
+        default: "-65.2975"
+      desde:
+        description: "Desde (AAAA-MM-DD)"
+        default: "2026-01-01"
+      hasta:
+        description: "Hasta (AAAA-MM-DD)"
+        default: "2026-01-14"
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Pedir humedad del suelo a SMAP L3
+        env:
+          EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+          EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
+          # en un PR no hay inputs: centro del lote de ejemplo (San Luis) y las mismas dos semanas que SMAP L4
+          LAT: ${{ inputs.lat || '-33.7025' }}
+          LON: ${{ inputs.lon || '-65.2975' }}
+          DESDE: ${{ inputs.desde || '2026-01-01' }}
+          HASTA: ${{ inputs.hasta || '2026-01-14' }}
+        run: python probar_smap_l3.py "$LAT" "$LON" "$DESDE" "$HASTA"
