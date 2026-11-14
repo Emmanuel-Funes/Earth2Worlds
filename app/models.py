@@ -3,7 +3,7 @@
 from datetime import datetime
 import enum
 
-from sqlalchemy import Column, DateTime, Enum, Float, ForeignKey, Integer, JSON, String, Text
+from sqlalchemy import Column, DateTime, Enum, Float, ForeignKey, Integer, JSON, String, Text, UniqueConstraint
 from sqlalchemy.orm import backref, relationship
 
 from app.database import Base
@@ -62,3 +62,34 @@ class Campo(Base):
     creado_en = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     propietario = relationship("Usuario", back_populates="campos")
+    historial_telemetria = relationship(
+        "TelemetriaHistorica",
+        back_populates="campo",
+        cascade="all, delete-orphan",
+    )
+
+
+class TelemetriaHistorica(Base):
+    """Almacenamiento local persistente de series temporales satelitales por campo en Earth2Worlds."""
+
+    __tablename__ = "telemetria_historica"
+    __table_args__ = (
+        UniqueConstraint("campo_id", "satelite", "variable", "fecha", name="uq_e2w_telemetria_obs"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    campo_id = Column(Integer, ForeignKey("campos.id", ondelete="CASCADE"), nullable=False, index=True)
+    usuario_id = Column(Integer, ForeignKey("usuarios.id"), nullable=False, index=True)
+    fecha = Column(String(20), nullable=False, index=True)  # ISO YYYY-MM-DD o estatico
+    satelite = Column(String(60), nullable=False, index=True)
+    variable = Column(String(80), nullable=False, index=True)
+    valor = Column(Float, nullable=True)
+    unidad = Column(String(40), nullable=True)
+    calidad = Column(String(40), default="buena", nullable=True)
+    fuente = Column(String(80), nullable=True)
+    nota = Column(Text, nullable=True)
+    creado_en = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+    campo = relationship("Campo", back_populates="historial_telemetria")
+    usuario = relationship("Usuario")
+

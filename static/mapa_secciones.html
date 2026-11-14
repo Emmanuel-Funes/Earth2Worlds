@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="es" class="dark">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Earth2Worlds | Mapa Maestro de Secciones</title>
+    <title>Earth2Worlds | Mapa Visual Interactivo de Secciones</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap"
+        rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -22,359 +25,561 @@
             },
         };
     </script>
+    <style>
+        .section-frame {
+            position: relative;
+            border: 2px dashed rgba(16, 185, 129, 0.35);
+            border-radius: 1rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .section-frame:hover,
+        .section-frame.active-sec {
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2), 0 12px 30px -10px rgba(16, 185, 129, 0.25);
+            background-color: rgba(15, 23, 42, 0.92);
+        }
+
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-family: "Fira Code", monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.55rem;
+            border-radius: 0.5rem;
+            background: rgba(16, 185, 129, 0.18);
+            color: #6ee7b7;
+            border: 1px solid rgba(16, 185, 129, 0.45);
+        }
+    </style>
 </head>
+
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col">
-    <!-- Navbar -->
-    <header class="sticky top-0 z-30 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
+    <!-- =================================================================== -->
+    <!-- BARRA SUPERIOR STICKY: INSPECTOR INTERACTIVO Y GENERADOR DE PROMPTS -->
+    <!-- =================================================================== -->
+    <header class="sticky top-0 z-40 border-b border-slate-800 bg-slate-900/95 backdrop-blur-md shadow-2xl">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
             <div class="flex items-center gap-3">
-                <a href="/" class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-emerald-500 flex items-center justify-center font-heading font-extrabold text-slate-950 text-lg">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-emerald-500 flex items-center justify-center font-heading font-extrabold text-slate-950 text-base shadow-lg">
                     E2W
-                </a>
+                </div>
                 <div>
-                    <h1 class="font-heading text-lg font-bold text-white">Earth2Worlds &bull; Mapa Maestro de Secciones</h1>
-                    <p class="text-xs text-slate-400 font-mono">Sincronizado con static/index.html ([SEC-01]..[SEC-10] y [JS-01]..[JS-08])</p>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-heading text-lg font-bold text-white">
+                            Mapa Visual de Secciones — Earth2Worlds
+                        </h1>
+                        <span
+                            class="px-2 py-0.5 rounded text-[11px] font-mono bg-purple-500/20 text-purple-300 border border-purple-500/40">
+                            EXCLUSIVO ADMIN
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-400">
+                        Haz clic en cualquier bloque del plano para inspeccionar sus IDs DOM y copiar el prompt exacto
+                        de edición.
+                    </p>
                 </div>
             </div>
-            <div class="flex items-center gap-3">
-                <a href="/diagrama" class="px-3.5 py-2 rounded-xl text-xs font-mono bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 transition">
-                    Diagrama BD en Vivo
+
+            <div class="flex flex-wrap items-center gap-2">
+                <a href="/guia"
+                    class="px-3 py-1.5 rounded-xl text-xs font-mono bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 transition">
+                    📖 Guía de Segmentación
                 </a>
-                <a href="/" class="px-4 py-2 rounded-xl text-xs font-heading font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition">
-                    &larr; Volver al Panel
+                <a href="/diagrama"
+                    class="px-3 py-1.5 rounded-xl text-xs font-mono bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 transition">
+                    🗄️ Diagrama BD En Vivo
                 </a>
+                <a href="/"
+                    class="px-3.5 py-1.5 rounded-xl text-xs font-heading font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition">
+                    &larr; Volver a Earth2Worlds
+                </a>
+            </div>
+        </div>
+
+        <!-- Barra de inspección activa -->
+        <div class="border-t border-slate-800/80 bg-slate-950/90">
+            <div
+                class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                <div class="flex flex-wrap items-center gap-2 text-xs">
+                    <span id="inspCodeBadge"
+                        class="px-2.5 py-1 rounded-lg font-mono font-bold bg-emerald-500 text-slate-950">
+                        [SEC-05.6]
+                    </span>
+                    <span id="inspTitle" class="font-heading font-bold text-white text-sm">
+                        6 Tarjetas Interactivas de Información Satelital
+                    </span>
+                    <span class="text-slate-600 hidden sm:inline">|</span>
+                    <code id="inspDomIds"
+                        class="font-mono text-[11px] text-sky-300 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
+                        #slotModuloTelemetria, #valNdvi, #valNdmi, #valHumedad, #valTempMean, #valLluvia, #valEstres, #valHeladas
+                    </code>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="copiarPromptSeccionActiva()"
+                        class="px-3.5 py-1.5 rounded-xl text-xs font-mono font-semibold bg-purple-500 hover:bg-purple-400 text-slate-950 shadow-lg shadow-purple-500/20 transition">
+                        📋 Copiar Prompt para Antigravity
+                    </button>
+                </div>
             </div>
         </div>
     </header>
 
-    <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8 space-y-6">
-        <!-- Buscador y filtros -->
-        <section class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div class="flex-1">
-                <label for="buscadorSecciones" class="block text-xs font-mono uppercase text-slate-400 mb-2">
-                    Buscar por código ([SEC-05], [JS-03], #slotModuloMapa, modal, RBAC...):
-                </label>
-                <input
-                    id="buscadorSecciones"
-                    type="text"
-                    oninput="renderizarMapaSecciones()"
-                    placeholder="Filtrar secciones o controladores de Earth2Worlds..."
-                    class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-purple-500"
-                />
-            </div>
-            <div>
-                <label for="filtroTipoSeccion" class="block text-xs font-mono uppercase text-slate-400 mb-2">
-                    Categoría:
-                </label>
-                <select
-                    id="filtroTipoSeccion"
-                    onchange="renderizarMapaSecciones()"
-                    class="rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-purple-500"
-                >
-                    <option value="TODAS">Todas las piezas (27)</option>
-                    <option value="HTML">Secciones HTML ([SEC-01] a [SEC-10])</option>
-                    <option value="SLOT">Slots de Expansión ([SLOT-MODULO-*])</option>
-                    <option value="MODAL">Modales Interactivos ([SEC-09.1] a [SEC-09.5])</option>
-                    <option value="JS">Controladores JavaScript ([JS-01] a [JS-10])</option>
-                </select>
-            </div>
-        </section>
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        <!-- =============================================================== -->
+        <!-- PESTAÑAS DE NAVEGACIÓN DEL PLANO ARQUITECTÓNICO                 -->
+        <!-- =============================================================== -->
+        <div class="flex flex-wrap items-center gap-2 border-b border-slate-800 pb-3">
+            <button id="btnTabPlanoPrincipal" type="button" onclick="cambiarVistaPlano('vistaPrincipal')"
+                class="px-4 py-2 rounded-xl text-xs font-heading font-bold bg-emerald-500 text-slate-950 transition">
+                🖥️ 1. Vista Principal (Tab Campos &amp; Visor Satelital)
+            </button>
+            <button id="btnTabPlanoRbac" type="button" onclick="cambiarVistaPlano('vistaRbac')"
+                class="px-4 py-2 rounded-xl text-xs font-heading font-semibold bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 transition">
+                👥 2. Pestañas RBAC ([SEC-06] a [SEC-08])
+            </button>
+            <button id="btnTabPlanoModales" type="button" onclick="cambiarVistaPlano('vistaModales')"
+                class="px-4 py-2 rounded-xl text-xs font-heading font-semibold bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 transition">
+                🪟 3. Modales &amp; Pop-ups (7 Modales [SEC-09.1] a [SEC-09.7])
+            </button>
+            <button id="btnTabPlanoJs" type="button" onclick="cambiarVistaPlano('vistaJs')"
+                class="px-4 py-2 rounded-xl text-xs font-heading font-semibold bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 transition">
+                ⚙️ 4. Controladores JavaScript ([JS-01] a [JS-12])
+            </button>
+        </div>
 
-        <div id="copyBanner" class="hidden rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-xs font-mono text-emerald-300"></div>
+        <!-- =============================================================== -->
+        <!-- VISTA 1: RÉPLICA VISUAL INTERACTIVA DE LA PÁGINA PRINCIPAL      -->
+        <!-- =============================================================== -->
+        <div id="vistaPrincipal" class="space-y-5">
+            <!-- [SEC-01] HEAD -->
+            <div onclick="seleccionarSeccion('SEC-01')" data-sec="SEC-01"
+                class="section-frame bg-slate-900/60 p-4 flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-3">
+                    <span class="section-badge">[SEC-01] HEAD &amp; LIBRERÍAS</span>
+                    <span class="text-xs text-slate-300">
+                        Google Fonts (Outfit, Inter, Fira Code) &bull; Leaflet 1.9.4 + Geoman &bull; Chart.js &bull;
+                        <code>/static/js/san_luis_geo.js</code> &bull; Tailwind CSS
+                    </span>
+                </div>
+                <code class="text-[11px] font-mono text-slate-400">static/index.html (L44-L72)</code>
+            </div>
 
-        <!-- Grilla de tarjetas -->
-        <div id="gridSecciones" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            <!-- [SEC-02] NAVBAR -->
+            <div onclick="seleccionarSeccion('SEC-02')" data-sec="SEC-02"
+                class="section-frame bg-slate-900/80 p-4 flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <span class="section-badge">[SEC-02] NAVBAR SUPERIOR</span>
+                    <span class="font-heading font-bold text-white">Earth2Worlds v2.0</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 text-xs font-mono">
+                    <span
+                        class="px-2.5 py-1 rounded-lg bg-purple-500/15 text-purple-300 border border-purple-500/30">#navAdminTools
+                        (/mapa, /guia, /diagrama)</span>
+                    <span class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300">#userRoleBadge</span>
+                    <span class="px-2.5 py-1 rounded-lg bg-rose-500/15 text-rose-300">Salir (logout)</span>
+                </div>
+            </div>
+
+            <!-- [SEC-03] CABECERA DE BIENVENIDA Y KPIs ADMIN -->
+            <div onclick="seleccionarSeccion('SEC-03')" data-sec="SEC-03"
+                class="section-frame bg-slate-900/80 p-5 space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                        <span class="section-badge">[SEC-03] CABECERA OPERATIVA Y CONTADORES ADMIN</span>
+                        <h3 class="font-heading text-lg font-bold text-white mt-1">
+                            #welcomeTitle &amp; #welcomeSubtitle
+                        </h3>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs font-mono">
+                        <span
+                            class="px-3 py-1.5 rounded-xl bg-sky-500/15 text-sky-300 border border-sky-500/30">#btnNuevoOperadorHeader</span>
+                        <span
+                            class="px-3 py-1.5 rounded-xl bg-emerald-500 text-slate-950 font-bold">#btnNuevoCampo</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 text-xs font-mono">
+                    <div class="rounded-xl bg-slate-950 border border-slate-800 p-3 text-emerald-400">#statPropietarios
+                    </div>
+                    <div class="rounded-xl bg-slate-950 border border-slate-800 p-3 text-sky-400">#statOperadores</div>
+                    <div class="rounded-xl bg-slate-950 border border-slate-800 p-3 text-amber-400">#statCampos</div>
+                    <div class="rounded-xl bg-slate-950 border border-slate-800 p-3 text-purple-400">#statTotalUsuarios
+                    </div>
+                </div>
+            </div>
+
+            <!-- [SEC-04] BARRA DE 4 PESTAÑAS RBAC -->
+            <div onclick="seleccionarSeccion('SEC-04')" data-sec="SEC-04"
+                class="section-frame bg-slate-900/70 p-4 flex flex-wrap items-center justify-between gap-3">
+                <span class="section-badge">[SEC-04] BARRA DE 4 PESTAÑAS RBAC</span>
+                <div class="flex flex-wrap gap-2 text-xs font-mono">
+                    <span class="px-3 py-1 rounded-lg bg-emerald-500 text-slate-950 font-bold">#tabBtnCampos
+                        (Todos)</span>
+                    <span class="px-3 py-1 rounded-lg bg-slate-800 text-purple-300">#tabBtnPropietarios (Admin)</span>
+                    <span class="px-3 py-1 rounded-lg bg-slate-800 text-sky-300">#tabBtnOperadores (Admin/Prop)</span>
+                    <span class="px-3 py-1 rounded-lg bg-slate-800 text-amber-300">#tabBtnAdmin (Admin)</span>
+                </div>
+            </div>
+
+            <!-- [SEC-05.1] BARRA SUPERIOR DEL VISOR -->
+            <div onclick="seleccionarSeccion('SEC-05.1')" data-sec="SEC-05.1"
+                class="section-frame bg-slate-900/85 p-5 space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <span class="section-badge">[SEC-05.1] BARRA SUPERIOR DEL VISOR SATELITAL</span>
+                    <code
+                        class="text-[11px] font-mono text-slate-400">#campoActivoHeader &bull; #selectCampoActivo &bull; #badgeRelieveUnificado &bull; #btnConectarSatelites</code>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 text-xs">
+                    <div class="rounded-xl bg-slate-950 border border-slate-800 p-3">
+                        <strong class="text-white block">Selector de Campo Activo</strong>
+                        <span class="text-slate-400 font-mono">#selectCampoActivo + #nombreCampoActivo</span>
+                    </div>
+                    <div class="rounded-xl bg-slate-950 border border-slate-800 p-3 font-mono text-emerald-300">
+                        📐 ha | ⛰️ msnm (NASADEM) | % pend. | 💧 SE ↘
+                    </div>
+                    <div class="rounded-xl bg-slate-950 border border-slate-800 p-3 flex items-center justify-between">
+                        <span class="text-slate-400 font-mono">Exclusivo Admin:</span>
+                        <span
+                            class="px-3 py-1 rounded-lg bg-gradient-to-r from-emerald-500 to-sky-500 text-slate-950 font-bold">🚀
+                            Conectar Satélites</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRILLA [SEC-05.2] MAPA + [SEC-05.3] PANEL CAPAS -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-5">
+                <!-- [SEC-05.2] VISOR SATELITAL PRINCIPAL -->
+                <div onclick="seleccionarSeccion('SEC-05.2')" data-sec="SEC-05.2"
+                    class="section-frame lg:col-span-3 bg-slate-900/85 p-5 space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <span class="section-badge">[SEC-05.2] VISOR CARTOGRÁFICO SATELITAL (#slotModuloMapa)</span>
+                        <span class="text-xs font-mono text-emerald-400">lg:col-span-3 (Admin) / lg:col-span-4
+                            (Usuario)</span>
+                    </div>
+
+                    <div class="rounded-xl bg-slate-950 border border-slate-800 p-4 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+                            <span class="px-2.5 py-1 rounded bg-emerald-500/15 text-emerald-300">🎯 Centrar campo</span>
+                            <span class="px-2.5 py-1 rounded bg-amber-500/15 text-amber-300">Catastro Rural San Luis
+                                (Partida / Clic)</span>
+                            <span class="px-2.5 py-1 rounded bg-sky-500/15 text-sky-300">Perímetro Oficial IGN/IDERA San
+                                Luis (3.480 vértices)</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                            <div class="rounded-lg bg-slate-900 border border-slate-800 p-3">
+                                <strong class="text-emerald-300 font-mono block">🌱 Capa NDVI Sectorizada (-1 a
+                                    +1)</strong>
+                                <p class="text-slate-400 mt-1">Superposición de vigor por sectores sobre el polígono
+                                    activo (<code>#chkToggleNdviMapLayer</code>).</p>
+                            </div>
+                            <div class="rounded-lg bg-slate-900 border border-slate-800 p-3">
+                                <strong class="text-sky-300 font-mono block">🛰️ Pasadas por Satélite + Slider
+                                    Temporal</strong>
+                                <p class="text-slate-400 mt-1">Fechas verificadas de Sentinel-2/HLS, SMAP, IMERG y MODIS
+                                    + <code>#mapTimelineSlider</code>.</p>
+                            </div>
+                        </div>
+
+                        <!-- Sub-bloque [SEC-05.2-ADMIN] -->
+                        <div onclick="event.stopPropagation(); seleccionarSeccion('SEC-05.2-ADMIN')"
+                            data-sec="SEC-05.2-ADMIN" class="section-frame bg-slate-900/95 p-3 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="section-badge">[SEC-05.2-ADMIN] DOCK DE ESTADO SATELITAL EN VIVO</span>
+                                <code class="text-[11px] font-mono text-purple-300">#adminSatelliteStatusDock</code>
+                            </div>
+                            <p class="text-xs text-slate-300">
+                                Muestra el estado en línea, latencia en ms y botón de reconexión directa para las 11
+                                constelaciones (POWER, NASADEM, HLS, SMAP, IMERG, ET, VIIRS_LST, GOES, GRACE, GeoINTA,
+                                SISINTA).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- [SEC-05.3] PANEL DE CAPAS SATELITALES (ADMIN) -->
+                <div onclick="seleccionarSeccion('SEC-05.3')" data-sec="SEC-05.3"
+                    class="section-frame lg:col-span-1 bg-slate-900/85 p-5 space-y-3">
+                    <span class="section-badge">[SEC-05.3] CAPAS ADMIN</span>
+                    <h4 class="font-heading font-bold text-white text-sm">#panelCapasSatelitalesSec053</h4>
+                    <p class="text-xs text-slate-400">
+                        Panel lateral exclusivo para Administradores con 9 checkboxes de activación de sensores:
+                    </p>
+                    <ul class="space-y-1 text-xs font-mono text-slate-300">
+                        <li>&bull; 🌱 NDVI Vigor (HLS)</li>
+                        <li>&bull; 💧 Humedad (SMAP)</li>
+                        <li>&bull; 🌡️ Temperatura (POWER)</li>
+                        <li>&bull; ⛰️ Altimetría (NASADEM)</li>
+                        <li>&bull; 🌧️ Precipitación (IMERG)</li>
+                        <li>&bull; 🌿 Estrés Hídrico (ET)</li>
+                        <li>&bull; ❄️ Heladas (GOES)</li>
+                        <li>&bull; 🌊 Napa (GRACE)</li>
+                        <li>&bull; 🗺️ Suelo (GeoINTA)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- [SEC-05.4] TARJETAS DE CAMPOS REGISTRADOS -->
+            <div onclick="seleccionarSeccion('SEC-05.4')" data-sec="SEC-05.4"
+                class="section-frame bg-slate-900/85 p-5 space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <span class="section-badge">[SEC-05.4] TARJETAS DE CAMPOS REGISTRADOS (#listaCampos)</span>
+                    <code
+                        class="text-[11px] font-mono text-slate-400">#adminFiltroPropietarioWrap &bull; abrirModalEvaluacionCultivo() &bull; abrirModalEditarCampo()</code>
+                </div>
+                <p class="text-xs text-slate-300">
+                    Cada tarjeta de campo muestra superficie en hectáreas, relieve fijo calculado por
+                    <strong>NASADEM</strong> (<code>⛰️ msnm | % pend. | 💧 SE ↘</code>), titular RBAC y botones de
+                    acción rápida <strong>🌱 Evaluar Cultivo</strong> y <strong>✏️ Editar</strong>.
+                </p>
+            </div>
+
+            <!-- [SEC-05.5] CONTROL TEMPORAL UNIFICADO -->
+            <div onclick="seleccionarSeccion('SEC-05.5')" data-sec="SEC-05.5"
+                class="section-frame bg-slate-900/85 p-5 space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <span class="section-badge">[SEC-05.5] CONTROL TEMPORAL UNIFICADO (#controlTemporalSec055)</span>
+                    <code
+                        class="text-[11px] font-mono text-sky-300">#rtFechaDesde &bull; #rtFechaHasta &bull; #sliderHistoricoDia</code>
+                </div>
+                <p class="text-xs text-slate-300">
+                    Permite alternar entre <strong>Última Pasada Real</strong> y <strong>📅 Consultar Fecha /
+                        Rango</strong> con presets rápidos (<code>15d</code>, <code>1m</code>, <code>3m</code>,
+                    <code>1a</code>) y deslizador diario continuo sincronizado con las 6 tarjetas.
+                </p>
+            </div>
+
+            <!-- [SEC-05.6] LAS 6 TARJETAS INTERACTIVAS DE INFORMACIÓN SATELITAL -->
+            <div onclick="seleccionarSeccion('SEC-05.6')" data-sec="SEC-05.6"
+                class="section-frame active-sec bg-slate-900/90 p-5 space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <span class="section-badge">[SEC-05.6] LAS 6 TARJETAS DE INFORMACIÓN SATELITAL
+                        (#slotModuloTelemetria)</span>
+                    <span class="text-xs font-mono text-emerald-400">Clic en cualquier tarjeta &rarr; Abre Modal
+                        Chart.js [SEC-09.7]</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+                    <div class="rounded-xl bg-slate-950 border border-emerald-500/30 p-3.5 space-y-1">
+                        <strong class="text-emerald-400 font-heading text-sm block">1. 🌱 NDVI Vigor (#valNdvi)</strong>
+                        <p class="text-slate-400 font-mono">Índice [-1 a +1] &bull; Fuente: HLS (Landsat/S2) &bull;
+                            #passDateNdvi</p>
+                    </div>
+                    <div class="rounded-xl bg-slate-950 border border-sky-500/30 p-3.5 space-y-1">
+                        <strong class="text-sky-400 font-heading text-sm block">2. 💧 Humedad &amp; NDMI (#valNdmi /
+                            #valHumedad)</strong>
+                        <p class="text-slate-400 font-mono">Sub-tarjeta dual: Agua foliar NDMI + Humedad suelo SMAP L4
+                            (m³/m³)</p>
+                    </div>
+                    <div class="rounded-xl bg-slate-950 border border-amber-500/30 p-3.5 space-y-1">
+                        <strong class="text-amber-400 font-heading text-sm block">3. 🌡️ Temperatura
+                            (#valTempMin/Max/Mean/Amp)</strong>
+                        <p class="text-slate-400 font-mono">4 cuadrantes térmicos (°C) &bull; Fuente: NASA POWER</p>
+                    </div>
+                    <div class="rounded-xl bg-slate-950 border border-blue-500/30 p-3.5 space-y-1">
+                        <strong class="text-blue-400 font-heading text-sm block">4. 🌧️ Precipitación
+                            (#valLluvia)</strong>
+                        <p class="text-slate-400 font-mono">Acumulado en mm y último pulso diario &bull; Fuente: GPM
+                            IMERG</p>
+                    </div>
+                    <div class="rounded-xl bg-slate-950 border border-teal-500/30 p-3.5 space-y-1">
+                        <strong class="text-teal-400 font-heading text-sm block">5. 🌿 Estrés Hídrico
+                            (#valEstres)</strong>
+                        <p class="text-slate-400 font-mono">Demanda evaporativa ET₀ (mm/día) &bull; Fuente: ECOSTRESS /
+                            FAO-56</p>
+                    </div>
+                    <div class="rounded-xl bg-slate-950 border border-cyan-500/30 p-3.5 space-y-1">
+                        <strong class="text-cyan-400 font-heading text-sm block">6. ❄️ Alerta de Heladas
+                            (#valHeladas)</strong>
+                        <p class="text-slate-400 font-mono">Monitoreo térmico nocturno y umbral 0°C/3°C &bull; Fuente:
+                            GOES / POWER</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- VISTA 2: PESTAÑAS RBAC ([SEC-06], [SEC-07], [SEC-08])           -->
+        <!-- =============================================================== -->
+        <div id="vistaRbac" class="hidden space-y-4">
+            <div onclick="seleccionarSeccion('SEC-06')" data-sec="SEC-06"
+                class="section-frame bg-slate-900/85 p-5 space-y-2">
+                <span class="section-badge">[SEC-06] PADRÓN DE PROPIETARIOS Y LOTES ANIDADOS (#propietariosTab)</span>
+                <p class="text-xs text-slate-300">
+                    Exclusivo para Administradores. Renderiza en <code>#listaPropietariosAdmin</code> cada propietario
+                    con sus campos productivos y operadores dependientes (endpoint
+                    <code>GET /api/usuarios/propietarios</code>).
+                </p>
+            </div>
+
+            <div onclick="seleccionarSeccion('SEC-07')" data-sec="SEC-07"
+                class="section-frame bg-slate-900/85 p-5 space-y-2">
+                <span class="section-badge">[SEC-07] GESTIÓN DE OPERADORES DE CAMPO (#operadoresTab)</span>
+                <p class="text-xs text-slate-300">
+                    Visible para Administradores y Propietarios. Permite crear cuentas de operador con acceso de solo
+                    lectura y vincularles lotes específicos mediante <code>#listaOperadoresContainer</code>.
+                </p>
+            </div>
+
+            <div onclick="seleccionarSeccion('SEC-08')" data-sec="SEC-08"
+                class="section-frame bg-slate-900/85 p-5 space-y-2">
+                <span class="section-badge">[SEC-08] AUDITORÍA GLOBAL DE USUARIOS (#adminTab)</span>
+                <p class="text-xs text-slate-300">
+                    Exclusivo para Administradores. Tabla maestra <code>#tablaAuditoriaUsuariosBody</code> con buscador
+                    instantáneo (<code>#inputBuscarUsuarioAdmin</code>), filtro por rol
+                    (<code>#selectFiltroRolAdmin</code>) y acciones CRUD completas.
+                </p>
+            </div>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- VISTA 3: LOS 7 MODALES INTERACTIVOS ([SEC-09.1] A [SEC-09.7])   -->
+        <!-- =============================================================== -->
+        <div id="vistaModales" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div onclick="seleccionarSeccion('SEC-09.1')" data-sec="SEC-09.1"
+                class="section-frame bg-slate-900/85 p-5 space-y-2">
+                <span class="section-badge">[SEC-09.1] #modalCampo</span>
+                <h4 class="font-heading font-bold text-white">Alta de Nuevo Campo + Visor #slotModalMapa</h4>
+                <p class="text-xs text-slate-400">Permite dibujar el polígono con Geoman o hacer clic sobre una parcela
+                    rural de San Luis y estampa automáticamente el relieve NASADEM al guardar.</p>
+            </div>
+
+            <div onclick="seleccionarSeccion('SEC-09.2')" data-sec="SEC-09.2"
+                class="section-frame bg-slate-900/85 p-5 space-y-2">
+                <span class="section-badge">[SEC-09.2] #modalEvaluacionCultivo</span>
+                <h4 class="font-heading font-bold text-white">Evaluación y Rotación de Cultivos + Semillas INTA</h4>
+                <p class="text-xs text-slate-400">Cruza en vivo NASADEM, GeoINTA, SISINTA, NOAA ENSO y MAGyP para
+                    clasificar la viabilidad (%) de 6 cultivos en el lote.</p>
+            </div>
+
+            <div onclick="seleccionarSeccion('SEC-09.3')" data-sec="SEC-09.3"
+                class="section-frame bg-slate-900/85 p-5 space-y-2">
+                <span class="section-badge">[SEC-09.3] #modalEditarUsuario</span>
+                <h4 class="font-heading font-bold text-white">Edición Integral de Usuario y Rol RBAC</h4>
+                <p class="text-xs text-slate-400">Actualiza datos personales, contraseña Bcrypt, rol y selectores
+                    geográficos de las 23 provincias argentinas + CABA.</p>
+            </div>
+
+            <div onclick="seleccionarSeccion('SEC-09.4')" data-sec="SEC-09.4"
+                class="section-frame bg-slate-900/85 p-5 space-y-2">
+                <span class="section-badge">[SEC-09.4] #modalAsignarCampos</span>
+                <h4 class="font-heading font-bold text-white">Asignación de Lotes a Operador</h4>
+                <p class="text-xs text-slate-400">Checkboxes validados por propiedad RBAC
+                    (<code>PUT /api/usuarios/operadores/{id}/campos</code>).</p>
+            </div>
+
+            <div onclick="seleccionarSeccion('SEC-09.5')" data-sec="SEC-09.5"
+                class="section-frame bg-slate-900/85 p-5 space-y-2">
+                <span class="section-badge">[SEC-09.5] #modalOperador</span>
+                <h4 class="font-heading font-bold text-white">Alta de Nuevo Operador de Campo</h4>
+                <p class="text-xs text-slate-400">Registro directo de operador vinculado al propietario actual con
+                    selección inicial de campos.</p>
+            </div>
+
+            <div onclick="seleccionarSeccion('SEC-09.6')" data-sec="SEC-09.6"
+                class="section-frame bg-slate-900/85 p-5 space-y-2">
+                <span class="section-badge">[SEC-09.6] #modalEditarCampo</span>
+                <h4 class="font-heading font-bold text-white">Edición de Establecimiento y Reasignación de Titular</h4>
+                <p class="text-xs text-slate-400">Modifica nombre, ubicación, superficie y permite al Admin reasignar el
+                    propietario titular del campo.</p>
+            </div>
+
+            <div onclick="seleccionarSeccion('SEC-09.7')" data-sec="SEC-09.7"
+                class="section-frame md:col-span-2 bg-slate-900/85 p-5 space-y-2">
+                <span class="section-badge">[SEC-09.7] #modalGraficoHistorico</span>
+                <h4 class="font-heading font-bold text-white">Series Temporales y Comparativa Interanual (Chart.js)</h4>
+                <p class="text-xs text-slate-400">Se abre al hacer clic en cualquiera de las 6 tarjetas métricas de
+                    <code>[SEC-05.6]</code>. Consulta <code>GET /api/campos/{id}/historial</code> y grafica la curva con
+                    4 KPIs (Total Obs, Mínimo, Máximo y Promedio).</p>
+            </div>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- VISTA 4: CONTROLADORES JAVASCRIPT ([JS-01] A [JS-12])           -->
+        <!-- =============================================================== -->
+        <div id="vistaJs" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div onclick="seleccionarSeccion('JS-01')" data-sec="JS-01"
+                class="section-frame bg-slate-900/85 p-4 space-y-1">
+                <span class="section-badge">[JS-01] Arranque &amp; Sesión JWT</span>
+                <p class="text-xs text-slate-300 mt-1">Verifica token en <code>/api/auth/me</code> e inicializa módulos
+                    de Earth2Worlds.</p>
+            </div>
+            <div onclick="seleccionarSeccion('JS-02')" data-sec="JS-02"
+                class="section-frame bg-slate-900/85 p-4 space-y-1">
+                <span class="section-badge">[JS-02] Motor RBAC &amp; Layout</span>
+                <p class="text-xs text-slate-300 mt-1">Ajusta ancho del mapa (<code>lg:col-span-3</code> vs
+                    <code>4</code>) y visibilidad Admin.</p>
+            </div>
+            <div onclick="seleccionarSeccion('JS-03')" data-sec="JS-03"
+                class="section-frame bg-slate-900/85 p-4 space-y-1">
+                <span class="section-badge">[JS-03] Controlador de Campos</span>
+                <p class="text-xs text-slate-300 mt-1">Sincroniza <code>#selectCampoActivo</code>,
+                    <code>#badgeRelieveUnificado</code> y <code>#listaCampos</code>.</p>
+            </div>
+            <div onclick="seleccionarSeccion('JS-04')" data-sec="JS-04"
+                class="section-frame bg-slate-900/85 p-4 space-y-1">
+                <span class="section-badge">[JS-04] CRUD de Campos</span>
+                <p class="text-xs text-slate-300 mt-1">Alta, edición y baja de lotes con cálculo automático de relieve
+                    NASADEM.</p>
+            </div>
+            <div onclick="seleccionarSeccion('JS-05')" data-sec="JS-05"
+                class="section-frame bg-slate-900/85 p-4 space-y-1">
+                <span class="section-badge">[JS-05] Padrón Propietarios</span>
+                <p class="text-xs text-slate-300 mt-1">Carga jerárquica de propietarios, campos y operadores para Admin.
+                </p>
+            </div>
+            <div onclick="seleccionarSeccion('JS-06')" data-sec="JS-06"
+                class="section-frame bg-slate-900/85 p-4 space-y-1">
+                <span class="section-badge">[JS-06] Operadores y Lotes</span>
+                <p class="text-xs text-slate-300 mt-1">Gestión de operadores y asignación validada de campos.</p>
+            </div>
+            <div onclick="seleccionarSeccion('JS-07')" data-sec="JS-07"
+                class="section-frame bg-slate-900/85 p-4 space-y-1">
+                <span class="section-badge">[JS-07] Auditoría de Usuarios</span>
+                <p class="text-xs text-slate-300 mt-1">Buscador instantáneo y tabla CRUD global en
+                    <code>#adminTab</code>.</p>
+            </div>
+            <div onclick="seleccionarSeccion('JS-08')" data-sec="JS-08"
+                class="section-frame bg-slate-900/85 p-4 space-y-1">
+                <span class="section-badge">[JS-08] UI, Modales y Toasts</span>
+                <p class="text-xs text-slate-300 mt-1">Sistema de notificaciones flotantes y cierre con tecla
+                    <code>ESC</code>.</p>
+            </div>
+            <div onclick="seleccionarSeccion('JS-09')" data-sec="JS-09"
+                class="section-frame bg-slate-900/85 p-4 space-y-1">
+                <span class="section-badge">[JS-09] Cartografía Satelital</span>
+                <p class="text-xs text-slate-300 mt-1">Leaflet + Geoman + Perímetro Oficial San Luis + Capa NDVI
+                    Sectorizada + Dock Admin.</p>
+            </div>
+            <div onclick="seleccionarSeccion('JS-10')" data-sec="JS-10"
+                class="section-frame bg-slate-900/85 p-4 space-y-1">
+                <span class="section-badge">[JS-10] 6 Tarjetas &amp; Tiempo</span>
+                <p class="text-xs text-slate-300 mt-1">Sincronización paralela multi-satélite y poblamiento de las 6
+                    tarjetas métricas.</p>
+            </div>
+            <div onclick="seleccionarSeccion('JS-11')" data-sec="JS-11"
+                class="section-frame bg-slate-900/85 p-4 space-y-1">
+                <span class="section-badge">[JS-11] Motor de Cultivos INTA</span>
+                <p class="text-xs text-slate-300 mt-1">Controlador de <code>#modalEvaluacionCultivo</code> y catálogo
+                    INASE/INTA.</p>
+            </div>
+            <div onclick="seleccionarSeccion('JS-12')" data-sec="JS-12"
+                class="section-frame bg-slate-900/85 p-4 space-y-1">
+                <span class="section-badge">[JS-12] Series Temporales Chart.js</span>
+                <p class="text-xs text-slate-300 mt-1">Renderizado de curvas históricas y KPIs en
+                    <code>#modalGraficoHistorico</code>.</p>
+            </div>
+        </div>
     </main>
-
-    <footer class="border-t border-slate-900 py-5 text-center text-xs text-slate-500 font-mono">
-        Earth2Worlds &bull; Gobernanza de Secciones Frontend &bull; 14/11/2026
-    </footer>
 
     <script src="/static/js/app.js"></script>
     <script>
-        const CATALOGO_SECCIONES = [
-            {
-                codigo: "[SEC-01]",
-                tipo: "HTML",
-                titulo: "Head, Fuentes Google y Configuración Tailwind",
-                selectores: "<head>, tailwind.config",
-                descripcion: "Configuración del modo oscuro de Earth2Worlds y tipografías Outfit, Inter y Fira Code.",
-                prompt: "En static/index.html dentro de [SEC-01], actualiza la configuración de Tailwind o metadatos de Earth2Worlds.",
-            },
-            {
-                codigo: "[SEC-02]",
-                tipo: "HTML",
-                titulo: "Navbar Superior con Identidad Earth2Worlds",
-                selectores: "#navAdminTools, #userRoleBadge, #userNameDisplay, logout()",
-                descripcion: "Barra superior fija con logo E2W, enlaces a Mapa de Secciones y Diagrama BD (Admin), insignia de rol y cierre de sesión.",
-                prompt: "En static/index.html dentro de [SEC-02], modifica la barra de navegación superior respetando los controles de sesión y enlaces de Admin.",
-            },
-            {
-                codigo: "[SEC-03]",
-                tipo: "HTML",
-                titulo: "Cabecera de Bienvenida, #adminStatsBar y #btnNuevoCampo",
-                selectores: "#welcomeTitle, #adminStatsBar, #btnNuevoCampo, #btnNuevoOperadorHeader",
-                descripcion: "Saludo adaptado según rol, 4 contadores estadísticos para Admin (Propietarios, Operadores, Campos, Total Usuarios) y botón de alta de campo.",
-                prompt: "En static/index.html dentro de [SEC-03], ajusta la cabecera de bienvenida o los 4 contadores estadísticos #adminStatsBar.",
-            },
-            {
-                codigo: "[SEC-04]",
-                tipo: "HTML",
-                titulo: "Barra de 4 Pestañas RBAC",
-                selectores: "#tabBtnCampos, #tabBtnPropietarios, #tabBtnOperadores, #tabBtnAdmin",
-                descripcion: "Navegación por pestañas según matriz de permisos: Campos (Todos), Propietarios (Admin), Operadores (Admin/Propietario) y Auditoría Global (Admin).",
-                prompt: "En static/index.html dentro de [SEC-04], actualiza la barra de pestañas RBAC.",
-            },
-            {
-                codigo: "[SEC-05]",
-                tipo: "HTML",
-                titulo: "Contenido Principal de #camposTab",
-                selectores: "#camposTab, #campoActivoHeader, #listaCampos, #filtroPropietarioSelect",
-                descripcion: "Cabecera de campo activo seleccionado, filtro de campos por propietario (Admin) y grilla reactiva de tarjetas de establecimientos.",
-                prompt: "En static/index.html dentro de [SEC-05], modifica la vista de tarjetas de campos #listaCampos o la cabecera #campoActivoHeader.",
-            },
-            {
-                codigo: "[SEC-05.2]",
-                tipo: "SLOT",
-                titulo: "Slot Módulo Cartográfico (#slotModuloMapa)",
-                selectores: "#slotModuloMapa, <!-- [SLOT-MODULO-MAPA] -->",
-                descripcion: "Contenedor limpio preparado para enchufar el visor interactivo de mapas y dibujo de polígonos GeoJSON.",
-                prompt: "En static/index.html dentro de [SEC-05.2] (#slotModuloMapa), integra el módulo cartográfico manteniendo el contrato con Campo.geometria_geojson.",
-            },
-            {
-                codigo: "[SEC-05.3]",
-                tipo: "SLOT",
-                titulo: "Slot Módulo de Telemetría (#slotModuloTelemetria)",
-                selectores: "#slotModuloTelemetria, <!-- [SLOT-MODULO-TELEMETRIA] -->",
-                descripcion: "Contenedor limpio preparado para enchufar la consulta de telemetría satelital y series temporales sobre el campo activo.",
-                prompt: "En static/index.html dentro de [SEC-05.3] (#slotModuloTelemetria), integra el panel de telemetría vinculado al campo activo.",
-            },
-            {
-                codigo: "[SEC-06]",
-                tipo: "HTML",
-                titulo: "Tarjetas Jerárquicas de Propietarios y Lotes (Admin)",
-                selectores: "#propietariosTab, #listaPropietariosAdmin",
-                descripcion: "Vista exclusiva Admin que muestra cada propietario junto con sus campos y operadores anidados.",
-                prompt: "En static/index.html dentro de [SEC-06] (#propietariosTab), actualiza la visualización de propietarios y sus listas anidadas.",
-            },
-            {
-                codigo: "[SEC-07]",
-                tipo: "HTML",
-                titulo: "Gestión de Operadores y Asignación Rápida de Lotes",
-                selectores: "#operadoresTab, #listaOperadoresContainer",
-                descripcion: "Panel para Administradores y Propietarios donde se listan operadores y los campos asignados en modo lectura.",
-                prompt: "En static/index.html dentro de [SEC-07] (#operadoresTab), modifica las tarjetas de operadores y accesos de asignación.",
-            },
-            {
-                codigo: "[SEC-08]",
-                tipo: "HTML",
-                titulo: "Tabla Maestra de Auditoría Global de Usuarios (Admin)",
-                selectores: "#adminTab, #tablaAuditoriaUsuariosBody, #inputBuscarUsuarioAdmin, #selectFiltroRolAdmin",
-                descripcion: "Tabla administrativa completa con buscador instantáneo, filtro por rol y botones de edición/eliminación.",
-                prompt: "En static/index.html dentro de [SEC-08] (#adminTab), actualiza la tabla maestra de auditoría global de usuarios.",
-            },
-            {
-                codigo: "[SEC-09]",
-                tipo: "HTML",
-                titulo: "Contenedor General de los 5 Modales Interactivos",
-                selectores: "#modalCampo, #modalEditarCampo, #modalEditarUsuario, #modalAsignarCampos, #modalOperador",
-                descripcion: "Agrupación de los cinco diálogos modales para operaciones CRUD y asignación de lotes.",
-                prompt: "En static/index.html dentro de [SEC-09], revisa la estructura general de los 5 modales interactivos.",
-            },
-            {
-                codigo: "[SEC-09.1]",
-                tipo: "MODAL",
-                titulo: "Modal Alta de Campo (#modalCampo + #slotModalMapa)",
-                selectores: "#modalCampo, #formNuevoCampo, #slotModalMapa",
-                descripcion: "Formulario modal para dar de alta un establecimiento e incluir el contenedor limpio #slotModalMapa.",
-                prompt: "En static/index.html dentro de [SEC-09.1] (#modalCampo), ajusta el formulario de creación de campos o el contenedor #slotModalMapa.",
-            },
-            {
-                codigo: "[SEC-09.2]",
-                tipo: "MODAL",
-                titulo: "Modal Edición de Campo (#modalEditarCampo)",
-                selectores: "#modalEditarCampo, #formEditarCampo, #edit_campo_propietario_id",
-                descripcion: "Edición de nombre, ubicación, superficie en hectáreas y reasignación de propietario titular (si es Admin).",
-                prompt: "En static/index.html dentro de [SEC-09.2] (#modalEditarCampo), modifica el diálogo de edición de campo.",
-            },
-            {
-                codigo: "[SEC-09.3]",
-                tipo: "MODAL",
-                titulo: "Modal Edición de Usuario (#modalEditarUsuario)",
-                selectores: "#modalEditarUsuario, #formEditarUsuario",
-                descripcion: "Edición integral de datos personales, ubicación argentina, rol RBAC y cambio opcional de contraseña.",
-                prompt: "En static/index.html dentro de [SEC-09.3] (#modalEditarUsuario), actualiza el modal de edición de usuario.",
-            },
-            {
-                codigo: "[SEC-09.4]",
-                tipo: "MODAL",
-                titulo: "Modal Asignar Campos a Operador (#modalAsignarCampos)",
-                selectores: "#modalAsignarCampos, #formAsignarCampos, #checkboxesCamposOperador",
-                descripcion: "Lista de checkboxes para vincular o desvincular establecimientos a un operador validando propiedad.",
-                prompt: "En static/index.html dentro de [SEC-09.4] (#modalAsignarCampos), modifica el selector de lotes asignados al operador.",
-            },
-            {
-                codigo: "[SEC-09.5]",
-                tipo: "MODAL",
-                titulo: "Modal Alta de Operador (#modalOperador)",
-                selectores: "#modalOperador, #formNuevoOperador, #nuevoOperadorCamposCheckboxes",
-                descripcion: "Creación de un nuevo operador de campo con asignación inicial de establecimientos.",
-                prompt: "En static/index.html dentro de [SEC-09.5] (#modalOperador), ajusta el formulario de alta de operadores.",
-            },
-            {
-                codigo: "[SEC-10]",
-                tipo: "HTML",
-                titulo: "Bloque Maestro de Scripts y Controladores Frontend",
-                selectores: "<script> ([JS-01] a [JS-10])",
-                descripcion: "Sección que encapsula los 10 controladores JavaScript de la aplicación Earth2Worlds.",
-                prompt: "En static/index.html dentro de [SEC-10], revisa la integración de scripts y controladores JS.",
-            },
-            {
-                codigo: "[JS-01]",
-                tipo: "JS",
-                titulo: "Estado Global, Sesión JWT y Arranque SPA",
-                selectores: "inicializarAplicacion(), currentUser, listaCamposGlobal",
-                descripcion: "Valida el token Bearer contra GET /api/auth/me e inicializa los datos según el rol del usuario.",
-                prompt: "En static/index.html dentro de [JS-01], modifica la inicialización de estado y carga de sesión JWT.",
-            },
-            {
-                codigo: "[JS-02]",
-                tipo: "JS",
-                titulo: "Motor de Pestañas RBAC y Visibilidad por Rol",
-                selectores: "configurarInterfazPorRol(), cambiarTab(tabId)",
-                descripcion: "Muestra u oculta pestañas, botones y barras estadísticas según si el usuario es admin, propietario u operador.",
-                prompt: "En static/index.html dentro de [JS-02], ajusta la lógica de visibilidad RBAC o cambio de pestañas.",
-            },
-            {
-                codigo: "[JS-03]",
-                tipo: "JS",
-                titulo: "Controlador Reactivo de Campos y Campo Activo",
-                selectores: "cargarCampos(), renderizarListaCampos(), seleccionarCampoActivo()",
-                descripcion: "Renderiza las tarjetas de campos con escapeHtml(), filtra por propietario y sincroniza #campoActivoHeader y los Slots.",
-                prompt: "En static/index.html dentro de [JS-03], actualiza el renderizado de tarjetas de campos o selección de campo activo.",
-            },
-            {
-                codigo: "[JS-04]",
-                tipo: "JS",
-                titulo: "Controlador CRUD de Campos (Alta, Edición y Borrado)",
-                selectores: "abrirModalCampo(), abrirModalEditarCampo(), eliminarCampo()",
-                descripcion: "Conecta los formularios de creación, edición y eliminación con POST/PUT/DELETE /api/campos.",
-                prompt: "En static/index.html dentro de [JS-04], modifica las peticiones CRUD de campos.",
-            },
-            {
-                codigo: "[JS-05]",
-                tipo: "JS",
-                titulo: "Controlador de Propietarios y Lotes Anidados (Admin)",
-                selectores: "cargarPropietariosAdmin()",
-                descripcion: "Consume GET /api/usuarios/propietarios y actualiza tanto las tarjetas jerárquicas como el filtro por propietario.",
-                prompt: "En static/index.html dentro de [JS-05], ajusta la carga y renderizado de propietarios para Admin.",
-            },
-            {
-                codigo: "[JS-06]",
-                tipo: "JS",
-                titulo: "Controlador de Operadores y Asignación de Lotes",
-                selectores: "cargarOperadores(), abrirModalOperador(), abrirModalAsignarCampos()",
-                descripcion: "Gestiona el alta de operadores y la actualización de campos_ids vía PUT /api/usuarios/operadores/{id}/campos.",
-                prompt: "En static/index.html dentro de [JS-06], actualiza la gestión de operadores y asignación de campos.",
-            },
-            {
-                codigo: "[JS-07]",
-                tipo: "JS",
-                titulo: "Controlador de Auditoría Global de Usuarios (Admin)",
-                selectores: "cargarTodosUsuariosAdmin(), renderizarTablaAuditoriaUsuarios(), abrirModalEditarUsuario()",
-                descripcion: "Filtra usuarios en tiempo real y ejecuta edición/eliminación administrativa sobre /api/usuarios/{id}.",
-                prompt: "En static/index.html dentro de [JS-07], modifica la tabla de auditoría global o edición de usuarios.",
-            },
-            {
-                codigo: "[JS-08]",
-                tipo: "JS",
-                titulo: "Utilidades UI, Contadores Admin, Modales y Toasts",
-                selectores: "actualizarContadoresAdmin(), abrirModal(), cerrarModal(), mostrarToast()",
-                descripcion: "Funciones auxiliares de interfaz, cierre con tecla ESC y notificaciones flotantes.",
-                prompt: "En static/index.html dentro de [JS-08], ajusta las utilidades de modales, contadores o notificaciones Toast.",
-            },
-            {
-                codigo: "[JS-09]",
-                tipo: "JS",
-                titulo: "Controlador Cartográfico Leaflet + Geoman + Catastro Rural San Luis",
-                selectores: "inicializarSlotMapaPrincipal(), sincronizarMapaConCampoActivo(), prepararMapaEnModalNuevoCampo()",
-                descripcion: "Enchufa el visor interactivo Leaflet + Geoman y el buscador de parcelas de Catastro de San Luis en #slotModuloMapa y #slotModalMapa.",
-                prompt: "En static/js/rotaterra_modulos.js dentro de [JS-09], ajusta el visor cartográfico o la integración con Catastro de San Luis.",
-            },
-            {
-                codigo: "[JS-10]",
-                tipo: "JS",
-                titulo: "Controlador de Telemetría Satelital Rotaterra y Banco de Semillas INTA",
-                selectores: "inicializarSlotTelemetria(), ejecutarConsultaSatelitalActiva(), buscarCultivaresSemillasInta()",
-                descripcion: "Conecta las 21 cadenas satelitales/agronómicas de Rotaterra y el Banco de Semillas INTA en #slotModuloTelemetria.",
-                prompt: "En static/js/rotaterra_modulos.js dentro de [JS-10], modifica la consola de telemetría satelital o el buscador de semillas INTA.",
-            },
-        ];
-
-        function copiarPrompt(idx) {
-            const item = CATALOGO_SECCIONES[idx];
-            if (!item) return;
-            navigator.clipboard.writeText(item.prompt);
-            const banner = document.getElementById("copyBanner");
-            banner.textContent = `Prompt copiado para ${item.codigo}: "${item.prompt}"`;
-            banner.classList.remove("hidden");
-            setTimeout(() => banner.classList.add("hidden"), 4000);
-        }
-
-        function renderizarMapaSecciones() {
-            const q = (document.getElementById("buscadorSecciones").value || "").trim().toLowerCase();
-            const tipo = document.getElementById("filtroTipoSeccion").value;
-            const grid = document.getElementById("gridSecciones");
-
-            const filtradas = CATALOGO_SECCIONES.map((item, idx) => ({ ...item, idx })).filter((item) => {
-                if (tipo !== "TODAS" && item.tipo !== tipo) return false;
-                if (!q) return true;
-                const blob = `${item.codigo} ${item.titulo} ${item.selectores} ${item.descripcion}`.toLowerCase();
-                return blob.includes(q);
-            });
-
-            grid.innerHTML = filtradas
-                .map((item) => {
-                    const colorBadge =
-                        item.tipo === "SLOT"
-                            ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/30"
-                            : item.tipo === "MODAL"
-                            ? "bg-amber-500/15 text-amber-300 border-amber-500/30"
-                            : item.tipo === "JS"
-                            ? "bg-sky-500/15 text-sky-300 border-sky-500/30"
-                            : "bg-purple-500/15 text-purple-300 border-purple-500/30";
-
-                    return `
-                        <article class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-5 flex flex-col justify-between gap-4">
-                            <div>
-                                <div class="flex items-center justify-between gap-2 mb-2">
-                                    <span class="px-3 py-1 rounded-lg text-xs font-mono font-bold border ${colorBadge}">
-                                        ${escapeHtml(item.codigo)}
-                                    </span>
-                                    <span class="text-[11px] font-mono text-slate-400 uppercase">${escapeHtml(item.tipo)}</span>
-                                </div>
-                                <h2 class="font-heading text-lg font-bold text-white">${escapeHtml(item.titulo)}</h2>
-                                <p class="text-xs text-slate-400 mt-1">${escapeHtml(item.descripcion)}</p>
-                                <div class="mt-3 rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 text-xs font-mono text-emerald-300">
-                                    Selectores: ${escapeHtml(item.selectores)}
-                                </div>
-                            </div>
-                            <div class="pt-3 border-t border-slate-800 flex items-center justify-between gap-2">
-                                <span class="text-[11px] font-mono text-slate-500">static/index.html</span>
-                                <button
-                                    type="button"
-                                    onclick="copiarPrompt(${item.idx})"
-                                    class="px-3 py-1.5 rounded-xl text-xs font-mono bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition"
-                                >
-                                    Copiar Prompt de Sección
-                                </button>
-                            </div>
-                        </article>
-                    `;
-                })
-                .join("");
-        }
-
+        // Verificación estricta: solo el usuario Admin puede visualizar el Mapa de Secciones
         document.addEventListener("DOMContentLoaded", async () => {
             if (!getToken()) {
                 window.location.href = "/login";
@@ -383,20 +588,192 @@
             try {
                 const res = await authFetch("/api/auth/me");
                 if (!res.ok) {
-                    clearSession();
                     window.location.href = "/login";
                     return;
                 }
                 const user = await res.json();
                 if (user.rol !== "admin") {
                     window.location.href = "/";
-                    return;
                 }
-                renderizarMapaSecciones();
-            } catch (err) {
+            } catch (_e) {
                 window.location.href = "/";
             }
         });
+
+        const CATALOGO_SECCIONES = {
+            "SEC-01": {
+                titulo: "Head, Fuentes Google, Leaflet, Chart.js y Tailwind",
+                dom: "<head>, san_luis_geo.js, chart.js, leaflet.js",
+                archivo: "static/index.html",
+            },
+            "SEC-02": {
+                titulo: "Navbar Superior con Identidad Earth2Worlds y Herramientas Admin",
+                dom: "#navAdminTools, #userRoleBadge, #userNameDisplay",
+                archivo: "static/index.html",
+            },
+            "SEC-03": {
+                titulo: "Cabecera de Bienvenida y Barra Estadística Admin",
+                dom: "#welcomeTitle, #adminStatsBar, #btnNuevoCampo, #btnNuevoOperadorHeader",
+                archivo: "static/index.html",
+            },
+            "SEC-04": {
+                titulo: "Barra de 4 Pestañas RBAC",
+                dom: "#tabBtnCampos, #tabBtnPropietarios, #tabBtnOperadores, #tabBtnAdmin",
+                archivo: "static/index.html",
+            },
+            "SEC-05.1": {
+                titulo: "Barra Superior del Visor: Selector de Campo, Relieve Unificado y Conectar Satélites",
+                dom: "#campoActivoHeader, #selectCampoActivo, #badgeRelieveUnificado, #btnConectarSatelites",
+                archivo: "static/index.html",
+            },
+            "SEC-05.2": {
+                titulo: "Visor Satelital Principal + Límite San Luis + Capa NDVI Sectorizada + Slider",
+                dom: "#slotModuloMapa, #e2wLeafletMainMap, #chkToggleNdviMapLayer, #mapTimelineSlider",
+                archivo: "static/js/rotaterra_modulos.js",
+            },
+            "SEC-05.2-ADMIN": {
+                titulo: "Dock de Estado de Enlace de las 11 Constelaciones Satelitales (Admin)",
+                dom: "#adminSatelliteStatusDock, #gridDockSatelitesAdmin",
+                archivo: "static/js/rotaterra_modulos.js",
+            },
+            "SEC-05.3": {
+                titulo: "Panel Lateral de Capas Satelitales (Exclusivo Admin)",
+                dom: "#panelCapasSatelitalesSec053, #listaCheckboxesCapasAdmin",
+                archivo: "static/index.html",
+            },
+            "SEC-05.4": {
+                titulo: "Grilla de Tarjetas de Campos Registrados con Relieve NASADEM",
+                dom: "#listaCampos, #adminFiltroPropietarioWrap",
+                archivo: "static/index.html",
+            },
+            "SEC-05.5": {
+                titulo: "Control Temporal Unificado (Última Pasada, Rango Histórico y Slider Diario)",
+                dom: "#controlTemporalSec055, #rtFechaDesde, #rtFechaHasta, #sliderHistoricoDia",
+                archivo: "static/js/rotaterra_modulos.js",
+            },
+            "SEC-05.6": {
+                titulo: "Las 6 Tarjetas Interactivas de Información Satelital",
+                dom: "#slotModuloTelemetria, #valNdvi, #valNdmi, #valHumedad, #valTempMean, #valLluvia, #valEstres, #valHeladas",
+                archivo: "static/js/rotaterra_modulos.js",
+            },
+            "SEC-06": {
+                titulo: "Padrón Jerárquico de Propietarios, Campos y Operadores (Admin)",
+                dom: "#propietariosTab, #listaPropietariosAdmin",
+                archivo: "static/index.html",
+            },
+            "SEC-07": {
+                titulo: "Gestión de Operadores de Campo y Asignación de Lotes",
+                dom: "#operadoresTab, #listaOperadoresContainer",
+                archivo: "static/index.html",
+            },
+            "SEC-08": {
+                titulo: "Tabla Maestra de Auditoría Global de Usuarios (Admin)",
+                dom: "#adminTab, #tablaAuditoriaUsuariosBody, #inputBuscarUsuarioAdmin",
+                archivo: "static/index.html",
+            },
+            "SEC-09.1": {
+                titulo: "Modal de Alta de Establecimiento y Dibujo Cartográfico",
+                dom: "#modalCampo, #formNuevoCampo, #slotModalMapa",
+                archivo: "static/index.html",
+            },
+            "SEC-09.2": {
+                titulo: "Modal de Evaluación y Rotación de Cultivos + Semillas INTA",
+                dom: "#modalEvaluacionCultivo, #contenedorResultadosEvaluacionCultivo",
+                archivo: "static/index.html",
+            },
+            "SEC-09.3": {
+                titulo: "Modal de Edición Integral de Usuario y Rol RBAC",
+                dom: "#modalEditarUsuario, #formEditarUsuario",
+                archivo: "static/index.html",
+            },
+            "SEC-09.4": {
+                titulo: "Modal de Vinculación de Lotes a Operador",
+                dom: "#modalAsignarCampos, #checkboxesCamposOperador",
+                archivo: "static/index.html",
+            },
+            "SEC-09.5": {
+                titulo: "Modal de Alta de Operador de Campo",
+                dom: "#modalOperador, #formNuevoOperador",
+                archivo: "static/index.html",
+            },
+            "SEC-09.6": {
+                titulo: "Modal de Edición de Campo y Reasignación de Propietario",
+                dom: "#modalEditarCampo, #formEditarCampo",
+                archivo: "static/index.html",
+            },
+            "SEC-09.7": {
+                titulo: "Modal de Gráficos de Series Temporales y Comparativa Interanual (Chart.js)",
+                dom: "#modalGraficoHistorico, #canvasGraficoHistorico",
+                archivo: "static/index.html",
+            },
+            "JS-01": { titulo: "Estado Global y Arranque SPA", dom: "inicializarAplicacion()", archivo: "static/index.html" },
+            "JS-02": { titulo: "Motor RBAC y Pestañas", dom: "configurarInterfazPorRol(), cambiarTab()", archivo: "static/index.html" },
+            "JS-03": { titulo: "Controlador de Campos y Relieve", dom: "cargarCampos(), actualizarHeaderCampoActivo()", archivo: "static/index.html" },
+            "JS-04": { titulo: "Alta, Edición y Eliminación de Campos", dom: "abrirModalCampo(), abrirModalEditarCampo()", archivo: "static/index.html" },
+            "JS-05": { titulo: "Controlador de Propietarios Admin", dom: "cargarPropietariosAdmin()", archivo: "static/index.html" },
+            "JS-06": { titulo: "Controlador de Operadores", dom: "cargarOperadores(), abrirModalAsignarCampos()", archivo: "static/index.html" },
+            "JS-07": { titulo: "Auditoría Global de Usuarios", dom: "cargarTodosUsuariosAdmin()", archivo: "static/index.html" },
+            "JS-08": { titulo: "Utilidades UI, Modales y Toasts", dom: "abrirModal(), cerrarModal(), mostrarToast()", archivo: "static/index.html" },
+            "JS-09": { titulo: "Controlador Cartográfico Satelital y Dock Admin", dom: "inicializarSlotMapaPrincipal(), dibujarPerimetroOficialSanLuis()", archivo: "static/js/rotaterra_modulos.js" },
+            "JS-10": { titulo: "Controlador de las 6 Tarjetas y Control Temporal", dom: "conectarSatelitesCampoActivo(), poblar6TarjetasDesdeObservaciones()", archivo: "static/js/rotaterra_modulos.js" },
+            "JS-11": { titulo: "Controlador de Evaluación de Cultivos INTA", dom: "abrirModalEvaluacionCultivo(), ejecutarEvaluacionCultivoModal()", archivo: "static/js/rotaterra_modulos.js" },
+            "JS-12": { titulo: "Controlador de Series Temporales Chart.js", dom: "abrirModalGraficoHistorico(), cambiarRangoGraficoHistorico()", archivo: "static/js/rotaterra_modulos.js" },
+        };
+
+        let seccionActivaKey = "SEC-05.6";
+
+        function seleccionarSeccion(key) {
+            const info = CATALOGO_SECCIONES[key];
+            if (!info) return;
+            seccionActivaKey = key;
+
+            document.querySelectorAll(".section-frame").forEach((el) => {
+                if (el.getAttribute("data-sec") === key) {
+                    el.classList.add("active-sec");
+                } else {
+                    el.classList.remove("active-sec");
+                }
+            });
+
+            document.getElementById("inspCodeBadge").textContent = `[${key}]`;
+            document.getElementById("inspTitle").textContent = info.titulo;
+            document.getElementById("inspDomIds").textContent = `${info.dom} (${info.archivo})`;
+        }
+
+        function copiarPromptSeccionActiva() {
+            const info = CATALOGO_SECCIONES[seccionActivaKey];
+            if (!info) return;
+            const promptTexto = `En Earth2Worlds (${info.archivo}), dentro de la sección [${seccionActivaKey}] (${info.titulo}, selectores: ${info.dom}), realiza el siguiente ajuste manteniendo sincronizado static/mapa_secciones.html: `;
+            navigator.clipboard.writeText(promptTexto);
+            const btn = event.currentTarget;
+            const original = btn.textContent;
+            btn.textContent = "✅ Prompt Copiado al Portapapeles";
+            setTimeout(() => {
+                btn.textContent = original;
+            }, 2200);
+        }
+
+        function cambiarVistaPlano(vistaId) {
+            const vistas = ["vistaPrincipal", "vistaRbac", "vistaModales", "vistaJs"];
+            const botones = {
+                vistaPrincipal: "btnTabPlanoPrincipal",
+                vistaRbac: "btnTabPlanoRbac",
+                vistaModales: "btnTabPlanoModales",
+                vistaJs: "btnTabPlanoJs",
+            };
+            vistas.forEach((v) => {
+                const el = document.getElementById(v);
+                const btn = document.getElementById(botones[v]);
+                if (v === vistaId) {
+                    el.classList.remove("hidden");
+                    btn.className = "px-4 py-2 rounded-xl text-xs font-heading font-bold bg-emerald-500 text-slate-950 transition";
+                } else {
+                    el.classList.add("hidden");
+                    btn.className = "px-4 py-2 rounded-xl text-xs font-heading font-semibold bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 transition";
+                }
+            });
+        }
     </script>
 </body>
+
 </html>

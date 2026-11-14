@@ -3,48 +3,56 @@
 ================================================================================
 MAPA MAESTRO DE SECCIONES DE EARTH2WORLDS (static/index.html)
 Fecha de inicialización: 14 de noviembre de 2026
-Sincronizado obligatoriamente con: static/mapa_secciones.html
+Sincronizado obligatoriamente con: static/mapa_secciones.html y static/guia_segmentacion.html
 --------------------------------------------------------------------------------
 SECCIONES HTML:
-  [SEC-01] Head, fuentes Google (Outfit, Inter, Fira Code) y configuración Tailwind
-  [SEC-02] Navbar superior con identidad Earth2Worlds, accesos Admin, #userRoleBadge y Salir
-  [SEC-03] Cabecera de bienvenida dinámica, #adminStatsBar y botón #btnNuevoCampo
+  [SEC-01] Head, fuentes Google (Outfit, Inter, Fira Code), Leaflet, Geoman, Chart.js y Tailwind
+  [SEC-02] Navbar superior con identidad Earth2Worlds, accesos Admin (/mapa, /guia, /diagrama), #userRoleBadge y Salir
+  [SEC-03] Cabecera de bienvenida dinámica, #adminStatsBar y botones #btnNuevoOperadorHeader / #btnNuevoCampo
   [SEC-04] Barra de 4 Pestañas RBAC (#camposTab, #propietariosTab, #operadoresTab, #adminTab)
-  [SEC-05] Contenido de #camposTab: #campoActivoHeader, #listaCampos y Slots modulares:
-           - [SEC-05.2] #slotModuloMapa ([SLOT-MODULO-MAPA])
-           - [SEC-05.3] #slotModuloTelemetria ([SLOT-MODULO-TELEMETRIA])
+  [SEC-05] Contenido de #camposTab (6 sub-secciones modulares):
+           - [SEC-05.1] Barra Superior del Visor (#selectCampoActivo, #badgeRelieveUnificado, Catastro SL y #btnConectarSatelites)
+           - [SEC-05.2] #slotModuloMapa ([SLOT-MODULO-MAPA]) Visor Satelital + Perímetro San Luis + Capa NDVI + Pasadas + [SEC-05.2-ADMIN] Dock Satelital
+           - [SEC-05.3] Panel Lateral de Capas Satelitales (#panelCapasSatelitalesSec053 - Exclusivo Admin)
+           - [SEC-05.4] Grilla de Tarjetas de Campos Registrados (#listaCampos + filtro propietario + botón Evaluar Cultivo)
+           - [SEC-05.5] Control Temporal Unificado (Día actual, Histórico, Rango de fechas 1m/3m/1a y Slider diario)
+           - [SEC-05.6] #slotModuloTelemetria ([SLOT-MODULO-TELEMETRIA]) Las 6 Tarjetas Interactivas de Telemetría Satelital + Explorador INTA
   [SEC-06] Vista de Propietarios con sus campos y operadores anidados (Exclusivo Admin)
   [SEC-07] Gestión de Operadores de Campo y asignación rápida de lotes (Admin y Propietario)
   [SEC-08] Tabla maestra de Auditoría Global de Usuarios con buscador/filtro y CRUD (Admin)
-  [SEC-09] Los 5 Modales Interactivos:
+  [SEC-09] Los 7 Modales Interactivos:
            - [SEC-09.1] #modalCampo (Alta de campo + #slotModalMapa)
-           - [SEC-09.2] #modalEditarCampo (Edición de campo y reasignación de propietario)
+           - [SEC-09.2] #modalEvaluacionCultivo (Evaluación y Rotación de Cultivos + Semillas INTA)
            - [SEC-09.3] #modalEditarUsuario (Edición completa de usuario, rol y contraseña)
            - [SEC-09.4] #modalAsignarCampos (Checkboxes para asignar/desasignar lotes a operador)
            - [SEC-09.5] #modalOperador (Alta de nuevo operador de campo)
-  [SEC-10] Bloque maestro de Controladores JavaScript ([JS-01] a [JS-10])
+           - [SEC-09.6] #modalEditarCampo (Edición de campo y reasignación de propietario)
+           - [SEC-09.7] #modalGraficoHistorico (Series Temporales y Comparativa Interanual Chart.js)
+  [SEC-10] Bloque maestro de Controladores JavaScript ([JS-01] a [JS-12])
 
 CONTROLADORES JAVASCRIPT:
   [JS-01] Estado Global, verificación de sesión JWT y arranque de la SPA
   [JS-02] Motor de Pestañas RBAC y adaptación dinámica de interfaz según rol
-  [JS-03] Controlador de Campos (#listaCampos, #campoActivoHeader, filtro por propietario)
+  [JS-03] Controlador de Campos (#listaCampos, #selectCampoActivo, #badgeRelieveUnificado)
   [JS-04] Controlador de Alta, Edición y Eliminación de Campos (#modalCampo, #modalEditarCampo)
   [JS-05] Controlador de Propietarios y Lotes anidados (Tab #propietariosTab - Admin)
   [JS-06] Controlador de Operadores y Asignación de Campos (#modalOperador, #modalAsignarCampos)
   [JS-07] Controlador de Auditoría Global de Usuarios y buscador/filtro (#adminTab, #modalEditarUsuario)
   [JS-08] Utilidades de UI, Notificaciones Toast y gestión de cierre de modales
-  [JS-09] Controlador Cartográfico Leaflet + Geoman + Catastro Rural San Luis (#slotModuloMapa, #slotModalMapa)
-  [JS-10] Controlador de Telemetría Satelital Rotaterra y Banco de Semillas INTA (#slotModuloTelemetria)
+  [JS-09] Controlador Cartográfico Leaflet + Geoman + Perímetro Oficial San Luis + Catastro Rural (#slotModuloMapa, #slotModalMapa)
+  [JS-10] Controlador de las 6 Tarjetas de Telemetría Satelital, Control Temporal y Dock Admin (#slotModuloTelemetria)
+  [JS-11] Controlador de Evaluación y Rotación de Cultivos + Banco de Semillas INTA (#modalEvaluacionCultivo)
+  [JS-12] Controlador de Gráficos de Series Temporales y Comparativa Interanual Chart.js (#modalGraficoHistorico)
 ================================================================================
 -->
 <html lang="es" class="dark">
 <!-- ======================================================================= -->
-<!-- [SEC-01] HEAD, FUENTES GOOGLE Y CONFIGURACIÓN TAILWIND                  -->
+<!-- [SEC-01] HEAD, FUENTES GOOGLE, LEAFLET, CHART.JS Y TAILWIND             -->
 <!-- ======================================================================= -->
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Earth2Worlds | Plataforma de Gestión Territorial</title>
+    <title>Earth2Worlds | Plataforma de Gestión Territorial y Telemetría Satelital</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
@@ -52,6 +60,8 @@ CONTROLADORES JAVASCRIPT:
     <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@2.17.0/dist/leaflet-geoman.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@2.17.0/dist/leaflet-geoman.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/js/san_luis_geo.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -93,10 +103,10 @@ CONTROLADORES JAVASCRIPT:
                     <div class="flex items-center gap-2">
                         <span class="font-heading text-lg sm:text-xl font-bold tracking-tight text-white">Earth2Worlds</span>
                         <span class="hidden sm:inline-block text-[11px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
-                            v1.0 &bull; 14/11/2026
+                            v2.0 &bull; 14/11/2026
                         </span>
                     </div>
-                    <p class="text-xs text-slate-400 hidden sm:block">Gestión RBAC de Establecimientos y Lotes Productivos</p>
+                    <p class="text-xs text-slate-400 hidden sm:block">Gestión RBAC Territorial y Telemetría Multi-Satelital</p>
                 </div>
             </div>
 
@@ -108,6 +118,12 @@ CONTROLADORES JAVASCRIPT:
                         class="px-3 py-1.5 rounded-xl text-xs font-mono bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 transition"
                     >
                         Mapa de Secciones
+                    </a>
+                    <a
+                        href="/guia"
+                        class="px-3 py-1.5 rounded-xl text-xs font-mono bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 transition"
+                    >
+                        Guía Segmentación
                     </a>
                     <a
                         href="/diagrama"
@@ -152,7 +168,7 @@ CONTROLADORES JAVASCRIPT:
                         Panel Operativo Earth2Worlds
                     </h1>
                     <p id="welcomeSubtitle" class="text-sm text-slate-400 mt-1">
-                        Cargando permisos y establecimientos asociados a tu cuenta...
+                        Cargando permisos, relieve topográfico y constelaciones satelitales asociadas a tu cuenta...
                     </p>
                 </div>
                 <div class="flex flex-wrap items-center gap-3">
@@ -206,7 +222,7 @@ CONTROLADORES JAVASCRIPT:
                 onclick="cambiarTab('camposTab')"
                 class="px-4 py-2.5 rounded-xl text-sm font-heading font-semibold transition bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20"
             >
-                Mis Campos &amp; Panel Principal
+                Mis Campos &amp; Visor Satelital
             </button>
             <button
                 id="tabBtnPropietarios"
@@ -235,115 +251,249 @@ CONTROLADORES JAVASCRIPT:
         </div>
 
         <!-- =============================================================== -->
-        <!-- [SEC-05] CONTENIDO DE #camposTab                                -->
+        <!-- [SEC-05] CONTENIDO DE #camposTab (6 SUB-SEGMENTOS SINCRONIZADOS) -->
         <!-- =============================================================== -->
         <section id="camposTab" class="space-y-6">
-            <!-- Barra de campo activo y filtro por propietario (Admin) -->
+            <!-- =========================================================== -->
+            <!-- [SEC-05.1] BARRA SUPERIOR DEL VISOR SATELITAL               -->
+            <!-- =========================================================== -->
             <div
                 id="campoActivoHeader"
-                class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4"
+                class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-5 space-y-4 shadow-xl"
             >
-                <div>
-                    <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                        <span class="text-xs font-mono uppercase tracking-wider text-emerald-400">Campo Activo Seleccionado</span>
-                    </div>
-                    <h2 id="nombreCampoActivo" class="font-heading text-xl font-bold text-white mt-1">
-                        Ningún campo seleccionado todavía
-                    </h2>
-                    <p id="detalleCampoActivo" class="text-xs text-slate-400 mt-0.5">
-                        Selecciona o registra un establecimiento productivo para visualizar sus contenedores modulares.
-                    </p>
-                </div>
+                <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
+                    <!-- Selector rápido de campo activo + título -->
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-3 flex-1">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                <span class="text-[11px] font-mono uppercase tracking-wider text-emerald-400">
+                                    [SEC-05.1] Lote Activo en Visor Satelital
+                                </span>
+                            </div>
+                            <h2 id="nombreCampoActivo" class="font-heading text-xl font-bold text-white mt-0.5">
+                                Ningún campo seleccionado todavía
+                            </h2>
+                            <p id="detalleCampoActivo" class="text-xs text-slate-400">
+                                Selecciona o registra un establecimiento productivo para sincronizar mapa y telemetría.
+                            </p>
+                        </div>
 
-                <!-- Filtro exclusivo Admin por propietario -->
-                <div id="adminFiltroPropietarioWrap" class="hidden flex items-center gap-3">
-                    <label for="filtroPropietarioSelect" class="text-xs font-mono uppercase text-slate-400">
-                        Filtrar por Propietario:
-                    </label>
-                    <select
-                        id="filtroPropietarioSelect"
-                        onchange="filtrarCamposPorPropietario()"
-                        class="rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"
+                        <div class="sm:ml-3 min-w-[230px]">
+                            <label for="selectCampoActivo" class="block text-[10px] font-mono uppercase text-slate-400 mb-1">
+                                Cambiar Campo Activo:
+                            </label>
+                            <select
+                                id="selectCampoActivo"
+                                onchange="seleccionarCampoActivo(Number(this.value))"
+                                class="w-full rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500"
+                            >
+                                <option value="">Sin campos cargados</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Badge Unificado de Superficie, Altitud, Pendiente y Escurrimiento -->
+                    <div
+                        id="badgeRelieveUnificado"
+                        class="rounded-xl bg-slate-950/90 border border-slate-800 px-4 py-2.5 flex flex-wrap items-center gap-2.5 text-xs font-mono"
                     >
-                        <option value="TODOS">Todos los propietarios</option>
-                    </select>
+                        <span class="text-emerald-400 font-semibold" id="badgeSupHa">📐 -- ha</span>
+                        <span class="text-slate-600">|</span>
+                        <span class="text-amber-300" id="badgeCotaMsnm">⛰️ -- msnm</span>
+                        <span class="text-slate-600">|</span>
+                        <span class="text-sky-300" id="badgePendientePct">--% pend.</span>
+                        <span class="text-slate-600">|</span>
+                        <span class="text-cyan-300" id="badgeEscurrimiento">Orientación Desnivel/Escurrimiento: 💧 SE ↘</span>
+                    </div>
+
+                    <!-- Botón Conectar Satélites (Exclusivo Admin) -->
+                    <div id="adminConectarSatelitesWrap" class="hidden items-center gap-2">
+                        <button
+                            id="btnConectarSatelites"
+                            type="button"
+                            onclick="conectarSatelitesCampoActivo(true)"
+                            class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-sky-500 hover:from-emerald-400 hover:to-sky-400 text-slate-950 font-heading font-bold text-xs shadow-lg shadow-emerald-500/20 transition flex items-center gap-2"
+                        >
+                            <span>🚀 Conectar Satélites</span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Grilla reactiva de tarjetas de campos -->
-            <div id="listaCampos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
-
-            <!-- Grilla de Slots limpios para futuros módulos -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
-                <!-- ======================================================= -->
-                <!-- [SEC-05.2] CONTENEDOR LIMPIO #slotModuloMapa            -->
-                <!-- ======================================================= -->
+            <!-- =========================================================== -->
+            <!-- GRILLA DE VISOR SATELITAL ([SEC-05.2]) Y CAPAS ([SEC-05.3]) -->
+            <!-- =========================================================== -->
+            <div id="gridVisorMapaCapas" class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <!-- [SEC-05.2] VISOR CARTOGRÁFICO SATELITAL + DOCK ADMIN -->
                 <!-- [SLOT-MODULO-MAPA] -->
                 <div
                     id="slotModuloMapa"
-                    class="bg-slate-900/80 backdrop-blur-md border border-dashed border-emerald-500/40 rounded-2xl p-6 flex flex-col justify-between min-h-[260px]"
+                    class="lg:col-span-4 bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-5 flex flex-col justify-between min-h-[480px] shadow-xl"
                 >
-                    <div>
-                        <div class="flex items-center justify-between gap-2 mb-3">
-                            <span class="px-2.5 py-1 rounded-lg text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                                [SEC-05.2] &bull; SLOT-MODULO-MAPA
-                            </span>
-                            <span class="text-xs font-mono text-slate-400">Campo.geometria_geojson</span>
-                        </div>
-                        <h3 class="font-heading text-lg font-bold text-white">
-                            Módulo Cartográfico e Interacción de Polígonos
-                        </h3>
-                        <p class="text-sm text-slate-400 mt-1">
-                            Contenedor limpio reservado para acoplar el visor geoespacial y delimitación de lotes en WGS 84 (EPSG:4326).
-                        </p>
-                    </div>
-                    <div class="mt-6 rounded-xl bg-slate-950/80 border border-slate-800 p-4 flex items-center justify-between">
-                        <div>
-                            <span class="text-xs font-mono text-slate-400 block">Estado del contenedor</span>
-                            <span id="slotMapaEstadoCampo" class="text-xs text-emerald-300 font-mono">
-                                Listo para integrar visor sobre el campo activo
-                            </span>
-                        </div>
-                        <span class="px-3 py-1 rounded-full text-[11px] font-mono bg-slate-800 text-slate-300">
-                            SLOT PREPARADO
+                    <div class="flex items-center justify-between">
+                        <span class="px-2.5 py-1 rounded-lg text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            [SEC-05.2] &bull; SLOT-MODULO-MAPA
+                        </span>
+                        <span id="slotMapaEstadoCampo" class="text-xs font-mono text-emerald-300">
+                            Inicializando visor satelital...
                         </span>
                     </div>
                 </div>
 
-                <!-- ======================================================= -->
-                <!-- [SEC-05.3] CONTENEDOR LIMPIO #slotModuloTelemetria      -->
-                <!-- ======================================================= -->
-                <!-- [SLOT-MODULO-TELEMETRIA] -->
-                <div
-                    id="slotModuloTelemetria"
-                    class="bg-slate-900/80 backdrop-blur-md border border-dashed border-sky-500/40 rounded-2xl p-6 flex flex-col justify-between min-h-[260px]"
+                <!-- [SEC-05.3] PANEL LATERAL DE CAPAS SATELITALES (EXCLUSIVO ADMIN) -->
+                <aside
+                    id="panelCapasSatelitalesSec053"
+                    class="hidden lg:col-span-1 bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-5 flex-col justify-between space-y-4 shadow-xl"
                 >
-                    <div>
-                        <div class="flex items-center justify-between gap-2 mb-3">
-                            <span class="px-2.5 py-1 rounded-lg text-xs font-mono bg-sky-500/10 text-sky-400 border border-sky-500/20">
-                                [SEC-05.3] &bull; SLOT-MODULO-TELEMETRIA
-                            </span>
-                            <span class="text-xs font-mono text-slate-400">Campo.configuracion_extra</span>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <div>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-purple-500/15 text-purple-300 border border-purple-500/30">
+                                    [SEC-05.3] ADMIN
+                                </span>
+                                <h3 class="font-heading text-base font-bold text-white mt-1">
+                                    Capas Satelitales Activas
+                                </h3>
+                            </div>
+                            <span class="text-[11px] font-mono text-emerald-400">9 Sensores</span>
                         </div>
-                        <h3 class="font-heading text-lg font-bold text-white">
-                            Módulo de Telemetría y Motores de Análisis
-                        </h3>
-                        <p class="text-sm text-slate-400 mt-1">
-                            Contenedor limpio reservado para acoplar series temporales, indicadores e informes sobre el lote seleccionado.
+
+                        <p class="text-xs text-slate-400">
+                            Selecciona qué constelaciones consultar y superponer sobre el polígono del campo activo:
                         </p>
-                    </div>
-                    <div class="mt-6 rounded-xl bg-slate-950/80 border border-slate-800 p-4 flex items-center justify-between">
-                        <div>
-                            <span class="text-xs font-mono text-slate-400 block">Estado del contenedor</span>
-                            <span id="slotTelemetriaEstadoCampo" class="text-xs text-sky-300 font-mono">
-                                Listo para enchufar telemetría del campo activo
-                            </span>
+
+                        <div id="listaCheckboxesCapasAdmin" class="space-y-2 text-xs">
+                            <label class="flex items-center justify-between gap-2 p-2 rounded-xl bg-slate-950/80 border border-slate-800 cursor-pointer hover:border-emerald-500/40 transition">
+                                <span class="flex items-center gap-2 text-slate-200">
+                                    <input type="checkbox" name="sat_layer_cb" value="HLS" checked onchange="onCambiarCapasSatelitalesAdmin()" class="rounded border-slate-700 text-emerald-500" />
+                                    <span>🌱 NDVI Vigor (HLS 30m)</span>
+                                </span>
+                                <span class="font-mono text-[10px] text-emerald-400">Óptico</span>
+                            </label>
+                            <label class="flex items-center justify-between gap-2 p-2 rounded-xl bg-slate-950/80 border border-slate-800 cursor-pointer hover:border-sky-500/40 transition">
+                                <span class="flex items-center gap-2 text-slate-200">
+                                    <input type="checkbox" name="sat_layer_cb" value="SMAP" checked onchange="onCambiarCapasSatelitalesAdmin()" class="rounded border-slate-700 text-sky-500" />
+                                    <span>💧 Humedad Suelo (SMAP)</span>
+                                </span>
+                                <span class="font-mono text-[10px] text-sky-400">Banda L</span>
+                            </label>
+                            <label class="flex items-center justify-between gap-2 p-2 rounded-xl bg-slate-950/80 border border-slate-800 cursor-pointer hover:border-amber-500/40 transition">
+                                <span class="flex items-center gap-2 text-slate-200">
+                                    <input type="checkbox" name="sat_layer_cb" value="POWER" checked onchange="onCambiarCapasSatelitalesAdmin()" class="rounded border-slate-700 text-amber-500" />
+                                    <span>🌡️ Temperatura (POWER)</span>
+                                </span>
+                                <span class="font-mono text-[10px] text-amber-400">MERRA-2</span>
+                            </label>
+                            <label class="flex items-center justify-between gap-2 p-2 rounded-xl bg-slate-950/80 border border-slate-800 cursor-pointer hover:border-amber-500/40 transition">
+                                <span class="flex items-center gap-2 text-slate-200">
+                                    <input type="checkbox" name="sat_layer_cb" value="NASADEM" checked onchange="onCambiarCapasSatelitalesAdmin()" class="rounded border-slate-700 text-amber-500" />
+                                    <span>⛰️ Altimetría (NASADEM)</span>
+                                </span>
+                                <span class="font-mono text-[10px] text-amber-300">SRTM 30m</span>
+                            </label>
+                            <label class="flex items-center justify-between gap-2 p-2 rounded-xl bg-slate-950/80 border border-slate-800 cursor-pointer hover:border-blue-500/40 transition">
+                                <span class="flex items-center gap-2 text-slate-200">
+                                    <input type="checkbox" name="sat_layer_cb" value="IMERG" checked onchange="onCambiarCapasSatelitalesAdmin()" class="rounded border-slate-700 text-blue-500" />
+                                    <span>🌧️ Precipitación (IMERG)</span>
+                                </span>
+                                <span class="font-mono text-[10px] text-blue-400">GPM 10km</span>
+                            </label>
+                            <label class="flex items-center justify-between gap-2 p-2 rounded-xl bg-slate-950/80 border border-slate-800 cursor-pointer hover:border-teal-500/40 transition">
+                                <span class="flex items-center gap-2 text-slate-200">
+                                    <input type="checkbox" name="sat_layer_cb" value="ET" checked onchange="onCambiarCapasSatelitalesAdmin()" class="rounded border-slate-700 text-teal-500" />
+                                    <span>🌿 Estrés Hídrico (ET)</span>
+                                </span>
+                                <span class="font-mono text-[10px] text-teal-400">FAO-56</span>
+                            </label>
+                            <label class="flex items-center justify-between gap-2 p-2 rounded-xl bg-slate-950/80 border border-slate-800 cursor-pointer hover:border-cyan-500/40 transition">
+                                <span class="flex items-center gap-2 text-slate-200">
+                                    <input type="checkbox" name="sat_layer_cb" value="GOES" checked onchange="onCambiarCapasSatelitalesAdmin()" class="rounded border-slate-700 text-cyan-500" />
+                                    <span>❄️ Heladas en Vivo (GOES)</span>
+                                </span>
+                                <span class="font-mono text-[10px] text-cyan-300">ABI 2km</span>
+                            </label>
+                            <label class="flex items-center justify-between gap-2 p-2 rounded-xl bg-slate-950/80 border border-slate-800 cursor-pointer hover:border-indigo-500/40 transition">
+                                <span class="flex items-center gap-2 text-slate-200">
+                                    <input type="checkbox" name="sat_layer_cb" value="GRACE" onchange="onCambiarCapasSatelitalesAdmin()" class="rounded border-slate-700 text-indigo-500" />
+                                    <span>🌊 Napa Freática (GRACE)</span>
+                                </span>
+                                <span class="font-mono text-[10px] text-indigo-300">Gravim.</span>
+                            </label>
+                            <label class="flex items-center justify-between gap-2 p-2 rounded-xl bg-slate-950/80 border border-slate-800 cursor-pointer hover:border-emerald-500/40 transition">
+                                <span class="flex items-center gap-2 text-slate-200">
+                                    <input type="checkbox" name="sat_layer_cb" value="GeoINTA" onchange="onCambiarCapasSatelitalesAdmin()" class="rounded border-slate-700 text-emerald-500" />
+                                    <span>🗺️ Suelo &amp; Capacidad (INTA)</span>
+                                </span>
+                                <span class="font-mono text-[10px] text-emerald-300">1:50.000</span>
+                            </label>
                         </div>
-                        <span class="px-3 py-1 rounded-full text-[11px] font-mono bg-slate-800 text-slate-300">
-                            SLOT PREPARADO
-                        </span>
                     </div>
+
+                    <div class="pt-3 border-t border-slate-800 space-y-2">
+                        <button
+                            type="button"
+                            onclick="conectarSatelitesCampoActivo(false)"
+                            class="w-full py-2 px-3 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 font-mono text-xs transition"
+                        >
+                            🔄 Sincronizar Capas Marcadas
+                        </button>
+                        <button
+                            type="button"
+                            onclick="abrirModalEvaluacionCultivo(campoActivoId)"
+                            class="w-full py-2 px-3 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 font-mono text-xs transition"
+                        >
+                            🌱 Evaluar Rotación &amp; Semillas
+                        </button>
+                    </div>
+                </aside>
+            </div>
+
+            <!-- =========================================================== -->
+            <!-- [SEC-05.4] TARJETAS DE CAMPOS REGISTRADOS                   -->
+            <!-- =========================================================== -->
+            <div class="space-y-3">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2.5 py-0.5 rounded-lg text-[11px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            [SEC-05.4] ESTABLECIMIENTOS Y LOTES
+                        </span>
+                        <h3 class="font-heading text-lg font-bold text-white">
+                            Campos Registrados y Relieve Topográfico
+                        </h3>
+                    </div>
+
+                    <!-- Filtro exclusivo Admin por propietario -->
+                    <div id="adminFiltroPropietarioWrap" class="hidden flex items-center gap-3">
+                        <label for="filtroPropietarioSelect" class="text-xs font-mono uppercase text-slate-400">
+                            Filtrar por Propietario:
+                        </label>
+                        <select
+                            id="filtroPropietarioSelect"
+                            onchange="filtrarCamposPorPropietario()"
+                            class="rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"
+                        >
+                            <option value="TODOS">Todos los propietarios</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Grilla reactiva de tarjetas de campos -->
+                <div id="listaCampos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+            </div>
+
+            <!-- =========================================================== -->
+            <!-- [SEC-05.5] CONTROL TEMPORAL Y [SEC-05.6] 6 TARJETAS MÉTRICAS -->
+            <!-- =========================================================== -->
+            <!-- [SLOT-MODULO-TELEMETRIA] -->
+            <div
+                id="slotModuloTelemetria"
+                class="space-y-6"
+            >
+                <div class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-6">
+                    <span id="slotTelemetriaEstadoCampo" class="text-xs text-sky-300 font-mono">
+                        Inicializando módulos de control temporal y tarjetas satelitales...
+                    </span>
                 </div>
             </div>
         </section>
@@ -455,7 +605,7 @@ CONTROLADORES JAVASCRIPT:
     </main>
 
     <!-- =================================================================== -->
-    <!-- [SEC-09] LOS 5 MODALES INTERACTIVOS                                 -->
+    <!-- [SEC-09] LOS 7 MODALES INTERACTIVOS DE EARTH2WORLDS                 -->
     <!-- =================================================================== -->
 
     <!-- [SEC-09.1] #modalCampo: Alta de nuevo campo -->
@@ -550,85 +700,76 @@ CONTROLADORES JAVASCRIPT:
         </div>
     </div>
 
-    <!-- [SEC-09.2] #modalEditarCampo: Edición de campo y reasignación de propietario -->
-    <div id="modalEditarCampo" class="fixed inset-0 z-40 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
-        <div class="w-full max-w-lg bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 space-y-5">
+    <!-- [SEC-09.2] #modalEvaluacionCultivo: Evaluación y Rotación de Cultivos + Semillas INTA -->
+    <div id="modalEvaluacionCultivo" class="fixed inset-0 z-40 hidden items-center justify-center bg-slate-950/85 backdrop-blur-sm p-4">
+        <div class="w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 space-y-5 max-h-[92vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-800 pb-4">
                 <div>
-                    <span class="text-xs font-mono text-amber-400">[SEC-09.2] EDICIÓN DE CAMPO</span>
-                    <h3 class="font-heading text-xl font-bold text-white">Modificar Establecimiento</h3>
+                    <span class="text-xs font-mono text-emerald-400">[SEC-09.2] DIAGNÓSTICO EDAFOCLIMÁTICO Y ROTACIÓN</span>
+                    <h3 id="tituloModalEvaluacionCultivo" class="font-heading text-xl font-bold text-white">
+                        Evaluación de Viabilidad de Cultivos y Banco de Semillas INTA
+                    </h3>
                 </div>
-                <button type="button" onclick="cerrarModal('modalEditarCampo')" class="text-slate-400 hover:text-white text-sm font-mono">
+                <button type="button" onclick="cerrarModal('modalEvaluacionCultivo')" class="text-slate-400 hover:text-white text-sm font-mono">
                     ESC &#10005;
                 </button>
             </div>
 
-            <form id="formEditarCampo" class="space-y-4">
-                <input id="edit_campo_id" type="hidden" />
-
-                <div id="editCampoPropietarioAdminWrap" class="hidden">
-                    <label for="edit_campo_propietario_id" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
-                        Reasignar Propietario Titular (Exclusivo Admin)
-                    </label>
-                    <select
-                        id="edit_campo_propietario_id"
-                        class="w-full rounded-xl bg-slate-950 border border-slate-800 px-3 py-2.5 text-sm text-slate-100"
-                    ></select>
-                </div>
-
+            <!-- Parámetros de entrada para el motor de rotación -->
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 bg-slate-950/80 border border-slate-800 rounded-xl p-4">
+                <input type="hidden" id="eval_campo_id" />
                 <div>
-                    <label for="edit_campo_nombre" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
-                        Nombre del Campo
+                    <label for="eval_cultivo_anterior" class="block text-[11px] font-mono uppercase text-slate-400 mb-1">
+                        Cultivo Previo (Rastrojo)
+                    </label>
+                    <select id="eval_cultivo_anterior" class="w-full rounded-xl bg-slate-900 border border-slate-800 px-3 py-2 text-xs text-slate-100">
+                        <option value="soja">Soja (Leguminosa)</option>
+                        <option value="maiz">Maíz (Gramínea C4)</option>
+                        <option value="girasol">Girasol (Oleaginosa)</option>
+                        <option value="trigo">Trigo / Cobertura Invernal</option>
+                        <option value="sorgo">Sorgo Granífero</option>
+                        <option value="barbecho">Campo Natural / Barbecho</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="eval_sistema_hidrico" class="block text-[11px] font-mono uppercase text-slate-400 mb-1">
+                        Régimen Hídrico
+                    </label>
+                    <select id="eval_sistema_hidrico" class="w-full rounded-xl bg-slate-900 border border-slate-800 px-3 py-2 text-xs text-slate-100">
+                        <option value="secano">Secano (Lluvia Natural)</option>
+                        <option value="riego_complementario">Riego Complementario (Pivote)</option>
+                        <option value="riego_total">Riego Total Sistematizado</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="eval_ph_manual" class="block text-[11px] font-mono uppercase text-slate-400 mb-1">
+                        pH Manual (Opcional)
                     </label>
                     <input
-                        id="edit_campo_nombre"
-                        type="text"
-                        required
-                        class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-amber-500"
+                        id="eval_ph_manual"
+                        type="number"
+                        step="0.1"
+                        min="3.5"
+                        max="10.0"
+                        placeholder="Auto SISINTA"
+                        class="w-full rounded-xl bg-slate-900 border border-slate-800 px-3 py-2 text-xs text-slate-100"
                     />
                 </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label for="edit_campo_ubicacion" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
-                            Ubicación / Descripción
-                        </label>
-                        <input
-                            id="edit_campo_ubicacion"
-                            type="text"
-                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-amber-500"
-                        />
-                    </div>
-                    <div>
-                        <label for="edit_campo_superficie" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
-                            Superficie (ha)
-                        </label>
-                        <input
-                            id="edit_campo_superficie"
-                            type="number"
-                            step="0.01"
-                            min="0"
-                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-amber-500"
-                        />
-                    </div>
-                </div>
-
-                <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+                <div class="flex items-end">
                     <button
                         type="button"
-                        onclick="cerrarModal('modalEditarCampo')"
-                        class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300"
+                        onclick="ejecutarEvaluacionCultivoModal()"
+                        class="w-full py-2 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-heading font-bold text-xs shadow-lg shadow-emerald-500/20 transition"
                     >
-                        Cancelar
-                    </button>
-                    <button
-                        type="submit"
-                        class="px-5 py-2.5 rounded-xl text-xs font-heading font-bold bg-amber-500 hover:bg-amber-400 text-slate-950"
-                    >
-                        Guardar Cambios
+                        🔬 Recalcular Viabilidad
                     </button>
                 </div>
-            </form>
+            </div>
+
+            <!-- Resultados del cruce NASADEM + GeoINTA + SISINTA + NOAA_ENSO + MAGYP -->
+            <div id="contenedorResultadosEvaluacionCultivo" class="space-y-4">
+                <p class="text-xs font-mono text-slate-400">Selecciona un campo para ejecutar el diagnóstico agronómico...</p>
+            </div>
         </div>
     </div>
 
@@ -899,12 +1040,147 @@ CONTROLADORES JAVASCRIPT:
         </div>
     </div>
 
+    <!-- [SEC-09.6] #modalEditarCampo: Edición de campo y reasignación de propietario -->
+    <div id="modalEditarCampo" class="fixed inset-0 z-40 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+        <div class="w-full max-w-lg bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 space-y-5">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <div>
+                    <span class="text-xs font-mono text-amber-400">[SEC-09.6] EDICIÓN DE CAMPO</span>
+                    <h3 class="font-heading text-xl font-bold text-white">Modificar Establecimiento</h3>
+                </div>
+                <button type="button" onclick="cerrarModal('modalEditarCampo')" class="text-slate-400 hover:text-white text-sm font-mono">
+                    ESC &#10005;
+                </button>
+            </div>
+
+            <form id="formEditarCampo" class="space-y-4">
+                <input id="edit_campo_id" type="hidden" />
+
+                <div id="editCampoPropietarioAdminWrap" class="hidden">
+                    <label for="edit_campo_propietario_id" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                        Reasignar Propietario Titular (Exclusivo Admin)
+                    </label>
+                    <select
+                        id="edit_campo_propietario_id"
+                        class="w-full rounded-xl bg-slate-950 border border-slate-800 px-3 py-2.5 text-sm text-slate-100"
+                    ></select>
+                </div>
+
+                <div>
+                    <label for="edit_campo_nombre" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                        Nombre del Campo
+                    </label>
+                    <input
+                        id="edit_campo_nombre"
+                        type="text"
+                        required
+                        class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-amber-500"
+                    />
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="edit_campo_ubicacion" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                            Ubicación / Descripción
+                        </label>
+                        <input
+                            id="edit_campo_ubicacion"
+                            type="text"
+                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-amber-500"
+                        />
+                    </div>
+                    <div>
+                        <label for="edit_campo_superficie" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                            Superficie (ha)
+                        </label>
+                        <input
+                            id="edit_campo_superficie"
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-amber-500"
+                        />
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+                    <button
+                        type="button"
+                        onclick="cerrarModal('modalEditarCampo')"
+                        class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300"
+                    >
+                        Cancelar
+                    </button>
+                    <button
+                        type="submit"
+                        class="px-5 py-2.5 rounded-xl text-xs font-heading font-bold bg-amber-500 hover:bg-amber-400 text-slate-950"
+                    >
+                        Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- [SEC-09.7] #modalGraficoHistorico: Series Temporales y Comparativa Interanual (Chart.js) -->
+    <div id="modalGraficoHistorico" class="fixed inset-0 z-40 hidden items-center justify-center bg-slate-950/85 backdrop-blur-sm p-4">
+        <div class="w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 space-y-5 max-h-[92vh] overflow-y-auto">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-800 pb-4">
+                <div>
+                    <span class="text-xs font-mono text-sky-400">[SEC-09.7] SERIES TEMPORALES Y COMPARATIVA INTERANUAL</span>
+                    <h3 id="tituloModalGraficoHistorico" class="font-heading text-xl font-bold text-white">
+                        Evolución Histórica de Telemetría Satelital
+                    </h3>
+                    <p id="subtituloModalGraficoHistorico" class="text-xs text-slate-400 font-mono mt-0.5">
+                        Datos persistidos en earth2worlds.db y archivos satelitales NASA
+                    </p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1 bg-slate-950 border border-slate-800 rounded-xl p-1">
+                        <button type="button" onclick="cambiarRangoGraficoHistorico(30)" class="px-2.5 py-1 rounded-lg text-xs font-mono text-slate-300 hover:bg-slate-800">1m</button>
+                        <button type="button" onclick="cambiarRangoGraficoHistorico(90)" class="px-2.5 py-1 rounded-lg text-xs font-mono text-slate-300 hover:bg-slate-800">3m</button>
+                        <button type="button" onclick="cambiarRangoGraficoHistorico(365)" class="px-2.5 py-1 rounded-lg text-xs font-mono bg-sky-500 text-slate-950 font-bold">1a</button>
+                        <button type="button" onclick="cambiarRangoGraficoHistorico(1095)" class="px-2.5 py-1 rounded-lg text-xs font-mono text-slate-300 hover:bg-slate-800">3a</button>
+                    </div>
+                    <button type="button" onclick="cerrarModal('modalGraficoHistorico')" class="text-slate-400 hover:text-white text-sm font-mono ml-2">
+                        ESC &#10005;
+                    </button>
+                </div>
+            </div>
+
+            <!-- Barra de 4 KPIs estadísticos de la serie -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div class="rounded-xl bg-slate-950 border border-slate-800 p-3">
+                    <span class="text-[10px] font-mono uppercase text-slate-400">Observaciones</span>
+                    <p id="kpiHistTotal" class="font-heading text-lg font-bold text-white mt-0.5">0</p>
+                </div>
+                <div class="rounded-xl bg-slate-950 border border-slate-800 p-3">
+                    <span class="text-[10px] font-mono uppercase text-slate-400">Mínimo Período</span>
+                    <p id="kpiHistMin" class="font-heading text-lg font-bold text-sky-400 mt-0.5">--</p>
+                </div>
+                <div class="rounded-xl bg-slate-950 border border-slate-800 p-3">
+                    <span class="text-[10px] font-mono uppercase text-slate-400">Máximo Período</span>
+                    <p id="kpiHistMax" class="font-heading text-lg font-bold text-amber-400 mt-0.5">--</p>
+                </div>
+                <div class="rounded-xl bg-slate-950 border border-slate-800 p-3">
+                    <span class="text-[10px] font-mono uppercase text-slate-400">Promedio</span>
+                    <p id="kpiHistAvg" class="font-heading text-lg font-bold text-emerald-400 mt-0.5">--</p>
+                </div>
+            </div>
+
+            <!-- Lienzo Chart.js -->
+            <div class="rounded-2xl bg-slate-950/90 border border-slate-800 p-4 h-80 relative">
+                <canvas id="canvasGraficoHistorico"></canvas>
+            </div>
+        </div>
+    </div>
+
     <footer class="border-t border-slate-900 py-5 mt-12 text-center text-xs text-slate-500 font-mono">
-        Earth2Worlds &bull; Plataforma Inicializada el 14/11/2026 &bull; Arquitectura RBAC + Slots Modulares
+        Earth2Worlds &bull; Plataforma Inicializada el 14/11/2026 &bull; Arquitectura RBAC + Telemetría Satelital NASA &amp; INTA
     </footer>
 
     <!-- =================================================================== -->
-    <!-- [SEC-10] CONTROLADORES JAVASCRIPT ([JS-01] a [JS-10])               -->
+    <!-- [SEC-10] CONTROLADORES JAVASCRIPT ([JS-01] a [JS-12])               -->
     <!-- =================================================================== -->
     <script src="/static/js/app.js"></script>
     <script src="/static/js/argentina.js"></script>
@@ -985,12 +1261,15 @@ CONTROLADORES JAVASCRIPT:
             locDisplay.textContent = `${currentUser.ciudad || "Sin localidad"}, ${currentUser.provincia || "Argentina"}`;
 
             const navAdminTools = document.getElementById("navAdminTools");
+            const slotMapa = document.getElementById("slotModuloMapa");
+            const panelCapas = document.getElementById("panelCapasSatelitalesSec053");
+            const btnConectarWrap = document.getElementById("adminConectarSatelitesWrap");
 
             if (rol === "admin") {
                 badge.textContent = "ADMIN";
                 badge.className = "px-3 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/40";
                 welcomeTitle.textContent = `Consola Maestra Earth2Worlds — ${currentUser.nombre}`;
-                welcomeSubtitle.textContent = "Control total RBAC sobre propietarios, operadores, campos productivos y auditoría del esquema.";
+                welcomeSubtitle.textContent = "Control total RBAC sobre propietarios, operadores, relieve NASADEM y telemetría multi-satelital.";
 
                 navAdminTools.classList.remove("hidden");
                 navAdminTools.classList.add("flex");
@@ -1001,25 +1280,46 @@ CONTROLADORES JAVASCRIPT:
                 document.getElementById("tabBtnAdmin").classList.remove("hidden");
                 document.getElementById("btnNuevoOperadorHeader").classList.remove("hidden");
                 document.getElementById("adminFiltroPropietarioWrap").classList.remove("hidden");
+
+                if (slotMapa) {
+                    slotMapa.classList.remove("lg:col-span-4");
+                    slotMapa.classList.add("lg:col-span-3");
+                }
+                if (panelCapas) {
+                    panelCapas.classList.remove("hidden");
+                    panelCapas.classList.add("flex");
+                }
+                if (btnConectarWrap) {
+                    btnConectarWrap.classList.remove("hidden");
+                    btnConectarWrap.classList.add("flex");
+                }
             } else if (rol === "propietario") {
                 badge.textContent = "PROPIETARIO";
                 badge.className = "px-3 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
                 welcomeTitle.textContent = `Bienvenido, ${currentUser.nombre} ${currentUser.apellido}`;
-                welcomeSubtitle.textContent = "Administra tus establecimientos productivos y asigna lotes a tus operadores de campo.";
+                welcomeSubtitle.textContent = "Administra tus establecimientos productivos, evalúa rotación de cultivos y asigna lotes a tus operadores.";
 
                 navAdminTools.classList.add("hidden");
                 navAdminTools.classList.remove("flex");
                 document.getElementById("tabBtnOperadores").classList.remove("hidden");
                 document.getElementById("btnNuevoOperadorHeader").classList.remove("hidden");
+                if (slotMapa) {
+                    slotMapa.classList.remove("lg:col-span-3");
+                    slotMapa.classList.add("lg:col-span-4");
+                }
             } else {
                 badge.textContent = "OPERADOR (LECTURA)";
                 badge.className = "px-3 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-wider bg-sky-500/20 text-sky-300 border border-sky-500/40";
                 welcomeTitle.textContent = `Panel de Operador — ${currentUser.nombre} ${currentUser.apellido}`;
-                welcomeSubtitle.textContent = "Visualización de solo lectura sobre los establecimientos asignados por tu propietario.";
+                welcomeSubtitle.textContent = "Visualización de solo lectura sobre los establecimientos y telemetría asignados por tu propietario.";
 
                 navAdminTools.classList.add("hidden");
                 navAdminTools.classList.remove("flex");
                 document.getElementById("btnNuevoCampo").classList.add("hidden");
+                if (slotMapa) {
+                    slotMapa.classList.remove("lg:col-span-3");
+                    slotMapa.classList.add("lg:col-span-4");
+                }
             }
         }
 
@@ -1039,6 +1339,9 @@ CONTROLADORES JAVASCRIPT:
                     el.classList.remove("hidden");
                     if (btn) {
                         btn.className = "px-4 py-2.5 rounded-xl text-sm font-heading font-semibold transition bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20";
+                    }
+                    if (sec === "camposTab" && typeof e2wMainMap !== "undefined" && e2wMainMap) {
+                        setTimeout(() => e2wMainMap.invalidateSize(), 120);
                     }
                 } else {
                     el.classList.add("hidden");
@@ -1063,9 +1366,27 @@ CONTROLADORES JAVASCRIPT:
                 campoActivoId = null;
             }
 
+            poblarSelectorCampoActivo();
             renderizarListaCampos();
             actualizarHeaderCampoActivo();
             actualizarContadoresAdmin();
+        }
+
+        function poblarSelectorCampoActivo() {
+            const sel = document.getElementById("selectCampoActivo");
+            if (!sel) return;
+            if (listaCamposGlobal.length === 0) {
+                sel.innerHTML = `<option value="">Sin campos registrados</option>`;
+                return;
+            }
+            sel.innerHTML = listaCamposGlobal
+                .map(
+                    (c) =>
+                        `<option value="${c.id}" ${c.id === campoActivoId ? "selected" : ""}>#${c.id} • ${escapeHtml(
+                            c.nombre_campo
+                        )} (${c.superficie_ha ?? "S/D"} ha)</option>`
+                )
+                .join("");
         }
 
         function filtrarCamposPorPropietario() {
@@ -1110,13 +1431,17 @@ CONTROLADORES JAVASCRIPT:
                         ? "border-emerald-500 ring-1 ring-emerald-500/40"
                         : "border-slate-800 hover:border-slate-700";
 
+                    const cota = c.elevacion_msnm ?? c.configuracion_extra?.elevacion_msnm ?? "--";
+                    const pend = c.pendiente_porcentaje ?? c.configuracion_extra?.pendiente_porcentaje ?? "--";
+                    const esc = c.orientacion_escurrimiento || c.configuracion_extra?.orientacion_escurrimiento || "💧 SE ↘";
+
                     return `
                         <article
                             onclick="seleccionarCampoActivo(${c.id})"
-                            class="cursor-pointer bg-slate-900/80 backdrop-blur-md border ${bordeClase} rounded-2xl p-5 transition flex flex-col justify-between gap-4"
+                            class="cursor-pointer bg-slate-900/80 backdrop-blur-md border ${bordeClase} rounded-2xl p-5 transition flex flex-col justify-between gap-4 shadow-lg"
                         >
-                            <div>
-                                <div class="flex items-center justify-between gap-2 mb-2">
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between gap-2">
                                     <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono ${
                                         esActivo
                                             ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
@@ -1124,32 +1449,48 @@ CONTROLADORES JAVASCRIPT:
                                     }">
                                         ID #${c.id} ${esActivo ? "&bull; ACTIVO" : ""}
                                     </span>
-                                    <span class="text-xs font-mono text-amber-400 font-semibold">
-                                        ${c.superficie_ha !== null && c.superficie_ha !== undefined ? `${escapeHtml(c.superficie_ha)} ha` : "Sin sup."}
+                                    <span class="text-xs font-mono text-emerald-400 font-semibold">
+                                        📐 ${c.superficie_ha !== null && c.superficie_ha !== undefined ? `${escapeHtml(c.superficie_ha)} ha` : "Sin sup."}
                                     </span>
                                 </div>
                                 <h3 class="font-heading text-lg font-bold text-white">
                                     ${escapeHtml(c.nombre_campo)}
                                 </h3>
-                                <p class="text-xs text-slate-400 mt-1">
+                                <p class="text-xs text-slate-400">
                                     ${escapeHtml(c.descripcion_ubicacion || "Sin descripción de ubicación")}
                                 </p>
+
+                                <!-- Relieve topográfico fijo NASADEM por campo -->
+                                <div class="rounded-xl bg-slate-950/90 border border-slate-800/90 px-3 py-2 flex flex-wrap items-center justify-between gap-1 text-[11px] font-mono">
+                                    <span class="text-amber-300">⛰️ ${escapeHtml(cota)} msnm</span>
+                                    <span class="text-slate-600">|</span>
+                                    <span class="text-sky-300">${escapeHtml(pend)}% pend.</span>
+                                    <span class="text-slate-600">|</span>
+                                    <span class="text-cyan-300">${escapeHtml(esc)}</span>
+                                </div>
                             </div>
 
-                            <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between gap-2">
+                            <div class="pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2">
                                 <span class="text-[11px] font-mono text-slate-400 truncate">
                                     Titular: ${escapeHtml(c.propietario_nombre || `#${c.propietario_id}`)}
                                 </span>
-                                ${
-                                    puedeEditar
-                                        ? `
-                                    <div class="flex items-center gap-1.5" onclick="event.stopPropagation()">
+                                <div class="flex items-center gap-1.5" onclick="event.stopPropagation()">
+                                    <button
+                                        type="button"
+                                        onclick="abrirModalEvaluacionCultivo(${c.id})"
+                                        class="px-2.5 py-1 rounded-lg text-xs font-mono bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30"
+                                    >
+                                        🌱 Evaluar Cultivo
+                                    </button>
+                                    ${
+                                        puedeEditar
+                                            ? `
                                         <button
                                             type="button"
                                             onclick="abrirModalEditarCampo(${c.id})"
                                             class="px-2.5 py-1 rounded-lg text-xs font-mono bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30"
                                         >
-                                            Editar
+                                            ✏️ Editar
                                         </button>
                                         <button
                                             type="button"
@@ -1158,10 +1499,10 @@ CONTROLADORES JAVASCRIPT:
                                         >
                                             Borrar
                                         </button>
-                                    </div>
-                                `
-                                        : ""
-                                }
+                                    `
+                                            : ""
+                                    }
+                                </div>
                             </div>
                         </article>
                     `;
@@ -1170,7 +1511,9 @@ CONTROLADORES JAVASCRIPT:
         }
 
         function seleccionarCampoActivo(id) {
-            campoActivoId = id;
+            if (!id) return;
+            campoActivoId = Number(id);
+            poblarSelectorCampoActivo();
             renderizarListaCampos();
             actualizarHeaderCampoActivo();
         }
@@ -1181,23 +1524,47 @@ CONTROLADORES JAVASCRIPT:
             const slotMapaEl = document.getElementById("slotMapaEstadoCampo");
             const slotTelEl = document.getElementById("slotTelemetriaEstadoCampo");
 
+            const supEl = document.getElementById("badgeSupHa");
+            const cotaEl = document.getElementById("badgeCotaMsnm");
+            const pendEl = document.getElementById("badgePendientePct");
+            const escEl = document.getElementById("badgeEscurrimiento");
+
             const campo = listaCamposGlobal.find((c) => c.id === campoActivoId);
             if (!campo) {
                 nombreEl.textContent = "Ningún campo seleccionado todavía";
                 detalleEl.textContent = "Registra o selecciona un establecimiento para vincular los módulos de mapa y telemetría.";
+                if (supEl) supEl.textContent = "📐 -- ha";
+                if (cotaEl) cotaEl.textContent = "⛰️ -- msnm";
+                if (pendEl) pendEl.textContent = "--% pend.";
+                if (escEl) escEl.textContent = "Orientación Desnivel/Escurrimiento: 💧 SE ↘";
                 if (slotMapaEl) slotMapaEl.textContent = "Esperando selección de campo activo";
                 if (slotTelEl) slotTelEl.textContent = "Esperando selección de campo activo";
-                if (typeof sincronizarMapaConCampoActivo === "function") sincronizarMapaConCampoActivo();
+                if (typeof sincronizarMapaConCampoActivo === "function") {
+                    sincronizarMapaConCampoActivo();
+                }
                 return;
             }
 
+            const cota = campo.elevacion_msnm ?? campo.configuracion_extra?.elevacion_msnm ?? 498.0;
+            const pend = campo.pendiente_porcentaje ?? campo.configuracion_extra?.pendiente_porcentaje ?? 1.85;
+            const esc = campo.orientacion_escurrimiento || campo.configuracion_extra?.orientacion_escurrimiento || "💧 SE ↘";
+
             nombreEl.textContent = `${campo.nombre_campo} (ID #${campo.id})`;
-            detalleEl.textContent = `Ubicación: ${campo.descripcion_ubicacion || "No especificada"} · Superficie: ${
-                campo.superficie_ha ?? "S/D"
-            } ha · Titular: ${campo.propietario_nombre || campo.propietario_id}`;
+            detalleEl.textContent = `${campo.descripcion_ubicacion || "Sin ubicación detallada"} • Titular: ${campo.propietario_nombre || campo.propietario_id}`;
+
+            if (supEl) supEl.textContent = `📐 ${campo.superficie_ha ?? "S/D"} ha`;
+            if (cotaEl) cotaEl.textContent = `⛰️ ${cota} msnm`;
+            if (pendEl) pendEl.textContent = `${pend}% pend.`;
+            if (escEl) escEl.textContent = `Orientación Desnivel/Escurrimiento: ${esc}`;
+
             if (slotMapaEl) slotMapaEl.textContent = `Vinculado a "${campo.nombre_campo}" (#${campo.id})`;
-            if (slotTelEl) slotTelEl.textContent = `Listo para consultar telemetría de "${campo.nombre_campo}" (#${campo.id})`;
-            if (typeof sincronizarMapaConCampoActivo === "function") sincronizarMapaConCampoActivo();
+            if (slotTelEl) slotTelEl.textContent = `Telemetría lista para "${campo.nombre_campo}" (#${campo.id})`;
+            if (typeof sincronizarMapaConCampoActivo === "function") {
+                sincronizarMapaConCampoActivo();
+            }
+            if (typeof actualizarTarjetasSatelitalesCampoActivo === "function") {
+                actualizarTarjetasSatelitalesCampoActivo();
+            }
         }
 
         /* ===================================================================
@@ -1259,7 +1626,7 @@ CONTROLADORES JAVASCRIPT:
             }
             cerrarModal("modalCampo");
             campoActivoId = data.id;
-            mostrarToast(`Campo "${data.nombre_campo}" creado con éxito.`, "success");
+            mostrarToast(`Campo "${data.nombre_campo}" creado con relieve NASADEM.`, "success");
             await cargarCampos();
             if (currentUser?.rol === "admin") await cargarPropietariosAdmin();
         });
@@ -1351,7 +1718,6 @@ CONTROLADORES JAVASCRIPT:
             if (!res.ok) return;
             listaPropietariosGlobal = await res.json();
 
-            // Poblar filtro de propietarios en pestaña de campos
             const selFiltro = document.getElementById("filtroPropietarioSelect");
             if (selFiltro) {
                 const valorActual = selFiltro.value || "TODOS";
@@ -1877,9 +2243,15 @@ CONTROLADORES JAVASCRIPT:
 
         window.addEventListener("keydown", (e) => {
             if (e.key === "Escape") {
-                ["modalCampo", "modalEditarCampo", "modalEditarUsuario", "modalAsignarCampos", "modalOperador"].forEach(
-                    cerrarModal
-                );
+                [
+                    "modalCampo",
+                    "modalEvaluacionCultivo",
+                    "modalEditarUsuario",
+                    "modalAsignarCampos",
+                    "modalOperador",
+                    "modalEditarCampo",
+                    "modalGraficoHistorico",
+                ].forEach(cerrarModal);
             }
         });
     </script>

@@ -65,6 +65,10 @@ class CampoOut(BaseModel):
     superficie_ha: Optional[float] = None
     geometria_geojson: Optional[str] = None
     configuracion_extra: Optional[Dict[str, Any]] = None
+    elevacion_msnm: Optional[float] = None
+    pendiente_porcentaje: Optional[float] = None
+    orientacion_escurrimiento: Optional[str] = None
+    satelites_disponibles: List[str] = Field(default_factory=list)
     creado_en: datetime
 
 
@@ -200,9 +204,30 @@ class Token(BaseModel):
 
 
 class ConsultaRotaterraRequest(BaseModel):
-    satelite: str = Field(..., min_length=1, max_length=60)
+    satelite: Optional[str] = Field(default=None, max_length=60)
+    satelites: Optional[List[str]] = None
     desde: date
     hasta: date
     campo_id: Optional[int] = None
     poligono: Optional[Dict[str, Any]] = None
+    forzar_remoto: bool = False
+
+
+class SateliteReconectarRequest(BaseModel):
+    satelite: str = Field(..., min_length=1, max_length=60)
+    campo_id: Optional[int] = None
+    desde: Optional[date] = None
+    hasta: Optional[date] = None
+
+
+class EvaluarCultivoRequest(BaseModel):
+    campo_id: int
+    sistema_hidrico: str = "secano"
+    objetivo: str = "margen"
+    horizonte: int = 1
+    textura_manual: Optional[str] = None
+    ph_manual: Optional[float] = None
+    profundidad_napa_m: Optional[float] = None
+    cultivo_anterior: Optional[str] = None
+
 

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Earth2Worlds | Guía Maestra de Segmentación Arquitectónica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ["Outfit", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                        mono: ["Fira Code", "monospace"],
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col">
+    <!-- =================================================================== -->
+    <!-- NAVBAR DE ARQUITECTURA (EXCLUSIVO ADMIN)                            -->
+    <!-- =================================================================== -->
+    <header class="sticky top-0 z-30 border-b border-slate-800 bg-slate-900/90 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-sky-500 flex items-center justify-center font-heading font-extrabold text-slate-950 text-lg">
+                    E2W
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-heading text-lg font-bold text-white">
+                            Guía de Segmentación Arquitectónica — Earth2Worlds
+                        </h1>
+                        <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                            EXCLUSIVO ADMIN
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-400">
+                        Documentación técnica de los 6 segmentos modulares, APIs locales y flujo de datos de Earth2Worlds.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <a
+                    href="/mapa"
+                    class="px-3 py-1.5 rounded-xl text-xs font-mono bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 transition"
+                >
+                    🗺️ Mapa Visual de Secciones
+                </a>
+                <a
+                    href="/diagrama"
+                    class="px-3 py-1.5 rounded-xl text-xs font-mono bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 transition"
+                >
+                    🗄️ Diagrama BD
+                </a>
+                <a
+                    href="/"
+                    class="px-3.5 py-1.5 rounded-xl text-xs font-heading font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition"
+                >
+                    &larr; Volver a Earth2Worlds
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <!-- Resumen de los 6 Segmentos de Earth2Worlds -->
+        <section class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-4">
+            <h2 class="font-heading text-2xl font-bold text-white">
+                Los 6 Segmentos de la Plataforma Earth2Worlds
+            </h2>
+            <p class="text-sm text-slate-300">
+                La arquitectura de <strong>Earth2Worlds</strong> divide el código en 6 dominios desacoplados con responsabilidades claras para los 3 especialistas del equipo (Database Specialist, Backend Specialist y Frontend Specialist).
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 pt-2">
+                <!-- Segmento 1 -->
+                <article class="rounded-2xl bg-slate-950/90 border border-emerald-500/30 p-5 space-y-2">
+                    <span class="px-2.5 py-0.5 rounded text-xs font-mono bg-emerald-500/15 text-emerald-300">SEGMENTO 1</span>
+                    <h3 class="font-heading text-lg font-bold text-white">1. Persistencia SQLite y Modelos ORM</h3>
+                    <p class="text-xs font-mono text-slate-400">app/database.py &bull; app/models.py &bull; app/init_db.py</p>
+                    <p class="text-xs text-slate-300">
+                        Gestiona <code>earth2worlds.db</code> con 3 tablas relacionales: <code>usuarios</code> (RBAC 3 niveles), <code>campos</code> (con geometría GeoJSON y relieve fijo NASADEM en <code>configuracion_extra</code>) y <code>telemetria_historica</code> (series temporales persistidas por lote y variable).
+                    </p>
+                </article>
+
+                <!-- Segmento 2 -->
+                <article class="rounded-2xl bg-slate-950/90 border border-purple-500/30 p-5 space-y-2">
+                    <span class="px-2.5 py-0.5 rounded text-xs font-mono bg-purple-500/15 text-purple-300">SEGMENTO 2</span>
+                    <h3 class="font-heading text-lg font-bold text-white">2. Seguridad JWT, Esquemas y RBAC</h3>
+                    <p class="text-xs font-mono text-slate-400">app/auth.py &bull; app/schemas.py &bull; app/data/argentina_geo.py</p>
+                    <p class="text-xs text-slate-300">
+                        Tokens JWT HS256 (24h), hashing Bcrypt, validación Pydantic v2 y matriz estricta de permisos para <code>admin</code>, <code>propietario</code> y <code>operador</code> (solo lectura de lotes asignados).
+                    </p>
+                </article>
+
+                <!-- Segmento 3 -->
+                <article class="rounded-2xl bg-slate-950/90 border border-sky-500/30 p-5 space-y-2">
+                    <span class="px-2.5 py-0.5 rounded text-xs font-mono bg-sky-500/15 text-sky-300">SEGMENTO 3</span>
+                    <h3 class="font-heading text-lg font-bold text-white">3. Motor Multi-Satelital Local en Paralelo</h3>
+                    <p class="text-xs font-mono text-slate-400">app/main.py &bull; ThreadPoolExecutor &bull; NASA Earthdata</p>
+                    <p class="text-xs text-slate-300">
+                        Ejecuta consultas paralelas 100% locales en Python (sin servidores intermediarios externos) hacia las constelaciones de la NASA (<code>HLS</code>, <code>SMAP</code>, <code>POWER</code>, <code>IMERG</code>, <code>NASADEM</code>, <code>ET:FAO56</code>, <code>GOES</code>, <code>GRACE</code>) y fuentes del INTA (<code>GeoINTA</code>, <code>SISINTA</code>).
+                    </p>
+                </article>
+
+                <!-- Segmento 4 -->
+                <article class="rounded-2xl bg-slate-950/90 border border-amber-500/30 p-5 space-y-2">
+                    <span class="px-2.5 py-0.5 rounded text-xs font-mono bg-amber-500/15 text-amber-300">SEGMENTO 4</span>
+                    <h3 class="font-heading text-lg font-bold text-white">4. Visor Cartográfico GIS + Catastro San Luis</h3>
+                    <p class="text-xs font-mono text-slate-400">[SEC-05.1] &bull; [SEC-05.2] &bull; static/js/san_luis_geo.js</p>
+                    <p class="text-xs text-slate-300">
+                        Mapa Leaflet + Geoman con teselas Esri World Imagery, perímetro oficial IGN/IDERA de San Luis con máscara Spotlight, Capa NDVI Sectorizada (-1 a +1), pasadas por satélite, slider temporal flotante y Dock Admin de 11 constelaciones.
+                    </p>
+                </article>
+
+                <!-- Segmento 5 -->
+                <article class="rounded-2xl bg-slate-950/90 border border-teal-500/30 p-5 space-y-2">
+                    <span class="px-2.5 py-0.5 rounded text-xs font-mono bg-teal-500/15 text-teal-300">SEGMENTO 5</span>
+                    <h3 class="font-heading text-lg font-bold text-white">5. Control Temporal y 6 Tarjetas Interactivas</h3>
+                    <p class="text-xs font-mono text-slate-400">[SEC-05.5] &bull; [SEC-05.6] &bull; [SEC-09.7] Chart.js</p>
+                    <p class="text-xs text-slate-300">
+                        Presenta las 6 tarjetas agronómicas clave (<code>🌱 NDVI Vigor</code>, <code>💧 Humedad &amp; NDMI</code>, <code>🌡️ Temperatura</code>, <code>🌧️ Precipitación</code>, <code>🌿 Estrés Hídrico</code>, <code>❄️ Alerta de Heladas</code>). Al hacer clic en cualquier tarjeta se abre el modal de series temporales <code>Chart.js</code>.
+                    </p>
+                </article>
+
+                <!-- Segmento 6 -->
+                <article class="rounded-2xl bg-slate-950/90 border border-rose-500/30 p-5 space-y-2">
+                    <span class="px-2.5 py-0.5 rounded text-xs font-mono bg-rose-500/15 text-rose-300">SEGMENTO 6</span>
+                    <h3 class="font-heading text-lg font-bold text-white">6. Evaluación de Cultivos y Semillas INTA</h3>
+                    <p class="text-xs font-mono text-slate-400">[SEC-09.2] &bull; POST /api/rotaterra/evaluar-cultivo</p>
+                    <p class="text-xs text-slate-300">
+                        Cruza relieve fijo del lote (<code>NASADEM</code>), textura y pH (<code>GeoINTA</code> + <code>SISINTA</code>), fase climática (<code>NOAA ENSO</code>) y rindes departamentales (<code>MAGyP</code>) junto con el catálogo oficial de cultivares INASE/INTA.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Tabla de Endpoints Internos de Earth2Worlds -->
+        <section class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-4">
+            <h2 class="font-heading text-xl font-bold text-white">
+                Mapa de Endpoints REST Locales (`app/main.py`)
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead>
+                        <tr class="border-b border-slate-800 font-mono uppercase text-slate-400">
+                            <th class="py-2.5 px-3">Método &amp; Ruta</th>
+                            <th class="py-2.5 px-3">Sección UI</th>
+                            <th class="py-2.5 px-3">Permiso RBAC</th>
+                            <th class="py-2.5 px-3">Propósito en Earth2Worlds</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/70 font-mono">
+                        <tr>
+                            <td class="py-2.5 px-3 text-emerald-400">GET /api/campos</td>
+                            <td class="py-2.5 px-3 text-slate-300">[SEC-05.1], [SEC-05.4]</td>
+                            <td class="py-2.5 px-3 text-sky-300">Autenticado</td>
+                            <td class="py-2.5 px-3 font-sans text-slate-300">Devuelve los campos con relieve fijo NASADEM (<code>elevacion_msnm</code>, <code>pendiente_porcentaje</code>, <code>orientacion_escurrimiento</code>).</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-3 text-emerald-400">GET /api/rotaterra/satelites/estado</td>
+                            <td class="py-2.5 px-3 text-slate-300">[SEC-05.2-ADMIN]</td>
+                            <td class="py-2.5 px-3 text-purple-300">Exclusivo Admin</td>
+                            <td class="py-2.5 px-3 font-sans text-slate-300">Sondea en paralelo las 11 constelaciones satelitales y devuelve estado en línea y latencia en ms.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-3 text-amber-400">POST /api/rotaterra/satelites/reconectar</td>
+                            <td class="py-2.5 px-3 text-slate-300">[SEC-05.2-ADMIN], [SEC-05.6]</td>
+                            <td class="py-2.5 px-3 text-purple-300">Exclusivo Admin</td>
+                            <td class="py-2.5 px-3 font-sans text-slate-300">Fuerza la reconexión individual de un satélite desde el Dock o tarjeta métrica.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-3 text-amber-400">POST /api/rotaterra/consulta</td>
+                            <td class="py-2.5 px-3 text-slate-300">[SEC-05.5], [SEC-05.6]</td>
+                            <td class="py-2.5 px-3 text-sky-300">Autenticado</td>
+                            <td class="py-2.5 px-3 font-sans text-slate-300">Ejecuta consultas multi-satélite en paralelo, aplica respaldos y guarda en <code>telemetria_historica</code>.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-3 text-emerald-400">GET /api/campos/{id}/historial</td>
+                            <td class="py-2.5 px-3 text-slate-300">[SEC-09.7]</td>
+                            <td class="py-2.5 px-3 text-sky-300">Autenticado</td>
+                            <td class="py-2.5 px-3 font-sans text-slate-300">Entrega la serie histórica de una variable para los gráficos interactivos Chart.js.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-3 text-amber-400">POST /api/rotaterra/evaluar-cultivo</td>
+                            <td class="py-2.5 px-3 text-slate-300">[SEC-09.2]</td>
+                            <td class="py-2.5 px-3 text-sky-300">Autenticado</td>
+                            <td class="py-2.5 px-3 font-sans text-slate-300">Cruza NASADEM, GeoINTA, SISINTA, NOAA ENSO y MAGyP para recomendar cultivos en el lote.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            if (!getToken()) {
+                window.location.href = "/login";
+                return;
+            }
+            try {
+                const res = await authFetch("/api/auth/me");
+                if (!res.ok) {
+                    window.location.href = "/login";
+                    return;
+                }
+                const user = await res.json();
+                if (user.rol !== "admin") {
+                    window.location.href = "/";
+                }
+            } catch (_e) {
+                window.location.href = "/";
+            }
+        });
+    </script>
+</body>
+</html>
