@@ -67,7 +67,7 @@ Cada pasada lleva ~10-15 s (muchos pedidos chicos a la nube de la NASA); se leen
 
 ## Prueba real
 
-Workflow `Probar Sentinel-3 (NDVI de respaldo)` (`.github/workflows/probar-sentinel3.yml`, `probar_sentinel3.py`). Por defecto: lote de prueba de San Luis, del 15 al 30 de septiembre de 2026. Como GitHub Actions no tiene minutos hasta, la prueba se corrió con el mismo script desde la máquina de trabajo (entorno con acceso a la NASA).
+Workflow `Probar Sentinel-3 (NDVI de respaldo)` (`.github/workflows/probar-sentinel3.yml`, `probar_sentinel3.py`). Por defecto: lote de prueba de San Luis, con un período automático que se cuenta desde el día en que corre. Como GitHub Actions no tiene minutos hasta, la prueba se corrió con el mismo script desde la máquina de trabajo (entorno con acceso a la NASA).
 
 ## Resultado de la prueba real
 
