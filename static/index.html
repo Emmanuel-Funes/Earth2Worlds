@@ -49,7 +49,7 @@ CONTROLADORES JAVASCRIPT:
   [JS-12] Controlador de Gráficos de Series Temporales y Comparativa Interanual Chart.js (#modalGraficoHistorico)
 ================================================================================
 -->
-<html lang="es" class="dark">
+<html lang="es" class="light">
 <!-- ======================================================================= -->
 <!-- [SEC-01] HEAD, FUENTES GOOGLE, LEAFLET, CHART.JS Y TAILWIND             -->
 <!-- ======================================================================= -->
@@ -111,123 +111,179 @@ CONTROLADORES JAVASCRIPT:
     </script>
     <style>
         /* ================================================================= */
-        /* PALETA AGROCLIMÁTICA: BLANCO, MARRÓN Y VERDE                     */
+        /* PALETA AGROCLIMÁTICA: FONDOS BLANCOS, MARCOS MARRÓN Y VERDE AGRO   */
         /* ================================================================= */
         :root {
-            --color-bg-base: #120e0a;
-            --color-bg-card: #1c1510;
-            --color-bg-card-hover: #261c15;
-            --color-border-earth: #423226;
-            --color-border-earth-subtle: #31241a;
-            --color-green-primary: #16a34a;
-            --color-green-bright: #22c55e;
-            --color-white-pure: #ffffff;
-            --color-white-warm: #f6f1ea;
-            --color-sand-muted: #bda897;
+            --bg-page: #fbfbfa;
+            --bg-card: #ffffff;
+            --bg-card-alt: #f8f5f0;
+            --border-marron: #8c6547;
+            --border-marron-light: #dfd3c7;
+            --border-marron-dark: #6e4e36;
+            --verde-agro: #16a34a;
+            --verde-leaf: #15803d;
+            --verde-light: #ecfdf5;
+            --text-dark: #22160f;
+            --text-muted: #5e4a3c;
         }
 
-        body {
-            background-color: #120e0a !important;
-            color: #f6f1ea !important;
+        html, body {
+            background-color: #fbfbfa !important;
+            color: #22160f !important;
         }
 
-        /* Fondos cálidos Marrón Suelo / Tierra fértil */
-        .bg-slate-950 {
-            background-color: #120e0a !important;
+        /* 1. FONDOS BLANCOS PARA PÁGINAS, TARJETAS, MODALES Y PANELES */
+        .bg-slate-950,
+        .bg-slate-900,
+        .bg-[#120e0a],
+        .bg-[#1c1510] {
+            background-color: #ffffff !important;
         }
-        .bg-slate-900 {
-            background-color: #1c1510 !important;
+        .bg-slate-950\/95,
+        .bg-slate-950\/90,
+        .bg-slate-900\/90,
+        .bg-slate-950\/80,
+        .bg-slate-950\/70,
+        .bg-slate-950\/60,
+        .bg-slate-950\/50,
+        .bg-slate-950\/40,
+        .bg-slate-900\/80 {
+            background-color: rgba(255, 255, 255, 0.98) !important;
         }
-        .bg-slate-900\/90 {
-            background-color: rgba(28, 21, 16, 0.92) !important;
+        .bg-slate-800,
+        .bg-stone-900,
+        .bg-stone-950,
+        .bg-stone-950\/80,
+        .bg-stone-950\/90,
+        .bg-stone-900\/90 {
+            background-color: #f8f5f0 !important;
         }
-        .bg-slate-950\/95 {
-            background-color: rgba(18, 14, 10, 0.96) !important;
-        }
-        .bg-slate-950\/90 {
-            background-color: rgba(18, 14, 10, 0.92) !important;
-        }
-        .bg-slate-950\/80 {
-            background-color: rgba(18, 14, 10, 0.85) !important;
-        }
-        .bg-slate-950\/70 {
-            background-color: rgba(18, 14, 10, 0.75) !important;
-        }
-        .bg-slate-950\/60 {
-            background-color: rgba(18, 14, 10, 0.65) !important;
-        }
-        .bg-slate-950\/50 {
-            background-color: rgba(18, 14, 10, 0.52) !important;
-        }
-        .bg-slate-950\/40 {
-            background-color: rgba(18, 14, 10, 0.42) !important;
-        }
-        .bg-slate-800 {
-            background-color: #2b2017 !important;
-        }
-        .bg-slate-800\/60 {
-            background-color: rgba(43, 32, 23, 0.6) !important;
-        }
+        .bg-slate-800\/60,
         .bg-slate-800\/80 {
-            background-color: rgba(43, 32, 23, 0.8) !important;
+            background-color: rgba(248, 245, 240, 0.95) !important;
         }
 
-        /* Bordes terrosos cálidos */
-        .border-slate-800 {
-            border-color: #3d2d21 !important;
+        /* 2. MARCOS Y BORDES EN MARRÓN TIERRA */
+        .border-slate-800,
+        .border-slate-700,
+        .border-stone-800,
+        .border-stone-700 {
+            border-color: #8c6547 !important;
         }
-        .border-slate-800\/80 {
-            border-color: rgba(61, 45, 33, 0.8) !important;
+        .border-slate-800\/80,
+        .border-slate-700\/80,
+        .border-stone-800\/90,
+        .border-stone-800\/80 {
+            border-color: #bfa188 !important;
         }
-        .border-slate-700 {
-            border-color: #553e2d !important;
-        }
-        .border-slate-700\/80 {
-            border-color: rgba(85, 62, 45, 0.8) !important;
+        .hover\:border-slate-700:hover,
+        .hover\:border-emerald-500:hover {
+            border-color: #16a34a !important;
         }
 
-        /* Textos blancos y blanco-cálido / arena de alta legibilidad */
+        /* 3. TEXTOS LEGIBLES DE ALTO CONTRASTE EN FONDO BLANCO */
+        .text-white,
         .text-slate-100 {
+            color: #22160f !important;
+        }
+        .text-slate-200,
+        .text-stone-200 {
+            color: #3b281c !important;
+        }
+        .text-slate-300,
+        .text-stone-300 {
+            color: #553e2e !important;
+        }
+        .text-slate-400,
+        .text-stone-400 {
+            color: #715543 !important;
+        }
+        .text-slate-500,
+        .text-stone-500 {
+            color: #8c705d !important;
+        }
+
+        /* 4. HOVER Y SELECCIONES */
+        .hover\:bg-slate-800:hover,
+        .hover\:bg-slate-900:hover {
+            background-color: #f4ede4 !important;
+        }
+
+        /* 5. ICONOGRAFÍA Y ACENTOS EN VERDE AGRO */
+        .text-emerald-400,
+        .text-emerald-300,
+        .text-emerald-500,
+        .text-emerald-600,
+        .text-green-500,
+        .text-green-600 {
+            color: #15803d !important;
+        }
+        .bg-emerald-500\/10,
+        .bg-emerald-500\/15,
+        .bg-emerald-500\/20,
+        .bg-emerald-950\/20,
+        .bg-emerald-950\/50 {
+            background-color: #ecfdf5 !important;
+            border-color: #86efac !important;
+            color: #14532d !important;
+        }
+        .bg-amber-950\/20,
+        .bg-amber-950\/50 {
+            background-color: #fffbeb !important;
+            border-color: #fde68a !important;
+            color: #92400e !important;
+        }
+        .bg-rose-950\/20,
+        .bg-rose-950\/50 {
+            background-color: #fff1f2 !important;
+            border-color: #fecdd3 !important;
+            color: #9f1239 !important;
+        }
+        .border-emerald-500\/40,
+        .border-emerald-500\/50,
+        .border-emerald-500\/30 {
+            border-color: #16a34a !important;
+        }
+
+        /* 6. INPUTS Y SELECTS EN PALETA BLANCA CON BORDE MARRÓN */
+        input, select, textarea {
+            background-color: #ffffff !important;
+            color: #22160f !important;
+            border: 1.5px solid #8c6547 !important;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: #16a34a !important;
+            outline: none !important;
+            box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15) !important;
+        }
+
+        /* 7. BOTONES PRINCIPALES EN VERDE CON TEXTO BLANCO */
+        button.bg-emerald-500,
+        button.bg-emerald-600,
+        .btn-primario-agro {
+            background-color: #16a34a !important;
             color: #ffffff !important;
         }
-        .text-slate-200 {
-            color: #f4ece2 !important;
-        }
-        .text-slate-300 {
-            color: #ded1c1 !important;
-        }
-        .text-slate-400 {
-            color: #bfaea0 !important;
-        }
-        .text-slate-500 {
-            color: #938072 !important;
+        button.bg-emerald-500:hover,
+        button.bg-emerald-600:hover {
+            background-color: #15803d !important;
+            color: #ffffff !important;
         }
 
-        /* Hover dinámico en marrón tierra cálido */
-        .hover\:bg-slate-800:hover {
-            background-color: #2b2017 !important;
-        }
-        .hover\:bg-slate-900:hover {
-            background-color: #231a12 !important;
-        }
-        .hover\:border-slate-700:hover {
-            border-color: #785841 !important;
-        }
-
-        /* Acentos en Verde Follaje y Blanco Puro */
+        /* Acento de selección en mapa */
         .accent-verde-lote {
-            border-color: #22c55e !important;
-            box-shadow: 0 0 15px rgba(34, 197, 94, 0.25) !important;
+            border-color: #16a34a !important;
+            box-shadow: 0 0 15px rgba(22, 163, 74, 0.25) !important;
         }
     </style>
 </head>
 
-<body class="bg-[#120e0a] text-[#f6f1ea] font-sans min-h-screen flex flex-col selection:bg-emerald-600/40 selection:text-white">
-    <!-- Efectos sutiles de iluminación en fondo oscuro: Verde y Marrón Tierra -->
+<body class="bg-[#fbfbfa] text-[#22160f] font-sans min-h-screen flex flex-col selection:bg-emerald-200 selection:text-emerald-900">
+    <!-- Efectos sutiles de iluminación ambiental: Verde y Marrón Tierra -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
-        <div class="absolute -top-40 -left-40 w-[30rem] h-[30rem] bg-emerald-600/15 rounded-full blur-3xl"></div>
-        <div class="absolute top-1/4 -right-40 w-[30rem] h-[30rem] bg-amber-800/20 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-0 left-1/3 w-[26rem] h-[26rem] bg-[#422515]/25 rounded-full blur-3xl"></div>
+        <div class="absolute -top-40 -left-40 w-[30rem] h-[30rem] bg-emerald-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/4 -right-40 w-[30rem] h-[30rem] bg-amber-600/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-1/3 w-[26rem] h-[26rem] bg-[#8c6547]/10 rounded-full blur-3xl"></div>
     </div>
 
     <!-- Contenedor de notificaciones Toast (z-[999999] por encima de Leaflet y modales) -->
@@ -236,52 +292,52 @@ CONTROLADORES JAVASCRIPT:
     <!-- =================================================================== -->
     <!-- [SEC-00] SELECTOR DE TIPO DE USUARIO (AGRICULTOR VS. TÉCNICO VS. ADMIN) -->
     <!-- =================================================================== -->
-    <div id="modalSelectorModo" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 backdrop-blur-md p-4 overflow-y-auto">
-        <div class="w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl p-4 sm:p-8 md:p-10 space-y-6 sm:space-y-8 my-6 sm:my-8 relative overflow-hidden">
+    <div id="modalSelectorModo" class="fixed inset-0 z-50 flex items-start sm:items-center justify-center bg-stone-900/50 backdrop-blur-sm p-4 sm:p-6 overflow-y-auto">
+        <div class="w-full max-w-4xl bg-white border-2 border-[#8c6547] rounded-3xl shadow-2xl p-6 sm:p-10 space-y-6 sm:space-y-8 my-auto relative overflow-visible">
             <div class="text-center space-y-3 px-2">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold max-w-full truncate">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-400 text-emerald-800 text-xs font-mono font-bold max-w-full">
                     <span>🌍 Earth2Worlds</span> &bull; <span>Plataforma Agroclimática</span>
                 </div>
-                <h2 class="font-heading text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight break-words max-w-full leading-snug">
+                <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#241810] tracking-normal block w-full py-2 leading-normal overflow-visible">
                     Elige tu Modalidad de Acceso
                 </h2>
-                <p class="text-xs sm:text-sm md:text-base text-slate-400 max-w-2xl mx-auto break-words leading-relaxed">
+                <p class="text-sm sm:text-base text-[#5c4636] max-w-2xl mx-auto leading-relaxed">
                     Selecciona cómo deseas explorar la plataforma. Las sesiones de prueba no requieren registro ni guardan datos permanentes en el sistema.
                 </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Tarjeta PERFIL AGRICULTOR -->
-                <div class="bg-slate-950/80 border-2 border-emerald-500/40 hover:border-emerald-500 rounded-2xl p-6 sm:p-7 flex flex-col justify-between transition group shadow-lg shadow-emerald-500/5 hover:shadow-emerald-500/15">
+                <div class="bg-white border-2 border-[#8c6547] hover:border-emerald-600 rounded-2xl p-6 sm:p-7 flex flex-col justify-between transition group shadow-md hover:shadow-xl">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-2xl font-bold">
+                            <span class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 border border-emerald-400 flex items-center justify-center text-2xl font-bold">
                                 🌱
                             </span>
-                            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 uppercase">
+                            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-400 uppercase">
                                 Agricultor
                             </span>
                         </div>
                         <div>
-                            <h3 class="font-heading text-2xl font-bold text-white group-hover:text-emerald-300 transition">
+                            <h3 class="font-heading text-2xl font-bold text-[#241810] group-hover:text-emerald-700 transition">
                                 Agricultor
                             </h3>
-                            <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
+                            <p class="text-xs sm:text-sm text-[#5c4636] mt-2 leading-relaxed">
                                 Diseñado para evaluación ágil y directa. Dibuja un único lote en el territorio argentino, declara la última plantación y evalúa la telemetría histórica de 5 años con recomendación de rotación de cultivos.
                             </p>
                         </div>
-                        <ul class="text-xs font-mono text-slate-300 space-y-1.5 pt-2 border-t border-slate-800">
-                            <li class="flex items-center gap-2"><span class="text-emerald-400">&#10003;</span> Delimitador de polígono en Argentina (Leaflet + Geoman)</li>
-                            <li class="flex items-center gap-2"><span class="text-emerald-400">&#10003;</span> Selección rápida de cultivo previo (Maíz, Soja, Girasol, etc.)</li>
-                            <li class="flex items-center gap-2"><span class="text-emerald-400">&#10003;</span> 5 años de telemetría NASA (NDVI, SMAP, IMERG)</li>
-                            <li class="flex items-center gap-2"><span class="text-emerald-400">&#10003;</span> Recomendación de rotación de cultivos Rotaterra</li>
+                        <ul class="text-xs font-mono text-[#382a21] space-y-1.5 pt-2 border-t border-[#dfd2c6]">
+                            <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span> Delimitador de polígono en Argentina (Leaflet + Geoman)</li>
+                            <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span> Selección rápida de cultivo previo (Maíz, Soja, Girasol, etc.)</li>
+                            <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span> 5 años de telemetría NASA (NDVI, SMAP, IMERG)</li>
+                            <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span> Recomendación de rotación de cultivos Rotaterra</li>
                         </ul>
                     </div>
                     <div class="pt-6">
                         <button
                             type="button"
                             onclick="iniciarModoDesdeSelector('basico')"
-                            class="w-full py-3.5 px-5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-heading font-bold text-sm shadow-lg shadow-emerald-500/25 transition flex items-center justify-center gap-2"
+                            class="w-full py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-heading font-bold text-sm shadow-md transition flex items-center justify-center gap-2"
                         >
                             <span>Ingresar como Agricultor</span> &rarr;
                         </button>
@@ -289,36 +345,36 @@ CONTROLADORES JAVASCRIPT:
                 </div>
 
                 <!-- Tarjeta PERFIL TÉCNICO AGROPECUARIO -->
-                <div class="bg-slate-950/80 border border-slate-800 hover:border-sky-500 rounded-2xl p-6 sm:p-7 flex flex-col justify-between transition group shadow-lg hover:shadow-sky-500/10">
+                <div class="bg-white border-2 border-[#8c6547] hover:border-emerald-600 rounded-2xl p-6 sm:p-7 flex flex-col justify-between transition group shadow-md hover:shadow-xl">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="w-12 h-12 rounded-xl bg-sky-500/20 text-sky-400 border border-sky-500/30 flex items-center justify-center text-2xl font-bold">
+                            <span class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 border border-emerald-400 flex items-center justify-center text-2xl font-bold">
                                 🛰️
                             </span>
-                            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-sky-500/20 text-sky-300 border border-sky-500/40 uppercase">
+                            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-amber-100 text-amber-900 border border-amber-400 uppercase">
                                 Técnico Agropecuario
                             </span>
                         </div>
                         <div>
-                            <h3 class="font-heading text-2xl font-bold text-white group-hover:text-sky-300 transition">
+                            <h3 class="font-heading text-2xl font-bold text-[#241810] group-hover:text-emerald-700 transition">
                                 Técnico Agropecuario
                             </h3>
-                            <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
+                            <p class="text-xs sm:text-sm text-[#5c4636] mt-2 leading-relaxed">
                                 Acceso total al centro de control territorial: visor GIS multirresolución, panel lateral de capas satelitales, Dock Satelital, las 6 tarjetas de telemetría interactivas y generación de gráficas de series temporales (Chart.js).
                             </p>
                         </div>
-                        <ul class="text-xs font-mono text-slate-300 space-y-1.5 pt-2 border-t border-slate-800">
-                            <li class="flex items-center gap-2"><span class="text-sky-400">&#10003;</span> Visor GIS con capas WMS y Dock Satelital NASA</li>
-                            <li class="flex items-center gap-2"><span class="text-sky-400">&#10003;</span> Las 6 tarjetas métricas interactivas en vivo</li>
-                            <li class="flex items-center gap-2"><span class="text-sky-400">&#10003;</span> Generador de gráficos de series temporales Chart.js</li>
-                            <li class="flex items-center gap-2"><span class="text-sky-400">&#10003;</span> Sesión efímera sin ensuciar la base de datos</li>
+                        <ul class="text-xs font-mono text-[#382a21] space-y-1.5 pt-2 border-t border-[#dfd2c6]">
+                            <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span> Visor GIS con capas WMS y Dock Satelital NASA</li>
+                            <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span> Las 6 tarjetas métricas interactivas en vivo</li>
+                            <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span> Generador de gráficos de series temporales Chart.js</li>
+                            <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span> Sesión efímera sin ensuciar la base de datos</li>
                         </ul>
                     </div>
                     <div class="pt-6">
                         <button
                             type="button"
                             onclick="iniciarModoDesdeSelector('avanzado')"
-                            class="w-full py-3.5 px-5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-heading font-bold text-sm shadow-lg shadow-sky-500/25 transition flex items-center justify-center gap-2"
+                            class="w-full py-3.5 px-5 rounded-xl bg-[#785843] hover:bg-[#5f4534] text-white font-heading font-bold text-sm shadow-md transition flex items-center justify-center gap-2"
                         >
                             <span>Ingresar como Técnico Agropecuario</span> &rarr;
                         </button>
@@ -327,14 +383,14 @@ CONTROLADORES JAVASCRIPT:
             </div>
 
             <!-- Acceso Administrador -->
-            <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <span class="text-xs text-slate-400 font-mono">
+            <div class="pt-4 border-t border-[#dfd2c6] flex flex-col sm:flex-row items-center justify-between gap-4">
+                <span class="text-xs text-[#5c4636] font-mono">
                     ¿Tienes credenciales del sistema o eres Administrador?
                 </span>
                 <button
                     type="button"
                     onclick="abrirModalLoginAdmin()"
-                    class="px-4 py-2 rounded-xl text-xs font-mono font-semibold bg-purple-500/15 hover:bg-purple-500/25 text-purple-300 border border-purple-500/30 transition flex items-center gap-2"
+                    class="px-4 py-2 rounded-xl text-xs font-mono font-semibold bg-white hover:bg-[#faf7f2] text-[#785843] border-2 border-[#8c6547] transition flex items-center gap-2 shadow-xs"
                 >
                     <span>🔒 Acceso Administrador</span>
                 </button>
@@ -2528,36 +2584,36 @@ CONTROLADORES JAVASCRIPT:
                 <div class="space-y-5">
                     <!-- Resumen del Dictamen Agronómico -->
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div class="p-4 rounded-xl bg-emerald-950/50 border border-emerald-500/40 flex items-center justify-between">
+                        <div class="p-4 rounded-xl bg-emerald-50 border-2 border-emerald-400 text-emerald-950 flex items-center justify-between shadow-xs">
                             <div>
-                                <span class="text-[11px] font-mono text-emerald-400 font-semibold uppercase">Recomendables</span>
-                                <h4 class="font-heading font-extrabold text-2xl text-emerald-200 mt-0.5">${rec.length} Cultivos</h4>
+                                <span class="text-[11px] font-mono text-emerald-800 font-bold uppercase tracking-wider">Recomendables</span>
+                                <h4 class="font-heading font-extrabold text-2xl text-emerald-900 mt-0.5">${rec.length} Cultivos</h4>
                             </div>
                             <span class="text-3xl">🟢</span>
                         </div>
-                        <div class="p-4 rounded-xl bg-amber-950/50 border border-amber-500/40 flex items-center justify-between">
+                        <div class="p-4 rounded-xl bg-amber-50 border-2 border-amber-400 text-amber-950 flex items-center justify-between shadow-xs">
                             <div>
-                                <span class="text-[11px] font-mono text-amber-400 font-semibold uppercase">Con Cuidado</span>
-                                <h4 class="font-heading font-extrabold text-2xl text-amber-200 mt-0.5">${cui.length} Cultivos</h4>
+                                <span class="text-[11px] font-mono text-amber-800 font-bold uppercase tracking-wider">Con Cuidado</span>
+                                <h4 class="font-heading font-extrabold text-2xl text-amber-900 mt-0.5">${cui.length} Cultivos</h4>
                             </div>
                             <span class="text-3xl">🟡</span>
                         </div>
-                        <div class="p-4 rounded-xl bg-rose-950/50 border border-rose-500/40 flex items-center justify-between">
+                        <div class="p-4 rounded-xl bg-rose-50 border-2 border-rose-400 text-rose-950 flex items-center justify-between shadow-xs">
                             <div>
-                                <span class="text-[11px] font-mono text-rose-400 font-semibold uppercase">No Recomendables</span>
-                                <h4 class="font-heading font-extrabold text-2xl text-rose-200 mt-0.5">${noRec.length} Cultivo${noRec.length === 1 ? '' : 's'}</h4>
+                                <span class="text-[11px] font-mono text-rose-800 font-bold uppercase tracking-wider">No Recomendables</span>
+                                <h4 class="font-heading font-extrabold text-2xl text-rose-900 mt-0.5">${noRec.length} Cultivo${noRec.length === 1 ? '' : 's'}</h4>
                             </div>
                             <span class="text-3xl">🔴</span>
                         </div>
                     </div>
 
                     <!-- Ficha del Diagnóstico -->
-                    <div class="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 text-xs text-slate-300 flex flex-wrap items-center justify-between gap-3">
+                    <div class="p-3.5 rounded-xl bg-white border-2 border-[#8c6547] text-xs text-[#382a21] flex flex-wrap items-center justify-between gap-3 shadow-xs">
                         <div>
                             <span>Lote analizado con <strong>${campanasTxt}</strong> de NASA POWER.</span>
-                            <span class="text-slate-500 ml-1.5">${sueloTxt}</span>
+                            <span class="text-[#785843] ml-1.5">${sueloTxt}</span>
                         </div>
-                        <span class="px-2.5 py-0.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 font-mono text-[11px]">
+                        <span class="px-2.5 py-0.5 rounded-lg bg-emerald-50 border border-emerald-400 text-emerald-800 font-mono text-[11px] font-bold">
                             Última plantación declarada: <strong>${escapeHtml(cultivoPrevio)}</strong>
                         </span>
                     </div>
@@ -2569,16 +2625,16 @@ CONTROLADORES JAVASCRIPT:
                             const esRec = c.estado === "Recomendable";
                             const esCui = c.estado === "Con cuidado";
                             const borderCol = esRec
-                                ? "border-emerald-500/50 hover:border-emerald-400 bg-emerald-950/20"
-                                : (esCui ? "border-amber-500/50 hover:border-amber-400 bg-amber-950/20" : "border-rose-500/50 hover:border-rose-400 bg-rose-950/20");
+                                ? "border-emerald-600 hover:border-emerald-700 shadow-emerald-500/10"
+                                : (esCui ? "border-amber-500 hover:border-amber-600 shadow-amber-500/10" : "border-rose-400 hover:border-rose-500 shadow-rose-500/10");
                             
                             const badgeStyle = esRec
-                                ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
-                                : (esCui ? "bg-amber-500/20 text-amber-300 border-amber-500/40" : "bg-rose-500/20 text-rose-300 border-rose-500/40");
+                                ? "bg-emerald-100 text-emerald-800 border-emerald-400"
+                                : (esCui ? "bg-amber-100 text-amber-800 border-amber-400" : "bg-rose-100 text-rose-800 border-rose-400");
 
                             const pct = c.porcentaje_coincidencia || (esRec ? 88 : (esCui ? 65 : 35));
-                            const pctColor = esRec ? "text-emerald-400" : (esCui ? "text-amber-400" : "text-rose-400");
-                            const barColor = esRec ? "bg-emerald-500" : (esCui ? "bg-amber-500" : "bg-rose-500");
+                            const pctColor = esRec ? "text-emerald-700" : (esCui ? "text-amber-700" : "text-rose-700");
+                            const barColor = esRec ? "bg-emerald-600" : (esCui ? "bg-amber-500" : "bg-rose-500");
                             const medalla = c.posicion_ranking === 1 ? '🥇 1ª Opción' : (c.posicion_ranking === 2 ? '🥈 2ª Opción' : (c.posicion_ranking === 3 ? '🥉 3ª Opción' : `${c.posicion_ranking}ª Opción`));
 
                             const iconoEstado = esRec ? "✓" : (esCui ? "⚠️" : "✕");
@@ -2588,74 +2644,76 @@ CONTROLADORES JAVASCRIPT:
                                 : (c.fecha_siembra ? `Siembra típica: ${c.fecha_siembra}` : "");
 
                             return `
-                                <div class="rounded-2xl border ${borderCol} p-4 flex flex-col justify-between space-y-3 shadow-lg transition">
+                                <div class="rounded-2xl border-2 ${borderCol} bg-white p-5 flex flex-col justify-between space-y-4 shadow-md hover:shadow-lg transition">
                                     <div class="space-y-3">
                                         <!-- Encabezado con Ícono, Posición y Porcentaje Óptimo -->
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center gap-2">
                                                 <span class="text-2xl">${ico}</span>
-                                                <span class="px-2 py-0.5 rounded-lg bg-stone-900 border border-stone-700 text-stone-200 text-[11px] font-mono font-bold">
+                                                <span class="px-2 py-0.5 rounded-lg bg-[#f8f5f0] border border-[#c8b3a2] text-[#382a21] text-[11px] font-mono font-bold">
                                                     ${medalla}
                                                 </span>
                                             </div>
-                                            <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-stone-950 border border-stone-700 shadow-inner">
-                                                <span class="text-sm font-heading font-extrabold ${pctColor}">${pct}%</span>
-                                                <span class="text-[9px] uppercase font-bold text-stone-300 tracking-wider">Óptimo</span>
+                                            <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-white border border-[#c8b3a2] shadow-xs">
+                                                <span class="text-base font-heading font-extrabold ${pctColor}">${pct}%</span>
+                                                <span class="text-[9px] uppercase font-bold text-[#785843] tracking-wider">Óptimo</span>
                                             </div>
                                         </div>
 
                                         <!-- Barra de Coincidencia Óptima -->
                                         <div class="space-y-1">
-                                            <div class="w-full bg-stone-900/90 rounded-full h-2 overflow-hidden border border-stone-800">
-                                                <div class="h-2 rounded-full ${barColor} transition-all duration-700" style="width: ${pct}%"></div>
+                                            <div class="w-full bg-[#ede3da] rounded-full h-2.5 overflow-hidden border border-[#d5c3b5]">
+                                                <div class="h-2.5 rounded-full ${barColor} transition-all duration-700" style="width: ${pct}%"></div>
                                             </div>
                                         </div>
 
                                         <!-- Nombre del Cultivo y Estado -->
                                         <div>
                                             <div class="flex items-center justify-between gap-2">
-                                                <h4 class="font-heading font-bold text-white text-base">${escapeHtml(c.nombre)}</h4>
-                                                <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold border ${badgeStyle} flex-shrink-0">
+                                                <h4 class="font-heading font-extrabold text-[#22160f] text-lg">${escapeHtml(c.nombre)}</h4>
+                                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold border ${badgeStyle} flex-shrink-0">
                                                     ${iconoEstado} ${escapeHtml(c.estado)}
                                                 </span>
                                             </div>
-                                            ${siembraStr ? `<span class="text-[11px] font-mono text-stone-400 block mt-0.5">${siembraStr}</span>` : ''}
+                                            ${siembraStr ? `<span class="text-[11px] font-mono text-[#785843] block mt-0.5 font-medium">${siembraStr}</span>` : ''}
                                         </div>
 
                                         <!-- Criterio Comparativo: Por qué se eligió o descartó frente a los demás -->
-                                        <div class="p-2.5 rounded-xl bg-stone-950/80 border border-amber-800/30 text-xs space-y-1">
-                                            <span class="text-[10px] uppercase font-bold text-amber-300 flex items-center gap-1">
+                                        <div class="p-3 rounded-xl bg-[#fbf7f2] border border-[#b8977e] text-xs space-y-1 shadow-2xs">
+                                            <span class="text-[10px] uppercase font-bold text-[#8c532b] flex items-center gap-1">
                                                 <span>⚖️</span> Criterio Comparativo frente a otras opciones:
                                             </span>
-                                            <p class="text-[11px] text-white leading-relaxed font-sans">${escapeHtml(c.por_que_se_eligio || '')}</p>
+                                            <p class="text-[11px] text-[#241810] leading-relaxed font-sans font-medium">${escapeHtml(c.por_que_se_eligio || '')}</p>
                                         </div>
                                     </div>
 
-                                    <!-- Reglas Técnicas con Comparativa Directa Tu Campo vs Óptimo del Cultivo -->
+                                    <!-- Reglas Técnicas con Comparativa Directa Tu Campo vs Óptimo del Cultivo (SIN fuentes) -->
                                     ${c.reglas && c.reglas.length > 0 ? `
-                                        <details class="text-[11px] font-mono text-stone-400 pt-2 border-t border-stone-800">
-                                            <summary class="cursor-pointer hover:text-stone-200 py-1 font-semibold text-stone-300 select-none flex items-center justify-between">
+                                        <details class="text-[11px] font-mono text-[#785843] pt-2 border-t border-[#dfd2c6]">
+                                            <summary class="cursor-pointer hover:text-[#241810] py-1 font-semibold text-[#5c4636] select-none flex items-center justify-between">
                                                 <span>Ver ${c.reglas.length} reglas técnicas ▾</span>
-                                                <span class="text-[10px] text-amber-400 font-normal">Tu campo vs Óptimo</span>
+                                                <span class="text-[10px] text-[#8c532b] font-bold">Tu campo vs Óptimo</span>
                                             </summary>
-                                            <ul class="space-y-2 mt-2 text-stone-300 font-sans">
+                                            <ul class="space-y-2 mt-2 text-[#241810] font-sans">
                                                 ${c.reglas.map(r => `
-                                                    <li class="p-2.5 rounded-xl bg-stone-950/90 border border-stone-800/90 space-y-1.5 shadow-sm">
+                                                    <li class="p-2.5 rounded-xl bg-[#faf6f0] border border-[#c4a994] space-y-1.5 shadow-xs">
                                                         <div class="flex items-center justify-between">
-                                                            <strong class="text-white text-xs font-semibold">${escapeHtml(r.regla)}</strong>
+                                                            <strong class="text-[#241810] text-xs font-bold">${escapeHtml(r.regla)}</strong>
                                                             <span>${r.resultado === 'ok' ? '✅' : (r.resultado === 'aviso' ? '⚠️' : (r.resultado === 'no' ? '❌' : 'ℹ️'))}</span>
                                                         </div>
-                                                        <div class="p-2 rounded-lg bg-stone-900 border border-amber-600/30 text-xs">
-                                                            <span class="text-[9px] font-bold uppercase tracking-wider text-amber-400 block mb-0.5">Tu campo vs Óptimo del cultivo:</span>
-                                                            <span class="text-white font-medium text-[11px]">${escapeHtml(r.comparativa_optimo || r.dato_del_lote || r.dato)}</span>
+                                                        <div class="p-2 rounded-lg bg-white border border-[#b8977e] text-xs shadow-2xs">
+                                                            <span class="text-[9px] font-bold uppercase tracking-wider text-[#8c532b] block mb-0.5">Tu campo vs Óptimo del cultivo:</span>
+                                                            <span class="text-[#241810] font-semibold text-[11px]">${escapeHtml(r.comparativa_optimo || r.dato_del_lote || r.dato)}</span>
                                                         </div>
-                                                        ${r.fuente ? `<div class="text-[9px] text-stone-400 font-mono">Fuente: ${escapeHtml(r.fuente)}</div>` : ''}
+                                                        <div class="text-[10px] text-[#553e2e] leading-snug">${escapeHtml(r.dato_del_lote || r.dato)}</div>
                                                     </li>
                                                 `).join('')}
                                             </ul>
                                         </details>
                                     ` : ''}
                                 </div>
+                            `;
+                        }).join('')}
                             `;
                         }).join('')}
                     </div>
