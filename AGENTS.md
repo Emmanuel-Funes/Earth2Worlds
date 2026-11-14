@@ -84,3 +84,16 @@ La descripción de cada PR arranca con "Antes:" y "Después:", en lenguaje simpl
 
 ### Regla Obligatoria de Sincronización de Secciones
 Cada vez que se agregue, modifique o reestructure una sección `[SEC-XX]` o un controlador `[JS-XX]` en `static/index.html`, es **obligatorio** actualizar en el mismo cambio el archivo `static/mapa_secciones.html` para que el Mapa Maestro de Secciones refleje fielmente la estructura vigente.
+
+---
+
+## 11. Regla Automática de Fusión de Documentos y README (`README.md` y specs)
+
+Para evitar conflictos de edición local vs. remoto en el editor y mantener la sincronización continua entre colaboradores (Hernán Firmapaz y equipo):
+
+1. **Fusión Aditiva sin Sobreescritura Destructiva**:
+   - Cada vez que se integren cambios de ramas remotas (`git fetch` / `git merge`), el agente debe comparar las secciones modificadas del `README.md` remoto con el `README.md` de trabajo local.
+   - Si una versión añade información técnica, tablas de satélites, instrucciones o reglas, se incorporan esas novedades conservando la estructura y aportes preexistentes.
+   - **Nunca** descartar ni truncar contenido válido de un colaborador por discrepancia de fecha o timestamp de archivo.
+2. **Resolución Automática de Discrepancias de Buffer/Editor**:
+   - Si un archivo de documentación abierto en el editor (`README.md`, `docs/specs/*`, `AGENTS.md`) presenta desincronización por cambios concurrentes en Git, el agente ejecuta una comparación de diff granular (`git diff`), integra las líneas nuevas de forma coherente en el archivo y actualiza el índice de Git para que el editor sincronice el buffer automáticamente sin requerir comparación manual del usuario.
