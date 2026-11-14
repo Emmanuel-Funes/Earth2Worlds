@@ -75,4 +75,4 @@ En m³/m³. La humedad superficial queda en el orden de **0,2 m³/m³**, coincid
 - [x] Pedido inválido no llama a la NASA; sin credenciales las pide (tests `test_pedido_invalido_no_llama_a_la_nasa`, `test_sin_credenciales_pide_credenciales`).
 - [x] Se anuncia como respaldo de SMAP con orden 4 (test `test_se_anuncia_como_respaldo_de_smap`).
 - [x] No importa a ningún otro satélite y el núcleo no lo nombra (test `test_nucleo.py`).
-- [x] Prueba real sobre el lote de San Luis (PR #52, workflow en verde): humedad superficial del orden de 0,2 m³/m³ (feb 2026 = 0,234), cerca de GLDAS (~0,267) y SMAP. Valores por mes en "Resultado de la prueba real".
+- [x] Prueba real sobre el lote de San Luis: humedad superficial del orden de 0,2 m³/m³ (feb 2026 = 0,234), cerca de GLDAS (~0,267) y SMAP. Valores por mes en "Resultado de la prueba real".
