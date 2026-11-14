@@ -1,6 +1,6 @@
 # Spec 009 · Satélites independientes, en ramas separadas
 
-**Estado:** aprobada por Hernán el 3 de octubre de 2026 (tarjeta: "Ramas separadas") · **Pedido por:** Hernán, con el documento "SDD - Aislamiento e Independencia de Satélites"
+**Estado:** aprobada por Hernán (tarjeta: "Ramas separadas") · **Pedido por:** Hernán, con el documento "SDD - Aislamiento e Independencia de Satélites"
 
 ## Objetivo
 
@@ -71,8 +71,8 @@ SMAP directo y SMAP vía AppEEARS son **el mismo producto** por dos caminos (spe
 
 ## Criterios de aceptación
 
-- [x] `main` con solo el núcleo: los tests pasan y la actualización dice que no hay satélites unidos. *(PR #14 en GitHub: `tests` y `tests-postgres` en verde, 40 pasan + 1 omitido en local; `python -m rotaterra.actualizar` responde "No hay satélites unidos a esta rama…".)*
-- [x] Cada rama de satélite pasa sus tests contra el núcleo solo, sin ninguna otra rama. *(PR #15 a #21 en GitHub: `tests` y `tests-postgres` en verde en los 7. En local: POWER 53, MERRA-2 45, HLS 69, MODIS 48, SMAP 71, IMERG 47, NASADEM 53.)*
+- [x] `main` con solo el núcleo: los tests pasan y la actualización dice que no hay satélites unidos. *(`tests` y `tests-postgres` en verde, 40 pasan + 1 omitido en local; `python -m rotaterra.actualizar` responde "No hay satélites unidos a esta rama…".)*
+- [x] Cada rama de satélite pasa sus tests contra el núcleo solo, sin ninguna otra rama. *(`tests` y `tests-postgres` en verde en los 7. En local: POWER 53, MERRA-2 45, HLS 69, MODIS 48, SMAP 71, IMERG 47, NASADEM 53.)*
 - [x] Todas las ramas unidas a la vez pasan los mismos tests que hoy, sin conflictos entre sí. *(Unión de las 7 ramas en local, sin conflictos: 146 pasan. El registro encuentra los 8 satélites y respaldos, ninguno roto.)*
 - [x] Un test verifica que ningún satélite importa a otro y que el núcleo no nombra a ninguno. *(`tests/test_nucleo.py`.)*
 - [x] Un satélite roto no frena a los demás (test). *(`test_un_satelite_roto_queda_aislado` y `test_un_satelite_caido_no_frena_a_los_demas`.)*
