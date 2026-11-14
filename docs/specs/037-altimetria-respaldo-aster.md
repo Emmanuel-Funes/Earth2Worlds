@@ -1,6 +1,6 @@
 # Spec 037 · Altimetría de segundo respaldo con ASTER GDEM v3 (NASA/METI)
 
-**Estado:** aprobada por Hernán el 15/10/2026 y verificada con datos reales ("Listo, sigamos con los que dijiste") · **Etapa:** pipeline satélite → API → app · **Requiere:** credenciales de Earthdata (secrets `EARTHDATA_USERNAME` / `EARTHDATA_PASSWORD`) · **Respalda a:** NASADEM (spec 008), después de Copernicus DEM (spec 016)
+**Estado:** aprobada por Hernán y verificada con datos reales ("Listo, sigamos con los que dijiste") · **Etapa:** pipeline satélite → API → app · **Requiere:** credenciales de Earthdata (secrets `EARTHDATA_USERNAME` / `EARTHDATA_PASSWORD`) · **Respalda a:** NASADEM (spec 008), después de Copernicus DEM (spec 016)
 
 ## Objetivo
 
