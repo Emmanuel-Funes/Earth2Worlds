@@ -17,7 +17,7 @@ En la región pampeana, El Niño suele venir con más lluvia de primavera y vera
 | Pronóstico | La sinopsis de la discusión oficial de ENSO, que se publica el segundo jueves de cada mes: `https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml` |
 | Respaldo | El índice Niño 3.4 mensual de NOAA PSL (`https://psl.noaa.gov/data/correlation/nina34.anom.data`). Es otro servidor de NOAA. Probado: responde, y su pie dice **ERSST V6, anomalía frente a 1981-2010** (no V5 como se suponía); la `nota` copia lo que diga el pie. La alternativa `psl.noaa.gov/gcos_wgsp/Timeseries/Data/nino34.long.anom.data` da 404, así que quedó la primera |
 | Escala | Un solo valor para todo el planeta: no depende del lote |
-| Verificado | 14/10/2026 (investigación 033) y 15/10/2026 (prueba real): ONI de jul-sep 2026 = **+2,16**. La sinopsis de NOAA dice que El Niño será fuerte a muy fuerte hasta enero-marzo de 2027, con más de 83 % de probabilidad |
+| Verificado | 14/11/2026 (investigación 033) y 14/11/2026 (prueba real): ONI de jul-sep 2026 = **+2,16**. La sinopsis de NOAA dice que El Niño será fuerte a muy fuerte hasta enero-marzo de 2027, con más de 83 % de probabilidad |
 
 ## 3. Entrada
 
@@ -41,7 +41,7 @@ Una `Observacion`:
 | `valor` | 2.16 |
 | `unidad` | °C (anomalía) |
 | `fuente` | `CPC` (el mismo nombre que usa la lluvia de CPC) |
-| `fecha` | último día del trimestre (30/9/2026 para jul-sep); en el respaldo, último día del último mes usado |
+| `fecha` | último día del trimestre (14/11/2026 para jul-sep); en el respaldo, último día del último mes usado |
 | `resolucion_m` | 0 (índice global, no tiene píxel) |
 | `calidad` | `buena`; `dudosa` si salió del respaldo o si el último trimestre terminó hace más de 3 meses |
 | `nota` | "El Niño muy fuerte (ONI jul-sep 2026: +2,16 °C, trimestre JAS 2026). NOAA CPC, discusión: Aviso de El Niño; probabilidad de más de 83 % hasta ene-mar 2027. Sinopsis original: "El Niño continues to strengthen, …". Índice del Pacífico, no del lote." |
@@ -66,7 +66,7 @@ En el conector (`rotaterra/fuentes/noaa_enso.py`): principal `NOAA_ENSO` (ONI de
 
 ## 9. Criterios de aceptación
 
-- [x] El índice real de jul-sep 2026 sale +2,16 y la fase "El Niño muy fuerte", como en la investigación 033. Prueba real: `enso_oni` = 2,16, fecha 30/9/2026, calidad `buena`.
+- [x] El índice real de jul-sep 2026 sale +2,16 y la fase "El Niño muy fuerte", como en la investigación 033. Prueba real: `enso_oni` = 2,16, fecha 14/11/2026, calidad `buena`.
 - [x] La `nota` lleva un resumen en castellano armado con datos estructurados (fase, trimestre, estado de alerta traducido con un mapa fijo, probabilidad y período sacados de la sinopsis, fecha de publicación de la discusión) y la sinopsis original entre comillas en inglés, y termina con "Índice del Pacífico, no del lote." Prueba real: discusión, "Aviso de El Niño", más de 83 % hasta ene-mar 2027.
 - [x] El respaldo de PSL responde en la prueba real y da un valor parecido al ONI (diferencia menor a 0,3 °C). Prueba real: promedio jul-sep 2026 de PSL = +1,90 °C ("El Niño fuerte") contra ONI +2,16: diferencia 0,26 °C.
 - [x] El motor muestra `aviso_campana` y ninguna viabilidad cambia. Verificado con la prueba sin internet del motor usando el ONI real de +2,16 ("El Niño muy fuerte"; rama `MOTOR-recomendacion_de_cultivos`).
