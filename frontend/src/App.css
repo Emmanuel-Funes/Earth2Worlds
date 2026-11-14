@@ -1,0 +1,241 @@
+#root {
+  min-height: 100vh;
+}
+
+.app-shell {
+  width: min(100% - 64px, 1440px);
+  margin: 0 auto;
+  padding: 36px 0 48px;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.brand-mark {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 14px;
+  background: #254f43;
+  color: #f7f7f2;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  color: #728079;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.app-header h1,
+.workspace-heading h2 {
+  margin: 0;
+  color: #1d2a25;
+}
+
+.app-header h1 {
+  font-size: 20px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.workspace {
+  padding: 24px;
+  border: 1px solid #e0e6e1;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 12px 34px rgb(30 52 41 / 5%);
+}
+
+.workspace-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.workspace-heading h2 {
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.status-badge {
+  padding: 7px 11px;
+  border: 1px solid #dce9df;
+  border-radius: 999px;
+  background: #f2f7f2;
+  color: #41694c;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.map-container {
+  display: grid;
+  min-height: min(64vh, 640px);
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid #dce5dc;
+  border-radius: 12px;
+  background-color: #f2f5ef;
+  background-image: linear-gradient(#e5ebe3 1px, transparent 1px),
+    linear-gradient(90deg, #e5ebe3 1px, transparent 1px);
+  background-position: center;
+  background-size: 32px 32px;
+}
+
+.query-panel,
+.query-results {
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px solid #e0e6e1;
+  border-radius: 12px;
+  background: #fbfcfa;
+}
+
+.query-panel h3,
+.query-results h3 {
+  margin: 0 0 14px;
+  color: #1d2a25;
+  font-size: 16px;
+}
+
+.query-fields {
+  display: grid;
+  grid-template-columns: minmax(180px, 2fr) repeat(2, minmax(140px, 1fr)) auto;
+  align-items: end;
+  gap: 12px;
+}
+
+.query-fields label {
+  display: grid;
+  gap: 6px;
+  color: #43534a;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.query-fields select,
+.query-fields input,
+.query-fields button {
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 1px solid #cfd9d0;
+  border-radius: 8px;
+  background: #fff;
+  color: #26362d;
+  font: inherit;
+}
+
+.query-fields button {
+  border-color: #254f43;
+  background: #254f43;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.query-fields button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.query-hint,
+.query-message {
+  margin: 12px 0 0;
+  color: #66756c;
+  font-size: 13px;
+}
+
+.query-error {
+  color: #9b2c2c;
+}
+
+.query-results > p {
+  margin-bottom: 0;
+}
+
+.observation-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.observation-list li {
+  display: grid;
+  grid-template-columns: minmax(110px, 1fr) minmax(150px, 2fr) minmax(120px, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #e0e6e1;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.quality {
+  color: #41694c;
+  font-size: 13px;
+  text-transform: capitalize;
+}
+
+.quality-dudosa {
+  color: #8a5c08;
+}
+
+.quality-descartada {
+  color: #66756c;
+}
+
+.quality small {
+  display: block;
+  margin-top: 3px;
+  text-transform: none;
+}
+
+@media (max-width: 640px) {
+  .app-shell {
+    width: min(100% - 32px, 1440px);
+    padding: 24px 0 32px;
+  }
+
+  .app-header {
+    margin-bottom: 22px;
+  }
+
+  .workspace {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .workspace-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    margin-bottom: 16px;
+  }
+
+  .map-container {
+    min-height: 55vh;
+  }
+
+  .query-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .observation-list li {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}
