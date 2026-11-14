@@ -257,7 +257,7 @@ PAGINA_GEOSERVICIOS = "https://geo.inta.gob.ar/geoservicios/"
 NODOS = {"Nacional": "https://geo-backend.inta.gob.ar/geoserver",
          "La Pampa - San Luis (nodo 15)": "https://geo-nodo15.inta.gob.ar/geoserver",
          "nodo 05 (textura y pH)": "https://geo-nodo05.inta.gob.ar/geoserver"}
-# capas aprobadas por Hernán el 4/10/2026 (prioridad 1 y 2), con el nombre verificado en el inventario
+# capas aprobadas por Hernán (prioridad 1 y 2), con el nombre verificado en el inventario
 HOJAS_SAN_LUIS = ["geonode:villamercedes_v0", "geonode:sanluis_v1", "geonode:buenaesperanza_v0",
                   "geonode:villagralroca_v0", "geonode:concaran_v0_676e7dd96118736d2ea36e767bd7c7fd",
                   "geonode:loyola_varela_v0_017028c132f4111b991dff14de997fd8",
