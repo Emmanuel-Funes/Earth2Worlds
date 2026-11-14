@@ -1,0 +1,27 @@
+name: Actualizar datos (nocturno)
+
+on:
+  schedule:
+    - cron: "0 6 * * *"  # 03:00 hora argentina
+  workflow_dispatch:
+
+concurrency:
+  group: actualizar-datos
+  cancel-in-progress: false
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Bajar lo nuevo de los satélites unidos a main (y sus respaldos NASA) y guardarlo
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+          EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
+        run: python -m rotaterra.actualizar
