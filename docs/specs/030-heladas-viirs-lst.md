@@ -1,6 +1,6 @@
 # Spec 030 · Alerta de heladas con VIIRS LST nocturna
 
-**Estado:** propuesta (investigación 028, aprobada por Hernán el 14/10/2026: "Si, arranca con el tema de las heladas") · **Etapa:** pipeline satélite → API → app · **Requiere:** credenciales de Earthdata (`EARTHDATA_USERNAME` / `EARTHDATA_PASSWORD`, ya cargadas) · **Rama:** `VIIRS-heladas` · **Depende de:** PR #24 (`NUCLEO-varios_respaldos_en_orden`)
+**Estado:** propuesta (investigación 028, aprobada por Hernán: "Si, arranca con el tema de las heladas") · **Etapa:** pipeline satélite → API → app · **Requiere:** credenciales de Earthdata (`EARTHDATA_USERNAME` / `EARTHDATA_PASSWORD`, ya cargadas) · **Rama:** `VIIRS-heladas` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`)
 
 ## Objetivo
 
@@ -53,11 +53,11 @@ El lote como lo recibe cualquier satélite: `lote["id"]`, `lote["poligono"]` (Ge
 
 ## Prueba real
 
-Workflow `Probar VIIRS (heladas)` (`.github/workflows/probar-viirs-heladas.yml`, `probar_viirs_heladas.py`). Por defecto: lote de prueba de San Luis y del 15 al 30 de septiembre de 2026, la quincena con la helada del 22/9 que vio la investigación 028. Corre en cada PR que toque estos archivos y a mano con un clic. Necesita las credenciales de Earthdata (ya cargadas como secrets).
+Workflow `Probar VIIRS (heladas)` (`.github/workflows/probar-viirs-heladas.yml`, `probar_viirs_heladas.py`). Por defecto: lote de prueba de San Luis, con un período automático que se cuenta desde el día en que corre. Corre en cada PR que toque estos archivos y a mano con un clic. Necesita las credenciales de Earthdata (ya cargadas como secrets).
 
-## Resultado de la prueba real (14/10/2026)
+## Resultado de la prueba real
 
-Workflow `Probar VIIRS (heladas)` en el PR #45, lote de prueba (centro -33,7025; -65,2975), del 15 al 30 de septiembre de 2026, respuesta en 16 s:
+Workflow `Probar VIIRS (heladas)`, lote de prueba (centro -33,7025; -65,2975), del 15 al 30 de septiembre de 2026, respuesta en 16 s:
 
 | Noche | 15/9 | 16/9 | 19/9 | 21/9 | **22/9** | 23/9 | 24/9 | 25/9 | 26/9 | 27/9 |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -74,7 +74,7 @@ De 16 noches, **10 con dato** y 6 descartadas por nubes. La **noche más fría f
 - [x] Junta NOAA-20 y NOAA-21, por noche gana el más despejado, y un satélite sin colección no frena al otro; un pedido inválido no llama a la NASA; sin credenciales pide credenciales (tests `test_obtener_heladas_junta_noaa20_y_noaa21`, `test_mismo_dia_gana_la_noche_mas_limpia`, `test_un_satelite_sin_coleccion_no_frena_al_otro`, `test_pedido_invalido_no_llama_a_la_nasa`, `test_sin_credenciales_pide_credenciales`).
 - [x] Se anuncia como `VIIRS_LST`, fuente propia (sin `respaldo_de`), y no importa ningún otro satélite (`test_se_anuncia_como_fuente_propia_sin_respaldo` y `tests/test_nucleo.py`).
 - [x] Tests sin internet verdes (63 pasan en local, incluidos los de heladas).
-- [x] Prueba real con un clic y automática en cada PR que toque el conector (`Probar VIIRS (heladas)` en verde en el PR #45): 10 de 16 noches con dato, la más fría el 22/9 con −3,0 °C (riesgo de helada), en 16 s, con NOAA-20 y NOAA-21 resolviendo.
+- [x] Prueba real con un clic y automática en cada PR que toque el conector (`Probar VIIRS (heladas)` en verde): 10 de 16 noches con dato, la más fría el 22/9 con −3,0 °C (riesgo de helada), en 16 s, con NOAA-20 y NOAA-21 resolviendo.
 
 ## Fuera de alcance
 

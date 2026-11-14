@@ -12,11 +12,11 @@ on:
         description: "Esquinas del lote como 'lat, lon; lat, lon; lat, lon; lat, lon' (copiadas de Google Maps)"
         default: "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"
       desde:
-        description: "Desde (AAAA-MM-DD)"
-        default: "2026-08-01"
+        description: "Desde (AAAA-MM-DD). Vacío = automático: hace 60 días"
+        default: ""
       hasta:
-        description: "Hasta (AAAA-MM-DD)"
-        default: "2026-10-27"
+        description: "Hasta (AAAA-MM-DD). Vacío = automático: hace 2 días"
+        default: ""
 
 jobs:
   probar:
@@ -32,8 +32,7 @@ jobs:
         env:
           EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
           EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
-          # en un PR no hay inputs: lote de ejemplo y agosto a octubre de 2026, con la noche del 8/10 (informe del 27/10)
           ESQUINAS: ${{ inputs.esquinas || '-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300' }}
-          DESDE: ${{ inputs.desde || '2026-08-01' }}
-          HASTA: ${{ inputs.hasta || '2026-10-27' }}
-        run: python probar_ecostress_heladas.py "$ESQUINAS" "$DESDE" "$HASTA"
+          DESDE: ${{ inputs.desde }}
+          HASTA: ${{ inputs.hasta }}
+        run: DESDE="${DESDE:-$(date -u -d "-60 days" +%F)}"; HASTA="${HASTA:-$(date -u -d "-2 days" +%F)}"; python probar_ecostress_heladas.py "$ESQUINAS" "$DESDE" "$HASTA"

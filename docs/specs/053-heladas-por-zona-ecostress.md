@@ -1,6 +1,6 @@
 # Spec 053 · Heladas por zona del lote con ECOSTRESS (70 m, de noche)
 
-**Estado:** construida y probada con datos reales (27/10/2026) · **Aprobada por:** Hernán, 27/10/2026 ("Okey, avanzamos", sobre el informe de satélites nuevos del 27/10) · **Rama:** `ECOSTRESS-heladas_por_zona` · **Depende de:** PR #24 (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** Earthdata (ya cargado)
+**Estado:** construida y probada con datos reales · **Aprobada por:** Hernán ("Okey, avanzamos", sobre el informe de satélites nuevos) · **Rama:** `ECOSTRESS-heladas_por_zona` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** Earthdata (ya cargado)
 
 ## Objetivo
 
@@ -10,7 +10,7 @@ Mostrar **en qué parte del lote** hiela. VIIRS (spec 030) da todas las noches u
 
 | Producto | Agencia | Qué da | Píxel | Pasadas | Acceso |
 |---|---|---|---|---|---|
-| `ECO_L2T_LSTE` (la versión más nueva en CMR; hoy la 003), capas `LST`, `cloud`, `water` | NASA (JPL, Estación Espacial) | Temperatura de superficie en kelvin | 70 m, mosaicos UTM | Sin horario fijo: entre el 1/8 y el 27/10/2026 hubo 13 noches con pasada sobre el lote | CMR + GeoTIFF por HTTP (enlace firmado de LP DAAC, igual que el ECOSTRESS de la ET) |
+| `ECO_L2T_LSTE` (la versión más nueva en CMR; hoy la 003), capas `LST`, `cloud`, `water` | NASA (JPL, Estación Espacial) | Temperatura de superficie en kelvin | 70 m, mosaicos UTM | Sin horario fijo: entre el 1/8 y hubo 13 noches con pasada sobre el lote | CMR + GeoTIFF por HTTP (enlace firmado de LP DAAC, igual que el ECOSTRESS de la ET) |
 
 ## Entrada
 
@@ -54,9 +54,9 @@ Mostrar **en qué parte del lote** hiela. VIIRS (spec 030) da todas las noches u
 
 ## Prueba real
 
-Workflow `Probar ECOSTRESS (heladas por zona)` y `probar_ecostress_heladas.py`. Por defecto usa el lote de prueba de San Luis, del 1/8 al 27/10/2026.
+Workflow `Probar ECOSTRESS (heladas por zona)` y `probar_ecostress_heladas.py`. Por defecto usa el lote de prueba de San Luis, con un período automático que se cuenta desde el día en que corre.
 
-## Resultado de la prueba real (27/10/2026)
+## Resultado de la prueba real
 
 Corrida desde el entorno NASA (GitHub Actions sigue pausado por facturación). Lote de prueba (-33,700; -65,300)–(-33,705; -65,295). Del 1/8 al 27/10/2026, respuesta en **27 s**:
 
