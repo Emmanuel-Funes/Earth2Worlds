@@ -61,7 +61,7 @@ Cada archivo pesa ~1,8 GB y cubre unos 300 km. El conector **no lo baja**: lee s
 
 ## Prueba real
 
-Workflow `Probar NISAR (radar)` y `probar_nisar.py`. Por defecto usa el lote de prueba de San Luis, del 1/8 al 27/10/2026.
+Workflow `Probar NISAR (radar)` y `probar_nisar.py`. Por defecto usa el lote de prueba de San Luis, con un período automático que se cuenta desde el día en que corre.
 
 ## Resultado de la prueba real
 
