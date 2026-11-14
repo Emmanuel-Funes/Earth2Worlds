@@ -34,20 +34,20 @@ Solo del núcleo (rama `nucleo-api-y-contrato-comun`): no importa ningún otro s
 
 Corrida el 14/11/2026 contra la fuente real, con datos de los últimos días (desde esta máquina de trabajo). Lote de prueba de San Luis.
 
-Comando: `python probar_fldas.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" "2026-06-17" "2026-10-15"`
+Comando: `python probar_fldas.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" "2026-11-14" "2026-11-14"`
 
 ```
-Humedad del suelo del lote (FLDAS Noah 0,1°, RESPALDO de SMAP) del 2026-06-17 al 2026-10-15 · centro (-33.7025, -65.2975) · 11 s
+Humedad del suelo del lote (FLDAS Noah 0,1°, RESPALDO de SMAP) del 2026-11-14 al 2026-11-14 · centro (-33.7025, -65.2975) · 11 s
 
 Mes         Variable                 m³/m³  Calidad     Detalle
-2026-06-01  humedad_superficial      0.270  dudosa      Respaldo · humedad del suelo de 0 a 10 cm del modelo FLDAS Noah de la NASA (GES DISC) · promedio del mes · píxel de 0,1° (~11 km), dato REGIONAL y MENSUAL de modelo, no una m
-2026-06-01  humedad_zona_raiz        0.226  dudosa      Respaldo · humedad de la zona de raíces (0 a 100 cm) del modelo FLDAS Noah de la NASA (GES DISC) · promedio del mes · píxel de 0,1° (~11 km), dato REGIONAL y MENSUAL de model
-2026-07-01  humedad_superficial      0.253  dudosa      Respaldo · humedad del suelo de 0 a 10 cm del modelo FLDAS Noah de la NASA (GES DISC) · promedio del mes · píxel de 0,1° (~11 km), dato REGIONAL y MENSUAL de modelo, no una m
-2026-07-01  humedad_zona_raiz        0.224  dudosa      Respaldo · humedad de la zona de raíces (0 a 100 cm) del modelo FLDAS Noah de la NASA (GES DISC) · promedio del mes · píxel de 0,1° (~11 km), dato REGIONAL y MENSUAL de model
-2026-08-01  humedad_superficial      0.259  dudosa      Respaldo · humedad del suelo de 0 a 10 cm del modelo FLDAS Noah de la NASA (GES DISC) · promedio del mes · píxel de 0,1° (~11 km), dato REGIONAL y MENSUAL de modelo, no una m
-2026-08-01  humedad_zona_raiz        0.223  dudosa      Respaldo · humedad de la zona de raíces (0 a 100 cm) del modelo FLDAS Noah de la NASA (GES DISC) · promedio del mes · píxel de 0,1° (~11 km), dato REGIONAL y MENSUAL de model
-2026-09-01  humedad_superficial      0.254  dudosa      Respaldo · humedad del suelo de 0 a 10 cm del modelo FLDAS Noah de la NASA (GES DISC) · promedio del mes · píxel de 0,1° (~11 km), dato REGIONAL y MENSUAL de modelo, no una m
-2026-09-01  humedad_zona_raiz        0.221  dudosa      Respaldo · humedad de la zona de raíces (0 a 100 cm) del modelo FLDAS Noah de la NASA (GES DISC) · promedio del mes · píxel de 0,1° (~11 km), dato REGIONAL y MENSUAL de model
+2026-11-14  humedad_superficial      0.270  dudosa      Respaldo · humedad del suelo de 0 a 10 cm del modelo FLDAS Noah de la NASA (GES DISC) · promedio del mes · píxel de 0,1° (~11 km), dato REGIONAL y MENSUAL de modelo, no una m
+2026-11-14  humedad_zona_raiz        0.226  dudosa      Respaldo · humedad de la zona de raíces (0 a 100 cm) del modelo FLDAS Noah de la NASA (GES DISC) · promedio del mes · píxel de 0,1° (~11 km), dato REGIONAL y MENSUAL de model
+2026-11-14  humedad_superficial      0.253  dudosa      Respaldo · humedad del suelo de 0 a 10 cm del modelo FLDAS Noah de la NASA (GES DISC) · promedio del mes · píxel de 0,1° (~11 km), dato REGIONAL y MENSUAL de modelo, no una m
+2026-11-14  humedad_zona_raiz        0.224  dudosa      Respaldo · humedad de la zona de raíces (0 a 100 cm) del modelo FLDAS Noah de la NASA (GES DISC) · promedio del mes · píxel de 0,1° (~11 km), dato REGIONAL y MENSUAL de model
+2026-11-14  humedad_superficial      0.259  dudosa      Respaldo · humedad del suelo de 0 a 10 cm del modelo FLDAS Noah de la NASA (GES DISC) · promedio del mes · píxel de 0,1° (~11 km), dato REGIONAL y MENSUAL de modelo, no una m
+2026-11-14  humedad_zona_raiz        0.223  dudosa      Respaldo · humedad de la zona de raíces (0 a 100 cm) del modelo FLDAS Noah de la NASA (GES DISC) · promedio del mes · píxel de 0,1° (~11 km), dato REGIONAL y MENSUAL de model
+2026-11-14  humedad_superficial      0.254  dudosa      Respaldo · humedad del suelo de 0 a 10 cm del modelo FLDAS Noah de la NASA (GES DISC) · promedio del mes · píxel de 0,1° (~11 km), dato REGIONAL y MENSUAL de modelo, no una m
+2026-11-14  humedad_zona_raiz        0.221  dudosa      Respaldo · humedad de la zona de raíces (0 a 100 cm) del modelo FLDAS Noah de la NASA (GES DISC) · promedio del mes · píxel de 0,1° (~11 km), dato REGIONAL y MENSUAL de model
 
 8 observaciones · calidad {'dudosa': 8} · 8 con dato
 Fuente FLDAS, resolución 11000 m. GLDAS dio ~0,267 y SMAP anda en ese orden: FLDAS tiene que quedar parecido.
