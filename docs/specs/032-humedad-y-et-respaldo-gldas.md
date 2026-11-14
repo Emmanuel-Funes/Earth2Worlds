@@ -1,6 +1,6 @@
 # Spec 032 · Respaldo de humedad del suelo y ET con GLDAS de la NASA
 
-**Estado:** propuesta (investigación 028, aprobada por Hernán el 14/10/2026: "Bueno, sigamos con el proyecto, acepto lo que decías") · **Etapa:** pipeline satélite → API → app · **Requiere:** credenciales de Earthdata (`EARTHDATA_USERNAME` / `EARTHDATA_PASSWORD`, ya cargadas) · **Rama:** `GLDAS-humedad_y_ET_respaldo` · **Depende de:** PR #24 (`NUCLEO-varios_respaldos_en_orden`)
+**Estado:** propuesta (investigación 028, aprobada por Hernán: "Bueno, sigamos con el proyecto, acepto lo que decías") · **Etapa:** pipeline satélite → API → app · **Requiere:** credenciales de Earthdata (`EARTHDATA_USERNAME` / `EARTHDATA_PASSWORD`, ya cargadas) · **Rama:** `GLDAS-humedad_y_ET_respaldo` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`)
 
 ## Objetivo
 
@@ -63,11 +63,11 @@ El lote como lo reciben los satélites: `lote["id"]`, su centro (`lat`/`lon`) y 
 
 ## Prueba real
 
-Workflow `Probar GLDAS (humedad y ET)` (`.github/workflows/probar-gldas.yml`, `probar_gldas.py`). Por defecto, el lote de prueba de San Luis y una semana de septiembre de 2026. Corre en cada PR que toque estos archivos y a mano con un clic. Necesita las credenciales de Earthdata (ya cargadas como secrets).
+Workflow `Probar GLDAS (humedad y ET)` (`.github/workflows/probar-gldas.yml`, `probar_gldas.py`). Por defecto, el lote de prueba de San Luis, con un período automático que se cuenta desde el día en que corre. Corre en cada PR que toque estos archivos y a mano con un clic. Necesita las credenciales de Earthdata (ya cargadas como secrets).
 
-## Resultado de la prueba real (14/10/2026)
+## Resultado de la prueba real
 
-Workflow `Probar GLDAS (humedad y ET)` en el PR #47, lote de prueba (centro −33,7025; −65,2975), del 15 al 21 de septiembre de 2026, respuesta en 8 s cada una, píxel de 0,25° (~25 km):
+Workflow `Probar GLDAS (humedad y ET)`, lote de prueba (centro −33,7025; −65,2975), del 15 al 21 de septiembre de 2026, respuesta en 8 s cada una, píxel de 0,25° (~25 km):
 
 | Fecha | humedad_superficial | humedad_zona_raiz | et_mm_dia |
 |---|---|---|---|
@@ -86,7 +86,7 @@ De los 7 días, los 2 primeros (15 y 16/9) tienen dato completo (8 pasos de 3 h,
 - [x] Se anuncia como `SMAP:GLDAS` (respaldo de SMAP) y `ET:GLDAS` (respaldo de ET), y no importa ningún otro satélite (`test_se_anuncia_como_respaldo_de_smap_y_de_et`, `tests/test_nucleo.py`).
 - [x] Un pedido inválido no llama a la NASA; sin credenciales pide credenciales (`test_pedido_invalido_no_llama_a_la_nasa`, `test_sin_credenciales_pide_credenciales`).
 - [x] Tests sin internet verdes (60 en total, incluidos los de GLDAS).
-- [x] Prueba real con un clic y automática en cada PR que toque el conector (`Probar GLDAS (humedad y ET)` en verde en el PR #47): humedad y ET con dato en 15–16/9, en 8 s.
+- [x] Prueba real con un clic y automática en cada PR que toque el conector (`Probar GLDAS (humedad y ET)` en verde): humedad y ET con dato en 15–16/9, en 8 s.
 
 ## Fuera de alcance
 
