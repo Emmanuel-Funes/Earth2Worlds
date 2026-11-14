@@ -20,3 +20,26 @@ Conector VIIRS: NDVI de 500 m del lote, primer respaldo de HLS y continuidad de 
 ## Depende de
 
 Solo del núcleo (rama `nucleo-api-y-contrato-comun`): no importa ningún otro satélite.
+
+## Prueba real del 14/11/2026
+
+Corrida el 14/11/2026 contra la fuente real, con datos de los últimos días (desde esta máquina de trabajo). Lote de prueba de San Luis.
+
+Comando: `python probar_viirs.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" "2026-09-15" "2026-11-09"`
+
+```
+NDVI del lote (VIIRS NOAA-20/21, 500 m, compuestos de 16 días) del 2026-09-15 al 2026-11-09 · mosaico h12v12 · 14 s
+Capas leídas: {'VJ113A1': {'dia': '/HDFEOS/GRIDS/VIIRS_Grid_16Day_VI_500m/Data_Fields/_500_m_16_days_composite_day_of_the_year', 'confiabilidad': '/HDFEOS/GRIDS/VIIRS_Grid_16Day_VI_500m/Data_Fields/_500_m_16_days_pixel_reliability
+
+Fecha          NDVI  Calidad     Detalle
+2026-09-21     0.28  buena       Respaldo de HLS · VJ113A1 (NOAA-20) compuesto del 2026-09-06 · 1 píxeles de 500 m · válidos 100%
+2026-09-27     0.33  buena       Respaldo de HLS · VJ113A1 (NOAA-20) compuesto del 2026-09-14 · 1 píxeles de 500 m · válidos 100%
+2026-10-01     0.27  buena       Respaldo de HLS · VJ213A1 (NOAA-21) compuesto del 2026-09-22 · 1 píxeles de 500 m · válidos 100%
+2026-10-03     0.31  buena       Respaldo de HLS · VJ113A1 (NOAA-20) compuesto del 2026-09-30 · 1 píxeles de 500 m · válidos 100%
+2026-10-08      —    descartada  Nubes o sin dato · Respaldo de HLS · VJ113A1 (NOAA-20) compuesto del 2026-10-08 · 1 píxeles de 500 m · válidos 0%
+2026-10-17     0.29  buena       Respaldo de HLS · VJ213A1 (NOAA-21) compuesto del 2026-10-08 · 1 píxeles de 500 m · válidos 100%
+2026-10-24      —    descartada  Nubes o sin dato · Respaldo de HLS · VJ213A1 (NOAA-21) compuesto del 2026-10-24 · 1 píxeles de 500 m · válidos 0%
+2026-10-30     0.67  buena       Respaldo de HLS · VJ113A1 (NOAA-20) compuesto del 2026-10-16 · 1 píxeles de 500 m · válidos 100%
+
+8 fechas, 6 con el lote despejado.
+```
