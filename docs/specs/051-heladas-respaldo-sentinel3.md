@@ -1,6 +1,6 @@
 # Spec 051 · Segundo respaldo de heladas con Sentinel-3 SLSTR LST nocturna (ESA)
 
-**Estado:** aprobada por Hernán el 27/10/2026 ("SI PORFAVOR … Es urgente conectarlo") · código y tests listos · **prueba real hecha el 29/10/2026** con la cuenta de Copernicus de Hernán (anda, ver abajo) · **Etapa:** pipeline satélite → API → app · **Requiere:** cuenta gratis de Copernicus Data Space (`COPERNICUS_USERNAME` / `COPERNICUS_PASSWORD`) · **Rama:** `SENTINEL3-heladas_respaldo` · **Depende de:** PR #24 (`NUCLEO-varios_respaldos_en_orden`)
+**Estado:** aprobada por Hernán ("SI PORFAVOR … Es urgente conectarlo") · código y tests listos · **prueba real hecha** con la cuenta de Copernicus de Hernán (anda, ver abajo) · **Etapa:** pipeline satélite → API → app · **Requiere:** cuenta gratis de Copernicus Data Space (`COPERNICUS_USERNAME` / `COPERNICUS_PASSWORD`) · **Rama:** `SENTINEL3-heladas_respaldo` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`)
 
 ## Objetivo
 
@@ -29,7 +29,7 @@ Archivos y variables que se leen:
 | `geodetic_in.nc` | `latitude_in`, `longitude_in` | ubicación de cada píxel |
 | `flags_in.nc` | `confidence_in` | banderas; los nombres y bits se leen de `flag_meanings` / `flag_masks` |
 
-**Verificado con datos reales el 29/10/2026:** los 3 archivos y las variables existen con esos nombres en productos `..._NT_005.SEN3` reales. `confidence_in` trae `flag_meanings` = `coastline ocean tidal land inland_water unfilled spare spare cosmetic duplicate day twilight sun_glint snow summary_cloud summary_pointing` (land = 8, unfilled = 32, summary_cloud = 16384). No hizo falta cambiar el código.
+**Verificado con datos reales:** los 3 archivos y las variables existen con esos nombres en productos `..._NT_005.SEN3` reales. `confidence_in` trae `flag_meanings` = `coastline ocean tidal land inland_water unfilled spare spare cosmetic duplicate day twilight sun_glint snow summary_cloud summary_pointing` (land = 8, unfilled = 32, summary_cloud = 16384). No hizo falta cambiar el código.
 
 ## Entrada
 
@@ -109,4 +109,4 @@ Comparación noche por noche con VIIRS (corrido el mismo día, misma quincena) y
 - [x] El token sigue a mano el redireccionamiento de la descarga, se renueva si vence, y faltan credenciales avisa (tests `test_noche_fria_da_celsius_y_riesgo_de_helada`, `test_token_vencido_se_renueva`, `test_sin_credenciales`).
 - [x] Entra después de MODIS (test `test_entra_despues_de_modis`).
 - [x] No importa a ningún otro satélite y el núcleo no lo nombra (`tests/test_nucleo.py`).
-- [x] Prueba real sobre el lote de San Luis con la cuenta de Copernicus (29/10/2026): 5 de 16 noches con dato, más fría 22/9 con 0,7 °C (VIIRS −3,0, MODIS 0,1), ver tabla.
+- [x] Prueba real sobre el lote de San Luis con la cuenta de Copernicus: 5 de 16 noches con dato, más fría 22/9 con 0,7 °C (VIIRS −3,0, MODIS 0,1), ver tabla.
