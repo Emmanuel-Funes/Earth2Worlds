@@ -20,7 +20,7 @@ Hernán lo pidió ("Si, hazlo") después de preguntar si usábamos GRACE y GRACE
 | Grilla | 0,25°, de 60° S a 90° N (San Luis entra) | 0,5° (señal real de ~300 km) |
 | Frecuencia | Semanal (un dato por lunes) | Mensual |
 | Desde | 3/2/2003 | 4/2002 |
-| Atraso | 3 a 6 meses. El 13/10/2026 el último archivo era la semana del 29/6 al 5/7/2026 | Unos 2 meses |
+| Atraso | 3 a 6 meses. En la prueba, el último archivo era la semana del 29/6 al 5/7/2026 | Unos 2 meses |
 | Acceso | CMR + OPeNDAP (`opendap.earthdata.nasa.gov`, colección C2283200566-GES_DISC) con el núcleo `earthdata` | CMR + descarga del archivo de PO.DAAC con el token de Earthdata. Es un solo NetCDF de ~44 MB con todos los meses; se baja una vez y se guarda hasta que JPL publique otro. PO.DAAC no lo sirve por OPeNDAP (la NASA responde 404, verificado) |
 
 Verificado en CMR: las dos colecciones existen, cubren San Luis y el principal tiene archivos semanales hasta julio de 2026.
