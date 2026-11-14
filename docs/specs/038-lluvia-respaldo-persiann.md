@@ -1,6 +1,6 @@
 # Spec 038 · Tercer respaldo de la lluvia con NOAA PERSIANN-CDR (estimación por satélite)
 
-**Estado:** aprobada por Hernán el 15/10/2026 ("Listo, sigamos con los que dijiste") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** nada (archivos públicos de NOAA NCEI, sin cuenta) · **Rama:** `PERSIANN-lluvia_respaldo` · **Depende de:** PR #24 (`NUCLEO-varios_respaldos_en_orden`)
+**Estado:** aprobada por Hernán ("Listo, sigamos con los que dijiste") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** nada (archivos públicos de NOAA NCEI, sin cuenta) · **Rama:** `PERSIANN-lluvia_respaldo` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`)
 
 ## Objetivo
 
@@ -64,7 +64,7 @@ Workflow `Probar PERSIANN (lluvia de respaldo)` (`.github/workflows/probar-persi
 
 ## Resultado de la prueba real
 
-Workflow `Probar PERSIANN (lluvia de respaldo)` en el PR #54 (15/10/2026, en verde), lote de prueba (centro -33,7025; -65,2975), del 1 al 14 de enero de 2026. 14 días, todos con dato `buena`, **total 25,3 mm** (justo lo que estimó la investigación 028). Días con lluvia: 6/1 2,15 · 7/1 0,46 · 8/1 11,54 · 9/1 2,48 · 13/1 5,09 mm; el resto 0,00.
+Workflow `Probar PERSIANN (lluvia de respaldo)`, lote de prueba (centro -33,7025; -65,2975), del 1 al 14 de enero de 2026. 14 días, todos con dato `buena`, **total 25,3 mm** (justo lo que estimó la investigación 028). Días con lluvia: 6/1 2,15 · 7/1 0,46 · 8/1 11,54 · 9/1 2,48 · 13/1 5,09 mm; el resto 0,00.
 
 Comparación en el mismo período:
 
