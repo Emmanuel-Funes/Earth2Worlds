@@ -6,7 +6,7 @@
 
 Que la lluvia del lote siga llegando cuando **GPM IMERG** (spec 006, principal de `lluvia_mm`) **y** sus dos primeros respaldos, **NASA POWER** (spec 013) y **NOAA CPC** (spec 029), fallan a la vez, quedan pendientes o no traen datos.
 
-Los tres de más arriba tienen un punto flaco común: IMERG desde el 30/9/2025 es "Late" (sin corrección por pluviómetros); POWER es un modelo; y CPC, al ser pluviómetros interpolados, **se queda sin dato donde no hay estaciones cerca**. **PERSIANN-CDR** es una estimación **por satélite** (infrarrojo), calibrada con GPCP mensual: estima la lluvia incluso donde no hay estaciones, así que es una red de contención distinta de las tres anteriores. Es un *Climate Data Record* de NOAA, una de las agencias socias de la NASA permitidas (spec 008).
+Los tres de más arriba tienen un punto flaco común: IMERG desde el 14/11/2026 es "Late" (sin corrección por pluviómetros); POWER es un modelo; y CPC, al ser pluviómetros interpolados, **se queda sin dato donde no hay estaciones cerca**. **PERSIANN-CDR** es una estimación **por satélite** (infrarrojo), calibrada con GPCP mensual: estima la lluvia incluso donde no hay estaciones, así que es una red de contención distinta de las tres anteriores. Es un *Climate Data Record* de NOAA, una de las agencias socias de la NASA permitidas (spec 008).
 
 ## Fuente
 
@@ -36,7 +36,7 @@ PERSIANN se baja **un archivo por día** (a diferencia de CPC, que es un NetCDF 
 ## Salida (contrato común)
 
 ```json
-{"lote_id": "lote-7", "fecha": "2026-01-13", "variable": "lluvia_mm", "valor": 15.8,
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "lluvia_mm", "valor": 15.8,
  "unidad": "mm/día", "fuente": "PERSIANN", "resolucion_m": 27000, "calidad": "buena",
  "nota": "Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°"}
 ```
