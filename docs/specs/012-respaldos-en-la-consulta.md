@@ -1,6 +1,6 @@
 # Spec 012 · Los respaldos también entran cuando la app consulta en el momento
 
-**Estado:** aprobada por Hernán el 4/10/2026 (tarjeta "¿Hago que los respaldos entren solos…?", opción "Sí, hacerlo") · **Etapa:** pipeline satélite → API → app · **Completa:** spec 010 (la app espera a la NASA) y spec 005 (respaldos)
+**Estado:** aprobada por Hernán (tarjeta "¿Hago que los respaldos entren solos…?", opción "Sí, hacerlo") · **Etapa:** pipeline satélite → API → app · **Completa:** spec 010 (la app espera a la NASA) y spec 005 (respaldos)
 
 ## Objetivo
 
@@ -22,7 +22,7 @@ Que la app reciba el dato del respaldo, marcado con su fuente, cuando el satéli
 
 - `satelite`: el principal, tal como figura en `GET /satelites` (ej. `POWER`, `HLS`, `SMAP`, `IMERG`, `NASADEM`).
 - `poligono`: el lote, GeoJSON `Polygon` en EPSG:4326. Es lo único que identifica al lote.
-- `lote_id`: **opcional** (si no viene, vale `"lote"`). Es una etiqueta libre que se copia en cada observación; no se guarda ni se busca en ninguna base. Antes era obligatorio, y el equipo del frontend señaló (5/10/2026) que pedirlo sin usarlo era una contradicción.
+- `lote_id`: **opcional** (si no viene, vale `"lote"`). Es una etiqueta libre que se copia en cada observación; no se guarda ni se busca en ninguna base. Antes era obligatorio, y el equipo del frontend señaló que pedirlo sin usarlo era una contradicción.
 - El centro del lote (lat/lon, para los satélites que piden un punto) se calcula del polígono.
 - Rango máximo: 366 días (el mismo límite que los conectores).
 
@@ -51,8 +51,8 @@ Que la app reciba el dato del respaldo, marcado con su fuente, cuando el satéli
 
 ## Reglas de calidad
 
-- Un principal que responde con algún dato útil (aunque otros estén `descartada` por nubes) **no** activa el respaldo. Si **todas** sus observaciones vienen descartadas, cuenta como `sin_datos` y entra el respaldo; si nadie trae nada útil, vuelven las descartadas de la primera fuente (spec 041, parte B, aprobada por Hernán el 15/10/2026).
-- Los respaldos marcados `al_dia` no entran en esta cadena: después de ella completan los últimos días que la respuesta todavía no tiene, variable por variable, y la respuesta lo dice en `completada_con` (spec 043, aprobada por Hernán el 16/10/2026). `GET /satelites` los lista aparte, en `del_dia`.
+- Un principal que responde con algún dato útil (aunque otros estén `descartada` por nubes) **no** activa el respaldo. Si **todas** sus observaciones vienen descartadas, cuenta como `sin_datos` y entra el respaldo; si nadie trae nada útil, vuelven las descartadas de la primera fuente (spec 041, parte B, aprobada por Hernán).
+- Los respaldos marcados `al_dia` no entran en esta cadena: después de ella completan los últimos días que la respuesta todavía no tiene, variable por variable, y la respuesta lo dice en `completada_con` (spec 043, aprobada por Hernán). `GET /satelites` los lista aparte, en `del_dia`.
 - La espera puede ser de minutos (HLS, AppEEARS): la app tiene que mostrar que está esperando (spec 010).
 
 ## Criterios de aceptación
