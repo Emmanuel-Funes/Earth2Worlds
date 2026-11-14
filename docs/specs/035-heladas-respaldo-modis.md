@@ -1,6 +1,6 @@
 # Spec 035 · Respaldo de heladas con MODIS LST nocturna
 
-**Estado:** aprobada por Hernán el 15/10/2026 ("Listo, sigamos con los que dijiste") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** credenciales de Earthdata (`EARTHDATA_USERNAME` / `EARTHDATA_PASSWORD`, ya cargadas) · **Rama:** `MODIS-heladas_respaldo` · **Depende de:** PR #24 (`NUCLEO-varios_respaldos_en_orden`)
+**Estado:** aprobada por Hernán ("Listo, sigamos con los que dijiste") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** credenciales de Earthdata (`EARTHDATA_USERNAME` / `EARTHDATA_PASSWORD`, ya cargadas) · **Rama:** `MODIS-heladas_respaldo` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`)
 
 ## Objetivo
 
@@ -53,11 +53,11 @@ El lote como lo recibe cualquier satélite: `lote["id"]`, `lote["poligono"]` (Ge
 
 ## Prueba real
 
-Workflow `Probar MODIS (heladas)` (`.github/workflows/probar-modis-heladas.yml`, `probar_modis_heladas.py`). Por defecto: lote de prueba de San Luis y del 15 al 30 de septiembre de 2026, la quincena con la helada del 22/9 que vieron la investigación 028 y la spec 030. Corre en cada PR que toque estos archivos y a mano con un clic. Necesita las credenciales de Earthdata (ya cargadas como secrets).
+Workflow `Probar MODIS (heladas)` (`.github/workflows/probar-modis-heladas.yml`, `probar_modis_heladas.py`). Por defecto: lote de prueba de San Luis, con un período automático que se cuenta desde el día en que corre. Corre en cada PR que toque estos archivos y a mano con un clic. Necesita las credenciales de Earthdata (ya cargadas como secrets).
 
 ## Resultado de la prueba real
 
-Workflow `Probar MODIS (heladas)` en el PR #51 (15/10/2026, en verde), lote de prueba (centro -33,7025; -65,2975), 16 noches de septiembre de 2026. 11 noches con dato `buena` y 5 `descartada` por nubes (MODIS no ve a través de nubes, como VIIRS). Píxel de 1 km.
+Workflow `Probar MODIS (heladas)`, lote de prueba (centro -33,7025; -65,2975), 16 noches de septiembre de 2026. 11 noches con dato `buena` y 5 `descartada` por nubes (MODIS no ve a través de nubes, como VIIRS). Píxel de 1 km.
 
 - **Noche más fría: 22/9/2026, 0,1 °C de superficie** (la misma noche que VIIRS marcó como la más fría).
 - 0 noches con riesgo de helada según el umbral de ≤ 0 °C de superficie.
@@ -75,4 +75,4 @@ Workflow `Probar MODIS (heladas)` en el PR #51 (15/10/2026, en verde), lote de p
 - [x] Terra y Aqua se juntan y por noche gana el más limpio; un satélite sin colección no frena al otro (tests `test_obtener_heladas_junta_terra_y_aqua`, `test_mismo_dia_gana_la_noche_mas_limpia`, `test_un_satelite_sin_coleccion_no_frena_al_otro`).
 - [x] Se anuncia como respaldo de VIIRS_LST con orden 1 (test `test_se_anuncia_como_respaldo_de_viirs_lst`).
 - [x] No importa a ningún otro satélite y el núcleo no lo nombra (test `test_nucleo.py`).
-- [x] Prueba real sobre el lote de San Luis (PR #51, workflow en verde): la noche más fría es el **22/9**, la misma que marcó VIIRS. El valor difiere (MODIS 0,1 °C vs VIIRS −3,0 °C) porque son sensores distintos y LST no es temperatura del aire; ver "Resultado de la prueba real".
+- [x] Prueba real sobre el lote de San Luis: la noche más fría es el **22/9**, la misma que marcó VIIRS. El valor difiere (MODIS 0,1 °C vs VIIRS −3,0 °C) porque son sensores distintos y LST no es temperatura del aire; ver "Resultado de la prueba real".
