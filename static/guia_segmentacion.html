@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="es" class="light">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -22,9 +22,40 @@
             },
         };
     </script>
+    <style>
+        .hidden { display: none !important; }
+        :root {
+            --bg-page: #fbfbfa;
+            --bg-card: #ffffff;
+            --border-marron: #8c6547;
+            --verde-agro: #16a34a;
+        }
+        html, body {
+            background-color: #fbfbfa !important;
+            color: #22160f !important;
+        }
+        .bg-slate-950, .bg-slate-900, .bg-slate-900\/90 {
+            background-color: #ffffff !important;
+        }
+        .bg-slate-800, .bg-slate-800\/80 {
+            background-color: #f8f5f0 !important;
+        }
+        .border-slate-800, .border-slate-800\/80 {
+            border-color: #8c6547 !important;
+        }
+        .text-white {
+            color: #22160f !important;
+        }
+        .text-slate-100, .text-slate-200, .text-slate-300 {
+            color: #2b1d14 !important;
+        }
+        .text-slate-400, .text-slate-500 {
+            color: #715543 !important;
+        }
+    </style>
 </head>
 
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col">
+<body class="bg-[#fbfbfa] text-[#22160f] font-sans min-h-screen flex flex-col">
     <!-- =================================================================== -->
     <!-- NAVBAR DE ARQUITECTURA (EXCLUSIVO ADMIN)                            -->
     <!-- =================================================================== -->

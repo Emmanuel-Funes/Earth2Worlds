@@ -528,7 +528,7 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
             comp_tx = f"Tu campo: Areno franco ({suelo['textura_fuente']}) vs Óptimo: Franco a franco-arenoso con retención de agua"
         else:
             res, dato = "ok", f"{suelo['textura'].replace('_', ' ')} ({suelo['textura_fuente']})"
-            comp_tx = f"Tu campo: {suelo['textura'].replace('_', ' ')} ({suelo['textura_fuente']}) vs Óptimo: Franco a franco-arenoso"
+            comp_tx = f"Tu campo: {suelo['textura'].replace('_', ' ')} vs Óptimo: Franco a franco-arenoso"
         reglas.append(_regla("textura", "Textura", res, dato, tx["texto"], [tx["fuente"]], cat, "Criterio de la agrónoma; solo la clase arenoso, no areno franco (Hernán, 14/11/2026)",
                              comparativa_optimo=comp_tx))
     if tx.get("arcilla_max_pct"):
@@ -577,7 +577,7 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
         max_ph = p["maximo"] if p else 8.0
         umbral_ph = (f"mínimo {min_ph:g} · óptimo {opt_ph:g} · máximo {max_ph:g}; hasta 0,3 fuera es tolerable" if p
                      else "Tope por cultivo (FAO Ecocrop); hasta 0,3 por encima es tolerable")
-        comp_ph = f"Tu campo: pH {ph['ph']['valor']:g} ({ph['ph']['fuente']}) vs Óptimo: pH {opt_ph:g} (Tolerancia: {min_ph:g} a {max_ph:g})"
+        comp_ph = f"Tu campo: pH {ph['ph']['valor']:g} vs Óptimo: pH {opt_ph:g} (Tolerancia: {min_ph:g} a {max_ph:g})"
         reglas.append(_regla("ph", "pH", res, dato, umbral_ph, [p["fuente"]] if p else [], cat, detalle,
                              comparativa_optimo=comp_ph))
 

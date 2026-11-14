@@ -110,6 +110,11 @@ CONTROLADORES JAVASCRIPT:
         };
     </script>
     <style>
+        /* Regla crítica para modales y vistas ocultas */
+        .hidden {
+            display: none !important;
+        }
+
         /* ================================================================= */
         /* PALETA AGROCLIMÁTICA: FONDOS BLANCOS, MARCOS MARRÓN Y VERDE AGRO   */
         /* ================================================================= */
@@ -181,25 +186,26 @@ CONTROLADORES JAVASCRIPT:
             border-color: #16a34a !important;
         }
 
-        /* 3. TEXTOS LEGIBLES DE ALTO CONTRASTE EN FONDO BLANCO */
-        .text-white,
-        .text-slate-100 {
+        /* 3. TEXTOS LEGIBLES DE ALTO CONTRASTE */
+        .bg-white h1, .bg-white h2, .bg-white h3, .bg-white h4,
+        .bg-slate-900 h1, .bg-slate-900 h2, .bg-slate-900 h3, .bg-slate-900 h4,
+        .bg-slate-950 h1, .bg-slate-950 h2, .bg-slate-950 h3, .bg-slate-950 h4,
+        .bg-white strong, .bg-slate-900 strong, .bg-slate-950 strong {
             color: #22160f !important;
         }
-        .text-slate-200,
-        .text-stone-200 {
+        .text-slate-100:not(button *):not(button):not(a.bg-emerald-600) {
+            color: #22160f !important;
+        }
+        .text-slate-200:not(button *):not(button) {
             color: #3b281c !important;
         }
-        .text-slate-300,
-        .text-stone-300 {
+        .text-slate-300:not(button *):not(button) {
             color: #553e2e !important;
         }
-        .text-slate-400,
-        .text-stone-400 {
+        .text-slate-400:not(button *):not(button) {
             color: #715543 !important;
         }
-        .text-slate-500,
-        .text-stone-500 {
+        .text-slate-500 {
             color: #8c705d !important;
         }
 
@@ -211,7 +217,6 @@ CONTROLADORES JAVASCRIPT:
 
         /* 5. ICONOGRAFÍA Y ACENTOS EN VERDE AGRO */
         .text-emerald-400,
-        .text-emerald-300,
         .text-emerald-500,
         .text-emerald-600,
         .text-green-500,
@@ -257,16 +262,44 @@ CONTROLADORES JAVASCRIPT:
             box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15) !important;
         }
 
-        /* 7. BOTONES PRINCIPALES EN VERDE CON TEXTO BLANCO */
+        /* 7. BOTONES PRINCIPALES EN VERDE Y MARRÓN CON TEXTO BLANCO */
         button.bg-emerald-500,
         button.bg-emerald-600,
+        button.bg-emerald-700,
         .btn-primario-agro {
             background-color: #16a34a !important;
             color: #ffffff !important;
         }
         button.bg-emerald-500:hover,
-        button.bg-emerald-600:hover {
+        button.bg-emerald-600:hover,
+        button.bg-emerald-700:hover,
+        .btn-primario-agro:hover {
             background-color: #15803d !important;
+            color: #ffffff !important;
+        }
+        button.bg-emerald-500 *,
+        button.bg-emerald-600 *,
+        button.bg-emerald-700 *,
+        .btn-primario-agro * {
+            color: #ffffff !important;
+        }
+
+        /* Botones secundarios en marrón con texto blanco */
+        button.bg-\[\#785843\],
+        button.bg-\[\#5f4534\],
+        .btn-marron-agro {
+            background-color: #785843 !important;
+            color: #ffffff !important;
+        }
+        button.bg-\[\#785843\]:hover,
+        button.bg-\[\#5f4534\]:hover,
+        .btn-marron-agro:hover {
+            background-color: #5f4534 !important;
+            color: #ffffff !important;
+        }
+        button.bg-\[\#785843\] *,
+        button.bg-\[\#5f4534\] *,
+        .btn-marron-agro * {
             color: #ffffff !important;
         }
 
@@ -292,23 +325,23 @@ CONTROLADORES JAVASCRIPT:
     <!-- =================================================================== -->
     <!-- [SEC-00] SELECTOR DE TIPO DE USUARIO (AGRICULTOR VS. TÉCNICO VS. ADMIN) -->
     <!-- =================================================================== -->
-    <div id="modalSelectorModo" class="fixed inset-0 z-50 flex items-start sm:items-center justify-center bg-stone-900/50 backdrop-blur-sm p-4 sm:p-6 overflow-y-auto">
-        <div class="w-full max-w-4xl bg-white border-2 border-[#8c6547] rounded-3xl shadow-2xl p-6 sm:p-10 space-y-6 sm:space-y-8 my-auto relative overflow-visible">
-            <div class="text-center space-y-3 px-2">
+    <div id="modalSelectorModo" class="fixed inset-0 z-50 overflow-y-auto bg-stone-900/60 backdrop-blur-sm p-3 sm:p-6 flex justify-center items-start">
+        <div class="w-full max-w-4xl bg-white border-2 border-[#8c6547] rounded-3xl shadow-2xl p-5 sm:p-8 space-y-5 my-6 sm:my-10 relative overflow-visible">
+            <div class="text-center space-y-2.5 px-2">
                 <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-400 text-emerald-800 text-xs font-mono font-bold max-w-full">
                     <span>🌍 Earth2Worlds</span> &bull; <span>Plataforma Agroclimática</span>
                 </div>
-                <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#241810] tracking-normal block w-full py-2 leading-normal overflow-visible">
+                <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#241810] tracking-tight block w-full py-1 leading-normal overflow-visible">
                     Elige tu Modalidad de Acceso
                 </h2>
-                <p class="text-sm sm:text-base text-[#5c4636] max-w-2xl mx-auto leading-relaxed">
+                <p class="text-xs sm:text-sm text-[#5c4636] max-w-2xl mx-auto leading-relaxed">
                     Selecciona cómo deseas explorar la plataforma. Las sesiones de prueba no requieren registro ni guardan datos permanentes en el sistema.
                 </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Tarjeta PERFIL AGRICULTOR -->
-                <div class="bg-white border-2 border-[#8c6547] hover:border-emerald-600 rounded-2xl p-6 sm:p-7 flex flex-col justify-between transition group shadow-md hover:shadow-xl">
+                <div onclick="iniciarModoDesdeSelector('basico')" class="cursor-pointer select-none active:scale-[0.99] bg-white border-2 border-[#8c6547] hover:border-emerald-600 rounded-2xl p-5 sm:p-7 flex flex-col justify-between transition group shadow-md hover:shadow-xl ring-0 hover:ring-2 hover:ring-emerald-500/20">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
                             <span class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 border border-emerald-400 flex items-center justify-center text-2xl font-bold">
@@ -336,7 +369,7 @@ CONTROLADORES JAVASCRIPT:
                     <div class="pt-6">
                         <button
                             type="button"
-                            onclick="iniciarModoDesdeSelector('basico')"
+                            onclick="event.stopPropagation(); iniciarModoDesdeSelector('basico')"
                             class="w-full py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-heading font-bold text-sm shadow-md transition flex items-center justify-center gap-2"
                         >
                             <span>Ingresar como Agricultor</span> &rarr;
@@ -345,7 +378,7 @@ CONTROLADORES JAVASCRIPT:
                 </div>
 
                 <!-- Tarjeta PERFIL TÉCNICO AGROPECUARIO -->
-                <div class="bg-white border-2 border-[#8c6547] hover:border-emerald-600 rounded-2xl p-6 sm:p-7 flex flex-col justify-between transition group shadow-md hover:shadow-xl">
+                <div onclick="iniciarModoDesdeSelector('avanzado')" class="cursor-pointer select-none active:scale-[0.99] bg-white border-2 border-[#8c6547] hover:border-emerald-600 rounded-2xl p-5 sm:p-7 flex flex-col justify-between transition group shadow-md hover:shadow-xl ring-0 hover:ring-2 hover:ring-emerald-500/20">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
                             <span class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 border border-emerald-400 flex items-center justify-center text-2xl font-bold">
@@ -373,7 +406,7 @@ CONTROLADORES JAVASCRIPT:
                     <div class="pt-6">
                         <button
                             type="button"
-                            onclick="iniciarModoDesdeSelector('avanzado')"
+                            onclick="event.stopPropagation(); iniciarModoDesdeSelector('avanzado')"
                             class="w-full py-3.5 px-5 rounded-xl bg-[#785843] hover:bg-[#5f4534] text-white font-heading font-bold text-sm shadow-md transition flex items-center justify-center gap-2"
                         >
                             <span>Ingresar como Técnico Agropecuario</span> &rarr;
@@ -1883,6 +1916,7 @@ CONTROLADORES JAVASCRIPT:
             if (modal) {
                 modal.classList.remove("hidden");
                 modal.classList.add("flex");
+                modal.style.display = "flex";
             }
             cerrarModal("modalLoginAdmin");
         }
@@ -1892,6 +1926,7 @@ CONTROLADORES JAVASCRIPT:
             if (modal) {
                 modal.classList.add("hidden");
                 modal.classList.remove("flex");
+                modal.style.display = "none";
             }
         }
 
@@ -1899,28 +1934,54 @@ CONTROLADORES JAVASCRIPT:
             try {
                 mostrarToast(`Iniciando ${modo === 'basico' ? 'Modo Agricultor' : 'Modo Técnico Agropecuario'}...`, "info");
                 const data = await iniciarSesionInvitado(modo);
-                currentUser = data.usuario;
+                currentUser = data ? data.usuario : null;
                 setModo(modo);
 
                 const navModoLabel = document.getElementById("navModoLabel");
                 if (navModoLabel) navModoLabel.textContent = modo === "basico" ? "Agricultor" : "Técnico Agropecuario";
-
+            } catch (err) {
+                console.warn("[Selector] Fallback a sesión local:", err);
+                currentUser = {
+                    id: 0,
+                    nombre: "Invitado",
+                    apellido: modo === "basico" ? "Agricultor" : "Técnico",
+                    email: `guest_${modo}@earth2worlds.local`,
+                    rol: modo === "basico" ? "propietario" : "operador",
+                    provincia: "San Luis",
+                    ciudad: "Villa Mercedes",
+                    codigo_postal: "5730",
+                    campos_asignados: []
+                };
+                setModo(modo);
+            } finally {
                 cerrarSelectorModalidad();
 
+                const vBasico = document.getElementById("vistaModoBasico");
+                const vAvanzado = document.getElementById("vistaModoAvanzado");
+
                 if (modo === "basico") {
-                    document.getElementById("vistaModoAvanzado").classList.add("hidden");
-                    document.getElementById("vistaModoBasico").classList.remove("hidden");
+                    if (vAvanzado) {
+                        vAvanzado.classList.add("hidden");
+                        vAvanzado.style.display = "none";
+                    }
+                    if (vBasico) {
+                        vBasico.classList.remove("hidden");
+                        vBasico.style.display = "block";
+                    }
                     configurarInterfazBasica();
                     irAPasoBasico1();
                     setTimeout(() => inicializarMapaBasico(), 150);
                 } else {
-                    document.getElementById("vistaModoBasico").classList.add("hidden");
-                    document.getElementById("vistaModoAvanzado").classList.remove("hidden");
+                    if (vBasico) {
+                        vBasico.classList.add("hidden");
+                        vBasico.style.display = "none";
+                    }
+                    if (vAvanzado) {
+                        vAvanzado.classList.remove("hidden");
+                        vAvanzado.style.display = "block";
+                    }
                     await inicializarAplicacion();
                 }
-            } catch (err) {
-                console.error("[Selector] Error:", err);
-                mostrarToast("No se pudo iniciar la sesión efímera.", "error");
             }
         }
 
@@ -1930,6 +1991,7 @@ CONTROLADORES JAVASCRIPT:
             if (modal) {
                 modal.classList.remove("hidden");
                 modal.classList.add("flex");
+                modal.style.display = "flex";
             }
             const errBox = document.getElementById("adminLoginError");
             if (errBox) errBox.classList.add("hidden");
@@ -2705,7 +2767,6 @@ CONTROLADORES JAVASCRIPT:
                                                             <span class="text-[9px] font-bold uppercase tracking-wider text-[#8c532b] block mb-0.5">Tu campo vs Óptimo del cultivo:</span>
                                                             <span class="text-[#241810] font-semibold text-[11px]">${escapeHtml(r.comparativa_optimo || r.dato_del_lote || r.dato)}</span>
                                                         </div>
-                                                        <div class="text-[10px] text-[#553e2e] leading-snug">${escapeHtml(r.dato_del_lote || r.dato)}</div>
                                                     </li>
                                                 `).join('')}
                                             </ul>
@@ -3846,6 +3907,7 @@ CONTROLADORES JAVASCRIPT:
             if (!m) return;
             m.classList.add("hidden");
             m.classList.remove("flex");
+            m.style.display = "none";
         }
 
         function mostrarToast(mensaje, tipo = "info") {

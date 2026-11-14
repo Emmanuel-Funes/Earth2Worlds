@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="es" class="light">
 
 <head>
     <meta charset="UTF-8" />
@@ -26,19 +26,50 @@
         };
     </script>
     <style>
+        .hidden { display: none !important; }
+        :root {
+            --bg-page: #fbfbfa;
+            --bg-card: #ffffff;
+            --border-marron: #8c6547;
+            --verde-agro: #16a34a;
+        }
+        html, body {
+            background-color: #fbfbfa !important;
+            color: #22160f !important;
+        }
+        .bg-slate-950, .bg-slate-900, .bg-slate-900\/95, .bg-slate-900\/80, .bg-slate-900\/60 {
+            background-color: #ffffff !important;
+        }
+        .bg-slate-800, .bg-slate-800\/80 {
+            background-color: #f8f5f0 !important;
+        }
+        .border-slate-800, .border-slate-800\/80 {
+            border-color: #8c6547 !important;
+        }
+        .text-white {
+            color: #22160f !important;
+        }
+        .text-slate-100, .text-slate-200, .text-slate-300 {
+            color: #2b1d14 !important;
+        }
+        .text-slate-400, .text-slate-500 {
+            color: #715543 !important;
+        }
+
         .section-frame {
             position: relative;
-            border: 2px dashed rgba(16, 185, 129, 0.35);
+            border: 2px dashed #8c6547;
             border-radius: 1rem;
             transition: all 0.2s ease;
             cursor: pointer;
+            background-color: #ffffff !important;
         }
 
         .section-frame:hover,
         .section-frame.active-sec {
-            border-color: #10b981;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2), 0 12px 30px -10px rgba(16, 185, 129, 0.25);
-            background-color: rgba(15, 23, 42, 0.92);
+            border-color: #16a34a;
+            box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2), 0 12px 30px -10px rgba(22, 163, 74, 0.25);
+            background-color: #f4fbf7 !important;
         }
 
         .section-badge {
@@ -50,14 +81,14 @@
             font-weight: 700;
             padding: 0.2rem 0.55rem;
             border-radius: 0.5rem;
-            background: rgba(16, 185, 129, 0.18);
-            color: #6ee7b7;
-            border: 1px solid rgba(16, 185, 129, 0.45);
+            background: #ecfdf5;
+            color: #166534;
+            border: 1px solid #86efac;
         }
     </style>
 </head>
 
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col">
+<body class="bg-[#fbfbfa] text-[#22160f] font-sans min-h-screen flex flex-col">
     <!-- =================================================================== -->
     <!-- BARRA SUPERIOR STICKY: INSPECTOR INTERACTIVO Y GENERADOR DE PROMPTS -->
     <!-- =================================================================== -->

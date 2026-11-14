@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="es" class="light">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -22,26 +22,77 @@
             },
         };
     </script>
+    <style>
+        .hidden { display: none !important; }
+        :root {
+            --bg-page: #fbfbfa;
+            --bg-card: #ffffff;
+            --border-marron: #8c6547;
+            --verde-agro: #16a34a;
+        }
+        html, body {
+            background-color: #fbfbfa !important;
+            color: #22160f !important;
+        }
+        .bg-slate-950, .bg-slate-900, .bg-slate-900\/80 {
+            background-color: #ffffff !important;
+        }
+        .bg-slate-800, .bg-slate-800\/80 {
+            background-color: #f8f5f0 !important;
+        }
+        .border-slate-800, .border-slate-800\/80, .border-slate-900 {
+            border-color: #8c6547 !important;
+        }
+        .text-white {
+            color: #22160f !important;
+        }
+        .text-slate-100, .text-slate-200, .text-slate-300 {
+            color: #2b1d14 !important;
+        }
+        .text-slate-400, .text-slate-500 {
+            color: #715543 !important;
+        }
+        input, select {
+            background-color: #ffffff !important;
+            color: #22160f !important;
+            border: 1.5px solid #8c6547 !important;
+        }
+        input:focus, select:focus {
+            border-color: #16a34a !important;
+            outline: none !important;
+            box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15) !important;
+        }
+        #btnSubmitRegistro {
+            background-color: #16a34a !important;
+            color: #ffffff !important;
+        }
+        #btnSubmitRegistro:hover {
+            background-color: #15803d !important;
+        }
+        #btnSubmitRegistro * {
+            color: #ffffff !important;
+        }
+    </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-emerald-500/30 selection:text-emerald-200">
+<body class="bg-[#fbfbfa] text-[#22160f] font-sans min-h-screen flex flex-col justify-between selection:bg-emerald-200 selection:text-emerald-900">
     <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
         <div class="absolute -top-32 right-10 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-10 -left-24 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-10 -left-24 w-96 h-96 bg-amber-600/10 rounded-full blur-3xl"></div>
     </div>
 
     <!-- Header -->
-    <header class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md">
+    <header class="border-b border-[#8c6547] bg-white/90 backdrop-blur-md">
         <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
             <a href="/" class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-sky-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 font-heading font-extrabold text-slate-950 text-lg">
                     E2W
                 </div>
                 <div>
-                    <span class="font-heading text-xl font-bold tracking-tight text-white">Earth2Worlds</span>
-                    <span class="block text-xs text-slate-400">Alta de Titulares y Productores</span>
+                    <span class="font-heading text-xl font-bold tracking-tight text-[#22160f]">Earth2Worlds</span>
+                    <span class="block text-xs text-[#715543]">Alta de Titulares y Productores</span>
                 </div>
             </a>
-            <a href="/login" class="text-sm font-medium text-sky-400 hover:text-sky-300 transition">
+            <a href="/login" class="text-sm font-semibold text-emerald-700 hover:text-emerald-800 transition">
                 Ya tengo cuenta &rarr;
             </a>
         </div>
@@ -49,23 +100,23 @@
 
     <!-- Formulario de Registro -->
     <main class="flex-1 flex items-center justify-center px-4 py-10">
-        <div class="w-full max-w-2xl bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl shadow-2xl p-8">
+        <div class="w-full max-w-2xl bg-white border-2 border-[#8c6547] rounded-3xl shadow-2xl p-8">
             <div class="mb-6">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-sky-500/10 text-sky-400 border border-sky-500/20 mb-3">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-50 text-emerald-800 border border-emerald-400 mb-3">
                     ROL: PROPIETARIO DE CAMPO
                 </span>
-                <h1 class="font-heading text-2xl font-bold text-white">Crear cuenta en Earth2Worlds</h1>
-                <p class="text-sm text-slate-400 mt-1">
+                <h1 class="font-heading text-2xl font-bold text-[#22160f]">Crear cuenta en Earth2Worlds</h1>
+                <p class="text-sm text-[#715543] mt-1">
                     Registra tu perfil para administrar tus establecimientos y asignar operadores de campo.
                 </p>
             </div>
 
-            <div id="registroAlert" class="hidden mb-5 rounded-xl border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-300"></div>
+            <div id="registroAlert" class="hidden mb-5 rounded-xl border border-rose-400 bg-rose-50 px-4 py-3 text-sm text-rose-800 font-medium"></div>
 
             <form id="registroForm" class="space-y-5" novalidate>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label for="reg_nombre" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                        <label for="reg_nombre" class="block text-xs font-semibold uppercase tracking-wider text-[#3b281c] mb-2">
                             Nombre
                         </label>
                         <input
@@ -74,11 +125,11 @@
                             type="text"
                             required
                             placeholder="Ej: Martín"
-                            class="w-full rounded-xl bg-slate-950/90 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                            class="w-full rounded-xl bg-white border-2 border-[#8c6547] px-4 py-2.5 text-sm text-[#22160f] placeholder-[#8c705d] focus:outline-none focus:border-emerald-600"
                         />
                     </div>
                     <div>
-                        <label for="reg_apellido" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                        <label for="reg_apellido" class="block text-xs font-semibold uppercase tracking-wider text-[#3b281c] mb-2">
                             Apellido
                         </label>
                         <input
@@ -87,14 +138,14 @@
                             type="text"
                             required
                             placeholder="Ej: Quiroga"
-                            class="w-full rounded-xl bg-slate-950/90 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                            class="w-full rounded-xl bg-white border-2 border-[#8c6547] px-4 py-2.5 text-sm text-[#22160f] placeholder-[#8c705d] focus:outline-none focus:border-emerald-600"
                         />
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label for="reg_email" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                        <label for="reg_email" class="block text-xs font-semibold uppercase tracking-wider text-[#3b281c] mb-2">
                             Correo Electrónico
                         </label>
                         <input
@@ -103,11 +154,11 @@
                             type="email"
                             required
                             placeholder="productor@dominio.com"
-                            class="w-full rounded-xl bg-slate-950/90 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                            class="w-full rounded-xl bg-white border-2 border-[#8c6547] px-4 py-2.5 text-sm text-[#22160f] placeholder-[#8c705d] focus:outline-none focus:border-emerald-600"
                         />
                     </div>
                     <div>
-                        <label for="reg_password" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                        <label for="reg_password" class="block text-xs font-semibold uppercase tracking-wider text-[#3b281c] mb-2">
                             Contraseña (mín. 6 caracteres)
                         </label>
                         <div class="relative">
@@ -118,12 +169,12 @@
                                 required
                                 minlength="6"
                                 placeholder="Sin espacios en blanco"
-                                class="w-full rounded-xl bg-slate-950/90 border border-slate-800 pl-4 pr-20 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                                class="w-full rounded-xl bg-white border-2 border-[#8c6547] pl-4 pr-20 py-2.5 text-sm text-[#22160f] placeholder-[#8c705d] focus:outline-none focus:border-emerald-600"
                             />
                             <button
                                 type="button"
                                 onclick="togglePasswordVisibility('reg_password', this)"
-                                class="absolute right-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg text-xs font-mono text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-700 transition"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg text-xs font-mono text-[#553e2e] hover:text-[#22160f] bg-[#f4ede4] hover:bg-[#eadecc] transition"
                             >
                                 Ver
                             </button>
@@ -131,29 +182,29 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-slate-800/80">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-[#dfd2c6]">
                     <div>
-                        <label for="reg_provincia" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                        <label for="reg_provincia" class="block text-xs font-semibold uppercase tracking-wider text-[#3b281c] mb-2">
                             Provincia (Argentina)
                         </label>
                         <select
                             id="reg_provincia"
                             name="provincia"
-                            class="w-full rounded-xl bg-slate-950/90 border border-slate-800 px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-emerald-500"
+                            class="w-full rounded-xl bg-white border-2 border-[#8c6547] px-3 py-2.5 text-sm text-[#22160f] focus:outline-none focus:border-emerald-600"
                         ></select>
                     </div>
                     <div>
-                        <label for="reg_ciudad" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                        <label for="reg_ciudad" class="block text-xs font-semibold uppercase tracking-wider text-[#3b281c] mb-2">
                             Localidad
                         </label>
                         <select
                             id="reg_ciudad"
                             name="ciudad"
-                            class="w-full rounded-xl bg-slate-950/90 border border-slate-800 px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-emerald-500"
+                            class="w-full rounded-xl bg-white border-2 border-[#8c6547] px-3 py-2.5 text-sm text-[#22160f] focus:outline-none focus:border-emerald-600"
                         ></select>
                     </div>
                     <div>
-                        <label for="reg_cp" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                        <label for="reg_cp" class="block text-xs font-semibold uppercase tracking-wider text-[#3b281c] mb-2">
                             Código Postal
                         </label>
                         <input
@@ -161,7 +212,7 @@
                             name="codigo_postal"
                             type="text"
                             placeholder="5730"
-                            class="w-full rounded-xl bg-slate-950/90 border border-slate-800 px-4 py-2.5 text-sm font-mono text-slate-100 focus:outline-none focus:border-emerald-500"
+                            class="w-full rounded-xl bg-white border-2 border-[#8c6547] px-4 py-2.5 text-sm font-mono text-[#22160f] focus:outline-none focus:border-emerald-600"
                         />
                     </div>
                 </div>
@@ -169,7 +220,7 @@
                 <button
                     id="btnSubmitRegistro"
                     type="submit"
-                    class="w-full py-3 px-5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-heading font-bold text-sm shadow-lg shadow-emerald-500/20 transition"
+                    class="w-full py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-heading font-bold text-sm shadow-md transition"
                 >
                     Registrarme como Propietario en Earth2Worlds
                 </button>
@@ -177,7 +228,7 @@
         </div>
     </main>
 
-    <footer class="border-t border-slate-900 py-4 text-center text-xs text-slate-500 font-mono">
+    <footer class="border-t border-[#dfd2c6] py-4 text-center text-xs text-[#715543] font-mono">
         Earth2Worlds &bull; Plataforma de Gestión Territorial
     </footer>
 
