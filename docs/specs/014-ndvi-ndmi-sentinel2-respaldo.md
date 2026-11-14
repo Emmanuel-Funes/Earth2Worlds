@@ -1,6 +1,6 @@
 # Spec 014 · NDVI y NDMI de respaldo con Sentinel-2 L2A (ESA)
 
-**Estado:** aprobada por Hernán el 4/10/2026 ("Sumar lo necesario para cubrir lo que hace falta") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** nada (acceso público, sin cuenta) · **Rama:** `SENTINEL2-NDVI_NDMI_respaldo`
+**Estado:** aprobada por Hernán ("Sumar lo necesario para cubrir lo que hace falta") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** nada (acceso público, sin cuenta) · **Rama:** `SENTINEL2-NDVI_NDMI_respaldo`
 
 ## Objetivo
 
@@ -17,7 +17,7 @@ Que el lote siga teniendo **NDVI y NDMI** cuando HLS falla. Hoy el NDMI no tiene
 | Credenciales | Ninguna |
 | Bandas | B04 rojo (10 m), B08 infrarrojo cercano (10 m), B8A infrarrojo cercano angosto (20 m), B11 infrarrojo de onda corta (20 m), SCL clasificación de la escena (20 m) |
 
-**Verificado el 4/10/2026** leyendo el bucket público desde esta máquina: el lote de prueba cae en el mosaico MGRS **20HKH**, con 14 escenas en enero de 2026 (Sentinel-2B y 2C, una cada 2-5 días), línea de base de procesamiento 05.11.
+**Verificado** leyendo el bucket público desde esta máquina: el lote de prueba cae en el mosaico MGRS **20HKH**, con 14 escenas en enero de 2026 (Sentinel-2B y 2C, una cada 2-5 días), línea de base de procesamiento 05.11.
 
 ## Escala y offset de la reflectancia
 
@@ -26,7 +26,7 @@ Desde la línea de base 04.00 (enero de 2022) la ESA guarda la reflectancia con 
 - `true`: **Element 84 ya restó el offset en los píxeles**. Reflectancia = DN × 0,0001. Ojo: los metadatos `raster:bands` igual dicen `offset: -0.1`; **no hay que aplicarlo otra vez**. Verificado con datos reales (20HKH, 1/1/2026): el rojo de la vegetación del lote vale DN ≈ 270-300 (reflectancia 0,027-0,030, normal); si se restara 1000 daría negativa, imposible. Y el NDVI del 16/1 da 0,49 sin offset (HLS: 0,51 el 14/1) contra 0,99 si se resta dos veces.
 - `false` o sin la marca: se usa el `offset` de `raster:bands` de la banda; si no está, −0,1 para línea de base ≥ 04.00 y 0 para las anteriores.
 
-Verificado en la prueba real (PR #33): las 13 escenas de enero de 2026 en `sentinel-2-l2a` traen `boa_offset_applied: true` (se usa escala 0,0001 y offset 0). En la colección de respaldo `sentinel-2-c1-l2a` las mismas escenas vienen **sin** la marca y con `offset: -0.1`, y sus píxeles valen exactamente 1000 más (rojo del lote el 28/1: mediana 1556 contra 556): con −0,1 las dos colecciones dan la misma reflectancia.
+Verificado en la prueba real: las 13 escenas de enero de 2026 en `sentinel-2-l2a` traen `boa_offset_applied: true` (se usa escala 0,0001 y offset 0). En la colección de respaldo `sentinel-2-c1-l2a` las mismas escenas vienen **sin** la marca y con `offset: -0.1`, y sus píxeles valen exactamente 1000 más (rojo del lote el 28/1: mediana 1556 contra 556): con −0,1 las dos colecciones dan la misma reflectancia.
 
 La `nota` no repite esto; el conector lo resuelve escena por escena.
 
@@ -65,7 +65,7 @@ Una fecha tapada (dato real del 26/1/2026):
 
 ## Dónde entra
 
-- Satélite independiente (spec 009): `rotaterra/fuentes/sentinel2.py`, solo usa el núcleo. Se registra como `Satelite("HLS:SENTINEL2", ..., respaldo_de="HLS", orden=1)`: si HLS falla en la actualización nocturna, entra primero Sentinel-2; si también falla o no trae nada, VIIRS (orden 2) y después MODIS (orden 3). Depende del núcleo de la rama `NUCLEO-varios_respaldos_en_orden` (PR #24).
+- Satélite independiente (spec 009): `rotaterra/fuentes/sentinel2.py`, solo usa el núcleo. Se registra como `Satelite("HLS:SENTINEL2", ..., respaldo_de="HLS", orden=1)`: si HLS falla en la actualización nocturna, entra primero Sentinel-2; si también falla o no trae nada, VIIRS (orden 2) y después MODIS (orden 3). Depende del núcleo de la rama `NUCLEO-varios_respaldos_en_orden`.
 - En `combinar=true`, `SENTINEL2` tiene prioridad 2 (respaldo), por debajo de HLS y por encima de VIIRS y MODIS (ya está en `base.PRIORIDAD`).
 - Endpoint de prueba: `POST /ndvi/sentinel2` (mismo pedido que `/ndvi` de HLS). Responde 422 si el pedido es inválido y 502 si Earth Search o las escenas no responden.
 - Prueba real con un clic: GitHub → Actions → **"Probar Sentinel-2 (NDVI y NDMI de respaldo)"** (`probar_sentinel2.py`), lote de ejemplo y enero de 2026. También corre en cada PR que toque el conector.
@@ -77,7 +77,7 @@ Una fecha tapada (dato real del 26/1/2026):
 - [x] La escala y el offset de la reflectancia se aplican bien según lo que entrega Earth Search (verificado con píxeles reales del 1/1, 16/1 y 28/1/2026 y en las dos colecciones, ver arriba).
 - [x] Sin credenciales: la prueba real anda sin `EARTHDATA_USERNAME` / `EARTHDATA_PASSWORD` (el workflow no los pasa).
 - [x] Sentinel-2 no importa código de ningún otro satélite (`tests/test_nucleo.py` en verde).
-- [x] Tests sin internet (48 casos en `tests/test_sentinel2.py`, 92 en total en verde); prueba real "Probar Sentinel-2 (NDVI y NDMI de respaldo)" verde en el PR #33.
+- [x] Tests sin internet (48 casos en `tests/test_sentinel2.py`, 92 en total en verde); prueba real "Probar Sentinel-2 (NDVI y NDMI de respaldo)" verde.
 
 ## Para tener en cuenta
 

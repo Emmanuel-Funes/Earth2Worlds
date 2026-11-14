@@ -84,7 +84,7 @@ def escala_y_offset(propiedades: dict, bandas_raster: list | None) -> tuple[floa
     """Cómo pasar el DN de una banda a reflectancia: reflectancia = DN * escala + offset.
 
     Earth Search marca `earthsearch:boa_offset_applied: true` cuando ya restó el offset en los píxeles; sus
-    `raster:bands` igual dicen offset -0.1, así que en ese caso no se aplica otra vez (verificado el 4/10/2026:
+    `raster:bands` igual dicen offset -0.1, así que en ese caso no se aplica otra vez (verificado:
     el rojo de la vegetación del lote vale DN ~270, que solo tiene sentido sin offset).
     """
     banda = (bandas_raster or [{}])[0]
