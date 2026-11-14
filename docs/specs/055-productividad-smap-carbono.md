@@ -1,6 +1,6 @@
 # Spec 055 · Productividad diaria con SMAP L4 Carbono
 
-**Estado:** construida y probada con datos reales (27/10/2026) · **Aprobada por:** Hernán, 27/10/2026 ("Okey, avanzamos", sobre el informe de satélites nuevos del 27/10) · **Rama:** `SMAP-productividad_carbono` · **Depende de:** PR #24 (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** Earthdata (ya cargado)
+**Estado:** construida y probada con datos reales · **Aprobada por:** Hernán, 27/10/2026 ("Okey, avanzamos", sobre el informe de satélites nuevos del 27/10) · **Rama:** `SMAP-productividad_carbono` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** Earthdata (ya cargado)
 
 ## Objetivo
 
