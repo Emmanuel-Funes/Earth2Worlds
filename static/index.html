@@ -33,6 +33,8 @@ CONTROLADORES JAVASCRIPT:
   [JS-06] Controlador de Operadores y Asignación de Campos (#modalOperador, #modalAsignarCampos)
   [JS-07] Controlador de Auditoría Global de Usuarios y buscador/filtro (#adminTab, #modalEditarUsuario)
   [JS-08] Utilidades de UI, Notificaciones Toast y gestión de cierre de modales
+  [JS-09] Controlador Cartográfico Leaflet + Geoman + Catastro Rural San Luis (#slotModuloMapa, #slotModalMapa)
+  [JS-10] Controlador de Telemetría Satelital Rotaterra y Banco de Semillas INTA (#slotModuloTelemetria)
 ================================================================================
 -->
 <html lang="es" class="dark">
@@ -46,6 +48,10 @@ CONTROLADORES JAVASCRIPT:
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@2.17.0/dist/leaflet-geoman.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@2.17.0/dist/leaflet-geoman.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -898,10 +904,11 @@ CONTROLADORES JAVASCRIPT:
     </footer>
 
     <!-- =================================================================== -->
-    <!-- [SEC-10] CONTROLADORES JAVASCRIPT ([JS-01] a [JS-08])               -->
+    <!-- [SEC-10] CONTROLADORES JAVASCRIPT ([JS-01] a [JS-10])               -->
     <!-- =================================================================== -->
     <script src="/static/js/app.js"></script>
     <script src="/static/js/argentina.js"></script>
+    <script src="/static/js/rotaterra_modulos.js"></script>
     <script>
         /* ===================================================================
          * [JS-01] ESTADO GLOBAL, VERIFICACIÓN DE SESIÓN JWT Y ARRANQUE SPA
@@ -938,6 +945,13 @@ CONTROLADORES JAVASCRIPT:
                     ciudad: currentUser.ciudad || "Villa Mercedes",
                     codigo_postal: currentUser.codigo_postal || "5730",
                 });
+
+                if (typeof inicializarSlotMapaPrincipal === "function") {
+                    inicializarSlotMapaPrincipal();
+                }
+                if (typeof inicializarSlotTelemetria === "function") {
+                    await inicializarSlotTelemetria();
+                }
 
                 await cargarCampos();
 
@@ -1164,8 +1178,9 @@ CONTROLADORES JAVASCRIPT:
             if (!campo) {
                 nombreEl.textContent = "Ningún campo seleccionado todavía";
                 detalleEl.textContent = "Registra o selecciona un establecimiento para vincular los módulos de mapa y telemetría.";
-                slotMapaEl.textContent = "Esperando selección de campo activo";
-                slotTelEl.textContent = "Esperando selección de campo activo";
+                if (slotMapaEl) slotMapaEl.textContent = "Esperando selección de campo activo";
+                if (slotTelEl) slotTelEl.textContent = "Esperando selección de campo activo";
+                if (typeof sincronizarMapaConCampoActivo === "function") sincronizarMapaConCampoActivo();
                 return;
             }
 
@@ -1173,8 +1188,9 @@ CONTROLADORES JAVASCRIPT:
             detalleEl.textContent = `Ubicación: ${campo.descripcion_ubicacion || "No especificada"} · Superficie: ${
                 campo.superficie_ha ?? "S/D"
             } ha · Titular: ${campo.propietario_nombre || campo.propietario_id}`;
-            slotMapaEl.textContent = `Vinculado a "${campo.nombre_campo}" (#${campo.id})`;
-            slotTelEl.textContent = `Listo para consultar telemetría de "${campo.nombre_campo}" (#${campo.id})`;
+            if (slotMapaEl) slotMapaEl.textContent = `Vinculado a "${campo.nombre_campo}" (#${campo.id})`;
+            if (slotTelEl) slotTelEl.textContent = `Listo para consultar telemetría de "${campo.nombre_campo}" (#${campo.id})`;
+            if (typeof sincronizarMapaConCampoActivo === "function") sincronizarMapaConCampoActivo();
         }
 
         /* ===================================================================
@@ -1201,6 +1217,9 @@ CONTROLADORES JAVASCRIPT:
                 wrapAdmin.classList.add("hidden");
             }
             abrirModal("modalCampo");
+            if (typeof prepararMapaEnModalNuevoCampo === "function") {
+                prepararMapaEnModalNuevoCampo();
+            }
         }
 
         document.getElementById("formNuevoCampo").addEventListener("submit", async (e) => {
@@ -1211,6 +1230,12 @@ CONTROLADORES JAVASCRIPT:
                 descripcion_ubicacion: document.getElementById("nuevo_campo_ubicacion").value.trim() || null,
                 superficie_ha: supRaw !== "" ? parseFloat(supRaw) : null,
             };
+            if (typeof obtenerPoligonoModalPendiente === "function") {
+                const polyModal = obtenerPoligonoModalPendiente();
+                if (polyModal) {
+                    payload.geometria_geojson = JSON.stringify(polyModal);
+                }
+            }
             if (currentUser?.rol === "admin") {
                 const propVal = document.getElementById("nuevo_campo_propietario_id").value;
                 if (propVal) payload.propietario_id = parseInt(propVal, 10);

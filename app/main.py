@@ -1,10 +1,12 @@
 """API REST FastAPI y Matriz RBAC de la plataforma Earth2Worlds."""
 
 from contextlib import asynccontextmanager
+from functools import lru_cache
+import json
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -28,6 +30,7 @@ from app.schemas import (
     CampoCreate,
     CampoOut,
     CampoUpdate,
+    ConsultaRotaterraRequest,
     LoginRequest,
     OperadorCreacion,
     PropietarioDetalleOut,
@@ -36,6 +39,10 @@ from app.schemas import (
     UsuarioOut,
     UsuarioUpdate,
 )
+from rotaterra import consulta as rt_consulta
+from rotaterra.fuentes import catastro_sl, registro as rt_registro
+from rotaterra.geo import validar_poligono
+from rotaterra.semillas import rutas as rutas_semillas
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_DIR = BASE_DIR / "static"
@@ -890,7 +897,317 @@ def eliminar_campo(
 
 
 # ==============================================================================
-# 6. RUTAS ESTÁTICAS HTML DE LA PLATAFORMA EARTH2WORLDS
+# 6. INTEGRACIÓN DE MOTORES ROTATERRA (SATÉLITES, CATASTRO SAN LUIS Y SEMILLAS)
+# ==============================================================================
+
+CATALOGO_ROTATERRA_META: Dict[str, Dict[str, str]] = {
+    "HLS": {
+        "categoria": "Vegetación y Cultivo",
+        "titulo": "HLS — Índice Verde (NDVI) y Humedad Foliar (NDMI) 30 m",
+        "descripcion": "Landsat 8/9 + Sentinel-2 armonizados por la NASA (con respaldos Sentinel-2, Sentinel-3, VIIRS y MODIS).",
+    },
+    "SMAP": {
+        "categoria": "Agua y Humedad",
+        "titulo": "SMAP — Humedad Superficial y en Zona de Raíces",
+        "descripcion": "Humedad del suelo (m³/m³) de la NASA con respaldos AppEEARS, SMAP L3, GLDAS, FLDAS y NRT.",
+    },
+    "IMERG": {
+        "categoria": "Agua y Humedad",
+        "titulo": "GPM IMERG — Lluvia Diaria Satelital (mm/día)",
+        "descripcion": "Precipitación satelital GPM de la NASA con respaldos NASA POWER, NOAA CPC, PERSIANN e IMERG Early.",
+    },
+    "POWER": {
+        "categoria": "Clima y Heladas",
+        "titulo": "NASA POWER — Clima Diario (Temperatura, Radiación, Viento, HR)",
+        "descripcion": "Serie meteorológica diaria de la NASA con respaldo MERRA-2 y GEOS-FP del día.",
+    },
+    "POWER_CAMPANA": {
+        "categoria": "Clima y Heladas",
+        "titulo": "NASA POWER Campaña — Heladas, Lluvia Esperada y Grados-Día",
+        "descripcion": "Estadísticas agroclimáticas históricas de la campaña con respaldo MERRA-2.",
+    },
+    "ET": {
+        "categoria": "Agua y Humedad",
+        "titulo": "MODIS / ECOSTRESS / FAO-56 — Evapotranspiración y Estrés Hídrico",
+        "descripcion": "Consumo diario de agua del cultivo (mm/día) e índice de estrés ESI.",
+    },
+    "SEPA_INTA": {
+        "categoria": "Agua y Humedad",
+        "titulo": "SEPA INTA — Agua Útil en el Suelo y Anomalía de Vegetación",
+        "descripcion": "Productos agrometeorológicos del INTA con respaldo de Balance Hídrico propio con NASA POWER.",
+    },
+    "GeoINTA": {
+        "categoria": "Suelo y Relieve",
+        "titulo": "GeoINTA — Cartas de Suelo del INTA (Capacidad de Uso, Textura, Serie)",
+        "descripcion": "Cartografía edafológica del INTA con respaldo mundial HWSD (FAO/IIASA).",
+    },
+    "SISINTA": {
+        "categoria": "Suelo y Relieve",
+        "titulo": "SISINTA — pH y Materia Orgánica de Perfiles Medidos del INTA",
+        "descripcion": "Perfiles edáficos reales medidos en laboratorio por el INTA cercanos al lote.",
+    },
+    "NASADEM": {
+        "categoria": "Suelo y Relieve",
+        "titulo": "NASADEM — Relieve, Altitud (m s.n.m.) y Pendiente (%)",
+        "descripcion": "Modelo digital de elevación de 30 m de la NASA con respaldos Copernicus DEM y ASTER.",
+    },
+    "VIIRS_LST": {
+        "categoria": "Clima y Heladas",
+        "titulo": "VIIRS LST — Temperatura Superficial Nocturna y Heladas",
+        "descripcion": "Detección satelital de heladas nocturnas con respaldos MODIS y Sentinel-3.",
+    },
+    "GOES": {
+        "categoria": "Clima y Heladas",
+        "titulo": "GOES-16 — Heladas y Temperatura Superficial del Día",
+        "descripcion": "Seguimiento horario geoestacionario de heladas y temperatura de suelo.",
+    },
+    "ECOSTRESS_LST": {
+        "categoria": "Clima y Heladas",
+        "titulo": "ECOSTRESS LST — Mapa Térmico y Heladas por Zona (70 m)",
+        "descripcion": "Radiómetro térmico de alta resolución en la Estación Espacial Internacional.",
+    },
+    "GRACE": {
+        "categoria": "Agua y Humedad",
+        "titulo": "GRACE-FO — Variación de Agua Subterránea y Napa",
+        "descripcion": "Anomalía gravimétrica de reserva hídrica profunda de la NASA.",
+    },
+    "GEDI": {
+        "categoria": "Vegetación y Cultivo",
+        "titulo": "GEDI — Altura de Dosel y Cobertura Vegetal LiDAR",
+        "descripcion": "Perfil vertical de vegetación medido con láser desde la EEI.",
+    },
+    "NISAR": {
+        "categoria": "Suelo y Relieve",
+        "titulo": "NISAR — Radar de Apertura Sintética (Banda L)",
+        "descripcion": "Retrodispersión radar insensible a nubes para rugosidad y biomasa.",
+    },
+    "SMAP_L4C": {
+        "categoria": "Vegetación y Cultivo",
+        "titulo": "SMAP L4C — Productividad Primaria Neta (GPP) y Carbono",
+        "descripcion": "Fijación diaria de carbono del ecosistema y respiración del suelo.",
+    },
+    "SUELO_DESNUDO": {
+        "categoria": "Vegetación y Cultivo",
+        "titulo": "MODIS — Porcentaje Mensual de Suelo Desnudo y Cobertura",
+        "descripcion": "Fracción fotosintética, rastrojo seco y suelo descubierto por mes.",
+    },
+    "NEX_GDDP": {
+        "categoria": "Clima y Heladas",
+        "titulo": "NASA NEX-GDDP — Proyecciones de Clima Futuro (CMIP6)",
+        "descripcion": "Escenarios climáticos proyectados de temperatura y precipitación.",
+    },
+    "NOAA_ENSO": {
+        "categoria": "Clima y Heladas",
+        "titulo": "NOAA ENSO — Índice El Niño / La Niña (ONI)",
+        "descripcion": "Estado trimestral del fenómeno El Niño Oscilación del Sur.",
+    },
+    "MAGYP": {
+        "categoria": "Vegetación y Cultivo",
+        "titulo": "MAGyP — Rindes Históricos de Referencia por Departamento",
+        "descripcion": "Serie oficial de rendimientos agrícolas (kg/ha) en el departamento del lote.",
+    },
+}
+
+
+@lru_cache
+def _rotaterra_conectados() -> rt_registro.Conectados:
+    return rt_registro.descubrir()
+
+
+@app.get("/api/rotaterra/satelites", tags=["Rotaterra Telemetría"])
+def listar_satelites_rotaterra(
+    _current_user: Usuario = Depends(get_current_user),
+) -> Dict[str, Any]:
+    """Devuelve todas las cadenas principales de Rotaterra, sus respaldos y metadatos descriptivos."""
+    unidos = _rotaterra_conectados()
+    respaldos = rt_registro.respaldos_en_orden(unidos.satelites)
+    del_dia = rt_registro.respaldos_en_orden(unidos.satelites, al_dia=True)
+
+    principales = []
+    for s in unidos.satelites:
+        if s.respaldo_de:
+            continue
+        meta = CATALOGO_ROTATERRA_META.get(
+            s.nombre,
+            {
+                "categoria": "Otras Fuentes",
+                "titulo": s.nombre,
+                "descripcion": f"Fuente satelital o agronómica {s.nombre}",
+            },
+        )
+        principales.append(
+            {
+                "satelite": s.nombre,
+                "categoria": meta["categoria"],
+                "titulo": meta["titulo"],
+                "descripcion": meta["descripcion"],
+                "estatico": bool(s.estatico),
+                "respaldos": [r.nombre for r in respaldos.get(s.nombre, [])],
+                "del_dia": [r.nombre for r in del_dia.get(s.nombre, [])],
+            }
+        )
+
+    return {
+        "total_principales": len(principales),
+        "rotos": unidos.rotos,
+        "satelites": principales,
+    }
+
+
+@app.post("/api/rotaterra/consulta", tags=["Rotaterra Telemetría"])
+def ejecutar_consulta_rotaterra(
+    payload: ConsultaRotaterraRequest,
+    current_user: Usuario = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> Dict[str, Any]:
+    """
+    Ejecuta una consulta en vivo al motor Rotaterra (con cadena completa de respaldos)
+    sobre el polígono de un campo registrado (validando RBAC) o sobre un polígono GeoJSON directo.
+    """
+    poligono_geojson: Optional[Dict[str, Any]] = payload.poligono
+    lote_etiqueta = "lote-consulta"
+
+    if payload.campo_id is not None:
+        campo = db.query(Campo).filter(Campo.id == payload.campo_id).first()
+        if not campo:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="El campo indicado no existe.")
+        if current_user.rol == RolEnum.PROPIETARIO and campo.propietario_id != current_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="No tienes permiso para consultar telemetría de un campo de otro propietario.",
+            )
+        if current_user.rol == RolEnum.OPERADOR:
+            ids_asignados = _normalizar_ids_campos(current_user.campos_asignados)
+            if campo.id not in ids_asignados:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="No tienes asignado este campo.",
+                )
+
+        lote_etiqueta = f"campo-{campo.id}"
+        if not poligono_geojson and campo.geometria_geojson:
+            try:
+                parsed_geo = json.loads(campo.geometria_geojson)
+                if isinstance(parsed_geo, dict):
+                    if parsed_geo.get("type") == "Feature" and isinstance(parsed_geo.get("geometry"), dict):
+                        poligono_geojson = parsed_geo["geometry"]
+                    else:
+                        poligono_geojson = parsed_geo
+            except Exception:
+                poligono_geojson = None
+
+    if not poligono_geojson:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="El campo seleccionado aún no tiene un polígono delimitado en el mapa. Dibuja o selecciona una parcela primero.",
+        )
+
+    try:
+        validar_poligono(poligono_geojson)
+        unidos = _rotaterra_conectados()
+        lote = rt_consulta.lote_para_consulta(lote_etiqueta, poligono_geojson)
+        respuesta = rt_consulta.consultar(
+            lote,
+            payload.satelite,
+            payload.desde,
+            payload.hasta,
+            unidos.satelites,
+        )
+    except rt_consulta.SateliteDesconocido:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No existe el satélite o fuente '{payload.satelite}' en Rotaterra.",
+        )
+    except ValueError as err:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(err),
+        )
+
+    intentos_out = [
+        {
+            "satelite": i.satelite,
+            "resultado": i.resultado,
+            "filas": i.filas,
+            "mensaje": i.mensaje,
+            "sin_credenciales": bool(getattr(i, "sin_credenciales", False)),
+        }
+        for i in respuesta.intentos
+    ]
+
+    if respuesta.fuente_usada is None:
+        sin_cred = all(i["sin_credenciales"] for i in intentos_out if i["resultado"] == "error") and any(
+            i["sin_credenciales"] for i in intentos_out
+        )
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE if sin_cred else status.HTTP_502_BAD_GATEWAY,
+            detail={
+                "mensaje": (
+                    "Faltan credenciales EARTHDATA_USERNAME / EARTHDATA_PASSWORD para esta fuente de la NASA."
+                    if sin_cred
+                    else "Ni la fuente principal ni sus respaldos devolvieron datos en el período solicitado."
+                ),
+                "intentos": intentos_out,
+            },
+        )
+
+    return {
+        "fuente_usada": respuesta.fuente_usada,
+        "completada_con": respuesta.completada_con,
+        "rellenada_con": respuesta.rellenada_con,
+        "intentos": intentos_out,
+        "observaciones": [obs.model_dump(mode="json") for obs in respuesta.observaciones],
+    }
+
+
+@app.get("/api/rotaterra/catastro/parcela", tags=["Rotaterra Catastro San Luis"])
+async def buscar_parcela_catastro_san_luis(
+    response: Response,
+    lat: Optional[float] = None,
+    lon: Optional[float] = None,
+    nomenclatura: Optional[str] = None,
+    partida: Optional[str] = None,
+    _current_user: Usuario = Depends(get_current_user),
+):
+    """Busca una parcela rural en el Catastro de San Luis (o en su copia local en el repositorio) por punto, nomenclatura o partida."""
+    return await catastro_sl.parcela_catastro(
+        response=response,
+        lat=lat,
+        lon=lon,
+        nomenclatura=nomenclatura,
+        partida=partida,
+    )
+
+
+@app.get("/api/rotaterra/catastro/parcelas-rurales", tags=["Rotaterra Catastro San Luis"])
+async def obtener_mapa_parcelas_rurales_san_luis(
+    request: Request,
+    oeste: Optional[float] = None,
+    sur: Optional[float] = None,
+    este: Optional[float] = None,
+    norte: Optional[float] = None,
+    _current_user: Usuario = Depends(get_current_user),
+):
+    """Devuelve las parcelas rurales de San Luis en GeoJSON dentro del recuadro indicado."""
+    return await catastro_sl.mapa_parcelas_rurales(
+        request=request,
+        oeste=oeste,
+        sur=sur,
+        este=este,
+        norte=norte,
+    )
+
+
+# Montar el Banco de Semillas del INTA bajo /api/rotaterra/semillas (protegido con JWT)
+app.include_router(
+    rutas_semillas,
+    prefix="/api/rotaterra",
+    dependencies=[Depends(get_current_user)],
+)
+
+
+# ==============================================================================
+# 7. RUTAS ESTÁTICAS HTML DE LA PLATAFORMA EARTH2WORLDS
 # ==============================================================================
 
 

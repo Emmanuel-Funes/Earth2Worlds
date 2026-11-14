@@ -1,6 +1,6 @@
 """Esquemas Pydantic v2 y validadores para la API de Earth2Worlds."""
 
-from datetime import datetime
+from datetime import date, datetime
 from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
@@ -192,3 +192,17 @@ class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
     usuario: UsuarioOut
+
+
+# ==============================================================================
+# ESQUEMAS DE INTEGRACIÓN ROTATERRA (SATÉLITES, FUENTES Y CONSULTA)
+# ==============================================================================
+
+
+class ConsultaRotaterraRequest(BaseModel):
+    satelite: str = Field(..., min_length=1, max_length=60)
+    desde: date
+    hasta: date
+    campo_id: Optional[int] = None
+    poligono: Optional[Dict[str, Any]] = None
+

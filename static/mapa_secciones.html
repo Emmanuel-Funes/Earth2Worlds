@@ -71,11 +71,11 @@
                     onchange="renderizarMapaSecciones()"
                     class="rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-purple-500"
                 >
-                    <option value="TODAS">Todas las piezas (25)</option>
+                    <option value="TODAS">Todas las piezas (27)</option>
                     <option value="HTML">Secciones HTML ([SEC-01] a [SEC-10])</option>
                     <option value="SLOT">Slots de Expansión ([SLOT-MODULO-*])</option>
                     <option value="MODAL">Modales Interactivos ([SEC-09.1] a [SEC-09.5])</option>
-                    <option value="JS">Controladores JavaScript ([JS-01] a [JS-08])</option>
+                    <option value="JS">Controladores JavaScript ([JS-01] a [JS-10])</option>
                 </select>
             </div>
         </section>
@@ -225,8 +225,8 @@
                 codigo: "[SEC-10]",
                 tipo: "HTML",
                 titulo: "Bloque Maestro de Scripts y Controladores Frontend",
-                selectores: "<script> ([JS-01] a [JS-08])",
-                descripcion: "Sección que encapsula los 8 controladores JavaScript de la aplicación Earth2Worlds.",
+                selectores: "<script> ([JS-01] a [JS-10])",
+                descripcion: "Sección que encapsula los 10 controladores JavaScript de la aplicación Earth2Worlds.",
                 prompt: "En static/index.html dentro de [SEC-10], revisa la integración de scripts y controladores JS.",
             },
             {
@@ -292,6 +292,22 @@
                 selectores: "actualizarContadoresAdmin(), abrirModal(), cerrarModal(), mostrarToast()",
                 descripcion: "Funciones auxiliares de interfaz, cierre con tecla ESC y notificaciones flotantes.",
                 prompt: "En static/index.html dentro de [JS-08], ajusta las utilidades de modales, contadores o notificaciones Toast.",
+            },
+            {
+                codigo: "[JS-09]",
+                tipo: "JS",
+                titulo: "Controlador Cartográfico Leaflet + Geoman + Catastro Rural San Luis",
+                selectores: "inicializarSlotMapaPrincipal(), sincronizarMapaConCampoActivo(), prepararMapaEnModalNuevoCampo()",
+                descripcion: "Enchufa el visor interactivo Leaflet + Geoman y el buscador de parcelas de Catastro de San Luis en #slotModuloMapa y #slotModalMapa.",
+                prompt: "En static/js/rotaterra_modulos.js dentro de [JS-09], ajusta el visor cartográfico o la integración con Catastro de San Luis.",
+            },
+            {
+                codigo: "[JS-10]",
+                tipo: "JS",
+                titulo: "Controlador de Telemetría Satelital Rotaterra y Banco de Semillas INTA",
+                selectores: "inicializarSlotTelemetria(), ejecutarConsultaSatelitalActiva(), buscarCultivaresSemillasInta()",
+                descripcion: "Conecta las 21 cadenas satelitales/agronómicas de Rotaterra y el Banco de Semillas INTA en #slotModuloTelemetria.",
+                prompt: "En static/js/rotaterra_modulos.js dentro de [JS-10], modifica la consola de telemetría satelital o el buscador de semillas INTA.",
             },
         ];
 
