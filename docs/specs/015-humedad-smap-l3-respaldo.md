@@ -1,6 +1,6 @@
 # Spec 015 · Humedad del suelo observada por SMAP L3 como segundo respaldo de SMAP L4
 
-**Estado:** aprobada por Hernán el 4/10/2026 ("Sumar lo necesario para cubrir lo que hace falta") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** cuenta NASA Earthdata
+**Estado:** aprobada por Hernán ("Sumar lo necesario para cubrir lo que hace falta") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** cuenta NASA Earthdata
 
 ## Objetivo
 
@@ -65,14 +65,14 @@ Supuestos (se anotan en la `nota`): bit 0 de `retrieval_qual_flag` como criterio
 ## Dónde entra
 
 - Registro: `SATELITES = [Satelite("SMAP:L3", pedir, respaldo_de="SMAP", orden=2)]`. Entra en la actualización nocturna solo si fallan el L4 directo y el L4 vía AppEEARS (spec 005).
-- Es un satélite independiente (spec 009): rama `SMAP_L3-humedad_respaldo`, sin unir a `main` hasta la orden de Hernán. Depende del núcleo con varios respaldos en orden (rama `NUCLEO-varios_respaldos_en_orden`, PR #24).
+- Es un satélite independiente (spec 009): rama `SMAP_L3-humedad_respaldo`, sin unir a `main` hasta la orden de Hernán. Depende del núcleo con varios respaldos en orden (rama `NUCLEO-varios_respaldos_en_orden`).
 - Endpoint de prueba: `GET /humedad-suelo/l3?lote_id=…&lat=…&lon=…&desde=…&hasta=…`. En la consulta en el momento (spec 010), `/humedad-suelo` sigue respondiendo con el L4.
 
 ## Comparación con el L4 (referencia)
 
 SMAP L4 0-5 cm en el lote de prueba (spec 003/005): 0,049 el 1/1/2026 … 0,098 el 8/1, 0,120 el 9/1, 0,127 el 14/1. El L3 tiene que seguir la misma tendencia en los días con pasada (se anotan los números de la prueba real).
 
-## Verificado en la prueba real (4/10/2026, PR #30)
+## Verificado en la prueba real
 
 - CMR tiene `SPL3SMP_E` en la nube de NSIDC (colección `C2938664763-NSIDC_CPRD`) con OPeNDAP: 14 archivos diarios del 1 al 14 de enero de 2026, leídos en 11 segundos.
 - Las capas están donde dice la spec: `/Soil_Moisture_Retrieval_Data_AM/soil_moisture`, `retrieval_qual_flag`, `latitude`, `longitude` y en `/Soil_Moisture_Retrieval_Data_PM/` las mismas con `_pm`.
@@ -84,8 +84,8 @@ SMAP L4 0-5 cm en el lote de prueba (spec 003/005): 0,049 el 1/1/2026 … 0,098 
 - [x] La celda de 9 km calculada coincide con la latitud y longitud que trae el archivo de la NASA. *Centro del lote (-33,7025; -65,2975) → fila 1262, columna 1228; el archivo da para esa celda el centro (-33,6715; -65,306), a 3,5 km del punto (media celda son ~4,5 km). Es la misma celda del L4 (spec 005).*
 - [x] Los días sin pasada quedan `descartada` con el motivo, sin inventar valores. *El 8/1 (AM y PM con `-9999`, bandera 7): `valor: null`, nota "Ese día SMAP no pasó sobre la celda o no pudo medir".*
 - [x] Los valores siguen la tendencia del L4 en los mismos días (se anota la diferencia). *Los dos muestran el suelo seco la primera semana y el humedecimiento desde el 9/1. El L3 da más alto y salta más: 1/1 L3 0,064 contra L4 0,049 (+0,015); 9/1 0,194 contra 0,120 (+0,074); 14/1 0,192 contra 0,127 (+0,065); el 8/1 (L4 0,098) el L3 no pasó. Es esperable: el L3 mide la capa superficial en el momento de la pasada (reacciona enseguida a la lluvia, como el 13/1), mientras que el L4 es el promedio diario de un modelo que suaviza. Por eso el L3 sirve para seguir la tendencia, no para comparar valores absolutos con el L4.*
-- [x] SMAP L3 no importa código de ningún otro satélite (`tests/test_nucleo.py` en verde). *Workflow `Tests` verde en el PR #30; 69 pasan en local.*
-- [x] Tests sin internet en `tests/test_smap_l3.py`; prueba real "Probar SMAP L3 (humedad de respaldo)" verde en el PR, con un clic y en cada PR que toque el conector. *25 tests sin internet; prueba real verde en el PR #30.*
+- [x] SMAP L3 no importa código de ningún otro satélite (`tests/test_nucleo.py` en verde). *Workflow `Tests` verde; 69 pasan en local.*
+- [x] Tests sin internet en `tests/test_smap_l3.py`; prueba real "Probar SMAP L3 (humedad de respaldo)" verde en el PR, con un clic y en cada PR que toque el conector. *25 tests sin internet; prueba real verde.*
 
 ## Fuera de alcance
 
