@@ -1,6 +1,6 @@
 # Spec 003 · Conector SMAP: humedad del suelo
 
-**Estado:** implementada y verificada (PR #6 y #9) · **Etapa:** pipeline satélite → API → app (sin interfaz) · **Requiere:** cuenta NASA Earthdata
+**Estado:** implementada y verificada · **Etapa:** pipeline satélite → API → app (sin interfaz) · **Requiere:** cuenta NASA Earthdata
 
 ## Objetivo
 
