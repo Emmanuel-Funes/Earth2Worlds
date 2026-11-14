@@ -92,7 +92,7 @@ def ventana(poligono: dict) -> tuple[int, int, int, int, int, int]:
 
 
 def periodo(hoy: date | None = None) -> tuple[date, date]:
-    """Los 48 meses completos más recientes: por ejemplo, si hoy es 30/10/2026: del 1/10/2022 al 30/9/2026."""
+    """Los 48 meses completos más recientes: por ejemplo, a fines de octubre de 2026: del 1/10/2022 al 30/9/2026."""
     hoy = hoy or date.today()
     hasta = date(hoy.year, hoy.month, 1) - timedelta(days=1)
     meses = hoy.year * 12 + hoy.month - 1 - MESES_PERIODO
