@@ -1,0 +1,23 @@
+name: Probar NOAA (El Niño / La Niña)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/noaa_enso.py"
+      - "probar_noaa_enso.py"
+      - ".github/workflows/probar-noaa-enso.yml"
+  workflow_dispatch:
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      # el índice es global: no hace falta lugar, fechas ni cuenta de la NASA
+      - name: Pedir el ONI de CPC y el Niño 3.4 de PSL
+        run: python probar_noaa_enso.py
