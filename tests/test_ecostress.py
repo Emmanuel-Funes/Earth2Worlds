@@ -255,7 +255,7 @@ def nasa_simulada(tmp_path, granulos_jet, granulos_esi, archivos_rotos=False):
         if archivos_rotos:
             return httpx.Response(500)
         archivo = ruta.rsplit("/", 1)[-1]
-        return httpx.Response(307, headers={"location": str(tmp_path / archivo)})
+        return httpx.Response(307, headers={"location": (tmp_path / archivo).as_uri()})
     return httpx.Client(transport=httpx.MockTransport(responder))
 
 

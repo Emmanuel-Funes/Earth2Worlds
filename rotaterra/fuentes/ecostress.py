@@ -215,7 +215,10 @@ def enlace_firmado(cliente: httpx.Client, url: str) -> str:
     """
     respuesta = cliente.get(url, headers={"Range": "bytes=0-0"}, follow_redirects=False)
     if respuesta.is_redirect:
-        return respuesta.headers["location"]
+        loc = respuesta.headers["location"]
+        if loc.startswith("file:///"):
+            return loc[8:] if len(loc) > 9 and loc[9] == ":" else loc[7:]
+        return loc
     respuesta.raise_for_status()
     return url
 

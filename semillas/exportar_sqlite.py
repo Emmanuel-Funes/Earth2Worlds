@@ -46,7 +46,8 @@ def exportar(carpeta: Path, destino: Path) -> dict[str, int]:
     temporal = destino.with_suffix(".tmp")
     temporal.unlink(missing_ok=True)
     filas_por_tabla = {}
-    with sqlite3.connect(temporal) as db:
+    db = sqlite3.connect(temporal)
+    try:
         for ruta in sorted(carpeta.glob("*.csv")):
             with ruta.open(encoding="utf-8-sig", newline="") as f:
                 lector = csv.reader(f)
@@ -68,8 +69,10 @@ def exportar(carpeta: Path, destino: Path) -> dict[str, int]:
         db.execute("CREATE TABLE _manifiesto (clave TEXT PRIMARY KEY, valor TEXT)")
         db.executemany("INSERT INTO _manifiesto VALUES (?, ?)",
                        [(k, v if isinstance(v, str) else json.dumps(v, ensure_ascii=False)) for k, v in datos.items()])
-    with sqlite3.connect(temporal) as db:
+        db.commit()
         db.execute("VACUUM")
+    finally:
+        db.close()
     temporal.replace(destino)
     return filas_por_tabla
 
