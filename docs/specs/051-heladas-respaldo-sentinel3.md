@@ -1,6 +1,6 @@
 # Spec 051 · Segundo respaldo de heladas con Sentinel-3 SLSTR LST nocturna (ESA)
 
-**Estado:** aprobada por Hernán el 27/10/2026 ("SI PORFAVOR … Es urgente conectarlo") · código y tests listos · **prueba real hecha el 29/10/2026** con la cuenta de Copernicus de Hernán (anda, ver abajo) · **Etapa:** pipeline satélite → API → app · **Requiere:** cuenta gratis de Copernicus Data Space (`COPERNICUS_USERNAME` / `COPERNICUS_PASSWORD`) · **Rama:** `SENTINEL3-heladas_respaldo` · **Depende de:** PR #24 (`NUCLEO-varios_respaldos_en_orden`)
+**Estado:** aprobada por Hernán ("SI PORFAVOR … Es urgente conectarlo") · código y tests listos · **prueba real hecha** con la cuenta de Copernicus de Hernán (anda, ver abajo) · **Etapa:** pipeline satélite → API → app · **Requiere:** cuenta gratis de Copernicus Data Space (`COPERNICUS_USERNAME` / `COPERNICUS_PASSWORD`) · **Rama:** `SENTINEL3-heladas_respaldo` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`)
 
 ## Objetivo
 
@@ -29,7 +29,7 @@ Archivos y variables que se leen:
 | `geodetic_in.nc` | `latitude_in`, `longitude_in` | ubicación de cada píxel |
 | `flags_in.nc` | `confidence_in` | banderas; los nombres y bits se leen de `flag_meanings` / `flag_masks` |
 
-**Verificado con datos reales el 29/10/2026:** los 3 archivos y las variables existen con esos nombres en productos `..._NT_005.SEN3` reales. `confidence_in` trae `flag_meanings` = `coastline ocean tidal land inland_water unfilled spare spare cosmetic duplicate day twilight sun_glint snow summary_cloud summary_pointing` (land = 8, unfilled = 32, summary_cloud = 16384). No hizo falta cambiar el código.
+**Verificado con datos reales:** los 3 archivos y las variables existen con esos nombres en productos `..._NT_005.SEN3` reales. `confidence_in` trae `flag_meanings` = `coastline ocean tidal land inland_water unfilled spare spare cosmetic duplicate day twilight sun_glint snow summary_cloud summary_pointing` (land = 8, unfilled = 32, summary_cloud = 16384). No hizo falta cambiar el código.
 
 ## Entrada
 
@@ -76,11 +76,11 @@ Archivos y variables que se leen:
 
 ## Prueba real
 
-Workflow `Probar Sentinel-3 (heladas)` (`.github/workflows/probar-sentinel3-heladas.yml`, `probar_sentinel3_heladas.py`). Por defecto: lote de prueba de San Luis, 15 al 30/9/2026, la quincena con la noche fría del 22/9 (VIIRS −3,0 °C, MODIS 0,1 °C). Mientras Actions no tenga minutos, se corre el mismo script desde un hilo nuevo del entorno NASA con los pasos de arriba hechos.
+Workflow `Probar Sentinel-3 (heladas)` (`.github/workflows/probar-sentinel3-heladas.yml`, `probar_sentinel3_heladas.py`). Por defecto: lote de prueba de San Luis, con un período automático que se cuenta desde el día en que corre. Mientras Actions no tenga minutos, se corre el mismo script desde un hilo nuevo del entorno NASA con los pasos de arriba hechos.
 
 ## Resultado de la prueba real
 
-**29/10/2026**, entorno NASA de Claude con `COPERNICUS_USERNAME` / `COPERNICUS_PASSWORD` de Hernán. Lote de prueba de San Luis (−33,700/−33,705, −65,300/−65,295), 15 al 30/9/2026. Comando: `python probar_sentinel3_heladas.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" 2026-09-15 2026-09-30`.
+Entorno NASA de Claude con `COPERNICUS_USERNAME` / `COPERNICUS_PASSWORD` de Hernán. Lote de prueba de San Luis (−33,700/−33,705, −65,300/−65,295), 15 al 30/9/2026. Comando: `python probar_sentinel3_heladas.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" 2026-09-15 2026-09-30`.
 
 - **Anduvo al primer intento, en 31 s.** El catálogo devolvió 49 productos SL_2_LST, 21 de noche (S3A y S3B; 5 noches con dos pasos). Todos los pasos se leyeron con token y descarga por archivo.
 - **16 noches: 5 `buena`, 11 `descartada`** por nube (bandera `summary_cloud` de la ESA). Ninguna `dudosa` (el lote es más chico que un píxel: o está despejado o no).
@@ -109,4 +109,4 @@ Comparación noche por noche con VIIRS (corrido el mismo día, misma quincena) y
 - [x] El token sigue a mano el redireccionamiento de la descarga, se renueva si vence, y faltan credenciales avisa (tests `test_noche_fria_da_celsius_y_riesgo_de_helada`, `test_token_vencido_se_renueva`, `test_sin_credenciales`).
 - [x] Entra después de MODIS (test `test_entra_despues_de_modis`).
 - [x] No importa a ningún otro satélite y el núcleo no lo nombra (`tests/test_nucleo.py`).
-- [x] Prueba real sobre el lote de San Luis con la cuenta de Copernicus (29/10/2026): 5 de 16 noches con dato, más fría 22/9 con 0,7 °C (VIIRS −3,0, MODIS 0,1), ver tabla.
+- [x] Prueba real sobre el lote de San Luis con la cuenta de Copernicus: 5 de 16 noches con dato, más fría 22/9 con 0,7 °C (VIIRS −3,0, MODIS 0,1), ver tabla.

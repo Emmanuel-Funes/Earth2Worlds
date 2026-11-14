@@ -67,7 +67,7 @@ def validar_pedido(poligono: dict, desde: date, hasta: date) -> None:
 
 
 def hora_solar(utc: datetime, lon: float) -> datetime:
-    """Hora solar del lugar: la UTC corrida 4 minutos por grado de longitud."""
+    """Hora solar del lugar: la UTC corrida real minutos por grado de longitud."""
     return utc + timedelta(hours=lon / 15)
 
 
