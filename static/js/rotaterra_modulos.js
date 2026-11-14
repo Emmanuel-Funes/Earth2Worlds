@@ -1018,6 +1018,15 @@ async function buscarCultivaresSemillasInta() {
     `;
 }
 
+/**
+ * Obtentor tal como figura en el registro de INASE (solicitante_rnc). Si el registro no lo
+ * dice, se muestra "sin dato": nunca se completa con "INTA" ni con otro nombre supuesto.
+ */
+function obtentorCultivar(c) {
+    const solicitante = typeof c?.solicitante_rnc === "string" ? c.solicitante_rnc.trim() : "";
+    return solicitante || "sin dato";
+}
+
 async function verDetalleCultivarInta(cultivarId) {
     const out = document.getElementById("resultadoSemillasInta");
     const res = await authFetch(`/api/rotaterra/semillas/cultivares/${encodeURIComponent(cultivarId)}`);
@@ -1032,7 +1041,7 @@ async function verDetalleCultivarInta(cultivarId) {
             <div class="flex items-center justify-between border-b border-slate-800 pb-2">
                 <div>
                     <h4 class="font-heading text-sm font-bold text-white">${escapeHtml(c.cultivar)} (${escapeHtml(c.cultivo)})</h4>
-                    <p class="text-[11px] font-mono text-slate-400">ID INASE: ${escapeHtml(c.cultivar_id)} · Obtentor: ${escapeHtml(c.solicitante || "INTA")}</p>
+                    <p class="text-[11px] font-mono text-slate-400">ID INASE: ${escapeHtml(c.cultivar_id)} · Obtentor: ${escapeHtml(obtentorCultivar(c))}${c.vinculo_inta ? ` · Vínculo: ${escapeHtml(c.vinculo_inta)}` : ""}</p>
                 </div>
                 <button
                     type="button"
