@@ -80,7 +80,7 @@ Workflow `Probar Sentinel-3 (heladas)` (`.github/workflows/probar-sentinel3-hela
 
 ## Resultado de la prueba real
 
-**29/10/2026**, entorno NASA de Claude con `COPERNICUS_USERNAME` / `COPERNICUS_PASSWORD` de Hernán. Lote de prueba de San Luis (−33,700/−33,705, −65,300/−65,295), 15 al 30/9/2026. Comando: `python probar_sentinel3_heladas.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" 2026-09-15 2026-09-30`.
+Entorno NASA de Claude con `COPERNICUS_USERNAME` / `COPERNICUS_PASSWORD` de Hernán. Lote de prueba de San Luis (−33,700/−33,705, −65,300/−65,295), 15 al 30/9/2026. Comando: `python probar_sentinel3_heladas.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" 2026-09-15 2026-09-30`.
 
 - **Anduvo al primer intento, en 31 s.** El catálogo devolvió 49 productos SL_2_LST, 21 de noche (S3A y S3B; 5 noches con dos pasos). Todos los pasos se leyeron con token y descarga por archivo.
 - **16 noches: 5 `buena`, 11 `descartada`** por nube (bandera `summary_cloud` de la ESA). Ninguna `dudosa` (el lote es más chico que un píxel: o está despejado o no).
