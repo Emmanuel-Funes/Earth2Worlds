@@ -1,0 +1,28 @@
+name: Probar SISINTA (pH de perfiles medidos)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/sisinta.py"
+      - "probar_sisinta.py"
+      - ".github/workflows/probar-sisinta.yml"
+  workflow_dispatch:
+    inputs:
+      esquinas:
+        description: "Esquinas del lote como 'lat, lon; lat, lon; lat, lon; lat, lon' (vacío = lote de prueba y las 3 parcelas del piloto)"
+        default: ""
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Pedir al INTA el pH de los perfiles cerca del lote
+        env:
+          ESQUINAS: ${{ inputs.esquinas || '' }}
+        run: python probar_sisinta.py "$ESQUINAS"
