@@ -1,6 +1,6 @@
 # Spec 058 · Clima futuro de la zona con NEX-GDDP-CMIP6
 
-**Estado:** construida y probada con datos reales · **Aprobada por:** Hernán, 30/10/2026 ("Vamos con la partes de satelites y obtencion de datos que es lo mio, avancemos", sobre los faltantes del desafío Field Shift) · **Rama:** `NEX_GDDP-clima_futuro_CMIP6` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** nada (el servidor de la NASA es público)
+**Estado:** construida y probada con datos reales · **Aprobada por:** Hernán ("Vamos con la partes de satelites y obtencion de datos que es lo mio, avancemos", sobre los faltantes del desafío Field Shift) · **Rama:** `NEX_GDDP-clima_futuro_CMIP6` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** nada (el servidor de la NASA es público)
 
 ## Objetivo
 
