@@ -76,7 +76,7 @@ Archivos y variables que se leen:
 
 ## Prueba real
 
-Workflow `Probar Sentinel-3 (heladas)` (`.github/workflows/probar-sentinel3-heladas.yml`, `probar_sentinel3_heladas.py`). Por defecto: lote de prueba de San Luis, 15 al 30/9/2026, la quincena con la noche fría del 22/9 (VIIRS −3,0 °C, MODIS 0,1 °C). Mientras Actions no tenga minutos, se corre el mismo script desde un hilo nuevo del entorno NASA con los pasos de arriba hechos.
+Workflow `Probar Sentinel-3 (heladas)` (`.github/workflows/probar-sentinel3-heladas.yml`, `probar_sentinel3_heladas.py`). Por defecto: lote de prueba de San Luis, con un período automático que se cuenta desde el día en que corre. Mientras Actions no tenga minutos, se corre el mismo script desde un hilo nuevo del entorno NASA con los pasos de arriba hechos.
 
 ## Resultado de la prueba real
 

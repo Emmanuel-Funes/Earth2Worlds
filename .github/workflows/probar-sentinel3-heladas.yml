@@ -12,11 +12,11 @@ on:
         description: "Esquinas del lote como 'lat, lon; lat, lon; lat, lon; lat, lon' (copiadas de Google Maps)"
         default: "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"
       desde:
-        description: "Desde (AAAA-MM-DD)"
-        default: "2026-09-15"
+        description: "Desde (AAAA-MM-DD). Vacío = automático: hace 60 días"
+        default: ""
       hasta:
-        description: "Hasta (AAAA-MM-DD)"
-        default: "2026-09-30"
+        description: "Hasta (AAAA-MM-DD). Vacío = automático: hace 45 días"
+        default: ""
 
 jobs:
   probar:
@@ -32,8 +32,7 @@ jobs:
         env:
           COPERNICUS_USERNAME: ${{ secrets.COPERNICUS_USERNAME }}
           COPERNICUS_PASSWORD: ${{ secrets.COPERNICUS_PASSWORD }}
-          # en un PR no hay inputs: lote de ejemplo y la quincena con la helada del 22/9 (specs 030 y 035)
           ESQUINAS: ${{ inputs.esquinas || '-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300' }}
-          DESDE: ${{ inputs.desde || '2026-09-15' }}
-          HASTA: ${{ inputs.hasta || '2026-09-30' }}
-        run: python probar_sentinel3_heladas.py "$ESQUINAS" "$DESDE" "$HASTA"
+          DESDE: ${{ inputs.desde }}
+          HASTA: ${{ inputs.hasta }}
+        run: DESDE="${DESDE:-$(date -u -d "-60 days" +%F)}"; HASTA="${HASTA:-$(date -u -d "-45 days" +%F)}"; python probar_sentinel3_heladas.py "$ESQUINAS" "$DESDE" "$HASTA"
