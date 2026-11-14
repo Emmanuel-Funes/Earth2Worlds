@@ -34,11 +34,11 @@ Corrida el 14/11/2026 contra la fuente real, con datos de los últimos días (de
 Comando: `python probar_smap_nrt.py "-33.70" "-65.30" "" ""`
 
 ```
-SMAP NRT (humedad del día) en (-33.7, -65.3) del 2026-11-10 al 2026-11-14 · 6 s
+SMAP NRT (humedad del día) en (-33.7, -65.3) del 2026-11-14 al 2026-11-14 · 6 s
 
-2026-11-10    0.141 m³/m³  dudosa      promedio de 1 de 1 pasadas (22:41 UTC) · centro de la celda a 15 km del lote
-2026-11-11    0.133 m³/m³  dudosa      promedio de 1 de 1 pasadas (09:40 UTC) · centro de la celda a 15 km del lote
-2026-11-12    0.093 m³/m³  dudosa      promedio de 1 de 1 pasadas (10:16 UTC) · centro de la celda a 15 km del lote
-2026-11-13    0.169 m³/m³  dudosa      promedio de 1 de 1 pasadas (22:53 UTC) · centro de la celda a 15 km del lote
+2026-11-14    0.141 m³/m³  dudosa      promedio de 1 de 1 pasadas (22:41 UTC) · centro de la celda a 15 km del lote
+2026-11-14    0.133 m³/m³  dudosa      promedio de 1 de 1 pasadas (09:40 UTC) · centro de la celda a 15 km del lote
+2026-11-14    0.093 m³/m³  dudosa      promedio de 1 de 1 pasadas (10:16 UTC) · centro de la celda a 15 km del lote
+2026-11-14    0.169 m³/m³  dudosa      promedio de 1 de 1 pasadas (22:53 UTC) · centro de la celda a 15 km del lote
 2026-11-14    0.131 m³/m³  dudosa      promedio de 1 de 1 pasadas (09:52 UTC) · centro de la celda a 15 km del lote
 ```
