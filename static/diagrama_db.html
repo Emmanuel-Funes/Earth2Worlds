@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Earth2Worlds | Diagrama Relacional en Vivo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ["Outfit", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                        mono: ["Fira Code", "monospace"],
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="sticky top-0 z-30 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <a href="/" class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-emerald-500 flex items-center justify-center font-heading font-extrabold text-slate-950 text-lg">
+                    E2W
+                </a>
+                <div>
+                    <h1 class="font-heading text-lg font-bold text-white">Earth2Worlds &bull; Esquema Relacional en Vivo</h1>
+                    <p class="text-xs text-slate-400 font-mono">Introspección SQLAlchemy 2.0 en tiempo real (GET /api/database/schema)</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <button
+                    type="button"
+                    onclick="cargarEsquemaEnVivo()"
+                    class="px-3.5 py-2 rounded-xl text-xs font-mono bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition"
+                >
+                    Refrescar Introspección
+                </button>
+                <a href="/mapa" class="px-3.5 py-2 rounded-xl text-xs font-mono bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 transition">
+                    Mapa de Secciones
+                </a>
+                <a href="/" class="px-4 py-2 rounded-xl text-xs font-heading font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition">
+                    &larr; Volver al Panel
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8 space-y-6">
+        <!-- Resumen de Metadatos de la BD -->
+        <section id="metaSchemaBar" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4">
+                <span class="text-xs font-mono text-slate-400 uppercase">Base de Datos</span>
+                <p id="dbNombreArchivo" class="font-mono text-lg font-bold text-emerald-400 mt-1">earth2worlds.db</p>
+            </div>
+            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4">
+                <span class="text-xs font-mono text-slate-400 uppercase">Motor SQL</span>
+                <p id="dbMotor" class="font-mono text-lg font-bold text-sky-400 mt-1">SQLITE</p>
+            </div>
+            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4">
+                <span class="text-xs font-mono text-slate-400 uppercase">Tablas Detectadas</span>
+                <p id="dbTotalTablas" class="font-heading text-2xl font-extrabold text-purple-400 mt-1">-</p>
+            </div>
+            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4">
+                <span class="text-xs font-mono text-slate-400 uppercase">Inicialización Limpia</span>
+                <p id="dbFechaInit" class="font-mono text-lg font-bold text-amber-400 mt-1">2026-11-14</p>
+            </div>
+        </section>
+
+        <!-- Relaciones Clave Foránea (FK) -->
+        <section class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-6">
+            <h2 class="font-heading text-lg font-bold text-white mb-3">Relaciones Referenciales (Foreign Keys)</h2>
+            <div id="listaRelacionesFk" class="flex flex-wrap gap-3 text-xs font-mono"></div>
+        </section>
+
+        <!-- Tarjetas de Tablas con sus Columnas -->
+        <section id="contenedorTablasSchema" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></section>
+    </main>
+
+    <footer class="border-t border-slate-900 py-5 text-center text-xs text-slate-500 font-mono">
+        Earth2Worlds &bull; Inspector de Esquema SQLAlchemy 2.0 &bull; 14/11/2026
+    </footer>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (!getToken()) {
+                window.location.href = "/login";
+                return;
+            }
+            cargarEsquemaEnVivo();
+        });
+
+        async function cargarEsquemaEnVivo() {
+            const container = document.getElementById("contenedorTablasSchema");
+            const relContainer = document.getElementById("listaRelacionesFk");
+
+            try {
+                const res = await authFetch("/api/database/schema");
+                if (!res.ok) return;
+                const data = await res.json();
+
+                document.getElementById("dbNombreArchivo").textContent = data.archivo_db || "earth2worlds.db";
+                document.getElementById("dbMotor").textContent = data.motor || "SQLITE";
+                document.getElementById("dbTotalTablas").textContent = String(data.total_tablas || 0);
+                document.getElementById("dbFechaInit").textContent = data.fecha_inicializacion || "2026-11-14";
+
+                const relaciones = Array.isArray(data.relaciones) ? data.relaciones : [];
+                if (relaciones.length === 0) {
+                    relContainer.innerHTML = `<span class="text-slate-500">Sin llaves foráneas registradas.</span>`;
+                } else {
+                    relContainer.innerHTML = relaciones
+                        .map(
+                            (r) => `
+                            <div class="px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-slate-200">
+                                <span class="text-sky-400">${escapeHtml(r.origen_tabla)}.${escapeHtml(r.origen_columna)}</span>
+                                <span class="text-slate-500 mx-1.5">&rarr;</span>
+                                <span class="text-emerald-400">${escapeHtml(r.destino_tabla)}.${escapeHtml(r.destino_columna)}</span>
+                            </div>
+                        `
+                        )
+                        .join("");
+                }
+
+                const tablas = Array.isArray(data.tablas) ? data.tablas : [];
+                container.innerHTML = tablas
+                    .map(
+                        (t) => `
+                        <article class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+                            <div class="bg-slate-950/90 border-b border-slate-800 px-6 py-4 flex items-center justify-between">
+                                <div>
+                                    <span class="text-[11px] font-mono uppercase text-emerald-400">TABLA SQL</span>
+                                    <h3 class="font-mono text-lg font-bold text-white">${escapeHtml(t.nombre)}</h3>
+                                </div>
+                                <span class="px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                                    ${t.filas} fila(s) en vivo
+                                </span>
+                            </div>
+                            <div class="p-4 overflow-x-auto">
+                                <table class="w-full text-left border-collapse text-xs font-mono">
+                                    <thead>
+                                        <tr class="border-b border-slate-800 text-slate-400 uppercase">
+                                            <th class="py-2 px-3">Columna</th>
+                                            <th class="py-2 px-3">Tipo</th>
+                                            <th class="py-2 px-3">Clave / Restricción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-800/60">
+                                        ${t.columnas
+                                            .map(
+                                                (c) => `
+                                                <tr>
+                                                    <td class="py-2.5 px-3 font-semibold text-white">${escapeHtml(c.nombre)}</td>
+                                                    <td class="py-2.5 px-3 text-sky-300">${escapeHtml(c.tipo)}</td>
+                                                    <td class="py-2.5 px-3 space-x-1">
+                                                        ${
+                                                            c.es_pk
+                                                                ? `<span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">PK</span>`
+                                                                : ""
+                                                        }
+                                                        ${
+                                                            c.es_fk
+                                                                ? `<span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">FK &rarr; ${escapeHtml(
+                                                                      c.fk_referencia
+                                                                  )}</span>`
+                                                                : ""
+                                                        }
+                                                        ${
+                                                            !c.nullable
+                                                                ? `<span class="text-slate-400">NOT NULL</span>`
+                                                                : `<span class="text-slate-600">NULL</span>`
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            `
+                                            )
+                                            .join("")}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </article>
+                    `
+                    )
+                    .join("");
+            } catch (err) {
+                console.error("[Earth2Worlds] Error cargando esquema:", err);
+            }
+        }
+    </script>
+</body>
+</html>

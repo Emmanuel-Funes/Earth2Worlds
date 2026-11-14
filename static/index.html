@@ -1,0 +1,1855 @@
+<!DOCTYPE html>
+<!--
+================================================================================
+MAPA MAESTRO DE SECCIONES DE EARTH2WORLDS (static/index.html)
+Fecha de inicialización: 14 de noviembre de 2026
+Sincronizado obligatoriamente con: static/mapa_secciones.html
+--------------------------------------------------------------------------------
+SECCIONES HTML:
+  [SEC-01] Head, fuentes Google (Outfit, Inter, Fira Code) y configuración Tailwind
+  [SEC-02] Navbar superior con identidad Earth2Worlds, accesos Admin, #userRoleBadge y Salir
+  [SEC-03] Cabecera de bienvenida dinámica, #adminStatsBar y botón #btnNuevoCampo
+  [SEC-04] Barra de 4 Pestañas RBAC (#camposTab, #propietariosTab, #operadoresTab, #adminTab)
+  [SEC-05] Contenido de #camposTab: #campoActivoHeader, #listaCampos y Slots limpios:
+           - [SEC-05.2] #slotModuloMapa (<!-- [SLOT-MODULO-MAPA] -->)
+           - [SEC-05.3] #slotModuloTelemetria (<!-- [SLOT-MODULO-TELEMETRIA] -->)
+  [SEC-06] Vista de Propietarios con sus campos y operadores anidados (Exclusivo Admin)
+  [SEC-07] Gestión de Operadores de Campo y asignación rápida de lotes (Admin y Propietario)
+  [SEC-08] Tabla maestra de Auditoría Global de Usuarios con buscador/filtro y CRUD (Admin)
+  [SEC-09] Los 5 Modales Interactivos:
+           - [SEC-09.1] #modalCampo (Alta de campo + #slotModalMapa)
+           - [SEC-09.2] #modalEditarCampo (Edición de campo y reasignación de propietario)
+           - [SEC-09.3] #modalEditarUsuario (Edición completa de usuario, rol y contraseña)
+           - [SEC-09.4] #modalAsignarCampos (Checkboxes para asignar/desasignar lotes a operador)
+           - [SEC-09.5] #modalOperador (Alta de nuevo operador de campo)
+  [SEC-10] Bloque maestro de Controladores JavaScript ([JS-01] a [JS-08])
+
+CONTROLADORES JAVASCRIPT:
+  [JS-01] Estado Global, verificación de sesión JWT y arranque de la SPA
+  [JS-02] Motor de Pestañas RBAC y adaptación dinámica de interfaz según rol
+  [JS-03] Controlador de Campos (#listaCampos, #campoActivoHeader, filtro por propietario)
+  [JS-04] Controlador de Alta, Edición y Eliminación de Campos (#modalCampo, #modalEditarCampo)
+  [JS-05] Controlador de Propietarios y Lotes anidados (Tab #propietariosTab - Admin)
+  [JS-06] Controlador de Operadores y Asignación de Campos (#modalOperador, #modalAsignarCampos)
+  [JS-07] Controlador de Auditoría Global de Usuarios y buscador/filtro (#adminTab, #modalEditarUsuario)
+  [JS-08] Utilidades de UI, Notificaciones Toast y gestión de cierre de modales
+================================================================================
+-->
+<html lang="es" class="dark">
+<!-- ======================================================================= -->
+<!-- [SEC-01] HEAD, FUENTES GOOGLE Y CONFIGURACIÓN TAILWIND                  -->
+<!-- ======================================================================= -->
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Earth2Worlds | Plataforma de Gestión Territorial</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ["Outfit", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                        mono: ["Fira Code", "monospace"],
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col selection:bg-emerald-500/30 selection:text-emerald-200">
+    <!-- Efectos sutiles de iluminación en fondo oscuro -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+        <div class="absolute -top-40 -left-40 w-[28rem] h-[28rem] bg-emerald-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/4 -right-40 w-[28rem] h-[28rem] bg-sky-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-1/3 w-[24rem] h-[24rem] bg-purple-500/5 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Contenedor de notificaciones Toast -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
+
+    <!-- =================================================================== -->
+    <!-- [SEC-02] NAVBAR SUPERIOR CON IDENTIDAD EARTH2WORLDS                 -->
+    <!-- =================================================================== -->
+    <nav class="sticky top-0 z-30 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-sky-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 font-heading font-extrabold text-slate-950 text-lg">
+                    E2W
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-heading text-lg sm:text-xl font-bold tracking-tight text-white">Earth2Worlds</span>
+                        <span class="hidden sm:inline-block text-[11px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
+                            v1.0 &bull; 14/11/2026
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-400 hidden sm:block">Gestión RBAC de Establecimientos y Lotes Productivos</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Accesos rápidos de arquitectura (exclusivos Admin) -->
+                <div id="navAdminTools" class="hidden md:flex items-center gap-2 mr-2">
+                    <a
+                        href="/mapa"
+                        class="px-3 py-1.5 rounded-xl text-xs font-mono bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 transition"
+                    >
+                        Mapa de Secciones
+                    </a>
+                    <a
+                        href="/diagrama"
+                        class="px-3 py-1.5 rounded-xl text-xs font-mono bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 transition"
+                    >
+                        Diagrama BD
+                    </a>
+                </div>
+
+                <span
+                    id="userRoleBadge"
+                    class="px-3 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-wider bg-slate-800 text-slate-300 border border-slate-700"
+                >
+                    CARGANDO
+                </span>
+
+                <div class="hidden sm:flex flex-col text-right">
+                    <span id="userNameDisplay" class="text-sm font-semibold text-white leading-tight">-</span>
+                    <span id="userLocationDisplay" class="text-[11px] text-slate-400 font-mono">-</span>
+                </div>
+
+                <button
+                    type="button"
+                    onclick="logout()"
+                    class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 transition"
+                >
+                    Salir
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenedor Principal -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <!-- =============================================================== -->
+        <!-- [SEC-03] CABECERA DE BIENVENIDA Y BARRA ESTADÍSTICA ADMIN       -->
+        <!-- =============================================================== -->
+        <section class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-6 shadow-xl">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h1 id="welcomeTitle" class="font-heading text-2xl sm:text-3xl font-bold text-white">
+                        Panel Operativo Earth2Worlds
+                    </h1>
+                    <p id="welcomeSubtitle" class="text-sm text-slate-400 mt-1">
+                        Cargando permisos y establecimientos asociados a tu cuenta...
+                    </p>
+                </div>
+                <div class="flex flex-wrap items-center gap-3">
+                    <button
+                        id="btnNuevoOperadorHeader"
+                        type="button"
+                        onclick="abrirModalOperador()"
+                        class="hidden px-4 py-2.5 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 text-sky-300 border border-sky-500/30 font-heading font-semibold text-sm transition"
+                    >
+                        + Nuevo Operador
+                    </button>
+                    <button
+                        id="btnNuevoCampo"
+                        type="button"
+                        onclick="abrirModalCampo()"
+                        class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-heading font-bold text-sm shadow-lg shadow-emerald-500/20 transition"
+                    >
+                        + Nuevo Campo
+                    </button>
+                </div>
+            </div>
+
+            <!-- Barra de 4 contadores estadísticos para Admin -->
+            <div id="adminStatsBar" class="hidden grid-cols-2 lg:grid-cols-4 gap-4 mt-6 pt-6 border-t border-slate-800">
+                <div class="bg-slate-950/70 border border-slate-800 rounded-xl p-4">
+                    <span class="text-xs font-mono uppercase text-slate-400">Propietarios</span>
+                    <p id="statPropietarios" class="font-heading text-2xl font-extrabold text-emerald-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-950/70 border border-slate-800 rounded-xl p-4">
+                    <span class="text-xs font-mono uppercase text-slate-400">Operadores</span>
+                    <p id="statOperadores" class="font-heading text-2xl font-extrabold text-sky-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-950/70 border border-slate-800 rounded-xl p-4">
+                    <span class="text-xs font-mono uppercase text-slate-400">Campos Registrados</span>
+                    <p id="statCampos" class="font-heading text-2xl font-extrabold text-amber-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-950/70 border border-slate-800 rounded-xl p-4">
+                    <span class="text-xs font-mono uppercase text-slate-400">Total Usuarios</span>
+                    <p id="statTotalUsuarios" class="font-heading text-2xl font-extrabold text-purple-400 mt-1">0</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================================== -->
+        <!-- [SEC-04] BARRA DE 4 PESTAÑAS RBAC                               -->
+        <!-- =============================================================== -->
+        <div class="flex flex-wrap items-center gap-2 border-b border-slate-800 pb-3" role="tablist">
+            <button
+                id="tabBtnCampos"
+                type="button"
+                onclick="cambiarTab('camposTab')"
+                class="px-4 py-2.5 rounded-xl text-sm font-heading font-semibold transition bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20"
+            >
+                Mis Campos &amp; Panel Principal
+            </button>
+            <button
+                id="tabBtnPropietarios"
+                type="button"
+                onclick="cambiarTab('propietariosTab')"
+                class="hidden px-4 py-2.5 rounded-xl text-sm font-heading font-semibold transition bg-slate-900/80 text-slate-300 hover:bg-slate-800 border border-slate-800"
+            >
+                Propietarios y Lotes
+            </button>
+            <button
+                id="tabBtnOperadores"
+                type="button"
+                onclick="cambiarTab('operadoresTab')"
+                class="hidden px-4 py-2.5 rounded-xl text-sm font-heading font-semibold transition bg-slate-900/80 text-slate-300 hover:bg-slate-800 border border-slate-800"
+            >
+                Operadores de Campo
+            </button>
+            <button
+                id="tabBtnAdmin"
+                type="button"
+                onclick="cambiarTab('adminTab')"
+                class="hidden px-4 py-2.5 rounded-xl text-sm font-heading font-semibold transition bg-slate-900/80 text-slate-300 hover:bg-slate-800 border border-slate-800"
+            >
+                Auditoría Global
+            </button>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- [SEC-05] CONTENIDO DE #camposTab                                -->
+        <!-- =============================================================== -->
+        <section id="camposTab" class="space-y-6">
+            <!-- Barra de campo activo y filtro por propietario (Admin) -->
+            <div
+                id="campoActivoHeader"
+                class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4"
+            >
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                        <span class="text-xs font-mono uppercase tracking-wider text-emerald-400">Campo Activo Seleccionado</span>
+                    </div>
+                    <h2 id="nombreCampoActivo" class="font-heading text-xl font-bold text-white mt-1">
+                        Ningún campo seleccionado todavía
+                    </h2>
+                    <p id="detalleCampoActivo" class="text-xs text-slate-400 mt-0.5">
+                        Selecciona o registra un establecimiento productivo para visualizar sus contenedores modulares.
+                    </p>
+                </div>
+
+                <!-- Filtro exclusivo Admin por propietario -->
+                <div id="adminFiltroPropietarioWrap" class="hidden flex items-center gap-3">
+                    <label for="filtroPropietarioSelect" class="text-xs font-mono uppercase text-slate-400">
+                        Filtrar por Propietario:
+                    </label>
+                    <select
+                        id="filtroPropietarioSelect"
+                        onchange="filtrarCamposPorPropietario()"
+                        class="rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"
+                    >
+                        <option value="TODOS">Todos los propietarios</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Grilla reactiva de tarjetas de campos -->
+            <div id="listaCampos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+            <!-- Grilla de Slots limpios para futuros módulos -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+                <!-- ======================================================= -->
+                <!-- [SEC-05.2] CONTENEDOR LIMPIO #slotModuloMapa            -->
+                <!-- ======================================================= -->
+                <!-- [SLOT-MODULO-MAPA] -->
+                <div
+                    id="slotModuloMapa"
+                    class="bg-slate-900/80 backdrop-blur-md border border-dashed border-emerald-500/40 rounded-2xl p-6 flex flex-col justify-between min-h-[260px]"
+                >
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-3">
+                            <span class="px-2.5 py-1 rounded-lg text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                                [SEC-05.2] &bull; SLOT-MODULO-MAPA
+                            </span>
+                            <span class="text-xs font-mono text-slate-400">Campo.geometria_geojson</span>
+                        </div>
+                        <h3 class="font-heading text-lg font-bold text-white">
+                            Módulo Cartográfico e Interacción de Polígonos
+                        </h3>
+                        <p class="text-sm text-slate-400 mt-1">
+                            Contenedor limpio reservado para acoplar el visor geoespacial y delimitación de lotes en WGS 84 (EPSG:4326).
+                        </p>
+                    </div>
+                    <div class="mt-6 rounded-xl bg-slate-950/80 border border-slate-800 p-4 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-mono text-slate-400 block">Estado del contenedor</span>
+                            <span id="slotMapaEstadoCampo" class="text-xs text-emerald-300 font-mono">
+                                Listo para integrar visor sobre el campo activo
+                            </span>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-[11px] font-mono bg-slate-800 text-slate-300">
+                            SLOT PREPARADO
+                        </span>
+                    </div>
+                </div>
+
+                <!-- ======================================================= -->
+                <!-- [SEC-05.3] CONTENEDOR LIMPIO #slotModuloTelemetria      -->
+                <!-- ======================================================= -->
+                <!-- [SLOT-MODULO-TELEMETRIA] -->
+                <div
+                    id="slotModuloTelemetria"
+                    class="bg-slate-900/80 backdrop-blur-md border border-dashed border-sky-500/40 rounded-2xl p-6 flex flex-col justify-between min-h-[260px]"
+                >
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-3">
+                            <span class="px-2.5 py-1 rounded-lg text-xs font-mono bg-sky-500/10 text-sky-400 border border-sky-500/20">
+                                [SEC-05.3] &bull; SLOT-MODULO-TELEMETRIA
+                            </span>
+                            <span class="text-xs font-mono text-slate-400">Campo.configuracion_extra</span>
+                        </div>
+                        <h3 class="font-heading text-lg font-bold text-white">
+                            Módulo de Telemetría y Motores de Análisis
+                        </h3>
+                        <p class="text-sm text-slate-400 mt-1">
+                            Contenedor limpio reservado para acoplar series temporales, indicadores e informes sobre el lote seleccionado.
+                        </p>
+                    </div>
+                    <div class="mt-6 rounded-xl bg-slate-950/80 border border-slate-800 p-4 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-mono text-slate-400 block">Estado del contenedor</span>
+                            <span id="slotTelemetriaEstadoCampo" class="text-xs text-sky-300 font-mono">
+                                Listo para enchufar telemetría del campo activo
+                            </span>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-[11px] font-mono bg-slate-800 text-slate-300">
+                            SLOT PREPARADO
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================================== -->
+        <!-- [SEC-06] TABLA/TARJETAS DE PROPIETARIOS Y LOTES (ADMIN)         -->
+        <!-- =============================================================== -->
+        <section id="propietariosTab" class="hidden space-y-6">
+            <div class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-6">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                    <div>
+                        <h2 class="font-heading text-xl font-bold text-white">
+                            Padrón de Propietarios, Establecimientos y Operadores
+                        </h2>
+                        <p class="text-sm text-slate-400">
+                            Vista jerárquica exclusiva para Administradores de Earth2Worlds.
+                        </p>
+                    </div>
+                    <button
+                        type="button"
+                        onclick="cargarPropietariosAdmin()"
+                        class="px-4 py-2 rounded-xl text-xs font-mono bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition"
+                    >
+                        Actualizar Padrón
+                    </button>
+                </div>
+                <div id="listaPropietariosAdmin" class="space-y-4"></div>
+            </div>
+        </section>
+
+        <!-- =============================================================== -->
+        <!-- [SEC-07] GESTIÓN DE OPERADORES Y ASIGNACIÓN DE LOTES            -->
+        <!-- =============================================================== -->
+        <section id="operadoresTab" class="hidden space-y-6">
+            <div class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-6">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                    <div>
+                        <h2 class="font-heading text-xl font-bold text-white">
+                            Gestión de Operadores de Campo
+                        </h2>
+                        <p class="text-sm text-slate-400">
+                            Crea cuentas de operador (acceso de solo lectura) y asigna qué campos pueden monitorear.
+                        </p>
+                    </div>
+                    <button
+                        type="button"
+                        onclick="abrirModalOperador()"
+                        class="px-4 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-heading font-bold text-sm transition"
+                    >
+                        + Alta de Operador
+                    </button>
+                </div>
+                <div id="listaOperadoresContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+        </section>
+
+        <!-- =============================================================== -->
+        <!-- [SEC-08] TABLA MAESTRA DE AUDITORÍA GLOBAL DE USUARIOS (ADMIN)  -->
+        <!-- =============================================================== -->
+        <section id="adminTab" class="hidden space-y-6">
+            <div class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-6">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+                    <div>
+                        <h2 class="font-heading text-xl font-bold text-white">
+                            Auditoría Global de Usuarios de Earth2Worlds
+                        </h2>
+                        <p class="text-sm text-slate-400">
+                            Búsqueda instantánea, filtrado por rol y control CRUD integral sobre cuentas del sistema.
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <input
+                            id="inputBuscarUsuarioAdmin"
+                            type="text"
+                            oninput="renderizarTablaAuditoriaUsuarios()"
+                            placeholder="Buscar por nombre, email o localidad..."
+                            class="rounded-xl bg-slate-950 border border-slate-800 px-4 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                        />
+                        <select
+                            id="selectFiltroRolAdmin"
+                            onchange="renderizarTablaAuditoriaUsuarios()"
+                            class="rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500"
+                        >
+                            <option value="TODOS">Todos los roles</option>
+                            <option value="admin">Administradores</option>
+                            <option value="propietario">Propietarios</option>
+                            <option value="operador">Operadores</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-800 text-[11px] font-mono uppercase text-slate-400">
+                                <th class="py-3 px-4">ID</th>
+                                <th class="py-3 px-4">Usuario / Email</th>
+                                <th class="py-3 px-4">Rol</th>
+                                <th class="py-3 px-4">Ubicación (AR)</th>
+                                <th class="py-3 px-4">Vinculación / Lotes</th>
+                                <th class="py-3 px-4 text-right">Acciones CRUD</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaAuditoriaUsuariosBody" class="divide-y divide-slate-800/70 text-sm"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- =================================================================== -->
+    <!-- [SEC-09] LOS 5 MODALES INTERACTIVOS                                 -->
+    <!-- =================================================================== -->
+
+    <!-- [SEC-09.1] #modalCampo: Alta de nuevo campo -->
+    <div id="modalCampo" class="fixed inset-0 z-40 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+        <div class="w-full max-w-lg bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 space-y-5 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <div>
+                    <span class="text-xs font-mono text-emerald-400">[SEC-09.1] ALTA DE ESTABLECIMIENTO</span>
+                    <h3 class="font-heading text-xl font-bold text-white">Registrar Nuevo Campo</h3>
+                </div>
+                <button type="button" onclick="cerrarModal('modalCampo')" class="text-slate-400 hover:text-white text-sm font-mono">
+                    ESC &#10005;
+                </button>
+            </div>
+
+            <form id="formNuevoCampo" class="space-y-4">
+                <div id="nuevoCampoPropietarioAdminWrap" class="hidden">
+                    <label for="nuevo_campo_propietario_id" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                        Propietario Titular (Admin)
+                    </label>
+                    <select
+                        id="nuevo_campo_propietario_id"
+                        class="w-full rounded-xl bg-slate-950 border border-slate-800 px-3 py-2.5 text-sm text-slate-100"
+                    ></select>
+                </div>
+
+                <div>
+                    <label for="nuevo_campo_nombre" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                        Nombre del Campo / Lote
+                    </label>
+                    <input
+                        id="nuevo_campo_nombre"
+                        type="text"
+                        required
+                        placeholder="Ej: Estancia Don Alberto - Lote Norte"
+                        class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-emerald-500"
+                    />
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="nuevo_campo_ubicacion" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                            Ubicación / Referencia
+                        </label>
+                        <input
+                            id="nuevo_campo_ubicacion"
+                            type="text"
+                            placeholder="Ej: RP 55 Km 18, Villa Mercedes"
+                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-emerald-500"
+                        />
+                    </div>
+                    <div>
+                        <label for="nuevo_campo_superficie" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                            Superficie Estimada (ha)
+                        </label>
+                        <input
+                            id="nuevo_campo_superficie"
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            placeholder="Ej: 185.5"
+                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-emerald-500"
+                        />
+                    </div>
+                </div>
+
+                <!-- [SLOT-MODULO-MAPA] -->
+                <div
+                    id="slotModalMapa"
+                    class="rounded-xl border border-dashed border-emerald-500/40 bg-slate-950/80 p-4 text-xs text-slate-400"
+                >
+                    <span class="font-mono text-emerald-400 block mb-1">[SLOT-MODULO-MAPA] &bull; #slotModalMapa</span>
+                    Espacio reservado para dibujar o importar el polígono GeoJSON del campo al dar de alta el lote.
+                </div>
+
+                <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+                    <button
+                        type="button"
+                        onclick="cerrarModal('modalCampo')"
+                        class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300"
+                    >
+                        Cancelar
+                    </button>
+                    <button
+                        type="submit"
+                        class="px-5 py-2.5 rounded-xl text-xs font-heading font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950"
+                    >
+                        Guardar Campo
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- [SEC-09.2] #modalEditarCampo: Edición de campo y reasignación de propietario -->
+    <div id="modalEditarCampo" class="fixed inset-0 z-40 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+        <div class="w-full max-w-lg bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 space-y-5">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <div>
+                    <span class="text-xs font-mono text-amber-400">[SEC-09.2] EDICIÓN DE CAMPO</span>
+                    <h3 class="font-heading text-xl font-bold text-white">Modificar Establecimiento</h3>
+                </div>
+                <button type="button" onclick="cerrarModal('modalEditarCampo')" class="text-slate-400 hover:text-white text-sm font-mono">
+                    ESC &#10005;
+                </button>
+            </div>
+
+            <form id="formEditarCampo" class="space-y-4">
+                <input id="edit_campo_id" type="hidden" />
+
+                <div id="editCampoPropietarioAdminWrap" class="hidden">
+                    <label for="edit_campo_propietario_id" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                        Reasignar Propietario Titular (Exclusivo Admin)
+                    </label>
+                    <select
+                        id="edit_campo_propietario_id"
+                        class="w-full rounded-xl bg-slate-950 border border-slate-800 px-3 py-2.5 text-sm text-slate-100"
+                    ></select>
+                </div>
+
+                <div>
+                    <label for="edit_campo_nombre" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                        Nombre del Campo
+                    </label>
+                    <input
+                        id="edit_campo_nombre"
+                        type="text"
+                        required
+                        class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-amber-500"
+                    />
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="edit_campo_ubicacion" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                            Ubicación / Descripción
+                        </label>
+                        <input
+                            id="edit_campo_ubicacion"
+                            type="text"
+                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-amber-500"
+                        />
+                    </div>
+                    <div>
+                        <label for="edit_campo_superficie" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                            Superficie (ha)
+                        </label>
+                        <input
+                            id="edit_campo_superficie"
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-amber-500"
+                        />
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+                    <button
+                        type="button"
+                        onclick="cerrarModal('modalEditarCampo')"
+                        class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300"
+                    >
+                        Cancelar
+                    </button>
+                    <button
+                        type="submit"
+                        class="px-5 py-2.5 rounded-xl text-xs font-heading font-bold bg-amber-500 hover:bg-amber-400 text-slate-950"
+                    >
+                        Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- [SEC-09.3] #modalEditarUsuario: Edición completa de usuario, rol y contraseña -->
+    <div id="modalEditarUsuario" class="fixed inset-0 z-40 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+        <div class="w-full max-w-xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 space-y-5 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <div>
+                    <span class="text-xs font-mono text-purple-400">[SEC-09.3] GESTIÓN DE CUENTA</span>
+                    <h3 class="font-heading text-xl font-bold text-white">Editar Usuario</h3>
+                </div>
+                <button type="button" onclick="cerrarModal('modalEditarUsuario')" class="text-slate-400 hover:text-white text-sm font-mono">
+                    ESC &#10005;
+                </button>
+            </div>
+
+            <form id="formEditarUsuario" class="space-y-4">
+                <input id="edit_user_id" type="hidden" />
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="edit_user_nombre" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                            Nombre
+                        </label>
+                        <input
+                            id="edit_user_nombre"
+                            type="text"
+                            required
+                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100"
+                        />
+                    </div>
+                    <div>
+                        <label for="edit_user_apellido" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                            Apellido
+                        </label>
+                        <input
+                            id="edit_user_apellido"
+                            type="text"
+                            required
+                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100"
+                        />
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="edit_user_email" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                            Correo Electrónico
+                        </label>
+                        <input
+                            id="edit_user_email"
+                            type="email"
+                            required
+                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100"
+                        />
+                    </div>
+                    <div>
+                        <label for="edit_user_password" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                            Nueva Contraseña (opcional)
+                        </label>
+                        <input
+                            id="edit_user_password"
+                            type="password"
+                            placeholder="Dejar en blanco para mantener"
+                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100"
+                        />
+                    </div>
+                </div>
+
+                <div id="editUserRolWrap" class="hidden">
+                    <label for="edit_user_rol" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                        Rol RBAC (Exclusivo Admin)
+                    </label>
+                    <select
+                        id="edit_user_rol"
+                        class="w-full rounded-xl bg-slate-950 border border-slate-800 px-3 py-2.5 text-sm text-slate-100"
+                    >
+                        <option value="propietario">propietario</option>
+                        <option value="operador">operador</option>
+                        <option value="admin">admin</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                        <label for="edit_user_provincia" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                            Provincia
+                        </label>
+                        <select
+                            id="edit_user_provincia"
+                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 text-xs text-slate-100"
+                        ></select>
+                    </div>
+                    <div>
+                        <label for="edit_user_ciudad" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                            Localidad
+                        </label>
+                        <select
+                            id="edit_user_ciudad"
+                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 text-xs text-slate-100"
+                        ></select>
+                    </div>
+                    <div>
+                        <label for="edit_user_cp" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                            Código Postal
+                        </label>
+                        <input
+                            id="edit_user_cp"
+                            type="text"
+                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 text-xs font-mono text-slate-100"
+                        />
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+                    <button
+                        type="button"
+                        onclick="cerrarModal('modalEditarUsuario')"
+                        class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300"
+                    >
+                        Cancelar
+                    </button>
+                    <button
+                        type="submit"
+                        class="px-5 py-2.5 rounded-xl text-xs font-heading font-bold bg-purple-500 hover:bg-purple-400 text-slate-950"
+                    >
+                        Actualizar Usuario
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- [SEC-09.4] #modalAsignarCampos: Checkboxes para asignar/desasignar lotes a un operador -->
+    <div id="modalAsignarCampos" class="fixed inset-0 z-40 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+        <div class="w-full max-w-lg bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 space-y-5">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <div>
+                    <span class="text-xs font-mono text-sky-400">[SEC-09.4] VINCULACIÓN DE LOTES</span>
+                    <h3 id="tituloAsignarCamposOperador" class="font-heading text-xl font-bold text-white">
+                        Asignar Campos a Operador
+                    </h3>
+                </div>
+                <button type="button" onclick="cerrarModal('modalAsignarCampos')" class="text-slate-400 hover:text-white text-sm font-mono">
+                    ESC &#10005;
+                </button>
+            </div>
+
+            <form id="formAsignarCampos" class="space-y-4">
+                <input id="asignar_operador_id" type="hidden" />
+                <p class="text-xs text-slate-400">
+                    Marca los establecimientos a los que este operador tendrá acceso de <strong class="text-slate-200">solo lectura</strong>:
+                </p>
+
+                <div id="checkboxesCamposOperador" class="space-y-2 max-h-60 overflow-y-auto pr-1"></div>
+
+                <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+                    <button
+                        type="button"
+                        onclick="cerrarModal('modalAsignarCampos')"
+                        class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300"
+                    >
+                        Cancelar
+                    </button>
+                    <button
+                        type="submit"
+                        class="px-5 py-2.5 rounded-xl text-xs font-heading font-bold bg-sky-500 hover:bg-sky-400 text-slate-950"
+                    >
+                        Guardar Asignación
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- [SEC-09.5] #modalOperador: Alta de nuevo operador de campo -->
+    <div id="modalOperador" class="fixed inset-0 z-40 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+        <div class="w-full max-w-xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 space-y-5 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <div>
+                    <span class="text-xs font-mono text-sky-400">[SEC-09.5] ALTA DE OPERADOR</span>
+                    <h3 class="font-heading text-xl font-bold text-white">Nuevo Operador de Campo</h3>
+                </div>
+                <button type="button" onclick="cerrarModal('modalOperador')" class="text-slate-400 hover:text-white text-sm font-mono">
+                    ESC &#10005;
+                </button>
+            </div>
+
+            <form id="formNuevoOperador" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="op_nombre" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                            Nombre
+                        </label>
+                        <input
+                            id="op_nombre"
+                            type="text"
+                            required
+                            placeholder="Ej: Lucas"
+                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100"
+                        />
+                    </div>
+                    <div>
+                        <label for="op_apellido" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                            Apellido
+                        </label>
+                        <input
+                            id="op_apellido"
+                            type="text"
+                            required
+                            placeholder="Ej: Sosa"
+                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100"
+                        />
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="op_email" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                            Correo Electrónico
+                        </label>
+                        <input
+                            id="op_email"
+                            type="email"
+                            required
+                            placeholder="operador@earth2worlds.com"
+                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100"
+                        />
+                    </div>
+                    <div>
+                        <label for="op_password" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                            Contraseña Inicial (mín. 6)
+                        </label>
+                        <input
+                            id="op_password"
+                            type="password"
+                            required
+                            minlength="6"
+                            placeholder="Sin espacios"
+                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100"
+                        />
+                    </div>
+                </div>
+
+                <div>
+                    <span class="block text-xs font-semibold uppercase text-slate-300 mb-2">
+                        Asignar Campos Iniciales (Opcional)
+                    </span>
+                    <div id="nuevoOperadorCamposCheckboxes" class="space-y-1.5 max-h-40 overflow-y-auto rounded-xl bg-slate-950 border border-slate-800 p-3"></div>
+                </div>
+
+                <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+                    <button
+                        type="button"
+                        onclick="cerrarModal('modalOperador')"
+                        class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300"
+                    >
+                        Cancelar
+                    </button>
+                    <button
+                        type="submit"
+                        class="px-5 py-2.5 rounded-xl text-xs font-heading font-bold bg-sky-500 hover:bg-sky-400 text-slate-950"
+                    >
+                        Crear Operador
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="border-t border-slate-900 py-5 mt-12 text-center text-xs text-slate-500 font-mono">
+        Earth2Worlds &bull; Plataforma Inicializada el 14/11/2026 &bull; Arquitectura RBAC + Slots Modulares
+    </footer>
+
+    <!-- =================================================================== -->
+    <!-- [SEC-10] CONTROLADORES JAVASCRIPT ([JS-01] a [JS-08])               -->
+    <!-- =================================================================== -->
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/argentina.js"></script>
+    <script>
+        /* ===================================================================
+         * [JS-01] ESTADO GLOBAL, VERIFICACIÓN DE SESIÓN JWT Y ARRANQUE SPA
+         * =================================================================== */
+        let currentUser = null;
+        let listaCamposGlobal = [];
+        let campoActivoId = null;
+        let listaPropietariosGlobal = [];
+        let listaOperadoresGlobal = [];
+        let listaTodosUsuariosGlobal = [];
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            if (!getToken()) {
+                window.location.href = "/login";
+                return;
+            }
+            await inicializarAplicacion();
+        });
+
+        async function inicializarAplicacion() {
+            try {
+                const res = await authFetch("/api/auth/me");
+                if (!res.ok) {
+                    clearSession();
+                    window.location.href = "/login";
+                    return;
+                }
+                currentUser = await res.json();
+                saveSession(getToken(), currentUser);
+
+                configurarInterfazPorRol();
+                await initArgentinaGeoSelectors("edit_user_provincia", "edit_user_ciudad", "edit_user_cp", {
+                    provincia: currentUser.provincia || "San Luis",
+                    ciudad: currentUser.ciudad || "Villa Mercedes",
+                    codigo_postal: currentUser.codigo_postal || "5730",
+                });
+
+                await cargarCampos();
+
+                if (currentUser.rol === "admin") {
+                    await Promise.all([
+                        cargarPropietariosAdmin(),
+                        cargarOperadores(),
+                        cargarTodosUsuariosAdmin(),
+                    ]);
+                } else if (currentUser.rol === "propietario") {
+                    await cargarOperadores();
+                }
+            } catch (err) {
+                console.error("[Earth2Worlds] Error inicializando SPA:", err);
+                mostrarToast("Error conectando con el servidor Earth2Worlds.", "error");
+            }
+        }
+
+        /* ===================================================================
+         * [JS-02] MOTOR DE PESTAÑAS RBAC Y ADAPTACIÓN DINÁMICA DE INTERFAZ
+         * =================================================================== */
+        function configurarInterfazPorRol() {
+            const rol = currentUser.rol;
+            const badge = document.getElementById("userRoleBadge");
+            const nameDisplay = document.getElementById("userNameDisplay");
+            const locDisplay = document.getElementById("userLocationDisplay");
+            const welcomeTitle = document.getElementById("welcomeTitle");
+            const welcomeSubtitle = document.getElementById("welcomeSubtitle");
+
+            nameDisplay.textContent = `${currentUser.nombre} ${currentUser.apellido}`;
+            locDisplay.textContent = `${currentUser.ciudad || "Sin localidad"}, ${currentUser.provincia || "Argentina"}`;
+
+            if (rol === "admin") {
+                badge.textContent = "ADMIN";
+                badge.className = "px-3 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/40";
+                welcomeTitle.textContent = `Consola Maestra Earth2Worlds — ${currentUser.nombre}`;
+                welcomeSubtitle.textContent = "Control total RBAC sobre propietarios, operadores, campos productivos y auditoría del esquema.";
+
+                document.getElementById("navAdminTools").classList.remove("hidden");
+                document.getElementById("adminStatsBar").classList.remove("hidden");
+                document.getElementById("adminStatsBar").classList.add("grid");
+                document.getElementById("tabBtnPropietarios").classList.remove("hidden");
+                document.getElementById("tabBtnOperadores").classList.remove("hidden");
+                document.getElementById("tabBtnAdmin").classList.remove("hidden");
+                document.getElementById("btnNuevoOperadorHeader").classList.remove("hidden");
+                document.getElementById("adminFiltroPropietarioWrap").classList.remove("hidden");
+            } else if (rol === "propietario") {
+                badge.textContent = "PROPIETARIO";
+                badge.className = "px-3 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
+                welcomeTitle.textContent = `Bienvenido, ${currentUser.nombre} ${currentUser.apellido}`;
+                welcomeSubtitle.textContent = "Administra tus establecimientos productivos y asigna lotes a tus operadores de campo.";
+
+                document.getElementById("tabBtnOperadores").classList.remove("hidden");
+                document.getElementById("btnNuevoOperadorHeader").classList.remove("hidden");
+            } else {
+                badge.textContent = "OPERADOR (LECTURA)";
+                badge.className = "px-3 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-wider bg-sky-500/20 text-sky-300 border border-sky-500/40";
+                welcomeTitle.textContent = `Panel de Operador — ${currentUser.nombre} ${currentUser.apellido}`;
+                welcomeSubtitle.textContent = "Visualización de solo lectura sobre los establecimientos asignados por tu propietario.";
+
+                document.getElementById("btnNuevoCampo").classList.add("hidden");
+            }
+        }
+
+        function cambiarTab(tabId) {
+            const secciones = ["camposTab", "propietariosTab", "operadoresTab", "adminTab"];
+            const botones = {
+                camposTab: "tabBtnCampos",
+                propietariosTab: "tabBtnPropietarios",
+                operadoresTab: "tabBtnOperadores",
+                adminTab: "tabBtnAdmin",
+            };
+
+            secciones.forEach((sec) => {
+                const el = document.getElementById(sec);
+                const btn = document.getElementById(botones[sec]);
+                if (sec === tabId) {
+                    el.classList.remove("hidden");
+                    if (btn) {
+                        btn.className = "px-4 py-2.5 rounded-xl text-sm font-heading font-semibold transition bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20";
+                    }
+                } else {
+                    el.classList.add("hidden");
+                    if (btn && !btn.classList.contains("hidden")) {
+                        btn.className = "px-4 py-2.5 rounded-xl text-sm font-heading font-semibold transition bg-slate-900/80 text-slate-300 hover:bg-slate-800 border border-slate-800";
+                    }
+                }
+            });
+        }
+
+        /* ===================================================================
+         * [JS-03] CONTROLADOR DE CAMPOS (#listaCampos, #campoActivoHeader)
+         * =================================================================== */
+        async function cargarCampos() {
+            const res = await authFetch("/api/campos");
+            if (!res.ok) return;
+            listaCamposGlobal = await res.json();
+
+            if (listaCamposGlobal.length > 0 && !listaCamposGlobal.some((c) => c.id === campoActivoId)) {
+                campoActivoId = listaCamposGlobal[0].id;
+            } else if (listaCamposGlobal.length === 0) {
+                campoActivoId = null;
+            }
+
+            renderizarListaCampos();
+            actualizarHeaderCampoActivo();
+            actualizarContadoresAdmin();
+        }
+
+        function filtrarCamposPorPropietario() {
+            renderizarListaCampos();
+        }
+
+        function renderizarListaCampos() {
+            const container = document.getElementById("listaCampos");
+            const filtroProp = document.getElementById("filtroPropietarioSelect")?.value || "TODOS";
+
+            let camposFiltrados = listaCamposGlobal;
+            if (currentUser?.rol === "admin" && filtroProp !== "TODOS") {
+                camposFiltrados = listaCamposGlobal.filter(
+                    (c) => String(c.propietario_id) === String(filtroProp)
+                );
+            }
+
+            if (camposFiltrados.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full bg-slate-900/60 border border-slate-800 rounded-2xl p-8 text-center">
+                        <p class="font-heading text-base font-semibold text-slate-300">
+                            No hay campos registrados en esta vista
+                        </p>
+                        <p class="text-xs text-slate-500 mt-1">
+                            ${
+                                currentUser?.rol === "operador"
+                                    ? "Tu propietario aún no te ha asignado lotes para monitorear."
+                                    : "Utiliza el botón '+ Nuevo Campo' para registrar el primer establecimiento en Earth2Worlds."
+                            }
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            const puedeEditar = currentUser?.rol === "admin" || currentUser?.rol === "propietario";
+
+            container.innerHTML = camposFiltrados
+                .map((c) => {
+                    const esActivo = c.id === campoActivoId;
+                    const bordeClase = esActivo
+                        ? "border-emerald-500 ring-1 ring-emerald-500/40"
+                        : "border-slate-800 hover:border-slate-700";
+
+                    return `
+                        <article
+                            onclick="seleccionarCampoActivo(${c.id})"
+                            class="cursor-pointer bg-slate-900/80 backdrop-blur-md border ${bordeClase} rounded-2xl p-5 transition flex flex-col justify-between gap-4"
+                        >
+                            <div>
+                                <div class="flex items-center justify-between gap-2 mb-2">
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono ${
+                                        esActivo
+                                            ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                                            : "bg-slate-800 text-slate-400"
+                                    }">
+                                        ID #${c.id} ${esActivo ? "&bull; ACTIVO" : ""}
+                                    </span>
+                                    <span class="text-xs font-mono text-amber-400 font-semibold">
+                                        ${c.superficie_ha !== null && c.superficie_ha !== undefined ? `${escapeHtml(c.superficie_ha)} ha` : "Sin sup."}
+                                    </span>
+                                </div>
+                                <h3 class="font-heading text-lg font-bold text-white">
+                                    ${escapeHtml(c.nombre_campo)}
+                                </h3>
+                                <p class="text-xs text-slate-400 mt-1">
+                                    ${escapeHtml(c.descripcion_ubicacion || "Sin descripción de ubicación")}
+                                </p>
+                            </div>
+
+                            <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between gap-2">
+                                <span class="text-[11px] font-mono text-slate-400 truncate">
+                                    Titular: ${escapeHtml(c.propietario_nombre || `#${c.propietario_id}`)}
+                                </span>
+                                ${
+                                    puedeEditar
+                                        ? `
+                                    <div class="flex items-center gap-1.5" onclick="event.stopPropagation()">
+                                        <button
+                                            type="button"
+                                            onclick="abrirModalEditarCampo(${c.id})"
+                                            class="px-2.5 py-1 rounded-lg text-xs font-mono bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30"
+                                        >
+                                            Editar
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onclick="eliminarCampo(${c.id})"
+                                            class="px-2.5 py-1 rounded-lg text-xs font-mono bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30"
+                                        >
+                                            Borrar
+                                        </button>
+                                    </div>
+                                `
+                                        : ""
+                                }
+                            </div>
+                        </article>
+                    `;
+                })
+                .join("");
+        }
+
+        function seleccionarCampoActivo(id) {
+            campoActivoId = id;
+            renderizarListaCampos();
+            actualizarHeaderCampoActivo();
+        }
+
+        function actualizarHeaderCampoActivo() {
+            const nombreEl = document.getElementById("nombreCampoActivo");
+            const detalleEl = document.getElementById("detalleCampoActivo");
+            const slotMapaEl = document.getElementById("slotMapaEstadoCampo");
+            const slotTelEl = document.getElementById("slotTelemetriaEstadoCampo");
+
+            const campo = listaCamposGlobal.find((c) => c.id === campoActivoId);
+            if (!campo) {
+                nombreEl.textContent = "Ningún campo seleccionado todavía";
+                detalleEl.textContent = "Registra o selecciona un establecimiento para vincular los módulos de mapa y telemetría.";
+                slotMapaEl.textContent = "Esperando selección de campo activo";
+                slotTelEl.textContent = "Esperando selección de campo activo";
+                return;
+            }
+
+            nombreEl.textContent = `${campo.nombre_campo} (ID #${campo.id})`;
+            detalleEl.textContent = `Ubicación: ${campo.descripcion_ubicacion || "No especificada"} · Superficie: ${
+                campo.superficie_ha ?? "S/D"
+            } ha · Titular: ${campo.propietario_nombre || campo.propietario_id}`;
+            slotMapaEl.textContent = `Vinculado a "${campo.nombre_campo}" (#${campo.id})`;
+            slotTelEl.textContent = `Listo para consultar telemetría de "${campo.nombre_campo}" (#${campo.id})`;
+        }
+
+        /* ===================================================================
+         * [JS-04] CONTROLADOR DE ALTA, EDICIÓN Y ELIMINACIÓN DE CAMPOS
+         * =================================================================== */
+        function abrirModalCampo() {
+            document.getElementById("formNuevoCampo").reset();
+            const wrapAdmin = document.getElementById("nuevoCampoPropietarioAdminWrap");
+            const selAdmin = document.getElementById("nuevo_campo_propietario_id");
+
+            if (currentUser?.rol === "admin") {
+                wrapAdmin.classList.remove("hidden");
+                const opciones = [
+                    `<option value="${currentUser.id}">Admin (${escapeHtml(currentUser.email)})</option>`,
+                    ...listaPropietariosGlobal.map(
+                        (p) =>
+                            `<option value="${p.id}">${escapeHtml(p.nombre)} ${escapeHtml(p.apellido)} (${escapeHtml(
+                                p.email
+                            )})</option>`
+                    ),
+                ];
+                selAdmin.innerHTML = opciones.join("");
+            } else {
+                wrapAdmin.classList.add("hidden");
+            }
+            abrirModal("modalCampo");
+        }
+
+        document.getElementById("formNuevoCampo").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const supRaw = document.getElementById("nuevo_campo_superficie").value;
+            const payload = {
+                nombre_campo: document.getElementById("nuevo_campo_nombre").value.trim(),
+                descripcion_ubicacion: document.getElementById("nuevo_campo_ubicacion").value.trim() || null,
+                superficie_ha: supRaw !== "" ? parseFloat(supRaw) : null,
+            };
+            if (currentUser?.rol === "admin") {
+                const propVal = document.getElementById("nuevo_campo_propietario_id").value;
+                if (propVal) payload.propietario_id = parseInt(propVal, 10);
+            }
+
+            const res = await authFetch("/api/campos", {
+                method: "POST",
+                body: JSON.stringify(payload),
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                mostrarToast(data.detail || "No se pudo crear el campo.", "error");
+                return;
+            }
+            cerrarModal("modalCampo");
+            campoActivoId = data.id;
+            mostrarToast(`Campo "${data.nombre_campo}" creado con éxito.`, "success");
+            await cargarCampos();
+            if (currentUser?.rol === "admin") await cargarPropietariosAdmin();
+        });
+
+        function abrirModalEditarCampo(campoId) {
+            const campo = listaCamposGlobal.find((c) => c.id === campoId);
+            if (!campo) return;
+
+            document.getElementById("edit_campo_id").value = campo.id;
+            document.getElementById("edit_campo_nombre").value = campo.nombre_campo;
+            document.getElementById("edit_campo_ubicacion").value = campo.descripcion_ubicacion || "";
+            document.getElementById("edit_campo_superficie").value =
+                campo.superficie_ha !== null && campo.superficie_ha !== undefined ? campo.superficie_ha : "";
+
+            const wrapAdmin = document.getElementById("editCampoPropietarioAdminWrap");
+            const selAdmin = document.getElementById("edit_campo_propietario_id");
+            if (currentUser?.rol === "admin") {
+                wrapAdmin.classList.remove("hidden");
+                const candidatos = listaTodosUsuariosGlobal.filter(
+                    (u) => u.rol === "propietario" || u.rol === "admin"
+                );
+                selAdmin.innerHTML = candidatos
+                    .map(
+                        (u) =>
+                            `<option value="${u.id}">${escapeHtml(u.nombre)} ${escapeHtml(u.apellido)} (${escapeHtml(
+                                u.rol
+                            )})</option>`
+                    )
+                    .join("");
+                selAdmin.value = String(campo.propietario_id);
+            } else {
+                wrapAdmin.classList.add("hidden");
+            }
+
+            abrirModal("modalEditarCampo");
+        }
+
+        document.getElementById("formEditarCampo").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const campoId = document.getElementById("edit_campo_id").value;
+            const supRaw = document.getElementById("edit_campo_superficie").value;
+            const payload = {
+                nombre_campo: document.getElementById("edit_campo_nombre").value.trim(),
+                descripcion_ubicacion: document.getElementById("edit_campo_ubicacion").value.trim() || null,
+                superficie_ha: supRaw !== "" ? parseFloat(supRaw) : null,
+            };
+            if (currentUser?.rol === "admin") {
+                const nuevoProp = document.getElementById("edit_campo_propietario_id").value;
+                if (nuevoProp) payload.propietario_id = parseInt(nuevoProp, 10);
+            }
+
+            const res = await authFetch(`/api/campos/${campoId}`, {
+                method: "PUT",
+                body: JSON.stringify(payload),
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                mostrarToast(data.detail || "Error al actualizar el campo.", "error");
+                return;
+            }
+            cerrarModal("modalEditarCampo");
+            mostrarToast(`Campo "${data.nombre_campo}" actualizado.`, "success");
+            await cargarCampos();
+            if (currentUser?.rol === "admin") await cargarPropietariosAdmin();
+        });
+
+        async function eliminarCampo(campoId) {
+            const campo = listaCamposGlobal.find((c) => c.id === campoId);
+            if (!campo) return;
+            if (!confirm(`¿Seguro que deseas eliminar el campo "${campo.nombre_campo}"?`)) return;
+
+            const res = await authFetch(`/api/campos/${campoId}`, { method: "DELETE" });
+            const data = await res.json();
+            if (!res.ok) {
+                mostrarToast(data.detail || "No se pudo eliminar el campo.", "error");
+                return;
+            }
+            mostrarToast(data.mensaje || "Campo eliminado.", "success");
+            await cargarCampos();
+            if (currentUser?.rol === "admin") await cargarPropietariosAdmin();
+        }
+
+        /* ===================================================================
+         * [JS-05] CONTROLADOR DE PROPIETARIOS Y LOTES ANIDADOS (ADMIN)
+         * =================================================================== */
+        async function cargarPropietariosAdmin() {
+            if (currentUser?.rol !== "admin") return;
+            const res = await authFetch("/api/usuarios/propietarios");
+            if (!res.ok) return;
+            listaPropietariosGlobal = await res.json();
+
+            // Poblar filtro de propietarios en pestaña de campos
+            const selFiltro = document.getElementById("filtroPropietarioSelect");
+            if (selFiltro) {
+                const valorActual = selFiltro.value || "TODOS";
+                selFiltro.innerHTML =
+                    `<option value="TODOS">Todos los propietarios</option>` +
+                    `<option value="${currentUser.id}">Admin (${escapeHtml(currentUser.nombre)})</option>` +
+                    listaPropietariosGlobal
+                        .map(
+                            (p) =>
+                                `<option value="${p.id}">${escapeHtml(p.nombre)} ${escapeHtml(p.apellido)}</option>`
+                        )
+                        .join("");
+                selFiltro.value = valorActual;
+            }
+
+            const container = document.getElementById("listaPropietariosAdmin");
+            if (listaPropietariosGlobal.length === 0) {
+                container.innerHTML = `
+                    <div class="rounded-xl bg-slate-950/70 border border-slate-800 p-6 text-center text-xs text-slate-400">
+                        No hay usuarios con rol Propietario registrados todavía.
+                    </div>
+                `;
+            } else {
+                container.innerHTML = listaPropietariosGlobal
+                    .map(
+                        (p) => `
+                        <div class="rounded-2xl bg-slate-950/80 border border-slate-800 p-5 space-y-4">
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-800 pb-3">
+                                <div>
+                                    <h3 class="font-heading text-lg font-bold text-white">
+                                        ${escapeHtml(p.nombre)} ${escapeHtml(p.apellido)}
+                                        <span class="text-xs font-mono text-emerald-400 ml-2">ID #${p.id}</span>
+                                    </h3>
+                                    <p class="text-xs font-mono text-slate-400">
+                                        ${escapeHtml(p.email)} &bull; ${escapeHtml(p.ciudad || "-")}, ${escapeHtml(p.provincia || "Argentina")}
+                                    </p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="px-3 py-1 rounded-lg text-xs font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
+                                        ${p.campos.length} campo(s)
+                                    </span>
+                                    <span class="px-3 py-1 rounded-lg text-xs font-mono bg-sky-500/10 text-sky-300 border border-sky-500/20">
+                                        ${p.operadores.length} operador(es)
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                                <div class="rounded-xl bg-slate-900/70 border border-slate-800 p-3">
+                                    <span class="font-mono uppercase text-slate-400 block mb-2">Campos de este Propietario:</span>
+                                    ${
+                                        p.campos.length === 0
+                                            ? `<p class="text-slate-500">Sin campos registrados</p>`
+                                            : `<ul class="space-y-1">${p.campos
+                                                  .map(
+                                                      (c) =>
+                                                          `<li class="text-slate-200">&bull; <strong>${escapeHtml(
+                                                              c.nombre_campo
+                                                          )}</strong> (${c.superficie_ha ?? "S/D"} ha)</li>`
+                                                  )
+                                                  .join("")}</ul>`
+                                    }
+                                </div>
+                                <div class="rounded-xl bg-slate-900/70 border border-slate-800 p-3">
+                                    <span class="font-mono uppercase text-slate-400 block mb-2">Operadores dependientes:</span>
+                                    ${
+                                        p.operadores.length === 0
+                                            ? `<p class="text-slate-500">Sin operadores dados de alta</p>`
+                                            : `<ul class="space-y-1">${p.operadores
+                                                  .map(
+                                                      (op) =>
+                                                          `<li class="text-slate-200">&bull; <strong>${escapeHtml(
+                                                              op.nombre
+                                                          )} ${escapeHtml(op.apellido)}</strong> (${escapeHtml(
+                                                              op.email
+                                                          )})</li>`
+                                                  )
+                                                  .join("")}</ul>`
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    `
+                    )
+                    .join("");
+            }
+            actualizarContadoresAdmin();
+        }
+
+        /* ===================================================================
+         * [JS-06] CONTROLADOR DE OPERADORES Y ASIGNACIÓN DE CAMPOS
+         * =================================================================== */
+        async function cargarOperadores() {
+            if (currentUser?.rol === "operador") return;
+            const res = await authFetch("/api/usuarios/operadores");
+            if (!res.ok) return;
+            listaOperadoresGlobal = await res.json();
+
+            const container = document.getElementById("listaOperadoresContainer");
+            if (listaOperadoresGlobal.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full rounded-xl bg-slate-950/70 border border-slate-800 p-6 text-center text-xs text-slate-400">
+                        No hay operadores registrados. Crea el primero con el botón "+ Alta de Operador".
+                    </div>
+                `;
+            } else {
+                container.innerHTML = listaOperadoresGlobal
+                    .map((op) => {
+                        const detalleLotes = Array.isArray(op.campos_asignados_detalle)
+                            ? op.campos_asignados_detalle
+                            : [];
+                        return `
+                            <div class="rounded-2xl bg-slate-950/80 border border-slate-800 p-5 flex flex-col justify-between gap-4">
+                                <div>
+                                    <div class="flex items-center justify-between gap-2 mb-1">
+                                        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono bg-sky-500/15 text-sky-300 border border-sky-500/30">
+                                            OPERADOR #${op.id}
+                                        </span>
+                                        <span class="text-xs font-mono text-slate-400">
+                                            Titular: ${escapeHtml(op.propietario_nombre || `#${op.propietario_id}`)}
+                                        </span>
+                                    </div>
+                                    <h3 class="font-heading text-lg font-bold text-white">
+                                        ${escapeHtml(op.nombre)} ${escapeHtml(op.apellido)}
+                                    </h3>
+                                    <p class="text-xs font-mono text-slate-400">${escapeHtml(op.email)}</p>
+
+                                    <div class="mt-3 pt-3 border-t border-slate-800/80">
+                                        <span class="text-[11px] font-mono uppercase text-slate-400 block mb-1.5">
+                                            Campos asignados (${detalleLotes.length}):
+                                        </span>
+                                        <div class="flex flex-wrap gap-1.5">
+                                            ${
+                                                detalleLotes.length === 0
+                                                    ? `<span class="text-xs text-slate-500">Sin campos asignados</span>`
+                                                    : detalleLotes
+                                                          .map(
+                                                              (c) =>
+                                                                  `<span class="px-2.5 py-0.5 rounded-lg text-xs font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">${escapeHtml(
+                                                                      c.nombre_campo
+                                                                  )}</span>`
+                                                          )
+                                                          .join("")
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
+                                    <button
+                                        type="button"
+                                        onclick="abrirModalAsignarCampos(${op.id})"
+                                        class="px-3 py-1.5 rounded-xl text-xs font-mono bg-sky-500/15 hover:bg-sky-500/25 text-sky-300 border border-sky-500/30"
+                                    >
+                                        Asignar Lotes
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onclick="abrirModalEditarUsuario(${op.id})"
+                                        class="px-3 py-1.5 rounded-xl text-xs font-mono bg-purple-500/15 hover:bg-purple-500/25 text-purple-300 border border-purple-500/30"
+                                    >
+                                        Editar
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onclick="eliminarUsuario(${op.id})"
+                                        class="px-3 py-1.5 rounded-xl text-xs font-mono bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30"
+                                    >
+                                        Eliminar
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    })
+                    .join("");
+            }
+            actualizarContadoresAdmin();
+        }
+
+        function abrirModalOperador() {
+            document.getElementById("formNuevoOperador").reset();
+            const containerChecks = document.getElementById("nuevoOperadorCamposCheckboxes");
+            const misCampos =
+                currentUser?.rol === "admin"
+                    ? listaCamposGlobal
+                    : listaCamposGlobal.filter((c) => c.propietario_id === currentUser.id);
+
+            if (misCampos.length === 0) {
+                containerChecks.innerHTML = `<p class="text-xs text-slate-500">No tienes campos registrados aún.</p>`;
+            } else {
+                containerChecks.innerHTML = misCampos
+                    .map(
+                        (c) => `
+                        <label class="flex items-center gap-2 text-xs text-slate-200 cursor-pointer py-1">
+                            <input type="checkbox" name="nuevo_op_campos" value="${c.id}" class="rounded border-slate-700 text-sky-500" />
+                            <span>${escapeHtml(c.nombre_campo)} (${c.superficie_ha ?? "S/D"} ha)</span>
+                        </label>
+                    `
+                    )
+                    .join("");
+            }
+            abrirModal("modalOperador");
+        }
+
+        document.getElementById("formNuevoOperador").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const seleccionados = Array.from(
+                document.querySelectorAll('input[name="nuevo_op_campos"]:checked')
+            ).map((cb) => parseInt(cb.value, 10));
+
+            const payload = {
+                nombre: document.getElementById("op_nombre").value.trim(),
+                apellido: document.getElementById("op_apellido").value.trim(),
+                email: document.getElementById("op_email").value.trim(),
+                password: document.getElementById("op_password").value,
+                campos_asignados: seleccionados,
+            };
+
+            const res = await authFetch("/api/usuarios/operadores", {
+                method: "POST",
+                body: JSON.stringify(payload),
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                const msg = Array.isArray(data.detail)
+                    ? data.detail.map((d) => d.msg).join(" | ")
+                    : data.detail || "No se pudo crear el operador.";
+                mostrarToast(msg, "error");
+                return;
+            }
+
+            cerrarModal("modalOperador");
+            mostrarToast(`Operador ${data.nombre} ${data.apellido} creado.`, "success");
+            await cargarOperadores();
+            if (currentUser?.rol === "admin") {
+                await Promise.all([cargarPropietariosAdmin(), cargarTodosUsuariosAdmin()]);
+            }
+        });
+
+        function abrirModalAsignarCampos(operadorId) {
+            const op = listaOperadoresGlobal.find((o) => o.id === operadorId);
+            if (!op) return;
+
+            document.getElementById("asignar_operador_id").value = op.id;
+            document.getElementById("tituloAsignarCamposOperador").textContent = `Lotes para ${op.nombre} ${op.apellido}`;
+
+            const camposDisponibles =
+                currentUser?.rol === "admin"
+                    ? listaCamposGlobal
+                    : listaCamposGlobal.filter((c) => c.propietario_id === currentUser.id);
+
+            const container = document.getElementById("checkboxesCamposOperador");
+            const asignadosSet = new Set((op.campos_asignados || []).map((id) => Number(id)));
+
+            if (camposDisponibles.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500">No hay campos disponibles para asignar.</p>`;
+            } else {
+                container.innerHTML = camposDisponibles
+                    .map(
+                        (c) => `
+                        <label class="flex items-center justify-between gap-3 rounded-xl bg-slate-950 border border-slate-800 px-3 py-2.5 text-xs text-slate-200 cursor-pointer">
+                            <span>
+                                <strong>${escapeHtml(c.nombre_campo)}</strong>
+                                <span class="text-slate-400 font-mono ml-1">(#${c.id})</span>
+                            </span>
+                            <input
+                                type="checkbox"
+                                name="asignar_campo_cb"
+                                value="${c.id}"
+                                ${asignadosSet.has(Number(c.id)) ? "checked" : ""}
+                                class="rounded border-slate-700 text-sky-500"
+                            />
+                        </label>
+                    `
+                    )
+                    .join("");
+            }
+
+            abrirModal("modalAsignarCampos");
+        }
+
+        document.getElementById("formAsignarCampos").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const operadorId = document.getElementById("asignar_operador_id").value;
+            const campos_ids = Array.from(
+                document.querySelectorAll('input[name="asignar_campo_cb"]:checked')
+            ).map((cb) => parseInt(cb.value, 10));
+
+            const res = await authFetch(`/api/usuarios/operadores/${operadorId}/campos`, {
+                method: "PUT",
+                body: JSON.stringify({ campos_ids }),
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                mostrarToast(data.detail || "No se pudo actualizar la asignación.", "error");
+                return;
+            }
+            cerrarModal("modalAsignarCampos");
+            mostrarToast("Asignación de campos actualizada.", "success");
+            await cargarOperadores();
+            if (currentUser?.rol === "admin") {
+                await Promise.all([cargarPropietariosAdmin(), cargarTodosUsuariosAdmin()]);
+            }
+        });
+
+        /* ===================================================================
+         * [JS-07] CONTROLADOR DE AUDITORÍA GLOBAL DE USUARIOS (ADMIN)
+         * =================================================================== */
+        async function cargarTodosUsuariosAdmin() {
+            if (currentUser?.rol !== "admin") return;
+            const res = await authFetch("/api/usuarios/todos");
+            if (!res.ok) return;
+            listaTodosUsuariosGlobal = await res.json();
+            renderizarTablaAuditoriaUsuarios();
+            actualizarContadoresAdmin();
+        }
+
+        function renderizarTablaAuditoriaUsuarios() {
+            const tbody = document.getElementById("tablaAuditoriaUsuariosBody");
+            if (!tbody) return;
+
+            const q = (document.getElementById("inputBuscarUsuarioAdmin")?.value || "").trim().toLowerCase();
+            const rolFiltro = document.getElementById("selectFiltroRolAdmin")?.value || "TODOS";
+
+            const filtrados = listaTodosUsuariosGlobal.filter((u) => {
+                if (rolFiltro !== "TODOS" && u.rol !== rolFiltro) return false;
+                if (!q) return true;
+                const texto = `${u.nombre} ${u.apellido} ${u.email} ${u.provincia || ""} ${u.ciudad || ""}`.toLowerCase();
+                return texto.includes(q);
+            });
+
+            tbody.innerHTML = filtrados
+                .map((u) => {
+                    const badgeClass =
+                        u.rol === "admin"
+                            ? "bg-purple-500/15 text-purple-300 border-purple-500/30"
+                            : u.rol === "propietario"
+                            ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/30"
+                            : "bg-sky-500/15 text-sky-300 border-sky-500/30";
+
+                    return `
+                        <tr class="hover:bg-slate-900/50 transition">
+                            <td class="py-3 px-4 font-mono text-xs text-slate-400">#${u.id}</td>
+                            <td class="py-3 px-4">
+                                <div class="font-semibold text-white">${escapeHtml(u.nombre)} ${escapeHtml(u.apellido)}</div>
+                                <div class="text-xs font-mono text-slate-400">${escapeHtml(u.email)}</div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono uppercase border ${badgeClass}">
+                                    ${escapeHtml(u.rol)}
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-xs text-slate-300">
+                                ${escapeHtml(u.ciudad || "-")}, ${escapeHtml(u.provincia || "Argentina")}
+                                <span class="font-mono text-slate-500 block">CP ${escapeHtml(u.codigo_postal || "-")}</span>
+                            </td>
+                            <td class="py-3 px-4 text-xs text-slate-400 font-mono">
+                                ${
+                                    u.rol === "operador"
+                                        ? `Titular: ${escapeHtml(u.propietario_nombre || `#${u.propietario_id}`)} (${(u.campos_asignados || []).length} lotes)`
+                                        : u.rol === "propietario"
+                                        ? "Titular de Establecimientos"
+                                        : "Administrador Global"
+                                }
+                            </td>
+                            <td class="py-3 px-4 text-right space-x-1.5">
+                                <button
+                                    type="button"
+                                    onclick="abrirModalEditarUsuario(${u.id})"
+                                    class="px-2.5 py-1 rounded-lg text-xs font-mono bg-purple-500/15 hover:bg-purple-500/25 text-purple-300 border border-purple-500/30"
+                                >
+                                    Editar
+                                </button>
+                                ${
+                                    u.id !== currentUser.id
+                                        ? `
+                                    <button
+                                        type="button"
+                                        onclick="eliminarUsuario(${u.id})"
+                                        class="px-2.5 py-1 rounded-lg text-xs font-mono bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30"
+                                    >
+                                        Eliminar
+                                    </button>
+                                `
+                                        : ""
+                                }
+                            </td>
+                        </tr>
+                    `;
+                })
+                .join("");
+        }
+
+        async function abrirModalEditarUsuario(userId) {
+            const res = await authFetch(`/api/usuarios/${userId}`);
+            if (!res.ok) {
+                mostrarToast("No se pudo cargar la información del usuario.", "error");
+                return;
+            }
+            const u = await res.json();
+
+            document.getElementById("edit_user_id").value = u.id;
+            document.getElementById("edit_user_nombre").value = u.nombre;
+            document.getElementById("edit_user_apellido").value = u.apellido;
+            document.getElementById("edit_user_email").value = u.email;
+            document.getElementById("edit_user_password").value = "";
+
+            const wrapRol = document.getElementById("editUserRolWrap");
+            if (currentUser?.rol === "admin") {
+                wrapRol.classList.remove("hidden");
+                document.getElementById("edit_user_rol").value = u.rol;
+            } else {
+                wrapRol.classList.add("hidden");
+            }
+
+            const selProv = document.getElementById("edit_user_provincia");
+            const selCiudad = document.getElementById("edit_user_ciudad");
+            const inpCp = document.getElementById("edit_user_cp");
+            if (u.provincia) {
+                selProv.value = u.provincia;
+                await cargarLocalidadesEnSelect(u.provincia, selCiudad, inpCp, u.ciudad || "", u.codigo_postal || "");
+            }
+
+            abrirModal("modalEditarUsuario");
+        }
+
+        document.getElementById("formEditarUsuario").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const userId = document.getElementById("edit_user_id").value;
+            const pwd = document.getElementById("edit_user_password").value;
+
+            const payload = {
+                nombre: document.getElementById("edit_user_nombre").value.trim(),
+                apellido: document.getElementById("edit_user_apellido").value.trim(),
+                email: document.getElementById("edit_user_email").value.trim(),
+                provincia: document.getElementById("edit_user_provincia").value,
+                ciudad: document.getElementById("edit_user_ciudad").value,
+                codigo_postal: document.getElementById("edit_user_cp").value.trim(),
+            };
+            if (pwd && pwd.trim() !== "") {
+                payload.password = pwd;
+            }
+            if (currentUser?.rol === "admin") {
+                payload.rol = document.getElementById("edit_user_rol").value;
+            }
+
+            const res = await authFetch(`/api/usuarios/${userId}`, {
+                method: "PUT",
+                body: JSON.stringify(payload),
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                mostrarToast(data.detail || "No se pudo actualizar el usuario.", "error");
+                return;
+            }
+
+            cerrarModal("modalEditarUsuario");
+            mostrarToast(`Usuario ${data.email} actualizado.`, "success");
+            await cargarOperadores();
+            if (currentUser?.rol === "admin") {
+                await Promise.all([cargarPropietariosAdmin(), cargarTodosUsuariosAdmin()]);
+            }
+        });
+
+        async function eliminarUsuario(userId) {
+            if (!confirm("¿Confirmas la eliminación permanente de este usuario en Earth2Worlds?")) return;
+            const res = await authFetch(`/api/usuarios/${userId}`, { method: "DELETE" });
+            const data = await res.json();
+            if (!res.ok) {
+                mostrarToast(data.detail || "No se pudo eliminar el usuario.", "error");
+                return;
+            }
+            mostrarToast(data.mensaje || "Usuario eliminado.", "success");
+            await cargarOperadores();
+            if (currentUser?.rol === "admin") {
+                await Promise.all([cargarPropietariosAdmin(), cargarTodosUsuariosAdmin(), cargarCampos()]);
+            }
+        }
+
+        /* ===================================================================
+         * [JS-08] UTILIDADES DE UI, NOTIFICACIONES TOAST Y CIERRE DE MODALES
+         * =================================================================== */
+        function actualizarContadoresAdmin() {
+            if (currentUser?.rol !== "admin") return;
+            document.getElementById("statPropietarios").textContent = String(listaPropietariosGlobal.length);
+            document.getElementById("statOperadores").textContent = String(listaOperadoresGlobal.length);
+            document.getElementById("statCampos").textContent = String(listaCamposGlobal.length);
+            document.getElementById("statTotalUsuarios").textContent = String(listaTodosUsuariosGlobal.length);
+        }
+
+        function abrirModal(modalId) {
+            const m = document.getElementById(modalId);
+            if (!m) return;
+            m.classList.remove("hidden");
+            m.classList.add("flex");
+        }
+
+        function cerrarModal(modalId) {
+            const m = document.getElementById(modalId);
+            if (!m) return;
+            m.classList.add("hidden");
+            m.classList.remove("flex");
+        }
+
+        function mostrarToast(mensaje, tipo = "info") {
+            const container = document.getElementById("toastContainer");
+            const toast = document.createElement("div");
+            const colores =
+                tipo === "error"
+                    ? "border-rose-500/40 bg-rose-950/90 text-rose-200"
+                    : tipo === "success"
+                    ? "border-emerald-500/40 bg-emerald-950/90 text-emerald-200"
+                    : "border-sky-500/40 bg-slate-900/90 text-sky-200";
+
+            toast.className = `pointer-events-auto rounded-xl border ${colores} px-4 py-3 text-xs font-medium shadow-xl backdrop-blur-md transition`;
+            toast.textContent = mensaje;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 4000);
+        }
+
+        window.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                ["modalCampo", "modalEditarCampo", "modalEditarUsuario", "modalAsignarCampos", "modalOperador"].forEach(
+                    cerrarModal
+                );
+            }
+        });
+    </script>
+</body>
+</html>

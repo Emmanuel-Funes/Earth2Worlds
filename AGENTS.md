@@ -69,3 +69,18 @@ La descripción de cada PR arranca con "Antes:" y "Después:", en lenguaje simpl
 4. Escribir los tests sin internet en `tests/test_<satelite>.py`.
 5. Agregar `probar_<satelite>.py` y su workflow `Probar …`.
 6. Abrir el PR. No se toca ningún archivo del núcleo, salvo `PRIORIDAD` en `base.py` si cambia la confianza de la fuente.
+
+---
+
+## 10. Arquitectura de la Plataforma Web Earth2Worlds (`app/` y `static/`)
+
+### Especialistas del Equipo Full-Stack
+1. **Database Specialist (`app/database.py`, `app/models.py`, `app/init_db.py`)**:
+   - Responsable del esquema SQLAlchemy 2.0 sobre `earth2worlds.db` (`usuarios` y `campos`), relaciones ORM, inicialización idempotente del Administrador (`Admin` / `admin@earth2worlds.com`) sin datos pre-cargados previos al 14/11/2026, y slots de extensión (`geometria_geojson` y `configuracion_extra`).
+2. **Backend Specialist (`app/auth.py`, `app/schemas.py`, `app/data/argentina_geo.py`, `app/main.py`)**:
+   - Responsable de la seguridad JWT HS256 + Bcrypt, validaciones Pydantic v2, catálogo geográfico de las 23 provincias argentinas + CABA, introspección en vivo del esquema (`GET /api/database/schema`) y matriz estricta RBAC (`admin`, `propietario`, `operador`).
+3. **Frontend Specialist (`static/index.html`, `static/login.html`, `static/registro.html`, `static/mapa_secciones.html`, `static/diagrama_db.html`, `static/js/*`)**:
+   - Responsable de la SPA en Modo Oscuro (Tailwind CSS + Vanilla JS ES6+ con sanitización `escapeHtml()`), preservando los contenedores limpios `<!-- [SLOT-MODULO-MAPA] -->` (`#slotModuloMapa`, `#slotModalMapa`) y `<!-- [SLOT-MODULO-TELEMETRIA] -->` (`#slotModuloTelemetria`).
+
+### Regla Obligatoria de Sincronización de Secciones
+Cada vez que se agregue, modifique o reestructure una sección `[SEC-XX]` o un controlador `[JS-XX]` en `static/index.html`, es **obligatorio** actualizar en el mismo cambio el archivo `static/mapa_secciones.html` para que el Mapa Maestro de Secciones refleje fielmente la estructura vigente.

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Earth2Worlds | Registro de Propietario</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ["Outfit", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                        mono: ["Fira Code", "monospace"],
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-emerald-500/30 selection:text-emerald-200">
+    <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+        <div class="absolute -top-32 right-10 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-10 -left-24 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-sky-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 font-heading font-extrabold text-slate-950 text-lg">
+                    E2W
+                </div>
+                <div>
+                    <span class="font-heading text-xl font-bold tracking-tight text-white">Earth2Worlds</span>
+                    <span class="block text-xs text-slate-400">Alta de Titulares y Productores</span>
+                </div>
+            </a>
+            <a href="/login" class="text-sm font-medium text-sky-400 hover:text-sky-300 transition">
+                Ya tengo cuenta &rarr;
+            </a>
+        </div>
+    </header>
+
+    <!-- Formulario de Registro -->
+    <main class="flex-1 flex items-center justify-center px-4 py-10">
+        <div class="w-full max-w-2xl bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl shadow-2xl p-8">
+            <div class="mb-6">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-sky-500/10 text-sky-400 border border-sky-500/20 mb-3">
+                    ROL: PROPIETARIO DE CAMPO
+                </span>
+                <h1 class="font-heading text-2xl font-bold text-white">Crear cuenta en Earth2Worlds</h1>
+                <p class="text-sm text-slate-400 mt-1">
+                    Registra tu perfil para administrar tus establecimientos y asignar operadores de campo.
+                </p>
+            </div>
+
+            <div id="registroAlert" class="hidden mb-5 rounded-xl border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-300"></div>
+
+            <form id="registroForm" class="space-y-5" novalidate>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="reg_nombre" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                            Nombre
+                        </label>
+                        <input
+                            id="reg_nombre"
+                            name="nombre"
+                            type="text"
+                            required
+                            placeholder="Ej: Martín"
+                            class="w-full rounded-xl bg-slate-950/90 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                        />
+                    </div>
+                    <div>
+                        <label for="reg_apellido" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                            Apellido
+                        </label>
+                        <input
+                            id="reg_apellido"
+                            name="apellido"
+                            type="text"
+                            required
+                            placeholder="Ej: Quiroga"
+                            class="w-full rounded-xl bg-slate-950/90 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                        />
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="reg_email" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                            Correo Electrónico
+                        </label>
+                        <input
+                            id="reg_email"
+                            name="email"
+                            type="email"
+                            required
+                            placeholder="productor@dominio.com"
+                            class="w-full rounded-xl bg-slate-950/90 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                        />
+                    </div>
+                    <div>
+                        <label for="reg_password" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                            Contraseña (mín. 6 caracteres)
+                        </label>
+                        <div class="relative">
+                            <input
+                                id="reg_password"
+                                name="password"
+                                type="password"
+                                required
+                                minlength="6"
+                                placeholder="Sin espacios en blanco"
+                                class="w-full rounded-xl bg-slate-950/90 border border-slate-800 pl-4 pr-20 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                            />
+                            <button
+                                type="button"
+                                onclick="togglePasswordVisibility('reg_password', this)"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg text-xs font-mono text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-700 transition"
+                            >
+                                Ver
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-slate-800/80">
+                    <div>
+                        <label for="reg_provincia" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                            Provincia (Argentina)
+                        </label>
+                        <select
+                            id="reg_provincia"
+                            name="provincia"
+                            class="w-full rounded-xl bg-slate-950/90 border border-slate-800 px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-emerald-500"
+                        ></select>
+                    </div>
+                    <div>
+                        <label for="reg_ciudad" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                            Localidad
+                        </label>
+                        <select
+                            id="reg_ciudad"
+                            name="ciudad"
+                            class="w-full rounded-xl bg-slate-950/90 border border-slate-800 px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-emerald-500"
+                        ></select>
+                    </div>
+                    <div>
+                        <label for="reg_cp" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                            Código Postal
+                        </label>
+                        <input
+                            id="reg_cp"
+                            name="codigo_postal"
+                            type="text"
+                            placeholder="5730"
+                            class="w-full rounded-xl bg-slate-950/90 border border-slate-800 px-4 py-2.5 text-sm font-mono text-slate-100 focus:outline-none focus:border-emerald-500"
+                        />
+                    </div>
+                </div>
+
+                <button
+                    id="btnSubmitRegistro"
+                    type="submit"
+                    class="w-full py-3 px-5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-heading font-bold text-sm shadow-lg shadow-emerald-500/20 transition"
+                >
+                    Registrarme como Propietario en Earth2Worlds
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-900 py-4 text-center text-xs text-slate-500 font-mono">
+        Earth2Worlds &bull; Plataforma de Gestión Territorial &bull; 14/11/2026
+    </footer>
+
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/argentina.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            initArgentinaGeoSelectors("reg_provincia", "reg_ciudad", "reg_cp", {
+                provincia: "San Luis",
+                ciudad: "Villa Mercedes",
+                codigo_postal: "5730",
+            });
+        });
+
+        const registroForm = document.getElementById("registroForm");
+        const registroAlert = document.getElementById("registroAlert");
+        const btnSubmitRegistro = document.getElementById("btnSubmitRegistro");
+
+        function mostrarErrorRegistro(msg) {
+            registroAlert.textContent = msg;
+            registroAlert.classList.remove("hidden");
+        }
+
+        registroForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            registroAlert.classList.add("hidden");
+
+            const payload = {
+                nombre: document.getElementById("reg_nombre").value.trim(),
+                apellido: document.getElementById("reg_apellido").value.trim(),
+                email: document.getElementById("reg_email").value.trim(),
+                password: document.getElementById("reg_password").value,
+                pais: "Argentina",
+                provincia: document.getElementById("reg_provincia").value,
+                ciudad: document.getElementById("reg_ciudad").value,
+                codigo_postal: document.getElementById("reg_cp").value.trim(),
+            };
+
+            if (!payload.nombre || !payload.apellido || !payload.email || !payload.password) {
+                mostrarErrorRegistro("Completa todos los campos obligatorios.");
+                return;
+            }
+            if (payload.password.trim().length < 6 || payload.password.includes(" ")) {
+                mostrarErrorRegistro("La contraseña debe tener al menos 6 caracteres y no contener espacios.");
+                return;
+            }
+
+            btnSubmitRegistro.disabled = true;
+            btnSubmitRegistro.textContent = "Creando cuenta en Earth2Worlds...";
+
+            try {
+                const res = await fetch("/api/auth/registro-propietario", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    const detalle = Array.isArray(data.detail)
+                        ? data.detail.map((d) => d.msg).join(" | ")
+                        : data.detail || "No se pudo completar el registro.";
+                    mostrarErrorRegistro(detalle);
+                    return;
+                }
+                saveSession(data.access_token, data.usuario);
+                window.location.href = "/";
+            } catch (_err) {
+                mostrarErrorRegistro("Error de red al comunicarse con Earth2Worlds.");
+            } finally {
+                btnSubmitRegistro.disabled = false;
+                btnSubmitRegistro.textContent = "Registrarme como Propietario en Earth2Worlds";
+            }
+        });
+    </script>
+</body>
+</html>

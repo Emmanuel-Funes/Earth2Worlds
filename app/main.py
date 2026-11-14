@@ -1,0 +1,919 @@
+"""API REST FastAPI y Matriz RBAC de la plataforma Earth2Worlds."""
+
+from contextlib import asynccontextmanager
+from pathlib import Path
+from typing import Any, Dict, List
+
+from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+from sqlalchemy import func, inspect, text
+from sqlalchemy.orm import Session
+
+from app.auth import (
+    create_access_token,
+    get_current_user,
+    get_password_hash,
+    require_admin,
+    require_propietario_or_admin,
+    verify_password,
+)
+from app.data.argentina_geo import obtener_localidades_por_provincia, obtener_provincias
+from app.database import engine, get_db
+from app.init_db import init_db
+from app.models import Campo, RolEnum, Usuario
+from app.schemas import (
+    AsignarCamposRequest,
+    CampoCreate,
+    CampoOut,
+    CampoUpdate,
+    LoginRequest,
+    OperadorCreacion,
+    PropietarioDetalleOut,
+    PropietarioRegistro,
+    Token,
+    UsuarioOut,
+    UsuarioUpdate,
+)
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+STATIC_DIR = BASE_DIR / "static"
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    """Inicializa la base de datos limpia (14/11/2026) y el usuario Admin al iniciar Earth2Worlds."""
+    init_db()
+    yield
+
+
+app = FastAPI(
+    title="Earth2Worlds API",
+    description=(
+        "Plataforma Web Earth2Worlds - Gestión de Usuarios RBAC, Propietarios, Operadores y Campos Productivos "
+        "(Inicializada el 14/11/2026)."
+    ),
+    version="1.0.0",
+    lifespan=lifespan,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+if STATIC_DIR.exists():
+    app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
+
+# ==============================================================================
+# HELPERS DE SERIALIZACIÓN Y VALIDACIÓN RBAC
+# ==============================================================================
+
+
+def _serializar_campo(campo: Campo, db: Session) -> CampoOut:
+    propietario = campo.propietario or db.query(Usuario).filter(Usuario.id == campo.propietario_id).first()
+    prop_nombre = f"{propietario.nombre} {propietario.apellido}".strip() if propietario else None
+    prop_email = propietario.email if propietario else None
+    return CampoOut(
+        id=campo.id,
+        propietario_id=campo.propietario_id,
+        propietario_nombre=prop_nombre,
+        propietario_email=prop_email,
+        nombre_campo=campo.nombre_campo,
+        descripcion_ubicacion=campo.descripcion_ubicacion,
+        superficie_ha=campo.superficie_ha,
+        geometria_geojson=campo.geometria_geojson,
+        configuracion_extra=campo.configuracion_extra if isinstance(campo.configuracion_extra, dict) else {},
+        creado_en=campo.creado_en,
+    )
+
+
+def _normalizar_ids_campos(lista_raw: Any) -> List[int]:
+    if not isinstance(lista_raw, list):
+        return []
+    resultado: List[int] = []
+    for item in lista_raw:
+        try:
+            cid = int(item)
+            if cid not in resultado:
+                resultado.append(cid)
+        except (ValueError, TypeError):
+            continue
+    return resultado
+
+
+def _serializar_usuario(
+    usuario: Usuario,
+    db: Session,
+    incluir_detalle_campos: bool = False,
+) -> UsuarioOut:
+    prop_nombre = None
+    if usuario.propietario_id:
+        prop = db.query(Usuario).filter(Usuario.id == usuario.propietario_id).first()
+        if prop:
+            prop_nombre = f"{prop.nombre} {prop.apellido}".strip()
+
+    ids_asignados = _normalizar_ids_campos(usuario.campos_asignados)
+    detalle_campos = None
+    if incluir_detalle_campos:
+        if ids_asignados:
+            campos_objs = db.query(Campo).filter(Campo.id.in_(ids_asignados)).all()
+            detalle_campos = [_serializar_campo(c, db) for c in campos_objs]
+        else:
+            detalle_campos = []
+
+    return UsuarioOut(
+        id=usuario.id,
+        nombre=usuario.nombre,
+        apellido=usuario.apellido,
+        email=usuario.email,
+        rol=usuario.rol,
+        pais=usuario.pais or "Argentina",
+        provincia=usuario.provincia,
+        ciudad=usuario.ciudad,
+        codigo_postal=usuario.codigo_postal,
+        propietario_id=usuario.propietario_id,
+        propietario_nombre=prop_nombre,
+        campos_asignados=ids_asignados,
+        campos_asignados_detalle=detalle_campos,
+        creado_en=usuario.creado_en,
+    )
+
+
+def _validar_propiedad_campos(
+    campos_ids: List[int],
+    propietario_id: int,
+    es_admin: bool,
+    db: Session,
+) -> List[int]:
+    """Verifica que todos los campos_ids existan y, si no es Admin, pertenezcan estrictamente al propietario."""
+    ids_limpios = _normalizar_ids_campos(campos_ids)
+    if not ids_limpios:
+        return []
+
+    campos_db = db.query(Campo).filter(Campo.id.in_(ids_limpios)).all()
+    encontrados_map = {c.id: c for c in campos_db}
+
+    for cid in ids_limpios:
+        campo_obj = encontrados_map.get(cid)
+        if not campo_obj:
+            if not es_admin:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail=f"No tienes permiso para asignar el campo ID #{cid} o no existe.",
+                )
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"El campo ID #{cid} no existe en Earth2Worlds.",
+            )
+        if not es_admin and campo_obj.propietario_id != propietario_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Acceso prohibido: el campo '{campo_obj.nombre_campo}' (#{cid}) pertenece a otro propietario.",
+            )
+    return ids_limpios
+
+
+# ==============================================================================
+# 1. INTROSPECCIÓN DE BASE DE DATOS EN VIVO
+# ==============================================================================
+
+
+@app.get("/api/database/schema", tags=["Base de Datos"])
+def get_database_schema(
+    current_user: Usuario = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> Dict[str, Any]:
+    """Devuelve introspección en vivo de tablas, columnas, PKs, FKs y conteo de filas de earth2worlds.db."""
+    inspector = inspect(engine)
+    tablas_nombres = inspector.get_table_names()
+    tablas_info: List[Dict[str, Any]] = []
+    relaciones_info: List[Dict[str, str]] = []
+
+    for nombre_tabla in tablas_nombres:
+        pk_constraint = inspector.get_pk_constraint(nombre_tabla) or {}
+        pk_cols = set(pk_constraint.get("constrained_columns") or [])
+
+        fks = inspector.get_foreign_keys(nombre_tabla) or []
+        fk_map: Dict[str, str] = {}
+        for fk in fks:
+            referred_table = fk.get("referred_table", "")
+            referred_cols = fk.get("referred_columns") or []
+            for idx, col_local in enumerate(fk.get("constrained_columns") or []):
+                ref_col = referred_cols[idx] if idx < len(referred_cols) else "id"
+                target_str = f"{referred_table}.{ref_col}"
+                fk_map[col_local] = target_str
+                relaciones_info.append(
+                    {
+                        "origen_tabla": nombre_tabla,
+                        "origen_columna": col_local,
+                        "destino_tabla": referred_table,
+                        "destino_columna": ref_col,
+                    }
+                )
+
+        columnas_raw = inspector.get_columns(nombre_tabla)
+        columnas_out = []
+        for col in columnas_raw:
+            col_name = col["name"]
+            columnas_out.append(
+                {
+                    "nombre": col_name,
+                    "tipo": str(col["type"]),
+                    "nullable": bool(col.get("nullable", True)),
+                    "es_pk": col_name in pk_cols,
+                    "es_fk": col_name in fk_map,
+                    "fk_referencia": fk_map.get(col_name),
+                }
+            )
+
+        try:
+            row_count = db.execute(text(f'SELECT COUNT(*) FROM "{nombre_tabla}"')).scalar() or 0
+        except Exception:
+            row_count = 0
+
+        tablas_info.append(
+            {
+                "nombre": nombre_tabla,
+                "filas": int(row_count),
+                "columnas": columnas_out,
+            }
+        )
+
+    return {
+        "plataforma": "Earth2Worlds",
+        "motor": engine.dialect.name.upper(),
+        "archivo_db": "earth2worlds.db",
+        "fecha_inicializacion": "2026-11-14",
+        "usuario_consulta": current_user.email,
+        "total_tablas": len(tablas_info),
+        "tablas": tablas_info,
+        "relaciones": relaciones_info,
+    }
+
+
+# ==============================================================================
+# 2. GEOGRAFÍA ARGENTINA
+# ==============================================================================
+
+
+@app.get("/api/geo/provincias", tags=["Geografía"])
+def listar_provincias() -> Dict[str, Any]:
+    """Lista las 23 provincias argentinas + CABA."""
+    provincias = obtener_provincias()
+    return {"pais": "Argentina", "total": len(provincias), "provincias": provincias}
+
+
+@app.get("/api/geo/localidades/{provincia}", tags=["Geografía"])
+def listar_localidades(provincia: str) -> Dict[str, Any]:
+    """Devuelve las localidades y códigos postales de una provincia argentina."""
+    localidades = obtener_localidades_por_provincia(provincia)
+    return {
+        "provincia": provincia,
+        "total": len(localidades),
+        "localidades": localidades,
+    }
+
+
+# ==============================================================================
+# 3. AUTENTICACIÓN Y SESIÓN JWT
+# ==============================================================================
+
+
+@app.post(
+    "/api/auth/registro-propietario",
+    response_model=Token,
+    status_code=status.HTTP_201_CREATED,
+    tags=["Autenticación"],
+)
+def registrar_propietario(datos: PropietarioRegistro, db: Session = Depends(get_db)) -> Token:
+    """Registra un nuevo Propietario en Earth2Worlds y devuelve su sesión JWT."""
+    email_norm = datos.email.strip().lower()
+    existente = db.query(Usuario).filter(func.lower(Usuario.email) == email_norm).first()
+    if existente:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Ya existe un usuario registrado con ese correo electrónico en Earth2Worlds.",
+        )
+
+    nuevo = Usuario(
+        nombre=datos.nombre.strip(),
+        apellido=datos.apellido.strip(),
+        email=email_norm,
+        password_hash=get_password_hash(datos.password),
+        rol=RolEnum.PROPIETARIO,
+        pais=(datos.pais or "Argentina").strip(),
+        provincia=datos.provincia.strip() if datos.provincia else None,
+        ciudad=datos.ciudad.strip() if datos.ciudad else None,
+        codigo_postal=datos.codigo_postal.strip() if datos.codigo_postal else None,
+        propietario_id=None,
+        campos_asignados=[],
+    )
+    db.add(nuevo)
+    db.commit()
+    db.refresh(nuevo)
+
+    token = create_access_token({"sub": str(nuevo.id), "rol": nuevo.rol.value, "email": nuevo.email})
+    return Token(
+        access_token=token,
+        token_type="bearer",
+        usuario=_serializar_usuario(nuevo, db, incluir_detalle_campos=True),
+    )
+
+
+@app.post("/api/auth/login", response_model=Token, tags=["Autenticación"])
+def login(credenciales: LoginRequest, db: Session = Depends(get_db)) -> Token:
+    """Inicia sesión con email o con el identificador 'Admin' y devuelve el token JWT."""
+    identificador = credenciales.email_o_usuario.strip()
+
+    if identificador.lower() == "admin":
+        usuario = (
+            db.query(Usuario)
+            .filter(
+                (func.lower(Usuario.email) == "admin@earth2worlds.com")
+                | (
+                    (func.lower(Usuario.nombre) == "admin")
+                    & (Usuario.rol == RolEnum.ADMIN)
+                )
+            )
+            .first()
+        )
+    else:
+        usuario = (
+            db.query(Usuario)
+            .filter(func.lower(Usuario.email) == identificador.lower())
+            .first()
+        )
+
+    if not usuario or not verify_password(credenciales.password, usuario.password_hash):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Credenciales inválidas. Verifica tu correo/usuario y contraseña.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    token = create_access_token({"sub": str(usuario.id), "rol": usuario.rol.value, "email": usuario.email})
+    return Token(
+        access_token=token,
+        token_type="bearer",
+        usuario=_serializar_usuario(usuario, db, incluir_detalle_campos=True),
+    )
+
+
+@app.post("/api/auth/logout", tags=["Autenticación"])
+def logout(current_user: Usuario = Depends(get_current_user)) -> Dict[str, Any]:
+    """Cierra la sesión activa del usuario en Earth2Worlds."""
+    return {
+        "ok": True,
+        "mensaje": f"Sesión finalizada correctamente para {current_user.email}.",
+    }
+
+
+@app.get("/api/auth/me", response_model=UsuarioOut, tags=["Autenticación"])
+def obtener_perfil_actual(
+    current_user: Usuario = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> UsuarioOut:
+    """Devuelve los datos del usuario autenticado actualmente."""
+    return _serializar_usuario(current_user, db, incluir_detalle_campos=True)
+
+
+# ==============================================================================
+# 4. GESTIÓN DE USUARIOS, PROPIETARIOS Y OPERADORES (RBAC)
+# ==============================================================================
+
+
+@app.get(
+    "/api/usuarios/propietarios",
+    response_model=List[PropietarioDetalleOut],
+    tags=["Usuarios RBAC"],
+)
+def listar_propietarios_con_detalle(
+    _admin: Usuario = Depends(require_admin),
+    db: Session = Depends(get_db),
+) -> List[PropietarioDetalleOut]:
+    """Admin: devuelve cada propietario con sus listas anidadas de campos y operadores."""
+    propietarios = (
+        db.query(Usuario)
+        .filter(Usuario.rol == RolEnum.PROPIETARIO)
+        .order_by(Usuario.id.desc())
+        .all()
+    )
+    resultado: List[PropietarioDetalleOut] = []
+    for prop in propietarios:
+        base_out = _serializar_usuario(prop, db, incluir_detalle_campos=False)
+        campos_prop = (
+            db.query(Campo)
+            .filter(Campo.propietario_id == prop.id)
+            .order_by(Campo.id.desc())
+            .all()
+        )
+        operadores_prop = (
+            db.query(Usuario)
+            .filter(
+                (Usuario.rol == RolEnum.OPERADOR)
+                & (Usuario.propietario_id == prop.id)
+            )
+            .order_by(Usuario.id.desc())
+            .all()
+        )
+        resultado.append(
+            PropietarioDetalleOut(
+                **base_out.model_dump(),
+                campos=[_serializar_campo(c, db) for c in campos_prop],
+                operadores=[
+                    _serializar_usuario(op, db, incluir_detalle_campos=True)
+                    for op in operadores_prop
+                ],
+            )
+        )
+    return resultado
+
+
+@app.get(
+    "/api/usuarios/operadores",
+    response_model=List[UsuarioOut],
+    tags=["Usuarios RBAC"],
+)
+def listar_operadores(
+    current_user: Usuario = Depends(require_propietario_or_admin),
+    db: Session = Depends(get_db),
+) -> List[UsuarioOut]:
+    """Admin ve todos los operadores; Propietario ve únicamente los suyos, con campos_asignados_detalle."""
+    query = db.query(Usuario).filter(Usuario.rol == RolEnum.OPERADOR)
+    if current_user.rol == RolEnum.PROPIETARIO:
+        query = query.filter(Usuario.propietario_id == current_user.id)
+
+    operadores = query.order_by(Usuario.id.desc()).all()
+    return [_serializar_usuario(op, db, incluir_detalle_campos=True) for op in operadores]
+
+
+@app.post(
+    "/api/usuarios/operadores",
+    response_model=UsuarioOut,
+    status_code=status.HTTP_201_CREATED,
+    tags=["Usuarios RBAC"],
+)
+def crear_operador(
+    datos: OperadorCreacion,
+    current_user: Usuario = Depends(require_propietario_or_admin),
+    db: Session = Depends(get_db),
+) -> UsuarioOut:
+    """Crea un nuevo Operador vinculado al propietario actual (o al propietario elegido por Admin)."""
+    email_norm = datos.email.strip().lower()
+    if db.query(Usuario).filter(func.lower(Usuario.email) == email_norm).first():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Ya existe un usuario con ese correo electrónico en Earth2Worlds.",
+        )
+
+    es_admin = current_user.rol == RolEnum.ADMIN
+    if es_admin:
+        propietario_id_destino = datos.propietario_id or current_user.id
+        prop_destino = db.query(Usuario).filter(Usuario.id == propietario_id_destino).first()
+        if not prop_destino:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="El propietario indicado no existe.",
+            )
+    else:
+        propietario_id_destino = current_user.id
+
+    campos_validados = _validar_propiedad_campos(
+        datos.campos_asignados,
+        propietario_id=propietario_id_destino,
+        es_admin=es_admin,
+        db=db,
+    )
+
+    nuevo_op = Usuario(
+        nombre=datos.nombre.strip(),
+        apellido=datos.apellido.strip(),
+        email=email_norm,
+        password_hash=get_password_hash(datos.password),
+        rol=RolEnum.OPERADOR,
+        pais=(datos.pais or "Argentina").strip(),
+        provincia=datos.provincia.strip() if datos.provincia else current_user.provincia,
+        ciudad=datos.ciudad.strip() if datos.ciudad else current_user.ciudad,
+        codigo_postal=datos.codigo_postal.strip() if datos.codigo_postal else current_user.codigo_postal,
+        propietario_id=propietario_id_destino,
+        campos_asignados=campos_validados,
+    )
+    db.add(nuevo_op)
+    db.commit()
+    db.refresh(nuevo_op)
+    return _serializar_usuario(nuevo_op, db, incluir_detalle_campos=True)
+
+
+@app.put(
+    "/api/usuarios/operadores/{operador_id}/campos",
+    response_model=UsuarioOut,
+    tags=["Usuarios RBAC"],
+)
+def asignar_campos_a_operador(
+    operador_id: int,
+    payload: AsignarCamposRequest,
+    current_user: Usuario = Depends(require_propietario_or_admin),
+    db: Session = Depends(get_db),
+) -> UsuarioOut:
+    """Asigna o actualiza la lista de campos_ids de un operador validando propiedad."""
+    operador = (
+        db.query(Usuario)
+        .filter((Usuario.id == operador_id) & (Usuario.rol == RolEnum.OPERADOR))
+        .first()
+    )
+    if not operador:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Operador no encontrado.",
+        )
+
+    es_admin = current_user.rol == RolEnum.ADMIN
+    if not es_admin and operador.propietario_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tienes permiso para modificar un operador de otro propietario.",
+        )
+
+    duenio_referencia = current_user.id if not es_admin else (operador.propietario_id or current_user.id)
+    campos_validados = _validar_propiedad_campos(
+        payload.campos_ids,
+        propietario_id=duenio_referencia,
+        es_admin=es_admin,
+        db=db,
+    )
+
+    operador.campos_asignados = campos_validados
+    db.commit()
+    db.refresh(operador)
+    return _serializar_usuario(operador, db, incluir_detalle_campos=True)
+
+
+@app.get(
+    "/api/usuarios/todos",
+    response_model=List[UsuarioOut],
+    tags=["Usuarios RBAC"],
+)
+def listar_todos_los_usuarios(
+    _admin: Usuario = Depends(require_admin),
+    db: Session = Depends(get_db),
+) -> List[UsuarioOut]:
+    """Admin: devuelve el padrón completo de usuarios para auditoría global."""
+    usuarios = db.query(Usuario).order_by(Usuario.id.asc()).all()
+    return [_serializar_usuario(u, db, incluir_detalle_campos=True) for u in usuarios]
+
+
+@app.get(
+    "/api/usuarios/{usuario_id}",
+    response_model=UsuarioOut,
+    tags=["Usuarios RBAC"],
+)
+def obtener_usuario_por_id(
+    usuario_id: int,
+    current_user: Usuario = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> UsuarioOut:
+    """Obtiene el detalle de un usuario según permisos RBAC."""
+    objetivo = db.query(Usuario).filter(Usuario.id == usuario_id).first()
+    if not objetivo:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado.")
+
+    es_admin = current_user.rol == RolEnum.ADMIN
+    es_propio = current_user.id == objetivo.id
+    es_su_operador = (
+        current_user.rol == RolEnum.PROPIETARIO
+        and objetivo.rol == RolEnum.OPERADOR
+        and objetivo.propietario_id == current_user.id
+    )
+    if not (es_admin or es_propio or es_su_operador):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tienes permisos para consultar este usuario.",
+        )
+
+    return _serializar_usuario(objetivo, db, incluir_detalle_campos=True)
+
+
+@app.put(
+    "/api/usuarios/{usuario_id}",
+    response_model=UsuarioOut,
+    tags=["Usuarios RBAC"],
+)
+def actualizar_usuario(
+    usuario_id: int,
+    datos: UsuarioUpdate,
+    current_user: Usuario = Depends(require_propietario_or_admin),
+    db: Session = Depends(get_db),
+) -> UsuarioOut:
+    """Actualiza datos de un usuario respetando estrictamente la matriz RBAC."""
+    objetivo = db.query(Usuario).filter(Usuario.id == usuario_id).first()
+    if not objetivo:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado.")
+
+    es_admin = current_user.rol == RolEnum.ADMIN
+    es_propio = current_user.id == objetivo.id
+    es_su_operador = (
+        current_user.rol == RolEnum.PROPIETARIO
+        and objetivo.rol == RolEnum.OPERADOR
+        and objetivo.propietario_id == current_user.id
+    )
+    if not (es_admin or es_propio or es_su_operador):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tienes permisos para editar este usuario.",
+        )
+
+    if datos.email is not None:
+        nuevo_email = datos.email.strip().lower()
+        duplicado = (
+            db.query(Usuario)
+            .filter((func.lower(Usuario.email) == nuevo_email) & (Usuario.id != objetivo.id))
+            .first()
+        )
+        if duplicado:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="El correo electrónico ya está en uso por otro usuario.",
+            )
+        objetivo.email = nuevo_email
+
+    if datos.nombre is not None:
+        objetivo.nombre = datos.nombre.strip()
+    if datos.apellido is not None:
+        objetivo.apellido = datos.apellido.strip()
+    if datos.pais is not None:
+        objetivo.pais = datos.pais.strip()
+    if datos.provincia is not None:
+        objetivo.provincia = datos.provincia.strip() or None
+    if datos.ciudad is not None:
+        objetivo.ciudad = datos.ciudad.strip() or None
+    if datos.codigo_postal is not None:
+        objetivo.codigo_postal = datos.codigo_postal.strip() or None
+
+    if datos.password:
+        objetivo.password_hash = get_password_hash(datos.password)
+
+    if es_admin:
+        if datos.rol is not None:
+            objetivo.rol = datos.rol
+        if datos.propietario_id is not None:
+            objetivo.propietario_id = datos.propietario_id
+
+    if datos.campos_asignados is not None:
+        duenio_ref = current_user.id if not es_admin else (objetivo.propietario_id or current_user.id)
+        objetivo.campos_asignados = _validar_propiedad_campos(
+            datos.campos_asignados,
+            propietario_id=duenio_ref,
+            es_admin=es_admin,
+            db=db,
+        )
+
+    db.commit()
+    db.refresh(objetivo)
+    return _serializar_usuario(objetivo, db, incluir_detalle_campos=True)
+
+
+@app.delete("/api/usuarios/{usuario_id}", tags=["Usuarios RBAC"])
+def eliminar_usuario(
+    usuario_id: int,
+    current_user: Usuario = Depends(require_propietario_or_admin),
+    db: Session = Depends(get_db),
+) -> Dict[str, Any]:
+    """Elimina un usuario (Admin puede eliminar cualquiera salvo su propia cuenta activa; Propietario sus operadores)."""
+    objetivo = db.query(Usuario).filter(Usuario.id == usuario_id).first()
+    if not objetivo:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado.")
+
+    if objetivo.id == current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No puedes eliminar tu propia cuenta activa.",
+        )
+
+    es_admin = current_user.rol == RolEnum.ADMIN
+    es_su_operador = (
+        current_user.rol == RolEnum.PROPIETARIO
+        and objetivo.rol == RolEnum.OPERADOR
+        and objetivo.propietario_id == current_user.id
+    )
+    if not (es_admin or es_su_operador):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tienes permisos para eliminar este usuario.",
+        )
+
+    email_eliminado = objetivo.email
+    db.delete(objetivo)
+    db.commit()
+    return {"ok": True, "mensaje": f"Usuario {email_eliminado} eliminado correctamente."}
+
+
+# ==============================================================================
+# 5. GESTIÓN DE CAMPOS PRODUCTIVOS (RBAC)
+# ==============================================================================
+
+
+@app.get("/api/campos", response_model=List[CampoOut], tags=["Campos"])
+def listar_campos(
+    current_user: Usuario = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> List[CampoOut]:
+    """
+    Devuelve los campos visibles según el rol:
+    - ADMIN: Todos los campos del sistema.
+    - PROPIETARIO: Exclusivamente sus propios campos (Campo.propietario_id == usuario.id).
+    - OPERADOR: Solo lectura de los campos incluidos en su lista usuario.campos_asignados.
+    """
+    if current_user.rol == RolEnum.ADMIN:
+        campos = db.query(Campo).order_by(Campo.id.desc()).all()
+    elif current_user.rol == RolEnum.PROPIETARIO:
+        campos = (
+            db.query(Campo)
+            .filter(Campo.propietario_id == current_user.id)
+            .order_by(Campo.id.desc())
+            .all()
+        )
+    else:
+        ids_asignados = _normalizar_ids_campos(current_user.campos_asignados)
+        if not ids_asignados:
+            return []
+        campos = (
+            db.query(Campo)
+            .filter(Campo.id.in_(ids_asignados))
+            .order_by(Campo.id.desc())
+            .all()
+        )
+    return [_serializar_campo(c, db) for c in campos]
+
+
+@app.get("/api/campos/{campo_id}", response_model=CampoOut, tags=["Campos"])
+def obtener_campo(
+    campo_id: int,
+    current_user: Usuario = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> CampoOut:
+    """Devuelve el detalle de un campo validando acceso RBAC."""
+    campo = db.query(Campo).filter(Campo.id == campo_id).first()
+    if not campo:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Campo no encontrado.")
+
+    if current_user.rol == RolEnum.PROPIETARIO and campo.propietario_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tienes acceso a un campo de otro propietario.",
+        )
+    if current_user.rol == RolEnum.OPERADOR:
+        ids_asignados = _normalizar_ids_campos(current_user.campos_asignados)
+        if campo.id not in ids_asignados:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="No tienes asignado este campo.",
+            )
+
+    return _serializar_campo(campo, db)
+
+
+@app.post(
+    "/api/campos",
+    response_model=CampoOut,
+    status_code=status.HTTP_201_CREATED,
+    tags=["Campos"],
+)
+def crear_campo(
+    datos: CampoCreate,
+    current_user: Usuario = Depends(require_propietario_or_admin),
+    db: Session = Depends(get_db),
+) -> CampoOut:
+    """Crea un nuevo campo (Admin puede elegir propietario_id; Propietario lo crea a su nombre)."""
+    if current_user.rol == RolEnum.ADMIN and datos.propietario_id:
+        prop = db.query(Usuario).filter(Usuario.id == datos.propietario_id).first()
+        if not prop:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="El propietario seleccionado no existe.",
+            )
+        propietario_id_final = prop.id
+    else:
+        propietario_id_final = current_user.id
+
+    nuevo_campo = Campo(
+        propietario_id=propietario_id_final,
+        nombre_campo=datos.nombre_campo.strip(),
+        descripcion_ubicacion=datos.descripcion_ubicacion.strip() if datos.descripcion_ubicacion else None,
+        superficie_ha=datos.superficie_ha,
+        geometria_geojson=datos.geometria_geojson,
+        configuracion_extra=datos.configuracion_extra or {},
+    )
+    db.add(nuevo_campo)
+    db.commit()
+    db.refresh(nuevo_campo)
+    return _serializar_campo(nuevo_campo, db)
+
+
+@app.put("/api/campos/{campo_id}", response_model=CampoOut, tags=["Campos"])
+def actualizar_campo(
+    campo_id: int,
+    datos: CampoUpdate,
+    current_user: Usuario = Depends(require_propietario_or_admin),
+    db: Session = Depends(get_db),
+) -> CampoOut:
+    """Edita un campo existente (Admin puede además reasignar su propietario_id)."""
+    campo = db.query(Campo).filter(Campo.id == campo_id).first()
+    if not campo:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Campo no encontrado.")
+
+    es_admin = current_user.rol == RolEnum.ADMIN
+    if not es_admin and campo.propietario_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No puedes modificar un campo que pertenece a otro propietario.",
+        )
+
+    if datos.nombre_campo is not None:
+        campo.nombre_campo = datos.nombre_campo.strip()
+    if datos.descripcion_ubicacion is not None:
+        campo.descripcion_ubicacion = datos.descripcion_ubicacion.strip() or None
+    if datos.superficie_ha is not None:
+        campo.superficie_ha = datos.superficie_ha
+    if datos.geometria_geojson is not None:
+        campo.geometria_geojson = datos.geometria_geojson
+    if datos.configuracion_extra is not None:
+        campo.configuracion_extra = datos.configuracion_extra
+
+    if es_admin and datos.propietario_id is not None and datos.propietario_id != campo.propietario_id:
+        nuevo_duenio = db.query(Usuario).filter(Usuario.id == datos.propietario_id).first()
+        if not nuevo_duenio:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="El nuevo propietario seleccionado no existe.",
+            )
+        campo.propietario_id = nuevo_duenio.id
+
+    db.commit()
+    db.refresh(campo)
+    return _serializar_campo(campo, db)
+
+
+@app.delete("/api/campos/{campo_id}", tags=["Campos"])
+def eliminar_campo(
+    campo_id: int,
+    current_user: Usuario = Depends(require_propietario_or_admin),
+    db: Session = Depends(get_db),
+) -> Dict[str, Any]:
+    """Elimina un campo y lo limpia de las asignaciones de operadores."""
+    campo = db.query(Campo).filter(Campo.id == campo_id).first()
+    if not campo:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Campo no encontrado.")
+
+    es_admin = current_user.rol == RolEnum.ADMIN
+    if not es_admin and campo.propietario_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tienes permisos para eliminar un campo de otro propietario.",
+        )
+
+    nombre_eliminado = campo.nombre_campo
+    operadores = db.query(Usuario).filter(Usuario.rol == RolEnum.OPERADOR).all()
+    for op in operadores:
+        actuales = _normalizar_ids_campos(op.campos_asignados)
+        if campo_id in actuales:
+            op.campos_asignados = [cid for cid in actuales if cid != campo_id]
+
+    db.delete(campo)
+    db.commit()
+    return {"ok": True, "mensaje": f"Campo '{nombre_eliminado}' eliminado correctamente."}
+
+
+# ==============================================================================
+# 6. RUTAS ESTÁTICAS HTML DE LA PLATAFORMA EARTH2WORLDS
+# ==============================================================================
+
+
+@app.get("/", include_in_schema=False)
+def serve_index():
+    return FileResponse(str(STATIC_DIR / "index.html"))
+
+
+@app.get("/login", include_in_schema=False)
+def serve_login():
+    return FileResponse(str(STATIC_DIR / "login.html"))
+
+
+@app.get("/registro", include_in_schema=False)
+def serve_registro():
+    return FileResponse(str(STATIC_DIR / "registro.html"))
+
+
+@app.get("/mapa", include_in_schema=False)
+def serve_mapa_secciones():
+    return FileResponse(str(STATIC_DIR / "mapa_secciones.html"))
+
+
+@app.get("/diagrama", include_in_schema=False)
+def serve_diagrama_db():
+    return FileResponse(str(STATIC_DIR / "diagrama_db.html"))

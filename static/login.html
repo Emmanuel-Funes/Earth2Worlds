@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Earth2Worlds | Iniciar Sesión</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ["Outfit", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                        mono: ["Fira Code", "monospace"],
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-emerald-500/30 selection:text-emerald-200">
+    <!-- Fondo ambiental sutil -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+        <div class="absolute -top-32 -left-32 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/3 -right-32 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Barra superior -->
+    <header class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-sky-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 font-heading font-extrabold text-slate-950 text-lg">
+                    E2W
+                </div>
+                <div>
+                    <span class="font-heading text-xl font-bold tracking-tight text-white">Earth2Worlds</span>
+                    <span class="block text-xs text-slate-400">Gestión Territorial y Campos Productivos</span>
+                </div>
+            </a>
+            <a href="/registro" class="text-sm font-medium text-emerald-400 hover:text-emerald-300 transition">
+                Crear cuenta de Propietario &rarr;
+            </a>
+        </div>
+    </header>
+
+    <!-- Tarjeta central de Login -->
+    <main class="flex-1 flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-md bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl shadow-2xl p-8">
+            <div class="mb-6">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-3">
+                    ACCESO SEGURO JWT
+                </span>
+                <h1 class="font-heading text-2xl font-bold text-white">Ingresar a Earth2Worlds</h1>
+                <p class="text-sm text-slate-400 mt-1">
+                    Accede con tu correo electrónico o usuario (<code class="font-mono text-emerald-400">Admin</code>).
+                </p>
+            </div>
+
+            <div id="loginAlert" class="hidden mb-5 rounded-xl border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-300"></div>
+
+            <form id="loginForm" class="space-y-5" novalidate>
+                <div>
+                    <label for="email_o_usuario" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                        Correo Electrónico o Usuario
+                    </label>
+                    <input
+                        id="email_o_usuario"
+                        name="email_o_usuario"
+                        type="text"
+                        required
+                        autocomplete="username"
+                        placeholder="admin@earth2worlds.com o Admin"
+                        class="w-full rounded-xl bg-slate-950/90 border border-slate-800 px-4 py-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition"
+                    />
+                </div>
+
+                <div>
+                    <label for="password" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                        Contraseña
+                    </label>
+                    <div class="relative">
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            required
+                            autocomplete="current-password"
+                            placeholder="••••••••"
+                            class="w-full rounded-xl bg-slate-950/90 border border-slate-800 pl-4 pr-20 py-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition"
+                        />
+                        <button
+                            type="button"
+                            onclick="togglePasswordVisibility('password', this)"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg text-xs font-mono text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-700 transition"
+                        >
+                            Ver
+                        </button>
+                    </div>
+                </div>
+
+                <button
+                    id="btnSubmitLogin"
+                    type="submit"
+                    class="w-full py-3 px-5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-heading font-bold text-sm shadow-lg shadow-emerald-500/20 transition flex items-center justify-center gap-2"
+                >
+                    <span>Iniciar Sesión en Earth2Worlds</span>
+                </button>
+            </form>
+
+            <div class="mt-6 pt-5 border-t border-slate-800/80 text-center">
+                <p class="text-xs text-slate-400">
+                    ¿Eres dueño de un establecimiento productivo?
+                    <a href="/registro" class="text-sky-400 hover:text-sky-300 font-semibold ml-1">
+                        Regístrate como Propietario
+                    </a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-900 py-4 text-center text-xs text-slate-500 font-mono">
+        Earth2Worlds &bull; Inicializado el 14/11/2026 &bull; San Luis, Argentina
+    </footer>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        if (getToken()) {
+            window.location.href = "/";
+        }
+
+        const loginForm = document.getElementById("loginForm");
+        const loginAlert = document.getElementById("loginAlert");
+        const btnSubmitLogin = document.getElementById("btnSubmitLogin");
+
+        function mostrarErrorLogin(mensaje) {
+            loginAlert.textContent = mensaje;
+            loginAlert.classList.remove("hidden");
+        }
+
+        loginForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            loginAlert.classList.add("hidden");
+
+            const email_o_usuario = document.getElementById("email_o_usuario").value.trim();
+            const password = document.getElementById("password").value;
+
+            if (!email_o_usuario || !password) {
+                mostrarErrorLogin("Completa tu correo/usuario y contraseña.");
+                return;
+            }
+
+            btnSubmitLogin.disabled = true;
+            btnSubmitLogin.innerHTML = `<span>Verificando credenciales...</span>`;
+
+            try {
+                const res = await fetch("/api/auth/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email_o_usuario, password }),
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    mostrarErrorLogin(data.detail || "No fue posible iniciar sesión.");
+                    return;
+                }
+                saveSession(data.access_token, data.usuario);
+                window.location.href = "/";
+            } catch (_err) {
+                mostrarErrorLogin("Error de conexión con el servidor Earth2Worlds.");
+            } finally {
+                btnSubmitLogin.disabled = false;
+                btnSubmitLogin.innerHTML = `<span>Iniciar Sesión en Earth2Worlds</span>`;
+            }
+        });
+    </script>
+</body>
+</html>

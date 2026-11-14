@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Earth2Worlds | Mapa Maestro de Secciones</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ["Outfit", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                        mono: ["Fira Code", "monospace"],
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <header class="sticky top-0 z-30 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <a href="/" class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-emerald-500 flex items-center justify-center font-heading font-extrabold text-slate-950 text-lg">
+                    E2W
+                </a>
+                <div>
+                    <h1 class="font-heading text-lg font-bold text-white">Earth2Worlds &bull; Mapa Maestro de Secciones</h1>
+                    <p class="text-xs text-slate-400 font-mono">Sincronizado con static/index.html ([SEC-01]..[SEC-10] y [JS-01]..[JS-08])</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="/diagrama" class="px-3.5 py-2 rounded-xl text-xs font-mono bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 transition">
+                    Diagrama BD en Vivo
+                </a>
+                <a href="/" class="px-4 py-2 rounded-xl text-xs font-heading font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition">
+                    &larr; Volver al Panel
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8 space-y-6">
+        <!-- Buscador y filtros -->
+        <section class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div class="flex-1">
+                <label for="buscadorSecciones" class="block text-xs font-mono uppercase text-slate-400 mb-2">
+                    Buscar por código ([SEC-05], [JS-03], #slotModuloMapa, modal, RBAC...):
+                </label>
+                <input
+                    id="buscadorSecciones"
+                    type="text"
+                    oninput="renderizarMapaSecciones()"
+                    placeholder="Filtrar secciones o controladores de Earth2Worlds..."
+                    class="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-purple-500"
+                />
+            </div>
+            <div>
+                <label for="filtroTipoSeccion" class="block text-xs font-mono uppercase text-slate-400 mb-2">
+                    Categoría:
+                </label>
+                <select
+                    id="filtroTipoSeccion"
+                    onchange="renderizarMapaSecciones()"
+                    class="rounded-xl bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-purple-500"
+                >
+                    <option value="TODAS">Todas las piezas (25)</option>
+                    <option value="HTML">Secciones HTML ([SEC-01] a [SEC-10])</option>
+                    <option value="SLOT">Slots de Expansión ([SLOT-MODULO-*])</option>
+                    <option value="MODAL">Modales Interactivos ([SEC-09.1] a [SEC-09.5])</option>
+                    <option value="JS">Controladores JavaScript ([JS-01] a [JS-08])</option>
+                </select>
+            </div>
+        </section>
+
+        <div id="copyBanner" class="hidden rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-xs font-mono text-emerald-300"></div>
+
+        <!-- Grilla de tarjetas -->
+        <div id="gridSecciones" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    </main>
+
+    <footer class="border-t border-slate-900 py-5 text-center text-xs text-slate-500 font-mono">
+        Earth2Worlds &bull; Gobernanza de Secciones Frontend &bull; 14/11/2026
+    </footer>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        const CATALOGO_SECCIONES = [
+            {
+                codigo: "[SEC-01]",
+                tipo: "HTML",
+                titulo: "Head, Fuentes Google y Configuración Tailwind",
+                selectores: "<head>, tailwind.config",
+                descripcion: "Configuración del modo oscuro de Earth2Worlds y tipografías Outfit, Inter y Fira Code.",
+                prompt: "En static/index.html dentro de [SEC-01], actualiza la configuración de Tailwind o metadatos de Earth2Worlds.",
+            },
+            {
+                codigo: "[SEC-02]",
+                tipo: "HTML",
+                titulo: "Navbar Superior con Identidad Earth2Worlds",
+                selectores: "#navAdminTools, #userRoleBadge, #userNameDisplay, logout()",
+                descripcion: "Barra superior fija con logo E2W, enlaces a Mapa de Secciones y Diagrama BD (Admin), insignia de rol y cierre de sesión.",
+                prompt: "En static/index.html dentro de [SEC-02], modifica la barra de navegación superior respetando los controles de sesión y enlaces de Admin.",
+            },
+            {
+                codigo: "[SEC-03]",
+                tipo: "HTML",
+                titulo: "Cabecera de Bienvenida, #adminStatsBar y #btnNuevoCampo",
+                selectores: "#welcomeTitle, #adminStatsBar, #btnNuevoCampo, #btnNuevoOperadorHeader",
+                descripcion: "Saludo adaptado según rol, 4 contadores estadísticos para Admin (Propietarios, Operadores, Campos, Total Usuarios) y botón de alta de campo.",
+                prompt: "En static/index.html dentro de [SEC-03], ajusta la cabecera de bienvenida o los 4 contadores estadísticos #adminStatsBar.",
+            },
+            {
+                codigo: "[SEC-04]",
+                tipo: "HTML",
+                titulo: "Barra de 4 Pestañas RBAC",
+                selectores: "#tabBtnCampos, #tabBtnPropietarios, #tabBtnOperadores, #tabBtnAdmin",
+                descripcion: "Navegación por pestañas según matriz de permisos: Campos (Todos), Propietarios (Admin), Operadores (Admin/Propietario) y Auditoría Global (Admin).",
+                prompt: "En static/index.html dentro de [SEC-04], actualiza la barra de pestañas RBAC.",
+            },
+            {
+                codigo: "[SEC-05]",
+                tipo: "HTML",
+                titulo: "Contenido Principal de #camposTab",
+                selectores: "#camposTab, #campoActivoHeader, #listaCampos, #filtroPropietarioSelect",
+                descripcion: "Cabecera de campo activo seleccionado, filtro de campos por propietario (Admin) y grilla reactiva de tarjetas de establecimientos.",
+                prompt: "En static/index.html dentro de [SEC-05], modifica la vista de tarjetas de campos #listaCampos o la cabecera #campoActivoHeader.",
+            },
+            {
+                codigo: "[SEC-05.2]",
+                tipo: "SLOT",
+                titulo: "Slot Módulo Cartográfico (#slotModuloMapa)",
+                selectores: "#slotModuloMapa, <!-- [SLOT-MODULO-MAPA] -->",
+                descripcion: "Contenedor limpio preparado para enchufar el visor interactivo de mapas y dibujo de polígonos GeoJSON.",
+                prompt: "En static/index.html dentro de [SEC-05.2] (#slotModuloMapa), integra el módulo cartográfico manteniendo el contrato con Campo.geometria_geojson.",
+            },
+            {
+                codigo: "[SEC-05.3]",
+                tipo: "SLOT",
+                titulo: "Slot Módulo de Telemetría (#slotModuloTelemetria)",
+                selectores: "#slotModuloTelemetria, <!-- [SLOT-MODULO-TELEMETRIA] -->",
+                descripcion: "Contenedor limpio preparado para enchufar la consulta de telemetría satelital y series temporales sobre el campo activo.",
+                prompt: "En static/index.html dentro de [SEC-05.3] (#slotModuloTelemetria), integra el panel de telemetría vinculado al campo activo.",
+            },
+            {
+                codigo: "[SEC-06]",
+                tipo: "HTML",
+                titulo: "Tarjetas Jerárquicas de Propietarios y Lotes (Admin)",
+                selectores: "#propietariosTab, #listaPropietariosAdmin",
+                descripcion: "Vista exclusiva Admin que muestra cada propietario junto con sus campos y operadores anidados.",
+                prompt: "En static/index.html dentro de [SEC-06] (#propietariosTab), actualiza la visualización de propietarios y sus listas anidadas.",
+            },
+            {
+                codigo: "[SEC-07]",
+                tipo: "HTML",
+                titulo: "Gestión de Operadores y Asignación Rápida de Lotes",
+                selectores: "#operadoresTab, #listaOperadoresContainer",
+                descripcion: "Panel para Administradores y Propietarios donde se listan operadores y los campos asignados en modo lectura.",
+                prompt: "En static/index.html dentro de [SEC-07] (#operadoresTab), modifica las tarjetas de operadores y accesos de asignación.",
+            },
+            {
+                codigo: "[SEC-08]",
+                tipo: "HTML",
+                titulo: "Tabla Maestra de Auditoría Global de Usuarios (Admin)",
+                selectores: "#adminTab, #tablaAuditoriaUsuariosBody, #inputBuscarUsuarioAdmin, #selectFiltroRolAdmin",
+                descripcion: "Tabla administrativa completa con buscador instantáneo, filtro por rol y botones de edición/eliminación.",
+                prompt: "En static/index.html dentro de [SEC-08] (#adminTab), actualiza la tabla maestra de auditoría global de usuarios.",
+            },
+            {
+                codigo: "[SEC-09]",
+                tipo: "HTML",
+                titulo: "Contenedor General de los 5 Modales Interactivos",
+                selectores: "#modalCampo, #modalEditarCampo, #modalEditarUsuario, #modalAsignarCampos, #modalOperador",
+                descripcion: "Agrupación de los cinco diálogos modales para operaciones CRUD y asignación de lotes.",
+                prompt: "En static/index.html dentro de [SEC-09], revisa la estructura general de los 5 modales interactivos.",
+            },
+            {
+                codigo: "[SEC-09.1]",
+                tipo: "MODAL",
+                titulo: "Modal Alta de Campo (#modalCampo + #slotModalMapa)",
+                selectores: "#modalCampo, #formNuevoCampo, #slotModalMapa",
+                descripcion: "Formulario modal para dar de alta un establecimiento e incluir el contenedor limpio #slotModalMapa.",
+                prompt: "En static/index.html dentro de [SEC-09.1] (#modalCampo), ajusta el formulario de creación de campos o el contenedor #slotModalMapa.",
+            },
+            {
+                codigo: "[SEC-09.2]",
+                tipo: "MODAL",
+                titulo: "Modal Edición de Campo (#modalEditarCampo)",
+                selectores: "#modalEditarCampo, #formEditarCampo, #edit_campo_propietario_id",
+                descripcion: "Edición de nombre, ubicación, superficie en hectáreas y reasignación de propietario titular (si es Admin).",
+                prompt: "En static/index.html dentro de [SEC-09.2] (#modalEditarCampo), modifica el diálogo de edición de campo.",
+            },
+            {
+                codigo: "[SEC-09.3]",
+                tipo: "MODAL",
+                titulo: "Modal Edición de Usuario (#modalEditarUsuario)",
+                selectores: "#modalEditarUsuario, #formEditarUsuario",
+                descripcion: "Edición integral de datos personales, ubicación argentina, rol RBAC y cambio opcional de contraseña.",
+                prompt: "En static/index.html dentro de [SEC-09.3] (#modalEditarUsuario), actualiza el modal de edición de usuario.",
+            },
+            {
+                codigo: "[SEC-09.4]",
+                tipo: "MODAL",
+                titulo: "Modal Asignar Campos a Operador (#modalAsignarCampos)",
+                selectores: "#modalAsignarCampos, #formAsignarCampos, #checkboxesCamposOperador",
+                descripcion: "Lista de checkboxes para vincular o desvincular establecimientos a un operador validando propiedad.",
+                prompt: "En static/index.html dentro de [SEC-09.4] (#modalAsignarCampos), modifica el selector de lotes asignados al operador.",
+            },
+            {
+                codigo: "[SEC-09.5]",
+                tipo: "MODAL",
+                titulo: "Modal Alta de Operador (#modalOperador)",
+                selectores: "#modalOperador, #formNuevoOperador, #nuevoOperadorCamposCheckboxes",
+                descripcion: "Creación de un nuevo operador de campo con asignación inicial de establecimientos.",
+                prompt: "En static/index.html dentro de [SEC-09.5] (#modalOperador), ajusta el formulario de alta de operadores.",
+            },
+            {
+                codigo: "[SEC-10]",
+                tipo: "HTML",
+                titulo: "Bloque Maestro de Scripts y Controladores Frontend",
+                selectores: "<script> ([JS-01] a [JS-08])",
+                descripcion: "Sección que encapsula los 8 controladores JavaScript de la aplicación Earth2Worlds.",
+                prompt: "En static/index.html dentro de [SEC-10], revisa la integración de scripts y controladores JS.",
+            },
+            {
+                codigo: "[JS-01]",
+                tipo: "JS",
+                titulo: "Estado Global, Sesión JWT y Arranque SPA",
+                selectores: "inicializarAplicacion(), currentUser, listaCamposGlobal",
+                descripcion: "Valida el token Bearer contra GET /api/auth/me e inicializa los datos según el rol del usuario.",
+                prompt: "En static/index.html dentro de [JS-01], modifica la inicialización de estado y carga de sesión JWT.",
+            },
+            {
+                codigo: "[JS-02]",
+                tipo: "JS",
+                titulo: "Motor de Pestañas RBAC y Visibilidad por Rol",
+                selectores: "configurarInterfazPorRol(), cambiarTab(tabId)",
+                descripcion: "Muestra u oculta pestañas, botones y barras estadísticas según si el usuario es admin, propietario u operador.",
+                prompt: "En static/index.html dentro de [JS-02], ajusta la lógica de visibilidad RBAC o cambio de pestañas.",
+            },
+            {
+                codigo: "[JS-03]",
+                tipo: "JS",
+                titulo: "Controlador Reactivo de Campos y Campo Activo",
+                selectores: "cargarCampos(), renderizarListaCampos(), seleccionarCampoActivo()",
+                descripcion: "Renderiza las tarjetas de campos con escapeHtml(), filtra por propietario y sincroniza #campoActivoHeader y los Slots.",
+                prompt: "En static/index.html dentro de [JS-03], actualiza el renderizado de tarjetas de campos o selección de campo activo.",
+            },
+            {
+                codigo: "[JS-04]",
+                tipo: "JS",
+                titulo: "Controlador CRUD de Campos (Alta, Edición y Borrado)",
+                selectores: "abrirModalCampo(), abrirModalEditarCampo(), eliminarCampo()",
+                descripcion: "Conecta los formularios de creación, edición y eliminación con POST/PUT/DELETE /api/campos.",
+                prompt: "En static/index.html dentro de [JS-04], modifica las peticiones CRUD de campos.",
+            },
+            {
+                codigo: "[JS-05]",
+                tipo: "JS",
+                titulo: "Controlador de Propietarios y Lotes Anidados (Admin)",
+                selectores: "cargarPropietariosAdmin()",
+                descripcion: "Consume GET /api/usuarios/propietarios y actualiza tanto las tarjetas jerárquicas como el filtro por propietario.",
+                prompt: "En static/index.html dentro de [JS-05], ajusta la carga y renderizado de propietarios para Admin.",
+            },
+            {
+                codigo: "[JS-06]",
+                tipo: "JS",
+                titulo: "Controlador de Operadores y Asignación de Lotes",
+                selectores: "cargarOperadores(), abrirModalOperador(), abrirModalAsignarCampos()",
+                descripcion: "Gestiona el alta de operadores y la actualización de campos_ids vía PUT /api/usuarios/operadores/{id}/campos.",
+                prompt: "En static/index.html dentro de [JS-06], actualiza la gestión de operadores y asignación de campos.",
+            },
+            {
+                codigo: "[JS-07]",
+                tipo: "JS",
+                titulo: "Controlador de Auditoría Global de Usuarios (Admin)",
+                selectores: "cargarTodosUsuariosAdmin(), renderizarTablaAuditoriaUsuarios(), abrirModalEditarUsuario()",
+                descripcion: "Filtra usuarios en tiempo real y ejecuta edición/eliminación administrativa sobre /api/usuarios/{id}.",
+                prompt: "En static/index.html dentro de [JS-07], modifica la tabla de auditoría global o edición de usuarios.",
+            },
+            {
+                codigo: "[JS-08]",
+                tipo: "JS",
+                titulo: "Utilidades UI, Contadores Admin, Modales y Toasts",
+                selectores: "actualizarContadoresAdmin(), abrirModal(), cerrarModal(), mostrarToast()",
+                descripcion: "Funciones auxiliares de interfaz, cierre con tecla ESC y notificaciones flotantes.",
+                prompt: "En static/index.html dentro de [JS-08], ajusta las utilidades de modales, contadores o notificaciones Toast.",
+            },
+        ];
+
+        function copiarPrompt(idx) {
+            const item = CATALOGO_SECCIONES[idx];
+            if (!item) return;
+            navigator.clipboard.writeText(item.prompt);
+            const banner = document.getElementById("copyBanner");
+            banner.textContent = `Prompt copiado para ${item.codigo}: "${item.prompt}"`;
+            banner.classList.remove("hidden");
+            setTimeout(() => banner.classList.add("hidden"), 4000);
+        }
+
+        function renderizarMapaSecciones() {
+            const q = (document.getElementById("buscadorSecciones").value || "").trim().toLowerCase();
+            const tipo = document.getElementById("filtroTipoSeccion").value;
+            const grid = document.getElementById("gridSecciones");
+
+            const filtradas = CATALOGO_SECCIONES.map((item, idx) => ({ ...item, idx })).filter((item) => {
+                if (tipo !== "TODAS" && item.tipo !== tipo) return false;
+                if (!q) return true;
+                const blob = `${item.codigo} ${item.titulo} ${item.selectores} ${item.descripcion}`.toLowerCase();
+                return blob.includes(q);
+            });
+
+            grid.innerHTML = filtradas
+                .map((item) => {
+                    const colorBadge =
+                        item.tipo === "SLOT"
+                            ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/30"
+                            : item.tipo === "MODAL"
+                            ? "bg-amber-500/15 text-amber-300 border-amber-500/30"
+                            : item.tipo === "JS"
+                            ? "bg-sky-500/15 text-sky-300 border-sky-500/30"
+                            : "bg-purple-500/15 text-purple-300 border-purple-500/30";
+
+                    return `
+                        <article class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-5 flex flex-col justify-between gap-4">
+                            <div>
+                                <div class="flex items-center justify-between gap-2 mb-2">
+                                    <span class="px-3 py-1 rounded-lg text-xs font-mono font-bold border ${colorBadge}">
+                                        ${escapeHtml(item.codigo)}
+                                    </span>
+                                    <span class="text-[11px] font-mono text-slate-400 uppercase">${escapeHtml(item.tipo)}</span>
+                                </div>
+                                <h2 class="font-heading text-lg font-bold text-white">${escapeHtml(item.titulo)}</h2>
+                                <p class="text-xs text-slate-400 mt-1">${escapeHtml(item.descripcion)}</p>
+                                <div class="mt-3 rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 text-xs font-mono text-emerald-300">
+                                    Selectores: ${escapeHtml(item.selectores)}
+                                </div>
+                            </div>
+                            <div class="pt-3 border-t border-slate-800 flex items-center justify-between gap-2">
+                                <span class="text-[11px] font-mono text-slate-500">static/index.html</span>
+                                <button
+                                    type="button"
+                                    onclick="copiarPrompt(${item.idx})"
+                                    class="px-3 py-1.5 rounded-xl text-xs font-mono bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition"
+                                >
+                                    Copiar Prompt de Sección
+                                </button>
+                            </div>
+                        </article>
+                    `;
+                })
+                .join("");
+        }
+
+        document.addEventListener("DOMContentLoaded", renderizarMapaSecciones);
+    </script>
+</body>
+</html>
