@@ -195,8 +195,12 @@ function isTimeoutError(error: unknown): boolean {
 function validateApiUrl(apiUrl: string, apiKey: string): URL {
   try {
     const url = new URL(apiUrl)
+    const isLocalHttp =
+      process.env.NODE_ENV !== 'production' &&
+      url.protocol === 'http:' &&
+      (url.hostname === '127.0.0.1' || url.hostname === 'localhost')
     if (
-      url.protocol !== 'https:' ||
+      (url.protocol !== 'https:' && !isLocalHttp) ||
       url.username !== '' ||
       url.password !== '' ||
       url.search !== '' ||
