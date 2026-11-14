@@ -1,0 +1,12 @@
+Item,Estado,Resultado,Uso
+Especies de interés encontradas en EcoCrop_DB_secondtrim v1.0,Confirmado,25 taxones / filas verificadas,Perfiles generales por especie; no variedades
+Fichas FAO con pH y campos edáficos transcritos,24 de 25 taxones,24 fichas aportan pH y varios campos de suelo,Valores conservados por especie; revisar método antes de comparar
+Tamaño del archivo reducido,Confirmado,635 filas de datos (636 líneas con encabezado),Subconjunto utilizado por el script OpenCLIM
+Base completa EcoCrop,Confirmado por DataHub,2.568 especies y 55 campos en copia depurada 2026,Fuente potencial adicional; calidad y cobertura heterogéneas
+Trigo pan y trigo candeal,Presentes por separado,Triticum aestivum y Triticum durum,No fusionar sus rangos
+Avena blanca y avena roja,Presentes por separado,Avena sativa y Avena byzantina,No fusionar como si fuera una misma ficha
+Triticale,No encontrado en CSV reducido consultado,No aparece entre los registros filtrados,No prueba ausencia en la base completa FAO
+Lupinus albus,No encontrado en CSV reducido consultado,No aparece entre los registros filtrados,Mantener datos específicos de lupino blanco de otras fuentes
+Saccharum officinarum,No encontrado en CSV reducido consultado,No aparece entre los registros filtrados,Mantener datos de caña de azúcar de otras fuentes
+Campos edáficos pH/profundidad/salinidad/fertilidad/drenaje,Ausentes del CSV reducido,Sí existen en diccionario/base completa y fichas FAO,No asumir que el algoritmo los está evaluando
+Variables de latitud,Calidad heterogénea,Hay faltantes y algunos valores óptimos invertidos,No usarlas como filtros automáticos sin auditoría

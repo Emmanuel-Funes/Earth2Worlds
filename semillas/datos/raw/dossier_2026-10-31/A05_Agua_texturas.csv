@@ -1,0 +1,6 @@
+textura,agua_util_mm_por_m,agua_util_mm_por_cm,alcance
+Arenosa,60,0.6,Estimación INTA/Sudoeste bonaerense en suelo homogéneo de 1 m; no universal.
+Franco-arenosa,80,0.8,Estimación INTA/Sudoeste bonaerense en suelo homogéneo de 1 m; no universal.
+Franca,130,1.3,Estimación INTA/Sudoeste bonaerense en suelo homogéneo de 1 m; no universal.
+Franco-arcillosa,150,1.5,Estimación INTA/Sudoeste bonaerense en suelo homogéneo de 1 m; no universal.
+Arcillosa,190,1.9,Estimación INTA/Sudoeste bonaerense en suelo homogéneo de 1 m; no universal.

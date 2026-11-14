@@ -194,6 +194,12 @@ def consultar(pedido: PedidoConsulta, unidos: registro.Conectados = Depends(cone
                              rellenada_con=respuesta.rellenada_con)
 
 
+# Banco de semillas: archivo SQLite de solo lectura que viaja con la API (spec 057).
+from rotaterra.semillas import rutas as rutas_semillas  # noqa: E402
+
+app.include_router(rutas_semillas)
+
+
 # Cada satélite unido a esta rama trae además su propio endpoint, sin respaldos (spec 009).
 
 for _rutas in conectados().rutas:

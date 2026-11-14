@@ -1,0 +1,239 @@
+Cartilla Digital                                                                   ISSN On line
+                        Estación Experimental Agropecuaria
+    Manfredi                                                                              2020/07
+                                                                                    1851-7994
+
+
+                                                       2025/02
+      ENSAYO COMPARATIVO DE RENDIMIENTO DE HÍBRIDOS DE SORGO
+                           GRANÍFERO
+               CAMPAÑA 2024-25 EN INTA EEA MANFREDI
+                             ROSAS, Belén; SENN, Andrea; ORTIZ, Diego; MAGUIRE, Vanina
+
+                                                                          INTA - EEA Manfredi
+
+
+
+
+Introducción
+
+En la campaña 2024-25 se evaluaron 40 híbridos comerciales y pre-comerciales de sorgo
+granífero en la EEA Manfredi con el objetivo de determinar su comportamiento en la zona
+central de la provincia de Córdoba.
+
+
+
+Materiales y Métodos
+
+El ensayo comparativo de rendimiento se llevó a cabo en la Estación Experimental
+Agropecuaria Manfredi, sobre un suelo Haplustol típico, Serie Oncativo, de textura franco
+limosa, con un pH neutro y un contenido de materia orgánica de 1.76%, bien provisto de
+nutrientes (N, P, K). La siembra de los materiales se realizó el 30 de octubre de 2024 sobre un
+antecesor soja. La densidad de siembra fue de 180000 pl/ha y 0.7 m entre hileras. La
+emergencia de las plántulas se observó aproximadamente una semana después de la siembra,
+entre el 3 y 5 de noviembre de 2024. Para el control de malezas en barbecho (27/09/24) se
+realizó una aplicación de glifosato (2.5 lts/Ha), 2,4D 54% (700 gr de eq. ac./ha) y Picloram (120
+cc/Ha). El 31/10/24 se aplico glifosato (2.5 lts/Ha), Atrazina 90 % 1 kg/ha, S-metolacloro 1 l/ha
+y Aceite metilado 0,5 l/ha. Para el control del pulgón amarillo del sorgo (Melanaphis sacchari),
+se empleó Transform (sulfoxaflor 50%) en dosis de 40 gr/Ha en dos fechas: 06/01/25 y
+05/02/25. Se realizó la fertilización mediante la aplicación de urea a una dosis de 200 kg/ha de
+N aplicado antes de la siembra. La cosecha de los materiales evaluados se realizó entre el 14 y
+16 de abril de 2025, sobre 4 m lineales en cada uno de los surcos centrales. Las características
+de los materiales ensayados se muestran en la Tabla 1.
+
+
+
+
+                                                                              Contenido
+                                                 Tipo           Ciclo
+      Empresa                Hibrido                                          de tanino
+        Origo           ORIGRAN 270.1         granífero intermedio           alto
+        Origo            ORIGRAN 260          granífero intermedio           alto
+     Produsem           PROSOR 640 T          Granífero intermedio           alto
+     Produsem               EXP 551
+     Produsem               EXP 552
+      Nufarm              SPRING T60          granífero   intem-corto        alto
+      Nufarm          NUGRAIN 311 AB          granífero   intermedio-largo   alto
+      Nufarm          NUGRAIN 30N50 P         granífero   intermedio-largo   alto
+ Argenetics Semillas         MALON            Granífero   intermedio         medio
+ Argenetics Semillas   ARGENSOR 110 T         Granífero   intem-corto        alto
+ Argenetics Semillas   ARGENSOR 135 T         Granífero   intermedio         alto
+ Argenetics Semillas   ARGENSOR 137 T         granífero   intermedio         alto
+ Argenetics Semillas ARGENSOR 157 DP          DP          intermedio         alto
+       Peman                 TAKURI           DP          intem-largo        alto
+       Peman                  PS 55           Granífero   intem-corto        alto
+       Peman                 OPS 70           Granífero   intermedio         alto
+         ACA              ACA 555 TP          DP          intermedio-corto   alto
+         ACA                ACA 565           granífero   intermedio-largo   alto
+         ACA          ACA EXP 20 GR050
+         ACA         ACA EXP 566 IG           granífero intermedio
+     Gentos SA              GL 4370           granífero largo                alto
+     Gentos SA          GENTOS EXP.01
+     Radixagro               TUCAN            granífero intermedio-largo      alto
+     Radixagro            SANTA ANA              DP         intermedio        alto
+     Radixagro           SANTA LUCIA             DP      intermedio-largo     alto
+    Tecnosorgo                 ITIN           granífero intermedio        alto
+    Tecnosorgo             EXP 92450
+    Tecnosorgo             EXP 85450
+      Genesis                 21 T            granífero   intermedio-corto   alto
+      Genesis                417 DP           DP          largo              alto
+        Tobin               TOB 63 T          Granífero   intermedio-largo   alto
+        Tobin               TOB 49 T          granífero   intermedio         alto
+                       Tobin               TOB 1078 IG          granífero   intermedio-largo    alto
+                         SYT                SYT 70-G70          granífero   intermedio          alto
+                         SYT               SYT 70-72GR          granífero       intermedio          alto
+                         SYT              Exp SYT 2024N         granífero    intermedio-largo       alto
+                     Quimarsem           QUIMASOR 185 DP        DP          intermedio-largo    alto
+                     Quimarsem            QUIMASOR 186          granífero   intermedio-corto
+                     Quimarsem            QUIMASOR 180          Granífero   intermedio          alto
+                        INTA                 EXP-G66            granífero   intermedio          alto
+
+
+
+
+El diseño experimental fue en alfa látice con tres repeticiones. Las variables analizadas de cada
+material fueron el rendimiento por hectárea (kg/ha), densidad de panojas y días a floración.
+Para cada variable respuesta, se ajustó un modelo de análisis de varianza (ANOVA)
+considerando los diferentes materiales como variable explicativa. Se consideró además el
+anidamiento de los bloques incompletos dentro de las repeticiones. La comparación de las
+medias ajustadas se realizó mediante el test LSD de Fisher (α = 0.05). El análisis estadístico se
+llevó a cabo en el software R Studio.
+
+Condiciones ambientales
+
+Las condiciones ambientales de la campaña 2024-25 fueron favorables durante todo el
+crecimiento del cultivo, con precipitaciones en algunos casos igual o por encima de los valores
+históricos, con un total de 594 mm. Hubo dos días con temperaturas extremas: una en el mes
+de Enero (16/01) con más de 39º C y otra en el mes de Febrero (entre el 8 y 10) con más de
+40ºC. En ambos casos no afecto la floración de los híbridos (Figura 1).
+
+                          200                                                                              30.0
+
+                          180
+                                                                                                           25.0
+                          160
+   Precipitaciones (mm)
+
+
+
+
+                          140
+                                                                                                           20.0
+                                                                                                                  Temperatura (ºC)
+
+
+
+                          120
+
+                          100                                                                              15.0
+
+                          80
+                                                                                                           10.0
+                          60
+
+                          40
+                                                                                                           5.0
+                          20
+
+                           0                                                                               0.0
+                                O          N       D             E          F         M           A
+                                                         Título del eje
+
+                                    mm 24-25     mm histórico          Temp 24-25         Temp histórico
+Resultados
+
+Los híbridos participantes florecieron entre el 6 y 20 de enero, con un rango de 62 a 76 días a
+floración. Las condiciones de bajas precipitaciones en el período vegetativo afectaron el
+crecimiento inicial, pero las precipitaciones durante el período crítico alrededor de floración
+permitieron una compensación con buena fijación de granos en la mayoría de los casos.
+
+En la Tabla 2 se detallan las variables evaluadas para cada material. Los híbridos participantes
+presentaron diferencias significativas (p < 0.0001) en rendimiento por hectárea. La media
+general del rendimiento fue de 6798 kg/ha, con un rango comprendido entre 5086 kg/Ha (ACA
+565) y 8235 kg/Ha (Santa Ana). La diferencia mínima significativa para detectar diferencias
+entre híbridos es de 1344 kg/ha. En cuanto Peso Hectolítrico, los híbridos presentaron
+diferencias estadísticamente significativas entre sí (p < 0.0001), siendo la media general de 72,
+con un rango comprendido entre 66.6 (ACA 555 TP) y 75.4 (EXP 551). Por otra parte, la altura
+de planta promedio observada en el ensayo fue de 155 cm, con una máxima de 180 cm (SANTA
+LUCIA) y una mínima de 110 cm (ARGENSOR 137 T).
+
+
+
+Tabla 2. Híbridos comerciales y pre-comerciales de sorgo granífero evaluados en la campaña
+2024-25 en la EEA Manfredi.
+                        Fecha                 Rendimiento      Altura                  Peso
+      Hibrido                     Densidad                                 DAF
+                      floración                 (Kg/Ha)         (cm)                Hectolítrico
+SANTA ANA              8-ene       145238          8235         175         67         71.5
+TOB 49 T               8-ene       173810          8217         145         65         72.8
+EXP-G66                6-ene       173810          7920         145         64         73.6
+SYT 70-G70             10-ene      155952          7743         170         68         74.7
+TOB 63 T               17-ene      164286          7683         157         74         71.9
+ITIN                   8-ene       189286          7587         143         65         71.8
+QUIMASOR 186           9-ene       151190          7506         153         67         68.4
+GL 4370                10-ene      160714          7462         145         68         69.6
+PS 55                  6-ene       166667          7409         148         63         74.0
+QUIMASOR 180           10-ene      135714          7401         173         68         72.0
+TOB 1078               15-ene      138095          7396         175         73         69.9
+N 311 AB               8-ene       184524          7380         142         66         72.7
+TUCAN                  8-ene       163095          7357         167         66         73.6
+EXP 92450              7-ene       166667          7268         140         65         71.7
+SANTA LUCIA            11-ene      164286          7162         180         68         74.3
+ORIGRAN 260            8-ene       172619          7091         152         65         73.6
+EXP 85450              14-ene      167857          7012         162         72         71.6
+TAKURI                 16-ene      189286          6960         175         74         73.3
+SYT 72-72GR            13-ene      170238          6892         177         71         75.3
+EXP 551                12-ene      153571          6873         158         71         75.4
+EXP 552                16-ene      152381          6808         158         73         74.6
+ACA EXP 20 GR050       13-ene      164286          6745         160         71         70.5
+417 DP                 18-ene      163095          6722         158         75         72.7
+30 N 50 P              8-ene       141667          6693         133         66         74.5
+SPRING T60            6-ene       191667         6539         135         64         74.5
+ARGENSOR 135 T        9-ene       148810         6469         132         67         72.4
+MALON                 10-ene      154762         6464         157         68         71.8
+GENTOS EXP.01         9-ene       165476         6327         160         67         73.4
+ACA EXP 566 IG        15-ene      192857         6320         150         73         73.2
+ARGENSOR 110 T        13-ene      161905         6135         140         71         70.5
+QUIMASOR 185 DP       16-ene      117857         6111         148         74         67.5
+ACA 555 TP            10-ene      182143         6103         163         68         66.6
+ARGENSOR 137 T        15-ene      129762         6066         110         73         67.5
+OPS 70                13-ene      158333         6016         132         70         72.4
+21 T                  6-ene       157143         6005         157         63         70.7
+ORIGRAN 270.1         10-ene      175000         5846         167         68         74.4
+Exp SYT 2024N         13-ene      172619         5781         170         71         71.8
+PROSOR 640 T          14-ene      139286         5733         140         71         72.9
+ARGENSOR 157 DP       11-ene      170238         5399         177         70         73.9
+ACA 565               17-ene      159524         5086         158         75         69.7
+Promedio              11-ene      162143         6798          155        69          72
+Anova                                          p < 0.001    p < 0.001 p < 0.001   p < 0.001
+CV (%)                                           12.2          6.9       2.6         1.6
+DMS                                              1344           17       3.0         1.9
+
+
+Bibliografía
+
+SIGA 2025. Sistema de información y gestión agrometeorológica de INTA
+R Core Team. (2023). R: A language and environment for statistical computing (4.1.3 2023).
+https://www.r-project.org/
+
+
+Para más información:
+Ing. Agr. Belén Rosas
+Grupo sorgo
+rosas.belen@inta.gob.ar
+INTA EEA Manfredi
+
+Junio/2025
+
+ Para suscribirse al boletín envíe un email a: eeamanfredi.cd@inta.gob.ar
+ Para CANCELAR su suscripción envíe un email a: eeamanfredi.cd@inta.gob.ar
+ ISSN on line: 1851-7994
+ Este boletín es editado en INTA - EEA Manfredi
+ Ruta Nacional N° 9 Km. 636
+ (5988) - MANFREDI, Provincia de Córdoba
+ República Argentina.
+ Tel. Fax: 03572-93053/58/61
+
+
+ (c) Copyright 2001 INTA - Instituto Nacional de Tecnología Agropecuaria Todos los derechos
+

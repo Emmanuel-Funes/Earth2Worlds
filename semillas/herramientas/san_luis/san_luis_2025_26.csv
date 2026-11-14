@@ -1,0 +1,60 @@
+cultivo,ensayo,sitio,tratamiento,empresa,material,variable,valor_kg_ha
+Maíz,MAIZ-DENSIDADES-VM,Villa Mercedes,densidad alta 8.5 pl/m²,ARGENETICS,ARG 7714 VT3 PRO CL,grano,5313
+Maíz,MAIZ-DENSIDADES-VM,Villa Mercedes,densidad baja 5.0 pl/m²,ARGENETICS,ARG 7714 VT3 PRO CL,grano,4288
+Maíz,MAIZ-DENSIDADES-VM,Villa Mercedes,densidad alta 8.5 pl/m²,ARGENETICS,ARG 7718 VT3 PRO,grano,7863
+Maíz,MAIZ-DENSIDADES-VM,Villa Mercedes,densidad baja 5.0 pl/m²,ARGENETICS,ARG 7718 VT3 PRO,grano,4563
+Maíz,MAIZ-DENSIDADES-VM,Villa Mercedes,densidad alta 8.5 pl/m²,ARGENETICS,ARG 7726,grano,6481
+Maíz,MAIZ-DENSIDADES-VM,Villa Mercedes,densidad baja 5.0 pl/m²,ARGENETICS,ARG 7726,grano,5188
+Maíz,MAIZ-DENSIDADES-VM,Villa Mercedes,densidad alta 8.5 pl/m²,GENESIS,GENESIS 152 RR BT,grano,6354
+Maíz,MAIZ-DENSIDADES-VM,Villa Mercedes,densidad baja 5.0 pl/m²,GENESIS,GENESIS 152 RR BT,grano,5513
+Maíz,MAIZ-DENSIDADES-VM,Villa Mercedes,densidad alta 8.5 pl/m²,BAYER,LT 722 VT3 PRO,grano,9053
+Maíz,MAIZ-DENSIDADES-VM,Villa Mercedes,densidad baja 5.0 pl/m²,BAYER,LT 722 VT3 PRO,grano,6675
+Maíz,MAIZ-DENSIDADES-VM,Villa Mercedes,densidad alta 8.5 pl/m²,BAYER,LT 723 TRE,grano,9031
+Maíz,MAIZ-DENSIDADES-VM,Villa Mercedes,densidad baja 5.0 pl/m²,BAYER,LT 723 TRE,grano,6725
+Maíz,MAIZ-DENSIDADES-VM,Villa Mercedes,densidad alta 8.5 pl/m²,SYNGENTA,NK 835 VIP 3,grano,8181
+Maíz,MAIZ-DENSIDADES-VM,Villa Mercedes,densidad baja 5.0 pl/m²,SYNGENTA,NK 835 VIP 3,grano,7313
+Maíz,MAIZ-DENSIDADES-VM,Villa Mercedes,densidad alta 8.5 pl/m²,SYNGENTA,NK 842 VIP3,grano,6991
+Maíz,MAIZ-DENSIDADES-VM,Villa Mercedes,densidad baja 5.0 pl/m²,SYNGENTA,NK 842 VIP3,grano,6338
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,CORTEVA,P 1804 PWUE,grano,10242
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,SYNGENTA,NK 855 VIP3,grano,9786
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,ADVANTA,ADV 8122 VT3PRO,grano,9360
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,STINE,ST 9833 VIP3,grano,9166
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,BASF,BASF 7339 VIP3,grano,9121
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,AG SEEDS,AG 9922 VIP3,grano,9105
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,DAN AGRO,DS 88-77 VT3P,grano,8981
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,ARGENETICS,ARG 7726 VIP3,grano,8979
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,ADVANTA,ADV 8413 VIP 3,grano,8967
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,BASF,BASF 7344 VT3P,grano,8886
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,ARGENETICS,ARG 7718 VT3PRO,grano,8487
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,SOYTECH,SyT 4575 BTRG,grano,8411
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,STINE,ST 9939 VIP3,grano,8411
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,SUPRA,KM 19-120 VIP3,grano,8375
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,SYNGENTA,NK 835 VIP3,grano,8318
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,SUPRA,S 3972 VIP3,grano,8273
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,SUPRA,S 13-916 VIP3,grano,8232
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,AG SEEDS,AG 8665 CL VT3P,grano,8106
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,CORTEVA,P 0622 VYHR,grano,7840
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,GENESIS,GEN 152 RRBT,grano,7702
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,SYNGENTA,NK 825 VIP3 CL,grano,7558
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,SOYTECH,SyT 2412 RG,grano,7153
+Maíz,MAIZ-HIBRIDOS-TILISARAO,Tilisarao,secano,ADSUR,SEMITROP 123 BTRR,grano,6579
+Trigo,TRIGO-KLEIN-VM,Villa Mercedes,riego sin limitaciones,KLEIN,KLEIN POTRO,grano,7026
+Trigo,TRIGO-KLEIN-VM,Villa Mercedes,riego sin limitaciones,KLEIN,KLEIN BALLESTA,grano,6606
+Trigo,TRIGO-KLEIN-VM,Villa Mercedes,riego sin limitaciones,KLEIN,KLEIN LEYENDA,grano,6587
+Trigo,TRIGO-KLEIN-VM,Villa Mercedes,riego sin limitaciones,KLEIN,KLEIN EXTREMO,grano,6250
+Trigo,TRIGO-KLEIN-VM,Villa Mercedes,riego sin limitaciones,KLEIN,KLEIN EMBLEMA,grano,6127
+Trigo,TRIGO-KLEIN-VM,Villa Mercedes,riego sin limitaciones,KLEIN,KLEIN LITIO,grano,5551
+Sorgo,SORGO-VM,Villa Mercedes,franja,GENESIS SEEDS,material 6 (sin nombre en el informe; doble propósito),grano,2983
+Sorgo,SORGO-VM,Villa Mercedes,franja,RAGT,material 2 (sin nombre en el informe; doble propósito),grano,2800
+Sorgo,SORGO-VM,Villa Mercedes,franja,NUFAM,material 4 (sin nombre en el informe; granífero),grano,4600
+Sorgo,SORGO-VM,Villa Mercedes,franja,NUFAM,material 5 (sin nombre en el informe; granífero),grano,4300
+Sorgo,SORGO-VM,Villa Mercedes,microparcela,ARGENETICS,material 7 (sin nombre en el informe; granífero),grano,4440
+Sorgo,SORGO-VM,Villa Mercedes,microparcela,ARGENETICS,material 9 (sin nombre en el informe; granífero),grano,4350
+Sorgo,SORGO-VM,Villa Mercedes,franja,GENESIS SEEDS,material 1 (sin nombre en el informe; silero),materia seca,9508
+Sorgo,SORGO-VM,Villa Mercedes,franja,GENESIS SEEDS,material 3 (sin nombre en el informe; silero),materia seca,7622
+Sorgo,SORGO-VM,Villa Mercedes,franja,GENESIS SEEDS,material 6 (sin nombre en el informe; doble propósito),materia seca,6915
+Sorgo,SORGO-VM,Villa Mercedes,franja,RAGT,material 2 (sin nombre en el informe; doble propósito),materia seca,10183
+Sorgo,SORGO-VM,Villa Mercedes,microparcela,RAGT,material 10 (sin nombre en el informe; doble propósito),materia seca,9171
+Sorgo,SORGO-VM,Villa Mercedes,microparcela,RAGT,material 8 (sin nombre en el informe; doble propósito),materia seca,9250
+Algodón,ALGODON-TILISARAO,Tilisarao,surco 0.525 m,INTA,GUARANI INTA BGRR,algodón en bruto,1227.5
+Algodón,ALGODON-TILISARAO,Tilisarao,surco 1.05 m,INTA,GUARANI INTA BGRR,algodón en bruto,1828.4
