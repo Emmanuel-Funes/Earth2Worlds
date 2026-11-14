@@ -44,4 +44,4 @@ jobs:
         run: python -u probar_sepa_inta.py ${{ matrix.que }} "$ESQUINAS" ${{ inputs.desde }} ${{ inputs.hasta }} --exigir ${{ matrix.exigir }}
       - name: Historial del balance hídrico (enero de 2025, para ver que hay datos viejos)
         if: ${{ matrix.que == 'sepa' }}
-        run: python -u probar_sepa_inta.py sepa "$ESQUINAS" 2025-01-01 2025-01-31 --exigir agua_disponible_2m,confort_hidrico_inta,cociente_fototermal_trigo_10d
+        run: python -u probar_sepa_inta.py sepa "$ESQUINAS" 2026-11-14 2026-11-14 --exigir agua_disponible_2m,confort_hidrico_inta,cociente_fototermal_trigo_10d
