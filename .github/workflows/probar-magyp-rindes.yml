@@ -1,0 +1,38 @@
+name: Probar MAGyP (rindes de referencia)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/magyp_rindes.py"
+      - "probar_magyp_rindes.py"
+      - "rotaterra/fuentes/datos/magyp_rindes.*"
+      - ".github/workflows/probar-magyp-rindes.yml"
+  workflow_dispatch:
+    inputs:
+      lat:
+        description: "Latitud del centro del lote (ej. -33.7025)"
+        default: "-33.7025"
+      lon:
+        description: "Longitud del centro del lote (ej. -65.2975)"
+        default: "-65.2975"
+      departamento_id:
+        description: "Código del departamento del INDEC, 5 dígitos (vacío = lo busca Georef)"
+        default: ""
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Pedir los rindes de referencia al Ministerio de Agricultura
+        env:
+          # en un PR no hay inputs: centro del lote de ejemplo (San Luis), departamento según Georef
+          LAT: ${{ inputs.lat || '-33.7025' }}
+          LON: ${{ inputs.lon || '-65.2975' }}
+          DEPARTAMENTO_ID: ${{ inputs.departamento_id || '' }}
+        run: python probar_magyp_rindes.py "$LAT" "$LON" "$DEPARTAMENTO_ID"
