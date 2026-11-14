@@ -1,0 +1,54 @@
+Resultados obtenidos en los sitios de ensayo Canals y Laboulaye: Rendimiento promedio de los
+híbridos de maíz evaluados.
+
+           HIBRIDO                       CANALS                  LABOULAYE
+      BASF 5575 VT3P                                 8186               11101,41
+       ACA 471 VT3P                                  7540               11101,41
+        NK 870 VIP3                                  7511                10807,6
+          EQS 75-03                                  8026               10259,23
+       PROZEA 72-40                                  7449                10654,3
+      DK 7447 Trecepta                               7993                9964,45
+           ST 9939                                   7600               10335,79
+        NK 835 VIP3                                  8067                9362,02
+        NK 855 VIP3                                  7568                9811,15
+          EQS 72-03                                  7063               10182,67
+       BRV8421PWUE                                   7249                9811,15
+       SPS 2615 VIP3                                 7587                9417,06
+     SPS 2795 TD/TG CL                               6862                9964,45
+      KWS 19-120 VIP3                                7547                9187,37
+       EBC Maria Plus                                7840                   8728
+         IS 7.24 TRE                                 6569                9853,67
+       BRV8380PWUE                                   6984                9427,91
+      ACA 477 VIP3CL                                 7883                8412,06
+       ADV 8063 TRE                                  7907                8335,58
+          PAN 5456                                   6341                9876,43
+        ARON PWUE                                    6776                9427,91
+     EBC 21-123 "Tigre"
+         TRECEPTA                                    7493                    8651,44
+     EBC 24-121 "Puma"
+         TRECEPTA                                    7633                    8268,64
+     Nexsem 1122 PWUE                                6935                    8881,13
+       ARG7715BTRR                                   5780                   10029,55
+           MH5 1.1                                   6216                    9482,68
+       DUO 225 PWUE                                  8446                    7196,78
+          SYT 4575                                 8417,4                    7112,01
+      PANNAR 5323 RE                                 6015                    9493,62
+       KM 13-916 VIP3                                6714                    8508,11
+       ARG7714VT3P                                   6000                    9187,37
+
+                                                                                         13
+ SPS 2743 VIP3     6392   8738,06
+KWS 14-408 VIP3    6530   8421,76
+DK 7272 Trecepta   6062   8421,76
+NS 7626 CIP3CL     7271   7112,01
+BASF 7349 VT3P     5813   8412,06
+ LT 725 Trecepta   6107   7976,68
+ ARG7718VT3P       5328   8259,11
+ACA 476 Trecepta   6224   6815,03
+  LG30849VIP       6414   6249,11
+  DM 2773 TRE      5980   5958,03
+
+
+
+
+                                    14

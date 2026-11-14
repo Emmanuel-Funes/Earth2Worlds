@@ -1,0 +1,54 @@
+Codigo,Descripcion,Grupo,Unidad_o_tipo,Presente_EcoCrop_DB_secondtrim_v1,Usado_en_codigo_OpenCLIM_v1,Observacion_Rotaterra,Fuente_diccionario
+AUTH,Autoridad taxonómica,Metadato taxonómico,—,No,No,No se usa en el score climático.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+FAMNAME,Familia botánica,Metadato taxonómico,—,No,No,Útil para agrupar especies; no es variable de aptitud.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+SYNO,Sinónimos,Metadato taxonómico,—,No,No,Ayuda a homologar nombres; requiere control taxonómico.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+COMNAME,Nombres comunes,Identificación,—,Sí,No,Solo etiqueta/identificación en el flujo del modelo.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+LIFO,Forma de vida,Rasgo de la planta,Categoría,Sí,No,No usado en cálculo climático.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+HABI,Hábito de crecimiento,Rasgo de la planta,Categoría,Sí,No,No usado en cálculo climático.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+LISPA,Duración del ciclo de vida,Rasgo de la planta,Categoría,Sí,No,No usado en cálculo climático.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+PHYS,Fisiología / atributos de planta,Rasgo de la planta,Texto/categoría,Sí,No,No usado en el score.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+CAT,Categoría de uso/cultivo,Clasificación productiva,Categoría,Sí,No,No usado en score; puede ayudar a mapear rubro.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+PLAT,Atributos de planta,Rasgo de la planta,Texto/categoría,Sí,No,No usado en score.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+TOPMN,Temperatura óptima mínima,Temperatura,°C,Sí,Sí,"Sí, para el perfil diario térmico.",https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+TOPMX,Temperatura óptima máxima,Temperatura,°C,Sí,Sí,"Sí, para el perfil diario térmico.",https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+TMIN,Temperatura mínima absoluta,Temperatura,°C,Sí,Sí,"Sí, para el perfil diario térmico.",https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+TMAX,Temperatura máxima absoluta,Temperatura,°C,Sí,Sí,Sí; el código también usa TMAX como penalidad de calor.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+ROPMN,Precipitación óptima mínima,Agua / clima,mm/año (EcoCrop),Sí,Sí,Se compara en ventana de cultivo en OpenCLIM; revisar base temporal.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+ROPMX,Precipitación óptima máxima,Agua / clima,mm/año (EcoCrop),Sí,Sí,Se compara en ventana de cultivo en OpenCLIM; revisar base temporal.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+RMIN,Precipitación absoluta mínima,Agua / clima,mm/año (EcoCrop),Sí,Sí,Se compara en ventana de cultivo en OpenCLIM; revisar base temporal.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+RMAX,Precipitación absoluta máxima,Agua / clima,mm/año (EcoCrop),Sí,Sí,Se compara en ventana de cultivo en OpenCLIM; revisar base temporal.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+PHOPMN,pH óptimo mínimo,Suelo químico,pH,No,No,Campo de la base completa; no está en CSV reducido ni en score OpenCLIM.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+PHOPMX,pH óptimo máximo,Suelo químico,pH,No,No,Campo de la base completa; no está en CSV reducido ni en score OpenCLIM.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+PHMIN,pH absoluto mínimo,Suelo químico,pH,No,No,Campo de la base completa; no está en CSV reducido ni en score OpenCLIM.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+PHMAX,pH absoluto máximo,Suelo químico,pH,No,No,Campo de la base completa; no está en CSV reducido ni en score OpenCLIM.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+LATOPMN,Latitud óptima mínima,Geografía,grados decimales,Sí,No,No usado por el score; controles de calidad detectan registros invertidos.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+LATOPMX,Latitud óptima máxima,Geografía,grados decimales,Sí,No,No usado por el score; algunos registros faltan o están invertidos.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+LATMN,Latitud absoluta mínima,Geografía,grados decimales,Sí,No,No usado por el score.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+LATMX,Latitud absoluta máxima,Geografía,grados decimales,Sí,No,No usado por el score.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+ALTMX,Altitud absoluta máxima,Geografía,m s. n. m.,Sí,No,No usado por el score; no es altura óptima.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+LIOPMN,Intensidad lumínica óptima mínima,Luz,No especificada,No,No,Campo de la base completa; ausencia en CSV reducido.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+LIOPMX,Intensidad lumínica óptima máxima,Luz,No especificada,No,No,Campo de la base completa; ausencia en CSV reducido.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+LIMN,Intensidad lumínica absoluta mínima,Luz,No especificada,No,No,Campo de la base completa; ausencia en CSV reducido.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+LIMX,Intensidad lumínica absoluta máxima,Luz,No especificada,No,No,Campo de la base completa; ausencia en CSV reducido.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+DEP,Profundidad óptima del suelo,Suelo físico,Categoría (shallow/medium/deep),No,No,Campo de la base completa; no está en CSV reducido ni en modelo.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+DEPR,Profundidad absoluta del suelo,Suelo físico,Categoría,No,No,Campo de la base completa; debe validarse por perfil/horizonte.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+TEXT,Textura óptima del suelo,Suelo físico,Grupo categórico,Sí,Sí,El modelo aplica máscara de textura; capas/máscaras del repo son de Reino Unido/Europa.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+TEXTR,Textura absoluta del suelo,Suelo físico,Grupo categórico,No,No,Campo ausente en CSV reducido; no confundir con textura preferida.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+FER,Fertilidad óptima,Suelo químico/fertilidad,Categoría,No,No,Campo de la base completa; no se usa en score.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+FERR,Fertilidad absoluta,Suelo químico/fertilidad,Categoría,No,No,Campo de la base completa; no se usa en score.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+TOX,Toxicidad óptima por aluminio,Suelo químico,Categoría/índice no especificado,No,No,Campo de la base completa; revisar unidad y protocolo.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+TOXR,Toxicidad absoluta por aluminio,Suelo químico,Categoría/índice no especificado,No,No,Campo de la base completa; revisar unidad y protocolo.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+SAL,Salinidad óptima,Suelo químico,"Categorías; DataHub indica dS/m, método no especificado",No,No,No equivale automáticamente a ECe/EC1:5/EC agua.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+SALR,Salinidad absoluta,Suelo químico,"Categorías; DataHub indica dS/m, método no especificado",No,No,No convertir en umbral varietal ni compararlo sin método.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+DRA,Drenaje óptimo,Suelo físico/hidrología,Categoría,No,No,Campo de la base completa; no se usa en modelo.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+DRAR,Drenaje absoluto,Suelo físico/hidrología,Categoría,No,No,Campo de la base completa; no se usa en modelo.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+KTMPR,Temperatura letal durante reposo,Temperatura crítica/etapa,°C,Sí,Sí,El código OpenCLIM lee KTMPR y lo usa como penalidad de helada; la ficha de variables distingue KTMPR de KTMP. Revisar etapa.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+KTMP,Temperatura letal durante crecimiento temprano,Temperatura crítica/etapa,°C,Sí,No,"Presente en CSV reducido, pero el script leído asigna KTMPR a la variable KTMP.",https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+PHOTO,Fotoperiodo,Fenología,Categoría,Sí,No,No usado en score temporal actual.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+CLIZ,Zonas climáticas,Clima,Clasificación Köppen/FAO,Sí,No,No usado directamente en score.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+ABITOL,Tolerancia abiótica,Tolerancias,Texto/categoría,No,No,Campo de la base completa; descripción cualitativa.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+ABISUS,Susceptibilidad abiótica,Tolerancias,Texto/categoría,No,No,Campo de la base completa; descripción cualitativa.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+INTRI,Riesgo de introducción,Bioseguridad/introducción,Categoría,No,No,No representa aptitud productiva local.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+PROSY,Sistema de producción,Manejo,Categoría,No,No,Campo de la base completa; no usado en score.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+GMIN,Duración mínima de ciclo,Fenología,días,Sí,Sí,Se utiliza para definir ventanas de duración posibles.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv
+GMAX,Duración máxima de ciclo,Fenología,días,Sí,Sí,Se utiliza para definir ventanas; algunos registros son muy amplios.,https://github.com/OpenCLIM/ecocrop/blob/v1.0/Ecocrop_variable_lookup.csv

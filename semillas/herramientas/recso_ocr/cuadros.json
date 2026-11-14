@@ -1,0 +1,794 @@
+[
+{
+"seccion_gm": "III corto",
+"n": 1,
+"cultivar": "STINE 31EC21",
+"empresa": "STINE",
+"gm": "3,4",
+"habito": "I",
+"resto": "OB V C N 176 73 1,9 R S1;S3;S4;S17;S25 1,3 1,3 S11;S12"
+},
+{
+"seccion_gm": "III corto",
+"n": 2,
+"cultivar": "BRV3325SE",
+"empresa": "BREVANT",
+"gm": "3,4",
+"habito": "I",
+"resto": "BT V C CO 162 71 2,2 R R1;R3;R4;R17;S25 1,7 0,0"
+},
+{
+"seccion_gm": "III corto",
+"n": 3,
+"cultivar": "DM 33R22",
+"empresa": "DON MARIO",
+"gm": "3,3",
+"habito": "I",
+"resto": "BT V C N 161 81 1,8 R R1;S3;S4;R17;S25 0,3 1,3"
+},
+{
+"seccion_gm": "III corto",
+"n": 4,
+"cultivar": "DM 33E22 SE",
+"empresa": "DON MARIO",
+"gm": "3,4",
+"habito": "I",
+"resto": "BT V G NI 155 73 1,4 R R1;R4;S25 2,7 1,3"
+},
+{
+"seccion_gm": "III corto",
+"n": 5,
+"cultivar": "NEO 35S23 SE",
+"empresa": "NEOGEN",
+"gm": "3,0",
+"habito": "I",
+"resto": "BT B C N 144 80 2,0 R S17;S25 0,7 0,0"
+},
+{
+"seccion_gm": "III largo",
+"n": 1,
+"cultivar": "P38A01SE",
+"empresa": "PIONEER",
+"gm": "3,6",
+"habito": "I",
+"resto": "BT V C N 176 73 1,9 R R1;R4;R17;S25 1,3 0,7"
+},
+{
+"seccion_gm": "III largo",
+"n": 2,
+"cultivar": "DM 38E26 SE",
+"empresa": "DON MARIO",
+"gm": "3,5",
+"habito": "I",
+"resto": "BT V C N 162 71 2,2 R R1;R3;R4;R17;S25 2,3 1,5"
+},
+{
+"seccion_gm": "III largo",
+"n": 3,
+"cultivar": "3925 E",
+"empresa": "NIDERA",
+"gm": "3,9",
+"habito": "I",
+"resto": "OV V G NI 161 81 1,8 R R1;R3;S4;R17;S25 3,7 2,7 S11;S12"
+},
+{
+"seccion_gm": "III largo",
+"n": 4,
+"cultivar": "STINE 38EF52 STS",
+"empresa": "STINE",
+"gm": "3,5",
+"habito": "I",
+"resto": "OV B C N 155 73 1,4 R R1;R3;S4 1,0 1,0 S11;S12"
+},
+{
+"seccion_gm": "IV corto",
+"n": 1,
+"cultivar": "P42A25E",
+"empresa": "PIONEER",
+"gm": "4,3",
+"habito": "I",
+"resto": "OV B C CO 181 79 1,4 R S1;S3;S4;S17;S25 2,0 0,3 S11;S12"
+},
+{
+"seccion_gm": "IV corto",
+"n": 2,
+"cultivar": "40MS01 E STS",
+"empresa": "MACROSEED",
+"gm": "4,1",
+"habito": "I",
+"resto": "BT B G CC 170 73 2,0 R R1;R4 0,7 0,7"
+},
+{
+"seccion_gm": "IV corto",
+"n": 3,
+"cultivar": "41MS01 STS",
+"empresa": "MACROSEED",
+"gm": "4,2",
+"habito": "I",
+"resto": "BT V C N 172 81 1,8 R R1;R4 0,0 0,3"
+},
+{
+"seccion_gm": "IV corto",
+"n": 4,
+"cultivar": "DM 40E25 SE",
+"empresa": "DON MARIO",
+"gm": "4,2",
+"habito": "I",
+"resto": "BT V C N 166 78 1,5 R R1;S4;S25 1,7 1,3"
+},
+{
+"seccion_gm": "IV corto",
+"n": 5,
+"cultivar": "DM 40R26",
+"empresa": "DON MARIO",
+"gm": "4,0",
+"habito": "I",
+"resto": "BT V C N 178 80 1,5 R R1;R3;S4;R17;S25 0,3 0,0"
+},
+{
+"seccion_gm": "IV corto",
+"n": 6,
+"cultivar": "NEO 42S25 RR STS",
+"empresa": "NEOGEN",
+"gm": "4,1",
+"habito": "I",
+"resto": "BT V C N 172 77 1,6 R R1;R3;R4;R17;S25 2,3 2,0"
+},
+{
+"seccion_gm": "IV corto",
+"n": 7,
+"cultivar": "BRV4124SE",
+"empresa": "BREVANT",
+"gm": "4,2",
+"habito": "I",
+"resto": "BT V C N 166 77 1,4 R R1; R4 0,3 0,0"
+},
+{
+"seccion_gm": "IV corto",
+"n": 8,
+"cultivar": "BG 540",
+"empresa": "SOUTHERN CROP",
+"gm": "4,3",
+"habito": "I",
+"resto": "OB B N 182 76 1,8 R R1;R3;R4;R17;S25 - 1,0"
+},
+{
+"seccion_gm": "IV corto",
+"n": 9,
+"cultivar": "STINE 40EC53",
+"empresa": "STINE",
+"gm": "4,2",
+"habito": "I",
+"resto": "OB B C CO 183 77 1,6 R R1;R3;S4;R17;S25 2,0 0,3 S11;S12"
+},
+{
+"seccion_gm": "IV corto",
+"n": 10,
+"cultivar": "STINE 43EE53 STS",
+"empresa": "STINE",
+"gm": "4,2",
+"habito": "I",
+"resto": "OB V G NI 168 79 1,9 R R1;R3;S4;R17;S25 0,3 0,0 S11;S12"
+},
+{
+"seccion_gm": "IV corto",
+"n": 11,
+"cultivar": "CZ 4021 STS",
+"empresa": "BASF",
+"gm": "4,4",
+"habito": "I",
+"resto": "EL V C N 173 83 1,4 R R1;R3;R4;R17;S25 - 2,3 S11;S12"
+},
+{
+"seccion_gm": "IV corto",
+"n": 12,
+"cultivar": "Seedco40R23STS",
+"empresa": "SEEDCO",
+"gm": "4,2",
+"habito": "I",
+"resto": "OV B C N 196 77 1,3 R R1;S3;S4;R17;S25 - 0,0"
+},
+{
+"seccion_gm": "IV corto",
+"n": 13,
+"cultivar": "Seedco44R23STS",
+"empresa": "SEEDCO",
+"gm": "4,2",
+"habito": "I",
+"resto": "OV V C N 178 79 1,4 R R1;R3;S4;R17;S25 - 0,7"
+},
+{
+"seccion_gm": "IV largo",
+"n": 1,
+"cultivar": "NORD4624E",
+"empresa": "NORD",
+"gm": "4,8",
+"habito": "I",
+"resto": "OV V C N 174 85 1,4 R S1;S3;S4;S17;S25 2,0 0,7 S11;S12"
+},
+{
+"seccion_gm": "IV largo",
+"n": 2,
+"cultivar": "NORD4824SE",
+"empresa": "NORD",
+"gm": "4,9",
+"habito": "I",
+"resto": "OV B G CC 175 81 1,6 R R1;R3;S4;R17;S25 10,7 5,0 S11;S12"
+},
+{
+"seccion_gm": "IV largo",
+"n": 3,
+"cultivar": "STINE 45EB52 STS",
+"empresa": "STINE",
+"gm": "4,7",
+"habito": "I",
+"resto": "OV B C CO 178 86 1,5 R S1;S3;S4;S17;S25 5,0 2,7 S11;S12"
+},
+{
+"seccion_gm": "IV largo",
+"n": 4,
+"cultivar": "STINE 46EA23",
+"empresa": "STINE",
+"gm": "4,5",
+"habito": "I",
+"resto": "OV B C CO 175 82 1,6 R R1;R3;R4;R17;S25 1,7 2,0 S11;S12"
+},
+{
+"seccion_gm": "IV largo",
+"n": 5,
+"cultivar": "STINE 47EA32",
+"empresa": "STINE",
+"gm": "4,6",
+"habito": "I",
+"resto": "OV B C CO 175 76 1,5 R R1;R3;R4;R17;S25 3,0 2,0 S11;S12"
+},
+{
+"seccion_gm": "IV largo",
+"n": 6,
+"cultivar": "STINE 48EC53",
+"empresa": "STINE",
+"gm": "4,7",
+"habito": "I",
+"resto": "OB B C CO 173 79 1,4 R R1;R3;R4;R17;S25 5,7 2,7 S11;S12"
+},
+{
+"seccion_gm": "IV largo",
+"n": 7,
+"cultivar": "BRV4524SE",
+"empresa": "BREVANT",
+"gm": "4,5",
+"habito": "I",
+"resto": "BT V C N 169 80 1,3 R R1;S25 2,0 0,3"
+},
+{
+"seccion_gm": "IV largo",
+"n": 8,
+"cultivar": "BRV4824SE",
+"empresa": "BREVANT",
+"gm": "4,9",
+"habito": "I",
+"resto": "OV B G CC 163 83 1,9 R R1;R3;S4;R17;S25 56,7 17,2 S11;S12"
+},
+{
+"seccion_gm": "IV largo",
+"n": 9,
+"cultivar": "P46A03SE",
+"empresa": "PIONEER",
+"gm": "4,5",
+"habito": "I",
+"resto": "BT V G NI 151 83 1,5 R R1;S3;R4;S25 4,2 5,3 S11"
+},
+{
+"seccion_gm": "IV largo",
+"n": 10,
+"cultivar": "47MS02 STS",
+"empresa": "MACROSEED",
+"gm": "4,7",
+"habito": "I",
+"resto": "BT V C N 176 79 1,4 R R1;R3;S4;R17 - 2,0"
+},
+{
+"seccion_gm": "IV largo",
+"n": 11,
+"cultivar": "48MS02 E STS",
+"empresa": "MACROSEED",
+"gm": "4,6",
+"habito": "I",
+"resto": "BT V C N 163 81 1,7 R R1;R3;S4;R17;S25 - 0,7"
+},
+{
+"seccion_gm": "IV largo",
+"n": 12,
+"cultivar": "DM 46E25 SE",
+"empresa": "DON MARIO",
+"gm": "4,6",
+"habito": "I",
+"resto": "BT V C N 158 83 1,6 R R1;R3;R4;R17;S25 4,3 5,7"
+},
+{
+"seccion_gm": "IV largo",
+"n": 13,
+"cultivar": "DM 46R25",
+"empresa": "DON MARIO",
+"gm": "4,6",
+"habito": "I",
+"resto": "BT V C N 171 77 1,5 R R1;R3;R4;R17;S25 2,7 1,0"
+},
+{
+"seccion_gm": "IV largo",
+"n": 14,
+"cultivar": "DM 47E23 SE",
+"empresa": "DON MARIO",
+"gm": "4,7",
+"habito": "I",
+"resto": "BT V C N 160 83 2,0 R R1;R3;R4;R17;S25 4,0 1,7"
+},
+{
+"seccion_gm": "IV largo",
+"n": 15,
+"cultivar": "DM 49R26",
+"empresa": "DON MARIO",
+"gm": "4,8",
+"habito": "I",
+"resto": "BT V C N 162 84 1,5 R R1;R4;R17;S25 6,0 2,8"
+},
+{
+"seccion_gm": "IV largo",
+"n": 16,
+"cultivar": "NEO 47S25 SE",
+"empresa": "NEOGEN",
+"gm": "4,5",
+"habito": "I",
+"resto": "BT V C N 165 82 1,5 R R1;R3;R4 0,7 0,7"
+},
+{
+"seccion_gm": "IV largo",
+"n": 17,
+"cultivar": "NEO 46S25 SE",
+"empresa": "NEOGEN",
+"gm": "4,7",
+"habito": "I",
+"resto": "BT V C N 192 77 1,7 MR R1;R3;S4;R17;S25 4,0 0,3"
+},
+{
+"seccion_gm": "IV largo",
+"n": 18,
+"cultivar": "AT2907",
+"empresa": "SOUTHERN CROP",
+"gm": "4,7",
+"habito": "I",
+"resto": "OB V N 170 81 1,5 R R1;S3;S4;R17;S25 - 4,0"
+},
+{
+"seccion_gm": "IV largo",
+"n": 19,
+"cultivar": "CZ 4625 STS",
+"empresa": "BASF",
+"gm": "4,5",
+"habito": "I",
+"resto": "BT V C N 173 82 1,5 R R1;R4;R17;S25 4,0 0,7"
+},
+{
+"seccion_gm": "IV largo",
+"n": 20,
+"cultivar": "47x24 E STS NK",
+"empresa": "NK",
+"gm": "4,9",
+"habito": "I",
+"resto": "OV V G NI 157 78 1,5 R R1;R3;R4;R17;S25 13,3 4,3 S11;S12"
+},
+{
+"seccion_gm": "IV largo",
+"n": 21,
+"cultivar": "4634 E STS NS",
+"empresa": "NIDERA",
+"gm": "4,9",
+"habito": "I",
+"resto": "EL V G NI 161 83 1,6 R R1;R3;R4;R17;S25 13,3 4,0 S11;S12"
+},
+{
+"seccion_gm": "V corto",
+"n": 1,
+"cultivar": "DM50E25 SE",
+"empresa": "DON MARIO",
+"gm": "5,2",
+"habito": "I",
+"resto": "BT B C N 169 92 1,3 R R1;S3;S4;R17;S25 9,0 2,7"
+},
+{
+"seccion_gm": "V corto",
+"n": 2,
+"cultivar": "NORD5224SE",
+"empresa": "NORD",
+"gm": "5,0",
+"habito": "I",
+"resto": "OV B G CC 180 81 1,2 R S1;S3;S4;S17;S25 6,7 2,3 S11;S12"
+},
+{
+"seccion_gm": "V corto",
+"n": 3,
+"cultivar": "NEO 50S22 SE",
+"empresa": "NEOGEN",
+"gm": "5,4",
+"habito": "I",
+"resto": "BT V G NI 189 81 1,4 R R1;R4;R17;S25 13,3 1,7"
+},
+{
+"seccion_gm": "V corto",
+"n": 4,
+"cultivar": "NEO 50S23 RR STS",
+"empresa": "NEOGEN",
+"gm": "5,2",
+"habito": "I",
+"resto": "BT B C N 180 88 1,2 R R1;R3;R4;R17;S25 11,3 3,7"
+},
+{
+"seccion_gm": "V corto",
+"n": 5,
+"cultivar": "STINE50EE59 STS",
+"empresa": "STINE",
+"gm": "5,0",
+"habito": "I",
+"resto": "OB B C CO 193 91 1,1 R S1;S3;S4;S17;S25 8,0 3,3 S11;S12"
+},
+{
+"seccion_gm": "V corto",
+"n": 6,
+"cultivar": "STINE 52EF52 STS",
+"empresa": "STINE",
+"gm": "5,4",
+"habito": "I",
+"resto": "OB B C CO 177 84 1,4 R R1;R3;R4;R17;S25 - 1,0 S11;S12"
+},
+{
+"seccion_gm": "V corto",
+"n": 7,
+"cultivar": "4924 E STS NS",
+"empresa": "NIDERA",
+"gm": "5,4",
+"habito": "I",
+"resto": "OV B G CC 159 78 1,1 R R1;R3;R4;R17;S25 8,0 3,3 S11;S12"
+},
+{
+"seccion_gm": "V corto",
+"n": 8,
+"cultivar": "NS 5023 STS",
+"empresa": "NIDERA",
+"gm": "5,2",
+"habito": "I",
+"resto": "OV B C N 177 78 1,1 R R1;R3;R4;R17;S25 5,0 4,3 S11;S12"
+},
+{
+"seccion_gm": "V corto",
+"n": 9,
+"cultivar": "P51A25SE",
+"empresa": "PIONEER",
+"gm": "5,4",
+"habito": "I",
+"resto": "OV V G NI 156 87 1,2 R R1;S3;S4;R17;S25 12,3 11,7 S11;S12"
+},
+{
+"seccion_gm": "V corto",
+"n": 10,
+"cultivar": "53MS02 STS",
+"empresa": "MACROSEED",
+"gm": "5,4",
+"habito": "I",
+"resto": "BT V C N 170 90 1,3 R R1;R4 7,3 1,3"
+},
+{
+"seccion_gm": "V largo",
+"n": 1,
+"cultivar": "CZ 59B24 SE",
+"empresa": "BASF",
+"gm": "5,9",
+"habito": "I",
+"resto": "BT V G CI 175 90 1,4 R R1;R3;R4;R17;R25 23,3 15,3"
+},
+{
+"seccion_gm": "V largo",
+"n": 2,
+"cultivar": "NS 5421 STS",
+"empresa": "NIDERA",
+"gm": "5,6",
+"habito": "I",
+"resto": "BT B C N 158 82 1,2 R S1;S3;S4;S17;S25 5,0 2,3"
+},
+{
+"seccion_gm": "V largo",
+"n": 3,
+"cultivar": "BRV5925CE",
+"empresa": "BREVANT",
+"gm": "5,7",
+"habito": "I",
+"resto": "BT V C N 170 92 1,3 R S1;S3;S4;S17;S25 - 4,3"
+},
+{
+"seccion_gm": "V largo",
+"n": 4,
+"cultivar": "Seedco58R23",
+"empresa": "SEEDCO",
+"gm": "5,5",
+"habito": "I",
+"resto": "OV V C N 181 83 1,2 R S1;S3;S4;S17;S25 - 2,7"
+},
+{
+"seccion_gm": "VI corto",
+"n": 1,
+"cultivar": "CZ 62B24 SCE",
+"empresa": "BASF",
+"gm": "6,2",
+"habito": "I",
+"resto": "BT V G NI 167 91 1,4 R R1;R3;R4;R17;S25 43,3 17,7"
+},
+{
+"seccion_gm": "VI corto",
+"n": 2,
+"cultivar": "DM 60K60 SCE",
+"empresa": "DON MARIO",
+"gm": "6,3",
+"habito": "I",
+"resto": "BT V G NI 152 93 1,5 R R1;S3;R4;S25 6,3 3,7"
+},
+{
+"seccion_gm": "VI corto",
+"n": 3,
+"cultivar": "DM 64K64 RSF SCE",
+"empresa": "DON MARIO",
+"gm": "6,4",
+"habito": "I",
+"resto": "BT V C CO 175 93 1,5 R S3;S4;S25 21,7 4,7"
+},
+{
+"seccion_gm": "VI corto",
+"n": 4,
+"cultivar": "DM 64E64 SE",
+"empresa": "DON MARIO",
+"gm": "6,3",
+"habito": "I",
+"resto": "BT V G NI 179 93 2,3 R S1;S4;S17;S25 46,7 10,0"
+},
+{
+"seccion_gm": "VI corto",
+"n": 5,
+"cultivar": "60E62RSF SE",
+"empresa": "DON MARIO",
+"gm": "6,1",
+"habito": "I",
+"resto": "BT B G CC 155 94 2,0 R S3;S4;S17;S25 23,3 13,3"
+},
+{
+"seccion_gm": "VI corto",
+"n": 6,
+"cultivar": "64R64RSF",
+"empresa": "DON MARIO",
+"gm": "6,1",
+"habito": "I",
+"resto": "BT B G CC 164 94 1,5 R R1;R3;R4;R17 10,0 3,0"
+},
+{
+"seccion_gm": "VI corto",
+"n": 7,
+"cultivar": "NEO 63S22 E",
+"empresa": "NEOGEN",
+"gm": "6,1",
+"habito": "I",
+"resto": "BT B G CI 160 89 1,8 R R1;R4;R17;S25 5,7 1,3"
+},
+{
+"seccion_gm": "VI corto",
+"n": 8,
+"cultivar": "NEO 64S25 SCE",
+"empresa": "NEOGEN",
+"gm": "6,3",
+"habito": "I",
+"resto": "BT B C CO 143 84 1,2 R R1;R3;R4;R17;S25 11,3 3,7"
+},
+{
+"seccion_gm": "VI corto",
+"n": 9,
+"cultivar": "STINE 62KA62",
+"empresa": "STINE",
+"gm": "6,2",
+"habito": "I",
+"resto": "OB V G NI 148 96 1,3 R S1;S3;S4;S17;S25 38,3 13,0 S11;S12"
+},
+{
+"seccion_gm": "VI corto",
+"n": 10,
+"cultivar": "P61A25SE",
+"empresa": "PIONEER",
+"gm": "6,3",
+"habito": "I",
+"resto": "BT V G NI/CC 143 89 1,6 R R1;R3;R4;R17;S25 26,7 13,3"
+},
+{
+"seccion_gm": "VI corto",
+"n": 11,
+"cultivar": "P64A25CE",
+"empresa": "PIONEER",
+"gm": "6,2",
+"habito": "I",
+"resto": "BT V C N 151 96 1,8 R 16,7 16,7"
+},
+{
+"seccion_gm": "VI corto",
+"n": 12,
+"cultivar": "BRV56123SCE",
+"empresa": "BREVANT",
+"gm": "6,0",
+"habito": "I",
+"resto": "BT B G CI 176 94 1,5 R S1;S3;S4;S17;S25 13,0 4,0"
+},
+{
+"seccion_gm": "VI corto",
+"n": 13,
+"cultivar": "61MS01 STS",
+"empresa": "MACROSEED",
+"gm": "6,4",
+"habito": "I",
+"resto": "BT B C CO 162 89 1,8 R R1; 14,0 7,3"
+},
+{
+"seccion_gm": "VI corto",
+"n": 14,
+"cultivar": "62MS02 E",
+"empresa": "MACROSEED",
+"gm": "6,1",
+"habito": "I",
+"resto": "BT B G CC 166 89 1,3 R S1;S4;S17;S25 8,3 3,3"
+},
+{
+"seccion_gm": "VI corto",
+"n": 15,
+"cultivar": "63MS01 CE",
+"empresa": "MACROSEED",
+"gm": "6,2",
+"habito": "I",
+"resto": "BT B G CI 153 94 1,6 R R1;R4; 16,7 5,0"
+},
+{
+"seccion_gm": "VI corto",
+"n": 16,
+"cultivar": "STINE 60EF58 STS",
+"empresa": "STINE",
+"gm": "6,2",
+"habito": "I",
+"resto": "OV B C CO 173 94 1,7 R R1;S3;S4 - 20,0 S11;S12"
+},
+{
+"seccion_gm": "VI largo",
+"n": 1,
+"cultivar": "CZ 68B24 CE",
+"empresa": "BASF",
+"gm": "6,9",
+"habito": "I",
+"resto": "BT V G NI 146 94 1,8 R R1;R3;S4;R17;S25 15,0 11,3"
+},
+{
+"seccion_gm": "VI largo",
+"n": 2,
+"cultivar": "67K67RSF SCE",
+"empresa": "DON MARIO",
+"gm": "6,9",
+"habito": "I",
+"resto": "BT V G CO 168 99 3,1 R R1;R3;S4;R17;S25 18,3 4,3"
+},
+{
+"seccion_gm": "VI largo",
+"n": 3,
+"cultivar": "NEO 70S25 CE",
+"empresa": "NEOGEN",
+"gm": "6,8",
+"habito": "I",
+"resto": "BT V G NI 170 95 3,0 R R1;R3;S4;R17;S25 23,3 6,2"
+},
+{
+"seccion_gm": "VI largo",
+"n": 4,
+"cultivar": "NEO 69S23 CE",
+"empresa": "NEOGEN",
+"gm": "6,8",
+"habito": "I",
+"resto": "LA V G NI 154 101 2,9 R R1;R3;S4;R17 26,7 18,7"
+},
+{
+"seccion_gm": "VI largo",
+"n": 5,
+"cultivar": "STINE 67KB58",
+"empresa": "STINE",
+"gm": "6,9",
+"habito": "I",
+"resto": "B 139 106 3,6 - 10,0"
+},
+{
+"seccion_gm": "VI largo",
+"n": 6,
+"cultivar": "BRV6424SCE",
+"empresa": "BREVANT",
+"gm": "6,6",
+"habito": "I",
+"resto": "BT V G CI 157 100 2,3 R R1;MR4;R17 10,0 3,7"
+},
+{
+"seccion_gm": "VI largo",
+"n": 7,
+"cultivar": "66MS01",
+"empresa": "MACROSEED",
+"gm": "6,5",
+"habito": "I",
+"resto": "BT V G NI/CC 170 97 2,3 R R1;S3;R4;S25 17,7 7,3 S11"
+},
+{
+"seccion_gm": "VI largo",
+"n": 8,
+"cultivar": "68MS01 CE",
+"empresa": "MACROSEED",
+"gm": "6,7",
+"habito": "I",
+"resto": "BT V G NI 174 101 2,9 R S3;S4;S17 7,7 3,3"
+},
+{
+"seccion_gm": "VII-VIII",
+"n": 1,
+"cultivar": "CZ 78B24 CE",
+"empresa": "BASF",
+"gm": "7,5",
+"habito": "I",
+"resto": "BT V G NI 169 97 2,0 R R1;S3;S4;R17;S25 47,5 15,0"
+},
+{
+"seccion_gm": "VII-VIII",
+"n": 2,
+"cultivar": "DM 80K80 SCE",
+"empresa": "DON MARIO",
+"gm": "8,9",
+"habito": "I",
+"resto": "BT V G CI 139 102 2,0 R R1;S4; 46,7 15,0"
+},
+{
+"seccion_gm": "VII-VIII",
+"n": 3,
+"cultivar": "70K70RSF SCE",
+"empresa": "DON MARIO",
+"gm": "7,3",
+"habito": "I",
+"resto": "BT V G CI 151 95 2,3 R R1;R4;S25 5,0 3,3"
+},
+{
+"seccion_gm": "VII-VIII",
+"n": 4,
+"cultivar": "STINE 78KA42",
+"empresa": "STINE",
+"gm": "7,0",
+"habito": "I",
+"resto": "OB V G CC 139 99 2,0 R S1;S3;S4;S17;S25 23,3 16,7 S11;S12"
+},
+{
+"seccion_gm": "VII-VIII",
+"n": 5,
+"cultivar": "P75A06SCE",
+"empresa": "PIONEER",
+"gm": "7,5",
+"habito": "I",
+"resto": "BT V G NI 147 98 1,7 R R1;S4;S17;S25 31,7 10,7"
+},
+{
+"seccion_gm": "VII-VIII",
+"n": 6,
+"cultivar": "P80A02SCE",
+"empresa": "PIONEER",
+"gm": "7,5",
+"habito": "I",
+"resto": "BT V G CI 152 100 2,0 R S1;S3;S4;S17;S25 33,3 15,7"
+},
+{
+"seccion_gm": "VII-VIII",
+"n": 7,
+"cultivar": "BRV7525CE",
+"empresa": "BREVANT",
+"gm": "8,4",
+"habito": "I",
+"resto": "BT V G NI 153 99 3,0 R S1;S3;S4;S17;S25 - 7,7"
+}
+]

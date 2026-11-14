@@ -1,0 +1,26 @@
+Cultivo,Salinidad ECe,pH óptimo,Sodicidad ESP,Kc por etapa,Zr / p RAW,Faltante / limitación prioritaria
+Soja,Numérico,Sí,Sí,Sí,Sí,ECe / Kc / Zr son referencias de especie; no cultivar.
+Maíz,Numérico con limitación de variable de respuesta,Sí,Sí,Sí,Sí,El umbral ECe FAO se basa en peso fresco de espiga y estudio antiguo.
+Girasol,Numérico,No en la fuente pH consultada,Sí,Sí,Sí,pH sigue pendiente de fuente específica en esta capa.
+Sorgo granífero,Numérico,Sí,No en la tabla ESP consultada,Sí,Sí,No transferir al sorgo silero/azucarado.
+Algodón,Numérico,Sí,Sí,Sí,Sí,Distinguir biomasa y rendimiento de algodón semilla según fuente.
+Maní,Numérico,No en la fuente pH consultada,Sí,Sí,Sí,Pendiente cultivar × ambiente.
+Arroz,Numérico con condición de arroz inundado,Sí,Sí,Sí,Sí,ECe de arroz paddy se refiere a solución del suelo bajo inundación.
+Trigo,Numérico; hay subgrupos aparte,Sí,Sí,Sí,Sí,Separar trigo pan/semienano/candeal.
+Cebada,Numérico,Sí,Sí,Sí,Sí,FAO ECe de grano; salinidad temprana puede ser más sensible.
+Avena,Solo rating cualitativo,Sí,Sí,Sí,Sí,No hay umbral ECe y pendiente numéricos en la fuente FAO consultada.
+Centeno,Numérico,Sí,No en la tabla ESP consultada,No en Table 12,No en Table 22,Completar Kc y Zr/p con fuentes específicas.
+Triticale,Numérico,No en la fuente pH consultada,No en la tabla ESP consultada,No en Table 12,No en Table 22,Salinidad sí; pH/Kc/Zr/p requieren fuentes específicas.
+Garbanzo,Rating FAO + ensayo temprano externo,No en la fuente pH consultada,Sí,"Sí, dos filas en FAO","Sí, dos filas en FAO",Ensayo de emergencia de Australia no representa rendimiento local.
+Arveja seca,"Ensayo de semilla fresca, no equivalente directo a grano seco",Sí,Sí,"Sí, dato dry/seed","Sí, dato dry/seed",No convertir seed fresh weight en umbral de arveja seca.
+Poroto negro,Numérico común bean histórico,No en la fuente pH consultada,No en la tabla ESP consultada,"Sí, dry beans/pulses","Sí, dry beans/pulses",No hay dato pH para Phaseolus seco en la figura FAO consultada.
+Poroto alubia,Numérico común bean histórico,No en la fuente pH consultada,No en la tabla ESP consultada,"Sí, dry beans/pulses","Sí, dry beans/pulses",No hay discriminación varietal por tipo comercial.
+Poroto colorado,Numérico común bean histórico,No en la fuente pH consultada,No en la tabla ESP consultada,"Sí, dry beans/pulses","Sí, dry beans/pulses",No hay discriminación varietal por tipo comercial.
+Lenteja,Ensayo temprano externo,No en la fuente pH consultada,Sí,Sí,Sí,El ensayo SAGIT mide cv. Thunder a 22 días; no rendimiento local.
+Lupino,Sin dato numérico verificado,No en la fuente pH consultada,No en la tabla ESP consultada,Sin dato,Sin dato,Pendiente: definir L. angustifolius/albus/luteus y fuente específica.
+Colza/canola,Numérico B. napus y B. rapa,No en la fuente pH consultada,"Parcial: rapeseed mustard, taxón a validar",Sí,Sí,"No fusionar B. napus, B. rapa y rapeseed mustard."
+Cártamo,Solo rating cualitativo,No en la fuente pH consultada,Sí,Sí,Sí,No hay umbral ECe numérico en la fuente consultada.
+Lino,Numérico,No en la fuente pH consultada,Sí,Sí,Sí,No específico para Aguará INTA u otros cultivares.
+Caña de azúcar,Numérico con respuesta vegetativa,No en la fuente pH consultada,Sí,Sí,Sí,"ECe basada en peso seco de brotes, no azúcar recuperable."
+Papa,Numérico,Sí,No en la tabla ESP consultada,Sí,Sí,No varietal.
+Caupí,Numérico,Sí,Sí,Sí,Sí,Mantener separado de poroto común.
