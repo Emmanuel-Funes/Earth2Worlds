@@ -1,0 +1,107 @@
+{
+  "version": "0.2",
+  "estado": "provisional",
+  "origen": "SDD de Leandro 'Plataforma de recomendación de cultivos y planificación de rotaciones' v0.1, §8 (documento fuente: Formulas.docx). Valores transcriptos, sin validar por un agrónomo. Topes de pH alcalino (ph_maximo): máximo absoluto de FAO Ecocrop, pedidos por Hernán el 29/10/2026 (informe 'pH maximo por cultivo').",
+  "validado_por": null,
+  "cultivos": [
+    {
+      "id": "maiz", "nombre": "Maíz",
+      "agua": "500–550 mm totales durante el ciclo; sensibilidad a sequía en floración",
+      "siembra": "Mínimo de 10 °C en el suelo para germinar; desarrollo óptimo por encima de 20 °C",
+      "reglas": [
+        {"id": "textura_no_arenosa", "tipo": "excluyente", "indicador": "textura_grupo", "operador": "no_en",
+         "valor": ["arenoso"], "texto": "No tolera texturas excesivamente arenosas con baja fertilidad ni compactación"},
+        {"id": "ph_maximo", "tipo": "excluyente", "indicador": "ph", "operador": "<=", "valor": 8.5,
+         "unidad": "pH", "texto": "pH hasta 8,5: por encima no prospera (máximo absoluto de FAO Ecocrop)",
+         "fuente_umbral": "FAO Ecocrop, ficha 238663 (consultada el 29/10/2026)"}
+      ],
+      "sin_umbral": ["Suelo profundo, franco y con buena retención de agua", "Compactación"]
+    },
+    {
+      "id": "soja", "nombre": "Soja",
+      "agua": "450–500 mm durante el ciclo; humedad indispensable en el llenado de granos (R3–R6)",
+      "siembra": "12–14 °C en el suelo para germinar; sensible a heladas tardías en la emergencia",
+      "reglas": [
+        {"id": "ph_minimo", "tipo": "excluyente", "indicador": "ph", "operador": ">=", "valor": 5.5,
+         "unidad": "pH", "texto": "Descartar ante acidez marcada (pH < 5,5)"},
+        {"id": "ph_maximo", "tipo": "excluyente", "indicador": "ph", "operador": "<=", "valor": 8.4,
+         "unidad": "pH", "texto": "pH hasta 8,4: por encima no prospera (máximo absoluto de FAO Ecocrop)",
+         "fuente_umbral": "FAO Ecocrop, ficha 1150 (consultada el 29/10/2026)"}
+      ],
+      "sin_umbral": ["Problemas graves de salinidad"]
+    },
+    {
+      "id": "mani", "nombre": "Maní",
+      "agua": "500–550 mm; sensible durante el clavado",
+      "siembra": "15 °C en el suelo para germinar",
+      "reglas": [
+        {"id": "textura_no_arcillosa", "tipo": "excluyente", "indicador": "textura_grupo", "operador": "no_en",
+         "valor": ["arcilloso"], "texto": "Suelo suelto, franco a franco arenoso; el alto contenido de arcilla impide la penetración del clavo"},
+        {"id": "dias_libres_de_heladas", "tipo": "excluyente", "indicador": "dias_libres_heladas", "operador": ">=",
+         "valor": 120, "unidad": "días", "texto": "Más de 120–130 días templados libres de heladas"},
+        {"id": "ph_maximo", "tipo": "excluyente", "indicador": "ph", "operador": "<=", "valor": 8.5,
+         "unidad": "pH", "texto": "pH hasta 8,5: por encima no prospera (máximo absoluto de FAO Ecocrop)",
+         "fuente_umbral": "FAO Ecocrop, ficha 2199 (consultada el 29/10/2026)"}
+      ],
+      "sin_umbral": ["Tendencia a encostrarse"]
+    },
+    {
+      "id": "sorgo", "nombre": "Sorgo",
+      "agua": "350–400 mm; alta eficiencia de uso del agua y capacidad de pausar el crecimiento ante sequía",
+      "siembra": "15–16 °C en el suelo para germinar; sensible al frío en floración",
+      "reglas": [
+        {"id": "ph_maximo", "tipo": "excluyente", "indicador": "ph", "operador": "<=", "valor": 8.0,
+         "unidad": "pH", "texto": "pH hasta 8: por encima no prospera (máximo absoluto de FAO Ecocrop)",
+         "fuente_umbral": "FAO Ecocrop, ficha 48747 (consultada el 29/10/2026)"}
+      ],
+      "sin_umbral": ["Salinidad o alcalinidad moderadas (las tolera, según el texto fuente)"]
+    },
+    {
+      "id": "alfalfa", "nombre": "Alfalfa",
+      "agua": "600–700 mm anuales; óptimo por encima de 800 mm; revisar la napa en zonas secas",
+      "siembra": "Suelo por encima de 10 °C para sembrar; tolera el frío una vez implantada",
+      "reglas": [
+        {"id": "ph_minimo", "tipo": "excluyente", "indicador": "ph", "operador": ">", "valor": 6.2,
+         "unidad": "pH", "texto": "pH mayor que 6,2"},
+        {"id": "ph_maximo", "tipo": "excluyente", "indicador": "ph", "operador": "<=", "valor": 8.7,
+         "unidad": "pH", "texto": "pH hasta 8,7: por encima no prospera (máximo absoluto de FAO Ecocrop)",
+         "fuente_umbral": "FAO Ecocrop, ficha 1428 (consultada el 29/10/2026)"}
+      ],
+      "sin_umbral": ["Suelo profundo y bien drenado", "Anegamiento", "Horizonte compacto"],
+      "usa_napa": true
+    },
+    {
+      "id": "girasol", "nombre": "Girasol",
+      "agua": "350–400 mm; necesita agua durante el llenado del grano",
+      "siembra": "8–10 °C en el suelo para germinar",
+      "reglas": [
+        {"id": "textura_no_arenosa", "tipo": "excluyente", "indicador": "textura_grupo", "operador": "no_en",
+         "valor": ["arenoso"], "texto": "Descartar arenas muy sueltas que limiten la exploración y el anclaje"},
+        {"id": "ph_maximo", "tipo": "excluyente", "indicador": "ph", "operador": "<=", "valor": 8.0,
+         "unidad": "pH", "texto": "pH hasta 8: por encima no prospera (máximo absoluto de FAO Ecocrop)",
+         "fuente_umbral": "FAO Ecocrop, ficha 1191 (consultada el 29/10/2026)"}
+      ],
+      "sin_umbral": ["Suelo profundo", "Capas compactas"]
+    },
+    {
+      "id": "trigo", "nombre": "Trigo",
+      "agua": "250–300 mm; depende del agua almacenada en el perfil al sembrar en otoño (invierno seco en San Luis)",
+      "siembra": "Germina desde 3–5 °C; requiere vernalización; riesgo de heladas tardías en floración",
+      "reglas": [
+        {"id": "ph_no_extremo", "tipo": "excluyente", "indicador": "ph", "operador": ">=", "valor": null,
+         "unidad": "pH", "texto": "Descartar pH extremadamente ácido (el SDD no fija el valor)"}
+      ],
+      "sin_umbral": ["pH máximo (no se encontró la ficha de FAO Ecocrop)", "Arenas voladoras sin cobertura"]
+    },
+    {
+      "id": "algodon", "nombre": "Algodón",
+      "agua": "450–500 mm; requiere estabilidad hídrica en la floración y formación de bochas",
+      "siembra": "Más de 18 °C en el suelo para arrancar",
+      "reglas": [
+        {"id": "dias_libres_de_heladas", "tipo": "excluyente", "indicador": "dias_libres_heladas", "operador": ">=",
+         "valor": 150, "unidad": "días", "texto": "Ventana libre de heladas de 150–180 días"}
+      ],
+      "sin_umbral": ["pH máximo (no se encontró la ficha de FAO Ecocrop)", "Anegamiento frecuente", "Alta salinidad estructural superficial"]
+    }
+  ]
+}

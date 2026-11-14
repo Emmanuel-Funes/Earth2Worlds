@@ -200,6 +200,12 @@ from rotaterra.semillas import rutas as rutas_semillas  # noqa: E402
 app.include_router(rutas_semillas)
 
 
+# Motor de recomendación para agrónomos: un lote y una campaña (spec 064).
+from rotaterra.agronomos.rutas import router as rutas_agronomos  # noqa: E402
+
+app.include_router(rutas_agronomos)
+
+
 # Cada satélite unido a esta rama trae además su propio endpoint, sin respaldos (spec 009).
 
 for _rutas in conectados().rutas:

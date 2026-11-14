@@ -50,6 +50,7 @@ from rotaterra import consulta as rt_consulta
 from rotaterra.fuentes import catastro_sl, registro as rt_registro
 from rotaterra.geo import validar_poligono, validar_dentro_argentina
 from rotaterra.semillas import rutas as rutas_semillas
+from rotaterra.agronomos.rutas import router as rutas_agronomos
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_DIR = BASE_DIR / "static"
@@ -1838,6 +1839,14 @@ async def obtener_mapa_parcelas_rurales_san_luis(
 # Montar el Banco de Semillas del INTA bajo /api/rotaterra/semillas (protegido con JWT)
 app.include_router(
     rutas_semillas,
+    prefix="/api/rotaterra",
+    dependencies=[Depends(get_current_user)],
+)
+
+
+# Motor de recomendación para agrónomos (spec 064) bajo /api/rotaterra/agronomos/recomendacion (protegido con JWT)
+app.include_router(
+    rutas_agronomos,
     prefix="/api/rotaterra",
     dependencies=[Depends(get_current_user)],
 )

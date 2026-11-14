@@ -1,0 +1,347 @@
+{
+  "version": "0.1",
+  "estado": "provisional",
+  "validado_por": null,
+  "aviso": "Todos los parámetros son provisionales: salen de tablas de referencia generales y hay que calibrarlos para San Luis con un ingeniero agrónomo (SDD v1.0, nota final).",
+  "calendario": "La campaña va de mayo a abril: mes 0 = mayo, mes 11 = abril. Así entran la fina (siembra en junio), la gruesa (octubre a diciembre) y la segunda (diciembre).",
+  "fuentes": {
+    "fao56": "Allen et al. (1998), FAO Riego y Drenaje 56, tablas 11, 12 y 19 (Kc, duración de etapas, agua útil por textura) y ecuación 52 (Hargreaves)",
+    "fao33": "Doorenbos y Kassam (1979), FAO Riego y Drenaje 33: factor Ky de respuesta del rinde al agua",
+    "ipni": "IPNI Cono Sur, tabla de requerimientos y extracción de nutrientes (García y Correndo): valores medios aproximados",
+    "inta_rotacion": "Recomendaciones generales de rotación del INTA (girasol y maní: no repetir antes de 3 campañas); a confirmar con INTA San Luis",
+    "productor": "Dato cargado por el productor",
+    "inta_huella_mani": "Bongiovanni, R. et al. (2016). Huella de carbono de la cadena de maní de Argentina. RIA 42(3), INTA (scielo.org.ar, pid S1669-23142016000300013)",
+    "unrc_fbn_mani": "Castro, S., Cerioni, G., Giayetto, O. y Fabra, A. (2006). Contribución relativa del nitrógeno del suelo y del fijado biológicamente a la economía de la nutrición nitrogenada de maní. Agriscientia 23(2): 55-66, UNRC (scielo.org.ar, pid S1668-298X2006000200002)",
+    "magyp_margenes_2026_06": "Secretaría de Agricultura, Ganadería y Pesca (MAGyP), Área de Análisis Económico: Resultados agrícolas. Ingresos, gastos y márgenes, campaña 2026/27, junio 2026, Región San Luis (magyp.gob.ar/sitio/areas/analisis_economico/margenes)",
+    "bccba_pizarra": "Bolsa de Cereales de Córdoba, precios pizarra Córdoba (maní industria, en caja), https://www.bccba.org.ar/",
+    "inta_manfredi_riego_2024": "Barberis, N. (INTA EEA Manfredi, 2024). Análisis económico del riego en cultivos extensivos para el centro de la provincia de Córdoba, tabla 2 (pivote eléctrico, tarifa rural EPEC julio 2024)",
+    "uba_herbario_mancha_amarilla": "Herbario de Fitopatología, Facultad de Agronomía UBA: Mancha amarilla del trigo (https://herbariofitopatologia.agro.uba.ar/?p=227); AAPRESID 2024: el monocultivo mantiene el inóculo en el rastrojo",
+    "inia_fusariosis": "Pereyra, S. y Pérez, C. (INIA La Estanzuela, Uruguay, 2024). Fusariosis de la espiga en trigo y cebada (https://inia.uy/sites/default/files/publications/2024-10/2JNCI-Fusariosis-trigo-y-cebada-Pereyra-Perez.pdf); Herbario de Fitopatología UBA (https://herbariofitopatologia.agro.uba.ar/?p=222)",
+    "uba_herbario_tizon": "Herbario de Fitopatología, Facultad de Agronomía UBA: Tizón del maíz, Exserohilum turcicum (https://herbariofitopatologia.agro.uba.ar/?p=168)",
+    "inta_mj_ojo_de_rana": "INTA EEA Marcos Juárez: Manejo de mancha ojo de rana en soja, ensayos maíz/soja vs soja/soja (publicado en Engormix, https://www.engormix.com/agricultura/fungicidas/manejo-mancha-ojo-rana_a28606/)",
+    "uba_herbario_phytophthora": "Herbario de Fitopatología, Facultad de Agronomía UBA: Phytophthora sojae (https://herbariofitopatologia.agro.uba.ar/?p=614)",
+    "aapresid_rem": "Aapresid, Red de Manejo de Plagas (REM): malezas resistentes y clasificación de herbicidas por sitio de acción HRAC (https://www.aapresid.org.ar/webroot/archivos/pdfs/6373cc9d5fd47.pdf); relevamiento 2019: rama negra en el 99 % y yuyo colorado en el 90 % de los partidos relevados (citado por Bichos de Campo, https://bichosdecampo.com/las-malezas-resistentes-son-tantas-que-ya-tienen-su-ranking-el-yuyo-colorado-es-como-messi-pero-la-rama-negra-es-maradona). La REM recomienda rotar o mezclar sitios de acción y no repetir el mismo mecanismo",
+    "aapresid_cultivos_servicio": "Aapresid e INTA Pergamino: los cultivos de servicio de gramíneas, sobre todo el centeno, suprimen la rama negra (citado por Bichos de Campo, https://bichosdecampo.com/aapresid-admite-que-a-veces-haya-que-sumar-herbicidas-a-los-cultivos-de-servicio-cuales-son-sus-consejos)",
+    "usda_capacidad_uso": "Klingebiel, A. A. y Montgomery, P. H. (1961). Land-capability classification. USDA Agriculture Handbook 210; sistema usado por el INTA en las cartas de suelo",
+    "magyp_otros_cultivos_2025_07": "MAGyP, Resultados agrícolas de otros cultivos (julio 2025), proyección 2025/26: maní en Córdoba y Buenos Aires; algodón en secano en la región Chaco, Santiago del Estero, Santa Fe, Salta, Formosa, San Luis y Catamarca, https://www.magyp.gob.ar/sitio/areas/analisis_economico/margenes/",
+    "inta_san_luis_alfalfa": "Funes, M. O. (2004), INTA EEA San Luis, «La alfalfa en San Luis»: ensayos de variedades en secano en la EEA (1995-2002), 4 a 5 t de materia seca por ha y por año; para el productor hay que restar 20 a 30 %, https://www.produccion-animal.com.ar/produccion_y_manejo_pasturas/pasturas_cultivadas_alfalfa/08-alfalfa_en_san_luis.pdf",
+    "inta_ascasubi_heladas": "INTA EEA Hilario Ascasubi, Boletín Técnico 36 (diciembre 2022), tabla 1: temperatura crítica de daño por helada según la etapa, https://repositorio.inta.gob.ar/handle/20.500.12123/13881",
+    "fao_heladas": "FAO, Frost Protection: fundamentals, practice and economics, vol. 1, tabla 4.5 (referencia global, no argentina)",
+    "riglos_2023_calor": "Riglos M. M. (2023), tesis doctoral FAUBA-INTA (transecta de San Luis): horas con más de 35 °C en el período crítico de maíz, soja, maní y sorgo, https://ri.agro.uba.ar/files/download/tesis/doctorado/2024riglosmiguelmaximiliano.pdf",
+    "inta_pergamino_micronutrientes": "INTA Pergamino, micronutrientes en cultivos extensivos de la región pampeana: clorosis férrica en soja sobre suelo alcalino (texto del INTA leído en engormix.com, sitio no oficial; no da un pH límite)",
+    "inta_cuenca_salado_sodio": "INTA Cuenca del Salado (Garello, Melani y col.): el suelo sódico (pH mayor de 8,5 con sodio alto) baja el rinde del maíz, https://repositorio.inta.gob.ar/handle/20.500.12123/14206",
+    "inta_manfredi_mani_ph": "INTA EEA Manfredi, Pedelini R., Maní: guía práctica para su cultivo: con pH mayor de 6,5 pueden faltar manganeso, https://repositorio.inta.gob.ar/handle/20.500.12123/12519",
+    "inta_manfredi_alfalfa_ph": "INTA EEA Manfredi, libro de alfalfa, cap. 5: pH óptimo 6,5 a 7,5, https://repositorio.inta.gob.ar/handle/20.500.12123/18704",
+    "unlp_ph_cultivos": "Vázquez, M. E. y Millán, G. J., Facultad de Ciencias Agrarias y Forestales, UNLP: «Acidez del suelo», cap. 8, tabla 4: pH óptimo y rango de tolerancia para rendimiento satisfactorio por cultivo (valores de Porta Casanellas et al. 1999, España; orientativos según los autores), http://sedici.unlp.edu.ar/handle/10915/154576",
+    "rweq": "Fryrear et al. (1998), Revised Wind Erosion Equation (RWEQ), USDA-ARS: umbral de viento de 5 m/s a 2 m y SLR por cobertura e^(−0,0438·SC)",
+    "revision_agronomica_equipo": "Revisión agronómica del motor por la Ing. Agrónoma del equipo Earth2Worlds (08/11/2026): reglas de rotación, antecesores no recomendados, familias botánicas, temperatura mínima del suelo para sembrar y umbral de agua del 60 %. Ella cita al INTA y a ASAGIR",
+    "embrapa_mal_del_pie": "Embrapa Trigo (Brasil), Pesquisa Agropecuária Brasileira: enfermedades de raíz del trigo en rotación con otros cultivos de invierno; el mal del pie fue más grave en trigo continuo que con uno o dos inviernos sin trigo (https://www.alice.cnptia.embrapa.br/alice/bitstream/doc/824121/1/pab34696.doc)",
+    "power_tsoil1": "NASA POWER, temperatura del suelo de 0 a 10 cm (TSOIL1, capa 1 de MERRA-2), serie diaria",
+    "inta_sepa_q_trigo": "INTA, Sistema de Estimación de Pastizales y Agricultura (SEPA, CIRN-INTA), producto Cociente fototermal (Q) para trigo: Q = radiación global (MJ/m²/día) ÷ (temperatura media − 4,5 °C), sin valor si la diferencia es 0,5 °C o menos, https://sepa.inta.gob.ar (uso autorizado por el CIRN-INTA el 5/10/2026 para la hackatón)",
+    "periodo_critico_trigo": "Savin y Slafer (1991) y Slafer et al. (2005), citados por Bodega, De Dios y Pereyra Iraola (2010, INTA Balcarce), Revista de la Facultad de Agronomía UBA 30(3): el número de granos del trigo se define de 20 días antes a 10 días después de la floración, https://ri.agro.uba.ar/files/download/articulo/2010Bodega.pdf",
+    "unlpam_q_semiarido": "Fernández y Zingaretti (2015), Semiárida (Facultad de Agronomía UNLPam) 25(2): 29-39, ensayos en Santa Rosa, La Pampa: en la región semiárida pampeana el Q del período crítico no explicó el rinde del trigo (el agua usada en ese período sí), https://cerac.unlpam.edu.ar/index.php/semiarida/article/view/2519",
+    "power_q": "NASA POWER, radiación global en superficie (ALLSKY_SFC_SW_DWN, MJ/m²/día) y temperatura media a 2 m (T2M), serie diaria"
+  },
+  "agua_util_mm_por_m": {
+    "arenoso": 70, "franco_arenoso": 120, "franco": 160, "franco_limoso": 180, "franco_arcilloso": 170, "arcilloso": 180,
+    "fuente": "fao56"
+  },
+  "factor_erosion_eolica_textura": {
+    "arenoso": 1.0, "franco_arenoso": 0.8, "franco": 0.45, "franco_limoso": 0.4, "franco_arcilloso": 0.25, "arcilloso": 0.2,
+    "nota": "Factor relativo provisional: cuanto más arena, más se vuela el suelo"
+  },
+  "erosion_eolica": {
+    "umbral_viento_m_s": 5.0,
+    "k_cobertura": 0.0438,
+    "clases_dias_equivalentes": [2, 6],
+    "nota": "Índice = Σ meses (días con ráfaga a 2 m ≥ 5 m/s) × factor de textura × e^(−0,0438 × % de cobertura). Umbral de 5 m/s y factor de cobertura de RWEQ (Fryrear et al., 1998, USDA-ARS). El resultado son días-equivalentes de suelo desnudo con viento erosivo: menos de 2 bajo, de 2 a 6 medio, 6 o más alto (clases provisionales, sin calibrar contra mediciones de San Luis)",
+    "fuente": "rweq"
+  },
+  "barbecho": {"kc_con_rastrojo": 0.25, "kc_desnudo": 0.4, "nota": "Evaporación del suelo sin cultivo (FAO-56, cap. 7, valores medios aproximados)"},
+  "cultivos": {
+    "maiz":    {"nombre": "Maíz", "familia": "poaceae", "grupo": "gramínea", "kc": [0.3, 1.2, 0.6], "etapas": [0.17, 0.28, 0.33, 0.22], "p": 0.55, "ky": 1.25,
+                "humedad_comercial": 0.145, "indice_cosecha": 0.5, "n_export_kg_t": 15, "p_export_kg_t": 3.0, "n_absorbido_kg_t": 22, "ndfa": 0, "rastrojo": "alto_cn"},
+    "soja":    {"nombre": "Soja", "familia": "fabaceae", "grupo": "leguminosa", "kc": [0.4, 1.15, 0.5], "etapas": [0.15, 0.25, 0.4, 0.2], "p": 0.5, "ky": 0.85,
+                "humedad_comercial": 0.135, "indice_cosecha": 0.42, "n_export_kg_t": 55, "p_export_kg_t": 5.5, "n_absorbido_kg_t": 75, "ndfa": 0.5, "rastrojo": "bajo_cn"},
+    "girasol": {"nombre": "Girasol", "familia": "asteraceae", "grupo": "oleaginosa", "kc": [0.35, 1.1, 0.35], "etapas": [0.19, 0.27, 0.35, 0.19], "p": 0.45, "ky": 0.95,
+                "humedad_comercial": 0.11, "indice_cosecha": 0.32, "n_export_kg_t": 24, "p_export_kg_t": 5.0, "n_absorbido_kg_t": 40, "ndfa": 0, "rastrojo": "alto_cn"},
+    "sorgo":   {"nombre": "Sorgo granífero", "familia": "poaceae", "grupo": "gramínea", "kc": [0.3, 1.05, 0.55], "etapas": [0.15, 0.27, 0.32, 0.26], "p": 0.55, "ky": 0.9,
+                "humedad_comercial": 0.15, "indice_cosecha": 0.45, "n_export_kg_t": 20, "p_export_kg_t": 3.0, "n_absorbido_kg_t": 30, "ndfa": 0, "rastrojo": "alto_cn"},
+    "mani":    {"nombre": "Maní", "familia": "fabaceae", "grupo": "leguminosa", "kc": [0.4, 1.15, 0.6], "etapas": [0.18, 0.23, 0.35, 0.24], "p": 0.5, "ky": 0.7,
+                "humedad_comercial": 0.09, "indice_cosecha": 0.4, "n_export_kg_t": 43, "p_export_kg_t": 3.9, "n_absorbido_kg_t": 55, "ndfa": 0.58, "rastrojo": "bajo_cn",
+                "fuentes_nutrientes": ["inta_huella_mani", "unrc_fbn_mani"],
+                "nota": "Rinde en caja. N y P exportados: 132,5 kg N y 27,4 kg P2O5 por ha con 3,05 t/ha (Bongiovanni et al. 2016, INTA, método IPNI) = 43 kg N y 3,9 kg P por t. N absorbido: 50 a 60 kg por t (Castro et al. 2006, UNRC, citando a Gascho 1992). Fijación: 58 % en suelo pobre en N y 27 % en suelo rico (Castro et al. 2006); se usa 58 % porque los suelos arenosos de San Luis son pobres en N. Provisional: a validar con un agrónomo"},
+    "trigo":   {"nombre": "Trigo", "familia": "poaceae", "grupo": "gramínea", "kc": [0.4, 1.15, 0.3], "etapas": [0.15, 0.25, 0.4, 0.2], "p": 0.55, "ky": 1.05,
+                "humedad_comercial": 0.14, "indice_cosecha": 0.4, "n_export_kg_t": 20, "p_export_kg_t": 3.8, "n_absorbido_kg_t": 30, "ndfa": 0, "rastrojo": "alto_cn"},
+    "algodon": {"nombre": "Algodón", "familia": "malvaceae", "grupo": "textil", "kc": [0.35, 1.15, 0.6], "etapas": [0.15, 0.26, 0.31, 0.28], "p": 0.65, "ky": 0.85,
+                "humedad_comercial": 0.08, "indice_cosecha": 0.35, "n_export_kg_t": null, "p_export_kg_t": null, "n_absorbido_kg_t": null, "ndfa": 0, "rastrojo": "alto_cn",
+                "nota": "Rinde en bruto (fibra con semilla). Kc y duración de etapas: FAO-56, tablas 11 y 12; p: FAO-56, tabla 22; Ky: FAO-33. No se siembra en San Luis: no hay rinde de referencia del MAGyP para la zona ni balance de nutrientes cargado; lo pidió la revisión agronómica del equipo"},
+    "centeno_cobertura": {"nombre": "Centeno de cobertura", "familia": "poaceae", "grupo": "cultivo de servicio", "kc": [0.4, 1.0, 0.9], "etapas": [0.2, 0.3, 0.5, 0.0], "p": 0.55, "ky": null,
+                "biomasa_kg_ms_ha": 3000, "rastrojo": "alto_cn",
+                "nota": "Biomasa de 3000 kg de materia seca por hectárea al secado: valor provisional para secano semiárido, a reemplazar por el medido"},
+    "alfalfa": {"nombre": "Alfalfa (pastura)", "familia": "fabaceae", "grupo": "pastura", "kc_mensual": [0.4, 0.4, 0.4, 0.5, 0.8, 0.95, 0.95, 0.95, 0.95, 0.95, 0.9, 0.7], "p": 0.55, "ky": 1.1,
+                "anios": 3, "rastrojo": "bajo_cn",
+                "nota": "Pastura de 3 campañas. Kc mensual con reposo invernal (FAO-56 da 0,95 de promedio entre cortes)"}
+  },
+  "uso_anterior": {
+    "virgen": {"nota": "Monte o pastizal natural que nunca se cultivó", "avisos": [
+      "Si es monte nativo (caldén, algarrobo, chañar), desmontar necesita autorización: Ley 26.331 de Bosques Nativos y el Ordenamiento Territorial de Bosques Nativos de San Luis. Consultalo antes de abrir el lote.",
+      "Suelo recién abierto y arenoso: en la primera campaña queda muy expuesto al viento. Conviene sembrar enseguida y dejar rastrojo o un cultivo de cobertura.",
+      "Las leguminosas (soja, maní, alfalfa) no encuentran rizobios propios en un suelo que nunca las tuvo: inocular la semilla siempre.",
+      "En las primeras campañas suele haber gusanos blancos y otras plagas del suelo que vivían en el pastizal: monitorear antes de sembrar.",
+      "Los primeros años el suelo entrega más nitrógeno por la materia orgánica acumulada. El motor todavía no lo suma, así que el balance de nitrógeno queda del lado seguro."]},
+    "pastura": {"nota": "Venía con pastura o campo natural para ganado", "avisos": [
+      "Las primeras campañas después de una pastura suelen tener gusanos blancos y otras plagas del suelo: monitorear antes de sembrar.",
+      "Si la pastura tenía alfalfa u otra leguminosa, el suelo entrega más nitrógeno los primeros años. El motor todavía no lo suma, así que el balance de nitrógeno queda del lado seguro.",
+      "Si nunca hubo soja o maní, inocular la semilla siempre."]}
+  },
+  "costos_magyp_san_luis": {
+    "fuente": "magyp_margenes_2026_06",
+    "nota": "Región San Luis, campaña 2026/27, precios de insumos de junio 2026. Gastos directos = labores + semillas + fitosanitarios + fertilizantes (US$/ha). La comercialización y cosecha (flete, comisiones, paritarias, cosecha) se descuenta del precio como fracción del ingreso bruto, porque crece con el rinde. No incluye arrendamiento ni estructura: es margen bruto en campo propio",
+    "cultivos": {
+      "trigo":     {"gastos_directos_usd_ha": 290.2, "labores": 113.0, "semillas": 45.1, "fitosanitarios": 26.5, "fertilizantes": 105.6, "comercializacion_fraccion": 0.408},
+      "maiz":      {"gastos_directos_usd_ha": 531.7, "labores": 134.6, "semillas": 125.0, "fitosanitarios": 72.2, "fertilizantes": 199.9, "comercializacion_fraccion": 0.481},
+      "soja":      {"gastos_directos_usd_ha": 321.4, "labores": 123.5, "semillas": 59.5, "fitosanitarios": 86.7, "fertilizantes": 51.6, "comercializacion_fraccion": 0.315},
+      "soja_2da":  {"gastos_directos_usd_ha": 280.3, "labores": 114.1, "semillas": 68.0, "fitosanitarios": 83.4, "fertilizantes": 14.7, "comercializacion_fraccion": 0.321},
+      "girasol":   {"gastos_directos_usd_ha": 355.6, "labores": 114.1, "semillas": 67.8, "fitosanitarios": 41.0, "fertilizantes": 132.7, "comercializacion_fraccion": 0.278},
+      "sorgo":     {"gastos_directos_usd_ha": 385.3, "labores": 125.3, "semillas": 49.8, "fitosanitarios": 69.9, "fertilizantes": 140.4, "comercializacion_fraccion": 0.453},
+      "barbecho": {"gastos_directos_usd_ha": 41.0, "aproximado": true, "nota": "MAGyP no publica el barbecho solo: se usan los fitosanitarios del girasol de San Luis (41,0), que son casi todo barbecho químico y preemergente"},
+      "mani":      {"gastos_directos_usd_ha": 713.0, "comercializacion_fraccion": 0.159, "aproximado": true, "nota": "MAGyP no publica maní para San Luis: se usa la región más cercana del informe de Otros Cultivos de julio 2025 (proyección 2025/26, Córdoba sudeste, Laboulaye a Pte. R. S. Peña, secano, siembra convencional): gastos directos 713,0 US$/ha y comercialización y cosecha 166,2 de 1045,8 US$/ha de ingreso bruto (15,9 %)"},
+      "algodon":   {"gastos_directos_usd_ha": 542.5, "comercializacion_fraccion": 0.337, "aproximado": true, "nota": "MAGyP publica el algodón para una región que incluye a San Luis pero se calcula con los planteos del Chaco y Santiago del Estero: informe de Otros Cultivos de julio 2025 (proyección 2025/26, secano, siembra directa, surco estrecho): gastos directos 542,5 US$/ha y comercialización y cosecha 352 de 1044 US$/ha de ingreso bruto (33,7 %)"},
+      "centeno_cobertura": {"gastos_directos_usd_ha": 158.1, "aproximado": true, "nota": "MAGyP no publica cultivos de cobertura: se usan labores + semillas del trigo de San Luis (113,0 + 45,1), sin fertilizante ni cosecha"}
+    }
+  },
+  "ph_por_cultivo": {
+    "nota": "Los descartes por pH salen de la base de cultivos del motor (rotaterra/recomendacion/catalogo.json, topes de FAO Ecocrop pedidos por Hernán el 29/10/2026). Los rangos con rendimiento satisfactorio de la UNLP (pedido de Hernán del 08/11/2026: completar con fuentes nacionales) solo avisan. Estos son riesgos con fuente argentina del banco de cultivos (requerimientos ambientales, 04/11/2026): se avisan en los planes, nunca descartan ni cambian el rinde, porque ninguna fuente da cuánto baja",
+    "riesgos": {
+      "soja": [
+        {"operador": ">=", "ph": 8.0, "fuente": "inta_pergamino_micronutrientes", "texto": "pH alcalino: riesgo de clorosis férrica y falta de zinc en la soja; revisar micronutrientes"},
+        {"operador": ">", "ph": 7.5, "fuente": "unlp_ph_cultivos", "texto": "pH mayor de 7,5: fuera del rango con rendimiento satisfactorio de la soja (4,5 a 7,5; óptimo 6,0 a 7,0); puede rendir menos"},
+        {"operador": "<", "ph": 4.5, "fuente": "unlp_ph_cultivos", "texto": "pH menor de 4,5: fuera del rango con rendimiento satisfactorio de la soja (4,5 a 7,5); conviene encalar"}
+      ],
+      "maiz": [
+        {"operador": ">", "ph": 8.5, "fuente": "inta_cuenca_salado_sodio", "texto": "pH mayor de 8,5: si además hay sodio alto, baja el rinde del maíz; medir sodio"},
+        {"operador": ">", "ph": 8.0, "fuente": "unlp_ph_cultivos", "texto": "pH mayor de 8,0: fuera del rango con rendimiento satisfactorio del maíz (5,0 a 8,0; óptimo 5,5 a 7,0); puede rendir menos"},
+        {"operador": "<", "ph": 5.0, "fuente": "unlp_ph_cultivos", "texto": "pH menor de 5,0: fuera del rango con rendimiento satisfactorio del maíz (5,0 a 8,0); conviene encalar"}
+      ],
+      "mani": [
+        {"operador": ">", "ph": 6.5, "fuente": "inta_manfredi_mani_ph", "texto": "pH mayor de 6,5: el maní puede sufrir falta de manganeso (los mejores lotes tienen 5,8 a 6,5)"}
+      ],
+      "alfalfa": [
+        {"operador": ">", "ph": 7.5, "fuente": "inta_manfredi_alfalfa_ph", "texto": "pH por encima del óptimo de la alfalfa (6,5 a 7,5)"},
+        {"operador": ">", "ph": 8.0, "fuente": "unlp_ph_cultivos", "texto": "pH mayor de 8,0: fuera del rango con rendimiento satisfactorio de la alfalfa (6,0 a 8,0; óptimo 6,5 a 7,5); puede rendir menos"},
+        {"operador": "<", "ph": 6.0, "fuente": "unlp_ph_cultivos", "texto": "pH menor de 6,0: fuera del rango con rendimiento satisfactorio de la alfalfa (6,0 a 8,0); conviene encalar"}
+      ],
+      "algodon": [
+        {"operador": ">", "ph": 7.5, "fuente": "unlp_ph_cultivos", "texto": "pH mayor de 7,5: fuera del rango con rendimiento satisfactorio del algodón (4,8 a 7,5; óptimo 5,2 a 6,0); puede rendir menos"},
+        {"operador": "<", "ph": 4.8, "fuente": "unlp_ph_cultivos", "texto": "pH menor de 4,8: fuera del rango con rendimiento satisfactorio del algodón (4,8 a 7,5); conviene encalar"}
+      ],
+      "centeno_cobertura": [
+        {"operador": ">", "ph": 7.7, "fuente": "unlp_ph_cultivos", "texto": "pH mayor de 7,7: fuera del rango con rendimiento satisfactorio del centeno (4,0 a 7,7; óptimo 5,5 a 6,5); puede rendir menos"},
+        {"operador": "<", "ph": 4.0, "fuente": "unlp_ph_cultivos", "texto": "pH menor de 4,0: fuera del rango con rendimiento satisfactorio del centeno (4,0 a 7,7); conviene encalar"}
+      ],
+      "girasol": [
+        {"operador": ">", "ph": 7.5, "fuente": "unlp_ph_cultivos", "texto": "pH mayor de 7,5: fuera del rango con rendimiento satisfactorio del girasol (6,0 a 7,5); puede rendir menos"},
+        {"operador": "<", "ph": 6.0, "fuente": "unlp_ph_cultivos", "texto": "pH menor de 6,0: fuera del rango con rendimiento satisfactorio del girasol (6,0 a 7,5); conviene encalar"}
+      ],
+      "sorgo": [
+        {"operador": ">", "ph": 7.0, "fuente": "unlp_ph_cultivos", "texto": "pH mayor de 7,0: fuera del rango con rendimiento satisfactorio del sorgo (6,0 a 7,0; óptimo 5,5 a 7,0); puede rendir menos. Hay sorgos del INTA tolerantes a suelos alcalinos (Silero INTA Pemán toleró pH 9,0 en macetas)"},
+        {"operador": "<", "ph": 6.0, "fuente": "unlp_ph_cultivos", "texto": "pH menor de 6,0: fuera del rango con rendimiento satisfactorio del sorgo (6,0 a 7,0); conviene encalar"}
+      ],
+      "trigo": [
+        {"operador": ">", "ph": 8.5, "fuente": "unlp_ph_cultivos", "texto": "pH mayor de 8,5: fuera del rango con rendimiento satisfactorio del trigo (5,8 a 8,5; óptimo 6,0 a 7,0); puede rendir menos"},
+        {"operador": "<", "ph": 5.8, "fuente": "unlp_ph_cultivos", "texto": "pH menor de 5,8: fuera del rango con rendimiento satisfactorio del trigo (5,8 a 8,5); conviene encalar"}
+      ]
+    }
+  },
+  "referencias_sin_dato_local": {
+    "nota": "Rindes y precios que se usan cuando el pedido no trae uno y no hay dato de San Luis. Son aproximados: el plan lo dice en la fuente. El rinde del algodón NO se completa: el de MAGyP (2,4 t/ha) es del Chaco y Santiago del Estero, y el motor lo calibraría como si fuera el de San Luis (en la prueba del lote real el algodón pasaba a ser el cultivo elegido). Si el productor carga su rinde, el algodón ya tiene costo y precio",
+    "precios": {
+      "algodon": {"valor_usd_t": 435.0, "fecha": "2025-06", "fuente": "magyp_otros_cultivos_2025_07", "texto": "algodón en bruto C ½, precio a cosecha de junio 2025 (no hay pizarra diaria del algodón en bruto)"}
+    },
+    "rindes": {
+      "alfalfa": {"valor": 3400, "fuente": "inta_san_luis_alfalfa", "texto": "kg de materia seca por ha y por año: 4,5 t de los ensayos en secano de la EEA San Luis menos 25 % para el productor"}
+    }
+  },
+  "cociente_fototermal": {
+    "cultivos": ["trigo"],
+    "que_es": "El cociente fototermal (Q) mide cuánta luz recibe el trigo por cada grado de temperatura en el período en que se define el número de granos. Más luz y menos calor dan un Q más alto y más granos posibles",
+    "formula": "Q = radiación global media (MJ/m²/día) ÷ (temperatura media − 4,5 °C), la fórmula del Q de trigo del INTA (SEPA)",
+    "periodo": "De 20 días antes a 10 días después de la floración (31 días). La floración se toma a mediados del mes que el motor usa para las heladas (octubre en el trigo de junio)",
+    "dato": "Serie diaria de NASA POWER en el lote (el INTA usa el pronóstico NOAA GFS para su mapa). Q bajo, mediano y alto = percentiles 20, 50 y 80 de las campañas de la serie",
+    "como_leerlo": "Sirve para comparar campañas y fechas de siembra en el mismo lugar: un Q alto indica más potencial de granos. No cambia el rinde que calcula el motor: en la región semiárida pampeana el Q no explicó el rinde del trigo y el agua sí (UNLPam, Santa Rosa), y el motor ya calcula el rinde con el agua del lote",
+    "fuentes": ["inta_sepa_q_trigo", "periodo_critico_trigo", "unlpam_q_semiarido", "power_q"]
+  },
+  "temperatura_suelo_siembra": {
+    "nota": "Temperatura mínima del suelo (0 a 10 cm) para sembrar, valor bajo del rango. Se compara con el promedio de la serie de NASA POWER (TSOIL1) en el mes de siembra. Si el mes está frío pero uno siguiente alcanza, la siembra se corre a ese mes (si no entra en la campaña, el ciclo se acorta como mucho 1 mes); si ningún mes alcanza, el cultivo no es factible en el lote",
+    "fuente": "revision_agronomica_equipo", "fuente_dato": "power_tsoil1", "acortar_ciclo_max_meses": 1,
+    "minimo_c": {"girasol": 8, "mani": 18, "soja": 15, "maiz": 10, "maiz_tardio": 14, "trigo": 6, "centeno_cobertura": 4, "sorgo": 15, "algodon": 16},
+    "rango": {"girasol": "8 a 10 °C", "mani": "18 a 20 °C", "soja": "15 °C", "maiz": "10 a 12 °C", "maiz_tardio": "14 a 18 °C", "trigo": "6 a 8 °C",
+              "centeno_cobertura": "4 a 6 °C", "sorgo": "15 °C", "algodon": "16 a 18 °C"}
+  },
+  "temperaturas_criticas": {
+    "nota": "Helada: temperatura mínima del aire a 2 m (NASA POWER T2M_MIN) en el mes de la etapa, igual o menor que la crítica. Calor: días con máxima de más de 35 °C en el mes del período crítico. Se cuenta en cuántas campañas reales de la serie pasó y se avisa si pasó en 1 de cada 5 o más (regla de presentación, no de la fuente). Nunca descarta ni cambia el rinde. En el cultivo la helada puede ser más fuerte que en el aire a 2 m",
+    "aviso_desde_fraccion": 0.2,
+    "floracion_meses_antes_de_cosecha": {"trigo": 2, "nota": "En el trigo el crecimiento del invierno es lento y las etapas del Kc no ubican bien la floración: se toma 2 meses antes de la cosecha (siembra en junio, espigazón en octubre, cosecha en diciembre). El resto, al final del desarrollo del Kc"},
+    "helada_c": {
+      "trigo":   {"emergencia": -10, "floracion": -1, "llenado": -4, "fuente": "inta_ascasubi_heladas"},
+      "girasol": {"emergencia": -6, "floracion": -3, "llenado": -3, "fuente": "inta_ascasubi_heladas"},
+      "maiz":    {"emergencia": -3, "floracion": -2, "llenado": -3, "fuente": "inta_ascasubi_heladas"},
+      "soja":    {"emergencia": -4, "floracion": -3, "llenado": -3, "fuente": "inta_ascasubi_heladas"},
+      "sorgo":   {"emergencia": -3, "floracion": -2, "llenado": -3, "fuente": "inta_ascasubi_heladas"},
+      "mani":    {"emergencia": -1, "fuente": "fao_heladas"}
+    },
+    "calor_periodo_critico": {
+      "maiz": {"etapa": "floracion", "texto": "floración (R1 ± 15 días)"},
+      "sorgo": {"etapa": "floracion", "texto": "floración (panoja embuchada a 10 días después)"},
+      "soja": {"etapa": "llenado", "texto": "formación de vainas y granos (R3 a R6)"},
+      "mani": {"etapa": "llenado", "texto": "formación de cajas y granos (R3 a R6)"},
+      "fuente": "riglos_2023_calor"
+    }
+  },
+  "costo_riego": {"usd_por_mm_ha": 1.50, "operativo_usd_mm": 0.89, "energia_usd_mm": 0.57, "reparaciones_usd_mm": 0.23,
+    "mano_de_obra_usd_mm": 0.10, "amortizaciones_usd_mm": 0.38, "intereses_usd_mm": 0.23, "fuente": "inta_manfredi_riego_2024",
+    "nota": "Costo total del mm con pivote eléctrico (INTA Manfredi, Córdoba, tarifa rural julio 2024): 0,89 de operación (0,57 energía, 0,23 reparaciones, 0,10 mano de obra), 0,38 de amortización y 0,23 de intereses. No hay un valor publicado para San Luis; con energía propia o tarifa distinta conviene cargar el costo del lote. Desde abril de 2026 el IVA de la luz para riego bajó de 27 % a 10,5 % (RIMI): según INTA Manfredi, cerca de 11 % menos por mm"},
+  "ambientes": {"aporte_maximo": 3.0, "aviso_bajo_desde_fraccion": 0.15,
+    "nota": "Balance de masa: el agua que escurre de la loma y la media loma (la misma fracción que el motor calcula por cobertura) llega al bajo y se reparte en su superficie, con un tope de 3 veces el escurrimiento propio porque parte se infiltra en el camino (tope provisional, sin calibrar). Ambientes de NASADEM: más de 1 m por encima o por debajo de la altura media del lote"},
+  "capacidad_uso": {"no_arable_desde": 5, "fuente": "usda_capacidad_uso",
+    "clases": {"1": "sin limitaciones para cultivos", "2": "limitaciones leves; prácticas simples de conservación",
+               "3": "limitaciones moderadas; rotaciones y conservación necesarias", "4": "limitaciones muy severas; agricultura ocasional con pasturas",
+               "5": "no apta para cultivos (anegamiento, piedras); pasturas", "6": "no apta para cultivos; pasturas o monte con manejo",
+               "7": "no apta para cultivos; pastoreo o monte con limitaciones muy severas", "8": "sin uso agropecuario; conservación"},
+    "nota": "Clases 1 a 4 aptas para agricultura con limitaciones crecientes; 5 a 8 no aptas (Klingebiel y Montgomery, 1961, USDA, adoptado por el INTA en las cartas de suelo)"},
+  "arrendamiento_san_luis": {"usd_ha_campana": 228.9, "qq_soja_ha": 7.0, "fuente": "magyp_margenes_2026_06",
+    "nota": "Alquiler anual de la región San Luis (MAGyP, junio 2026): 7 qq de soja por ha. Se resta una vez por campaña, haya cultivo o no"},
+  "ocupaciones": {
+    "maiz":            [{"cultivo": "maiz", "siembra": 5, "cosecha": 10}],
+    "soja":            [{"cultivo": "soja", "siembra": 6, "cosecha": 11}],
+    "girasol":         [{"cultivo": "girasol", "siembra": 5, "cosecha": 9}],
+    "sorgo":           [{"cultivo": "sorgo", "siembra": 6, "cosecha": 11}],
+    "mani":            [{"cultivo": "mani", "siembra": 5, "cosecha": 11}],
+    "trigo":           [{"cultivo": "trigo", "siembra": 1, "cosecha": 7}],
+    "trigo/soja_2da":  [{"cultivo": "trigo", "siembra": 1, "cosecha": 7}, {"cultivo": "soja", "siembra": 7, "cosecha": 11, "segunda": true}],
+    "trigo/sorgo_2da": [{"cultivo": "trigo", "siembra": 1, "cosecha": 7}, {"cultivo": "sorgo", "siembra": 7, "cosecha": 11, "segunda": true}],
+    "cs/maiz":         [{"cultivo": "centeno_cobertura", "siembra": 0, "cosecha": 4}, {"cultivo": "maiz", "siembra": 5, "cosecha": 10}],
+    "maiz_tardio":     [{"cultivo": "maiz", "siembra": 7, "cosecha": 11, "tardio": true}],
+    "cs/maiz_tardio":  [{"cultivo": "centeno_cobertura", "siembra": 0, "cosecha": 4}, {"cultivo": "maiz", "siembra": 7, "cosecha": 11, "tardio": true}],
+    "cs/soja":         [{"cultivo": "centeno_cobertura", "siembra": 0, "cosecha": 4}, {"cultivo": "soja", "siembra": 6, "cosecha": 11}],
+    "cs/girasol":      [{"cultivo": "centeno_cobertura", "siembra": 0, "cosecha": 4}, {"cultivo": "girasol", "siembra": 5, "cosecha": 9}],
+    "cs/sorgo":        [{"cultivo": "centeno_cobertura", "siembra": 0, "cosecha": 4}, {"cultivo": "sorgo", "siembra": 6, "cosecha": 11}],
+    "algodon":         [{"cultivo": "algodon", "siembra": 6, "cosecha": 11}],
+    "barbecho":        [],
+    "alfalfa":         [{"cultivo": "alfalfa", "siembra": 0, "cosecha": 11}]
+  },
+  "reglas_secuencia": [
+    {"id": "retorno_girasol", "tipo": "dura", "cultivo": "girasol", "campanas_sin_repetir": 3,
+     "texto": "Girasol no se repite antes de 3 campañas libres (esclerotinia, verticilosis, phomopsis)", "fuente": "inta_rotacion"},
+    {"id": "retorno_mani", "tipo": "dura", "cultivo": "mani", "campanas_sin_repetir": 3,
+     "texto": "Maní no se repite antes de 3 campañas libres (carbón del maní, Thecaphora frezii)", "fuente": "inta_rotacion"},
+    {"id": "soja_seguida", "tipo": "blanda", "cultivo": "soja", "max_seguidas": 2,
+     "texto": "Más de 2 campañas seguidas con soja suben el riesgo de podredumbre carbonosa y nematodos", "fuente": "inta_rotacion"},
+    {"id": "maiz_seguido", "tipo": "blanda", "cultivo": "maiz", "max_seguidas": 2,
+     "texto": "Más de 2 campañas seguidas con maíz suben enfermedades de rastrojo y chicharrita", "fuente": "inta_rotacion"},
+    {"id": "trigo_seguido", "tipo": "blanda", "cultivo": "trigo", "max_seguidas": 1,
+     "texto": "Trigo sobre trigo sube mal del pie, fusariosis y mancha amarilla", "fuente": "inta_rotacion"},
+    {"id": "segunda_con_agua", "tipo": "dura", "agua_relativa_minima": 0.6,
+     "texto": "El cultivo de segunda va solo si en el año medio cubre al menos el 60 % de su demanda de agua", "fuente": "fao33"},
+    {"id": "retorno_algodon", "tipo": "dura", "cultivo": "algodon", "campanas_sin_repetir": 2,
+     "texto": "Algodón no se repite antes de 2 campañas libres (mejor 3): verticilosis y picudo del algodonero", "fuente": "revision_agronomica_equipo"},
+    {"id": "cultivo_con_agua", "tipo": "dura",
+     "umbral_mm": {"girasol": 300, "mani": 330, "soja": 300, "maiz": 360, "maiz_tardio": 300, "trigo": 240, "centeno_cobertura": 180, "sorgo": 270, "algodon": 420},
+     "demanda_mm": {"girasol": "500 a 700", "mani": "550 a 700", "soja": "500 a 700", "maiz": "600 a 800", "maiz_tardio": "500 a 650", "trigo": "400 a 550",
+                    "centeno_cobertura": "300 a 450", "sorgo": "450 a 650", "algodon": "700 a 900"},
+     "nota": "Umbral = 60 % de la demanda de un ciclo normal (valor bajo del rango de la revisión). Oferta = agua útil del suelo a la siembra más la lluvia (y el riego) de los meses del ciclo. Se usan los mm de la revisión y no la ETc del motor, porque la ETo por Hargreaves en el semiárido da más alta",
+     "texto": "Un cultivo va solo si en el año medio el agua del suelo más la lluvia del ciclo llega al 60 % de su demanda; si no, conviene uno más rústico", "fuente": "revision_agronomica_equipo"},
+    {"id": "sorgo_seguido", "tipo": "blanda", "cultivo": "sorgo", "max_seguidas": 2,
+     "texto": "Más de 2 campañas seguidas con sorgo suben las malezas gramíneas y las enfermedades", "fuente": "revision_agronomica_equipo"},
+    {"id": "centeno_seguido", "tipo": "blanda", "cultivo": "centeno_cobertura", "max_seguidas": 2,
+     "texto": "Más de 2 campañas seguidas con centeno de cobertura: conviene cambiar de especie (vicia o avena)", "fuente": "revision_agronomica_equipo"},
+    {"id": "soja_tras_girasol", "tipo": "blanda", "antes": "girasol", "despues": "soja",
+     "texto": "Soja justo después de girasol: pasa la esclerotinia (podredumbre blanca)", "fuente": "revision_agronomica_equipo"},
+    {"id": "soja_tras_mani", "tipo": "blanda", "antes": "mani", "despues": "soja",
+     "texto": "Soja justo después de maní: dos leguminosas seguidas y el suelo queda muy desprotegido", "fuente": "revision_agronomica_equipo"},
+    {"id": "sorgo_tras_sorgo", "tipo": "blanda", "antes": "sorgo", "despues": "sorgo",
+     "texto": "Sorgo sobre sorgo: el rastrojo frena a las plántulas (alelopatía) y sube la fusariosis", "fuente": "revision_agronomica_equipo"},
+    {"id": "familias_en_3_campanas", "tipo": "blanda", "ventana": 3, "minimo_familias": 2,
+     "texto": "3 campañas seguidas con una sola familia de cultivos: alternar gramíneas con leguminosas o girasol", "fuente": "revision_agronomica_equipo"}
+  ],
+  "organismos": [
+    {"id": "sclerotinia", "nombre": "Esclerotinia (Sclerotinia sclerotiorum)", "hospedantes": ["girasol", "soja", "alfalfa"], "persistencia_campanas": 4, "fuente": "inta_rotacion"},
+    {"id": "macrophomina", "nombre": "Podredumbre carbonosa (Macrophomina phaseolina)", "hospedantes": ["soja", "girasol", "mani", "sorgo", "maiz"], "persistencia_campanas": 3, "fuente": "inta_rotacion",
+     "nota": "Pega más con sequía: típica del semiárido"},
+    {"id": "carbon_mani", "nombre": "Carbón del maní (Thecaphora frezii)", "hospedantes": ["mani"], "persistencia_campanas": 5, "fuente": "inta_rotacion"},
+    {"id": "mancha_amarilla", "nombre": "Mancha amarilla del trigo (Drechslera tritici-repentis)", "hospedantes": ["trigo"], "persistencia_campanas": 2, "fuente": "uba_herbario_mancha_amarilla",
+     "nota": "Sobrevive en el rastrojo de trigo; el trigo guacho también la mantiene"},
+    {"id": "fusariosis", "nombre": "Fusariosis de la espiga (Fusarium graminearum)", "hospedantes": ["trigo", "maiz"], "persistencia_campanas": 2, "fuente": "inia_fusariosis",
+     "nota": "El rastrojo de maíz y de trigo es fuente de inóculo: no sembrar trigo sobre rastrojo de maíz o trigo enfermo"},
+    {"id": "tizon_maiz", "nombre": "Tizón del maíz (Exserohilum turcicum)", "hospedantes": ["maiz", "sorgo"], "persistencia_campanas": 2, "fuente": "uba_herbario_tizon",
+     "nota": "Sobrevive en el rastrojo de maíz; el sorgo es el otro hospedante importante"},
+    {"id": "ojo_de_rana", "nombre": "Mancha ojo de rana de la soja (Cercospora sojina)", "hospedantes": ["soja"], "persistencia_campanas": 2, "fuente": "inta_mj_ojo_de_rana",
+     "nota": "Una vez en el lote, el rastrojo de soja es la principal fuente de inóculo"},
+    {"id": "verticilosis", "nombre": "Verticilosis (Verticillium dahliae)", "hospedantes": ["algodon", "girasol"], "persistencia_campanas": 3, "fuente": "revision_agronomica_equipo",
+     "nota": "Los microesclerocios duran años en el suelo y afectan al algodón y al girasol. La revisión pide 2 a 3 campañas libres de algodón"},
+    {"id": "mal_del_pie", "nombre": "Mal del pie del trigo (Gaeumannomyces graminis var. tritici)", "hospedantes": ["trigo"], "persistencia_campanas": 2, "fuente": "embrapa_mal_del_pie",
+     "nota": "Sobrevive en el rastrojo y las raíces del trigo; baja con uno o dos inviernos sin trigo. Lo sumó la revisión agronómica del equipo"}
+  ],
+  "malezas": {
+    "fuente": "aapresid_rem",
+    "nota": "Grupos de herbicidas según la clasificación HRAC. Para cada cultivo, los grupos que se pueden usar sin dañarlo (selectivos) en el manejo habitual de la región pampeana; el grupo base es el que más se usa. Provisional, a revisar con un agrónomo",
+    "grupos_hrac": {
+      "1":  {"nombre": "graminicidas ACCasa (haloxifop, cletodim)", "controla": "gramineas"},
+      "2":  {"nombre": "inhibidores de ALS (imazetapir, metsulfurón, diclosulam)", "controla": "ambas"},
+      "4":  {"nombre": "hormonales (2,4-D, dicamba, 2,4-DB)", "controla": "latifoliadas"},
+      "5":  {"nombre": "inhibidores del fotosistema II (atrazina, metribuzin)", "controla": "latifoliadas"},
+      "9":  {"nombre": "glifosato", "controla": "ambas"},
+      "12": {"nombre": "flurocloridona", "controla": "latifoliadas"},
+      "14": {"nombre": "inhibidores de PPO (fomesafen, sulfentrazone, flumioxazin)", "controla": "latifoliadas"},
+      "15": {"nombre": "preemergentes (S-metolacloro, acetoclor)", "controla": "ambas"},
+      "27": {"nombre": "inhibidores de HPPD (mesotrione, topramezone)", "controla": "latifoliadas"}
+    },
+    "por_cultivo": {
+      "soja":    {"grupos": ["9", "2", "14", "15", "1"], "base": "9"},
+      "maiz":    {"grupos": ["5", "15", "27", "4", "9", "2"], "base": "5"},
+      "sorgo":   {"grupos": ["5", "15", "4"], "base": "5"},
+      "trigo":   {"grupos": ["2", "4", "1"], "base": "2"},
+      "girasol": {"grupos": ["15", "12", "14", "2"], "base": "12"},
+      "algodon": {"grupos": ["9", "15", "5", "2", "1"], "base": "9"},
+      "mani":    {"grupos": ["15", "2", "14", "1"], "base": "15"},
+      "alfalfa": {"grupos": ["2", "4", "1"], "base": "2"},
+      "centeno_cobertura": {"grupos": [], "base": null}
+    },
+    "barbecho": {"grupos": ["9", "4", "14", "15"], "nota": "barbecho con glifosato, hormonal y residuales, como recomienda la REM"},
+    "estacion_del_cultivo": {"trigo": "invierno", "centeno_cobertura": "invierno"},
+    "resistentes": [
+      {"id": "yuyo_colorado", "nombre": "Yuyo colorado (Amaranthus hybridus y A. palmeri)", "tipo": "latifoliadas", "estacion": "verano", "resistente_a": ["9", "2"], "fuente": "aapresid_rem"},
+      {"id": "rama_negra", "nombre": "Rama negra (Conyza bonariensis y C. sumatrensis)", "tipo": "latifoliadas", "estacion": "invierno", "resistente_a": ["9", "2"], "fuente": "aapresid_rem",
+       "nota": "La resistencia a ALS está confirmada en C. sumatrensis (sur de Santa Fe)"},
+      {"id": "sorgo_de_alepo", "nombre": "Sorgo de Alepo (Sorghum halepense)", "tipo": "gramineas", "estacion": "verano", "resistente_a": ["9", "1"], "sin_control_selectivo_en": ["sorgo"], "fuente": "aapresid_rem"},
+      {"id": "pata_de_gallina", "nombre": "Pata de gallina (Eleusine indica)", "tipo": "gramineas", "estacion": "verano", "resistente_a": ["9"], "fuente": "aapresid_rem"}
+    ],
+    "presentes_por_defecto": ["yuyo_colorado", "rama_negra"],
+    "por_defecto_nota": "La REM encontró rama negra en el 99 % y yuyo colorado en el 90 % de los partidos y departamentos relevados: se suponen presentes si el productor no dice otra cosa",
+    "centeno_suprime": ["rama_negra"],
+    "centeno_fuente": "aapresid_cultivos_servicio",
+    "herramientas_minimas": 2
+  },
+  "enfermedades_que_la_rotacion_no_corta": [
+    {"nombre": "Royas del maíz y del trigo", "motivo": "las esporas llegan con el viento desde otras zonas; se manejan con variedades resistentes y fungicida"},
+    {"nombre": "Mal de Río Cuarto (maíz)", "motivo": "es un virus que transmite una chicharrita; depende de la fecha de siembra y de la zona, no del cultivo anterior"},
+    {"nombre": "Podredumbre por Phytophthora (soja)", "motivo": "las oosporas duran más de 10 años en el suelo; se maneja con variedades resistentes y buen drenaje", "fuente": "uba_herbario_phytophthora"},
+    {"nombre": "Viruela del maní y mancha marrón de la soja", "motivo": "no se encontró una fuente reconocida que cuantifique el efecto de la rotación; el maní ya tiene la regla de 3 campañas libres"}
+  ],
+  "residuos": {
+    "fraccion_carbono": 0.45,
+    "raices_sobre_aereo": 0.3,
+    "descomposicion_mensual": {"alto_cn": 0.05, "bajo_cn": 0.12},
+    "cobertura_coef_ha_kg": 0.0004,
+    "nota": "Cobertura = 1 − e^(−0,0004 × kg de rastrojo por ha); descomposición exponencial por mes. Valores provisionales"
+  },
+  "perfiles": {
+    "rentabilidad":      {"E": 0.5, "S": 0.05, "W": 0.1, "C": 0.05, "B": 0.05, "H": 0.1, "D": 0.05, "R": 0.1},
+    "equilibrado":       {"E": 0.2, "S": 0.12, "W": 0.15, "C": 0.12, "B": 0.12, "H": 0.12, "D": 0.07, "R": 0.1},
+    "conservacion":      {"E": 0.05, "S": 0.15, "W": 0.1, "C": 0.25, "B": 0.25, "H": 0.1, "D": 0.05, "R": 0.05},
+    "eficiencia_hidrica":{"E": 0.1, "S": 0.05, "W": 0.45, "C": 0.05, "B": 0.1, "H": 0.05, "D": 0.05, "R": 0.15},
+    "diversificacion":   {"E": 0.1, "S": 0.05, "W": 0.1, "C": 0.05, "B": 0.1, "H": 0.15, "D": 0.35, "R": 0.1},
+    "recuperacion":      {"E": 0.0, "S": 0.25, "W": 0.1, "C": 0.25, "B": 0.25, "H": 0.1, "D": 0.05, "R": 0.0}
+  }
+}
