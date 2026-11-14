@@ -102,7 +102,7 @@ CONTROLADORES JAVASCRIPT:
 
             <div class="flex items-center gap-2 sm:gap-3">
                 <!-- Accesos rápidos de arquitectura (exclusivos Admin) -->
-                <div id="navAdminTools" class="hidden md:flex items-center gap-2 mr-2">
+                <div id="navAdminTools" class="hidden items-center gap-2 mr-2">
                     <a
                         href="/mapa"
                         class="px-3 py-1.5 rounded-xl text-xs font-mono bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 transition"
@@ -984,13 +984,16 @@ CONTROLADORES JAVASCRIPT:
             nameDisplay.textContent = `${currentUser.nombre} ${currentUser.apellido}`;
             locDisplay.textContent = `${currentUser.ciudad || "Sin localidad"}, ${currentUser.provincia || "Argentina"}`;
 
+            const navAdminTools = document.getElementById("navAdminTools");
+
             if (rol === "admin") {
                 badge.textContent = "ADMIN";
                 badge.className = "px-3 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/40";
                 welcomeTitle.textContent = `Consola Maestra Earth2Worlds — ${currentUser.nombre}`;
                 welcomeSubtitle.textContent = "Control total RBAC sobre propietarios, operadores, campos productivos y auditoría del esquema.";
 
-                document.getElementById("navAdminTools").classList.remove("hidden");
+                navAdminTools.classList.remove("hidden");
+                navAdminTools.classList.add("flex");
                 document.getElementById("adminStatsBar").classList.remove("hidden");
                 document.getElementById("adminStatsBar").classList.add("grid");
                 document.getElementById("tabBtnPropietarios").classList.remove("hidden");
@@ -1004,6 +1007,8 @@ CONTROLADORES JAVASCRIPT:
                 welcomeTitle.textContent = `Bienvenido, ${currentUser.nombre} ${currentUser.apellido}`;
                 welcomeSubtitle.textContent = "Administra tus establecimientos productivos y asigna lotes a tus operadores de campo.";
 
+                navAdminTools.classList.add("hidden");
+                navAdminTools.classList.remove("flex");
                 document.getElementById("tabBtnOperadores").classList.remove("hidden");
                 document.getElementById("btnNuevoOperadorHeader").classList.remove("hidden");
             } else {
@@ -1012,6 +1017,8 @@ CONTROLADORES JAVASCRIPT:
                 welcomeTitle.textContent = `Panel de Operador — ${currentUser.nombre} ${currentUser.apellido}`;
                 welcomeSubtitle.textContent = "Visualización de solo lectura sobre los establecimientos asignados por tu propietario.";
 
+                navAdminTools.classList.add("hidden");
+                navAdminTools.classList.remove("flex");
                 document.getElementById("btnNuevoCampo").classList.add("hidden");
             }
         }

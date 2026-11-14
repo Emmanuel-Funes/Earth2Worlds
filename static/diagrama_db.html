@@ -91,12 +91,27 @@
 
     <script src="/static/js/app.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener("DOMContentLoaded", async () => {
             if (!getToken()) {
                 window.location.href = "/login";
                 return;
             }
-            cargarEsquemaEnVivo();
+            try {
+                const res = await authFetch("/api/auth/me");
+                if (!res.ok) {
+                    clearSession();
+                    window.location.href = "/login";
+                    return;
+                }
+                const user = await res.json();
+                if (user.rol !== "admin") {
+                    window.location.href = "/";
+                    return;
+                }
+                await cargarEsquemaEnVivo();
+            } catch (err) {
+                window.location.href = "/";
+            }
         });
 
         async function cargarEsquemaEnVivo() {

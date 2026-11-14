@@ -193,10 +193,10 @@ def _validar_propiedad_campos(
 
 @app.get("/api/database/schema", tags=["Base de Datos"])
 def get_database_schema(
-    current_user: Usuario = Depends(get_current_user),
+    current_user: Usuario = Depends(require_admin),
     db: Session = Depends(get_db),
 ) -> Dict[str, Any]:
-    """Devuelve introspección en vivo de tablas, columnas, PKs, FKs y conteo de filas de earth2worlds.db."""
+    """Devuelve introspección en vivo de tablas, columnas, PKs, FKs y conteo de filas de earth2worlds.db (exclusivo Admin)."""
     inspector = inspect(engine)
     tablas_nombres = inspector.get_table_names()
     tablas_info: List[Dict[str, Any]] = []

@@ -375,7 +375,28 @@
                 .join("");
         }
 
-        document.addEventListener("DOMContentLoaded", renderizarMapaSecciones);
+        document.addEventListener("DOMContentLoaded", async () => {
+            if (!getToken()) {
+                window.location.href = "/login";
+                return;
+            }
+            try {
+                const res = await authFetch("/api/auth/me");
+                if (!res.ok) {
+                    clearSession();
+                    window.location.href = "/login";
+                    return;
+                }
+                const user = await res.json();
+                if (user.rol !== "admin") {
+                    window.location.href = "/";
+                    return;
+                }
+                renderizarMapaSecciones();
+            } catch (err) {
+                window.location.href = "/";
+            }
+        });
     </script>
 </body>
 </html>
