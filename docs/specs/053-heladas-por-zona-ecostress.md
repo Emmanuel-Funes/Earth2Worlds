@@ -28,9 +28,9 @@ Mostrar **en qué parte del lote** hiela. VIIRS (spec 030) da todas las noches u
 ## Salida (contrato común, dos variables nuevas)
 
 ```json
-{"lote_id": "lote-prueba", "fecha": "2026-10-08", "variable": "temp_sup_min_70m_c", "valor": -0.2,
+{"lote_id": "lote-prueba", "fecha": "2026-11-14", "variable": "temp_sup_min_70m_c", "valor": -0.2,
  "unidad": "°C", "fuente": "ECOSTRESS", "resolucion_m": 70, "calidad": "buena",
- "nota": "ECOSTRESS LST nocturna a 70 m (temperatura de superficie, no del aire) · mínima -0.2 · mediana 3.2 · máxima 4.0 °C · 2% del lote a 0 °C o menos · punto más frío en -33.70465, -65.2958 · válidos 98% · riesgo de helada (≤ 0 °C de superficie) · pasada 2026-10-08 07:54 UTC (03:32 hora solar) · ECOv003_L2T_LSTE_..."}
+ "nota": "ECOSTRESS LST nocturna a 70 m (temperatura de superficie, no del aire) · mínima -0.2 · mediana 3.2 · máxima 4.0 °C · 2% del lote a 0 °C o menos · punto más frío en -33.70465, -65.2958 · válidos 98% · riesgo de helada (≤ 0 °C de superficie) · pasada 2026-11-14 07:54 UTC (03:32 hora solar) · ECOv003_L2T_LSTE_..."}
 {"variable": "helada_superficie_pct", "valor": 2.0, "unidad": "%", "...": "misma fecha, calidad y nota"}
 ```
 
@@ -58,7 +58,7 @@ Workflow `Probar ECOSTRESS (heladas por zona)` y `probar_ecostress_heladas.py`. 
 
 ## Resultado de la prueba real
 
-Corrida desde el entorno NASA (GitHub Actions sigue pausado por facturación). Lote de prueba (-33,700; -65,300)–(-33,705; -65,295). Del 1/8 al 27/10/2026, respuesta en **27 s**:
+Corrida desde el entorno NASA (GitHub Actions sigue pausado por facturación). Lote de prueba (-33,700; -65,300)–(-33,705; -65,295). Del 1/8 al 14/11/2026, respuesta en **27 s**:
 
 | Noche | Mínima del lote | % del lote ≤ 0 °C | Mediana | Calidad |
 |---|---|---|---|---|
