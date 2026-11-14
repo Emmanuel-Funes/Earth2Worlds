@@ -1,7 +1,12 @@
 """Tests para la autenticación efímera de invitados (Básico y Avanzado) en Earth2Worlds."""
 
 from fastapi.testclient import TestClient
+from app.database import Base, engine
+from app.models import Campo, Usuario  # noqa: F401
 from app.main import app
+
+# Asegurar tablas existentes para la prueba
+Base.metadata.create_all(bind=engine)
 
 client = TestClient(app)
 
