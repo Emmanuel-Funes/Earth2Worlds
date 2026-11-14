@@ -1,6 +1,6 @@
 # Spec 060 · Meses de suelo desnudo del lote con MODIS
 
-**Estado:** construida y probada con datos reales (30/10/2026) · **Aprobada por:** Hernán, 30/10/2026 ("Vamos con la partes de satelites y obtencion de datos que es lo mio, avancemos", sobre los faltantes del desafío Field Shift) · **Rama:** `MODIS-suelo_desnudo_por_mes` · **Depende de:** PR #24 (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** Earthdata (ya cargado)
+**Estado:** construida y probada con datos reales · **Aprobada por:** Hernán ("Vamos con la partes de satelites y obtencion de datos que es lo mio, avancemos", sobre los faltantes del desafío Field Shift) · **Rama:** `MODIS-suelo_desnudo_por_mes` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** Earthdata (ya cargado)
 
 ## Objetivo
 
@@ -12,7 +12,7 @@ El desafío pide mostrar **cuándo los lotes quedan típicamente desnudos**. En 
 |---|---|---|---|---|
 | `MOD13Q1` (la versión más nueva en CMR; hoy la 061) | NASA (MODIS Terra, LP DAAC) | NDVI de compuestos de 16 días con confiabilidad por píxel | 250 m | CMR + OPeNDAP de Earthdata, solo la ventana del lote |
 
-- **Período: los últimos 48 meses completos** (hoy, del 1/10/2022 al 30/9/2026). El OPeNDAP de la NASA sirve MOD13Q1 recién desde mediados de 2022: los compuestos anteriores dan 404 (probado año por año, de 2015 a 2026).
+- **Período: los últimos 48 meses completos** (por ejemplo, del 1/10/2022 al 30/9/2026). El OPeNDAP de la NASA sirve MOD13Q1 recién desde mediados de 2022: los compuestos anteriores dan 404 (probado año por año, de 2015 a 2026).
 - Satélite independiente (spec 009): repite a propósito la lectura de MODIS del conector de NDVI y no lo importa.
 
 ## Proceso
@@ -60,7 +60,7 @@ El desafío pide mostrar **cuándo los lotes quedan típicamente desnudos**. En 
 
 ## Prueba real
 
-30/10/2026 01:55 UTC desde el entorno de la nube (`probar_suelo_desnudo.py` con el lote de prueba de 25 ha), del 10/2022 al 09/2026. **100 s.** 91 de 117 compuestos con el lote visible.
+Desde el entorno de la nube (`probar_suelo_desnudo.py` con el lote de prueba de 25 ha), del 10/2022 al 09/2026. **100 s.** 91 de 117 compuestos con el lote visible.
 
 | Mes | NDVI mediano | Cobertura baja (% de los años) |
 |---|---|---|
