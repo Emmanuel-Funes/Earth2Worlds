@@ -20,3 +20,26 @@ Conector HLS: NDVI y NDMI del lote a 30 m (spec 002).
 ## Depende de
 
 Solo del núcleo (rama `nucleo-api-y-contrato-comun`): no importa ningún otro satélite.
+
+## Prueba real del 14/11/2026
+
+Corrida el 14/11/2026 contra la fuente real, con datos de los últimos días (desde esta máquina de trabajo). Lote de prueba de San Luis.
+
+Comando: `python probar_hls.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" "2026-10-05" "2026-11-09"`
+
+```
+NDVI y NDMI del lote (HLS, 30 m) del 2026-10-05 al 2026-11-09
+
+Fecha          NDVI   NDMI  Calidad     NDVI gráfico
+2026-10-05     0.29  -0.10  buena       █████████
+2026-10-18     0.28  -0.15  buena       ████████
+2026-10-21     0.29  -0.17  buena       █████████
+2026-10-28     0.29  -0.14  buena       █████████
+2026-10-29     0.31  -0.15  buena       █████████
+2026-10-30     0.32  -0.15  buena       █████████
+2026-11-01     0.31  -0.14  buena       █████████
+2026-11-04     0.32  -0.14  buena       ██████████
+2026-11-05     0.29  -0.15  buena       █████████
+
+9 fechas con imagen, 9 con el lote despejado.
+```
