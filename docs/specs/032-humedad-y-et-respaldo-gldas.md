@@ -39,7 +39,7 @@ El lote como lo reciben los satélites: `lote["id"]`, su centro (`lat`/`lon`) y 
 ## Salida (contrato común)
 
 ```json
-{"lote_id": "lote-7", "fecha": "2026-09-22", "variable": "et_mm_dia", "valor": 0.3,
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "et_mm_dia", "valor": 0.3,
  "unidad": "mm/día", "fuente": "GLDAS", "resolucion_m": 25000, "calidad": "buena",
  "nota": "Respaldo · ET del modelo GLDAS Noah de la NASA (GES DISC), promedio de 8 pasos de 3 h · píxel de 0,25° (~25 km), dato REGIONAL de modelo, no una medición del lote"}
 ```
