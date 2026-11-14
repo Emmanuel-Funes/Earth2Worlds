@@ -15,10 +15,10 @@ on:
         description: "Longitud del lote (ej. -65.46)"
         default: "-65.46"
       desde:
-        description: "Desde (AAAA-MM-DD). Vacío = automático: hace 74 días"
+        description: "Desde (AAAA-MM-DD). Vacío = automático: hace 17 días"
         default: ""
       hasta:
-        description: "Hasta (AAAA-MM-DD). Vacío = automático: hace 65 días"
+        description: "Hasta (AAAA-MM-DD). Vacío = automático: hace 8 días"
         default: ""
 
 jobs:
@@ -37,4 +37,4 @@ jobs:
           LON: ${{ inputs.lon || '-65.46' }}
           DESDE: ${{ inputs.desde }}
           HASTA: ${{ inputs.hasta }}
-        run: DESDE="${DESDE:-$(date -u -d "-74 days" +%F)}"; HASTA="${HASTA:-$(date -u -d "-65 days" +%F)}"; python probar_power.py "$LAT" "$LON" "$DESDE" "$HASTA"
+        run: DESDE="${DESDE:-$(date -u -d "-17 days" +%F)}"; HASTA="${HASTA:-$(date -u -d "-8 days" +%F)}"; python probar_power.py "$LAT" "$LON" "$DESDE" "$HASTA"
