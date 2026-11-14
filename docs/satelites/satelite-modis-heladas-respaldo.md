@@ -29,3 +29,36 @@ del productor. Ojo: MODIS está en fin de misión (Terra y Aqua se retiran), por
 ## Depende de
 
 Solo del núcleo (rama `nucleo-api-y-contrato-comun`): no importa ningún otro satélite.
+
+## Prueba real del 14/11/2026
+
+Corrida el 14/11/2026 contra la fuente real, con datos de los últimos días (desde esta máquina de trabajo). Lote de prueba de San Luis.
+
+Comando: `python probar_modis_heladas.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" "2026-10-28" "2026-11-12"`
+
+```
+Temperatura de superficie nocturna del lote (MODIS Terra/Aqua, LST de 1 km, RESPALDO de VIIRS) del 2026-10-28 al 2026-11-12 · mosaico h12v12 · 17 s
+Capas leídas: {'MOD11A1': '/MODIS_Grid_Daily_1km_LST/Data_Fields/LST_Night_1km', 'MYD11A1': '/MODIS_Grid_Daily_1km_LST/Data_Fields/LST_Night_1km'}
+
+Fecha        T sup °C  Calidad     Detalle
+2026-10-28        9.4  buena       Respaldo · MODIS LST nocturna (temperatura de superficie, no del aire) · MOD11A1 (Terra) · noche del 2026-10-28 · 1 píxeles de 1 km · válidos 100%
+2026-10-29       11.1  buena       Respaldo · MODIS LST nocturna (temperatura de superficie, no del aire) · MOD11A1 (Terra) · noche del 2026-10-29 · 1 píxeles de 1 km · válidos 100%
+2026-10-30       12.9  buena       Respaldo · MODIS LST nocturna (temperatura de superficie, no del aire) · MOD11A1 (Terra) · noche del 2026-10-30 · 1 píxeles de 1 km · válidos 100%
+2026-10-31        9.4  buena       Respaldo · MODIS LST nocturna (temperatura de superficie, no del aire) · MYD11A1 (Aqua) · noche del 2026-10-31 · 1 píxeles de 1 km · válidos 100%
+2026-11-01       —     descartada  Nubes o sin dato · Respaldo · MODIS LST nocturna (temperatura de superficie, no del aire) · MOD11A1 (Terra) · noche del 2026-11-01 · 1 píxeles de 1 km · válidos 0%
+2026-11-02       12.5  buena       Respaldo · MODIS LST nocturna (temperatura de superficie, no del aire) · MOD11A1 (Terra) · noche del 2026-11-02 · 1 píxeles de 1 km · válidos 100%
+2026-11-03       —     descartada  Nubes o sin dato · Respaldo · MODIS LST nocturna (temperatura de superficie, no del aire) · MOD11A1 (Terra) · noche del 2026-11-03 · 1 píxeles de 1 km · válidos 0%
+2026-11-04       —     descartada  Nubes o sin dato · Respaldo · MODIS LST nocturna (temperatura de superficie, no del aire) · MOD11A1 (Terra) · noche del 2026-11-04 · 1 píxeles de 1 km · válidos 0%
+2026-11-05       10.1  buena       Respaldo · MODIS LST nocturna (temperatura de superficie, no del aire) · MOD11A1 (Terra) · noche del 2026-11-05 · 1 píxeles de 1 km · válidos 100%
+2026-11-06       —     descartada  Nubes o sin dato · Respaldo · MODIS LST nocturna (temperatura de superficie, no del aire) · MOD11A1 (Terra) · noche del 2026-11-06 · 1 píxeles de 1 km · válidos 0%
+2026-11-07       —     descartada  Nubes o sin dato · Respaldo · MODIS LST nocturna (temperatura de superficie, no del aire) · MOD11A1 (Terra) · noche del 2026-11-07 · 1 píxeles de 1 km · válidos 0%
+2026-11-08        6.9  buena       Respaldo · MODIS LST nocturna (temperatura de superficie, no del aire) · MOD11A1 (Terra) · noche del 2026-11-08 · 1 píxeles de 1 km · válidos 100%
+2026-11-09       14.2  buena       Respaldo · MODIS LST nocturna (temperatura de superficie, no del aire) · MOD11A1 (Terra) · noche del 2026-11-09 · 1 píxeles de 1 km · válidos 100%
+2026-11-10       —     descartada  Nubes o sin dato · Respaldo · MODIS LST nocturna (temperatura de superficie, no del aire) · MOD11A1 (Terra) · noche del 2026-11-10 · 1 píxeles de 1 km · válidos 0%
+2026-11-11       14.2  buena       Respaldo · MODIS LST nocturna (temperatura de superficie, no del aire) · MOD11A1 (Terra) · noche del 2026-11-11 · 1 píxeles de 1 km · válidos 100%
+2026-11-12       19.2  buena       Respaldo · MODIS LST nocturna (temperatura de superficie, no del aire) · MOD11A1 (Terra) · noche del 2026-11-12 · 1 píxeles de 1 km · válidos 100%
+
+16 noches · calidad {'buena': 10, 'descartada': 6} · 10 con dato · 0 con riesgo de helada (≤ 0 °C)
+Noche más fría: 2026-11-08 con 6.9 °C de superficie
+Variable temp_sup_min_c en °C, fuente MODIS, resolución 1000 m
+```
