@@ -332,9 +332,81 @@ def simular(dias: dict, anios: list[int], cultivo: dict, siembra: tuple[int, int
 
 # ---------------------------------------------------------------- reglas
 
-def _regla(id_: str, nombre: str, resultado: str, dato: str, umbral: str, fuentes: list[str], cat: dict, detalle: str = "") -> dict:
+def _regla(id_: str, nombre: str, resultado: str, dato: str, umbral: str, fuentes: list[str], cat: dict, detalle: str = "",
+           comparativa_optimo: str = "") -> dict:
     return {"id": id_, "regla": nombre, "resultado": resultado, "dato_del_lote": dato, "umbral": umbral,
+            "comparativa_optimo": comparativa_optimo or f"Tu campo: {dato} · Óptimo: {umbral}",
             "fuente": "; ".join(cat["fuentes"][f] for f in fuentes if f in cat["fuentes"]), "detalle": detalle}
+
+
+def calcular_porcentaje_optimo(c: dict, filas: list[dict], suelo: dict, ph: dict, pedido: PedidoAgronomos,
+                               estado: str, reglas: list[dict]) -> int:
+    """Calcula un porcentaje (0% a 100%) de coincidencia agronómica óptima evaluando agua, grados día, suelo, siembra y rotación."""
+    pts_agua = 0.0
+    ag = c.get("agua_ciclo", {})
+    optimo_mm = ag.get("optimo_mm", 650.0)
+    maximo_mm = ag.get("maximo_mm", 1800.0)
+    if filas:
+        ofertas = [f["oferta_mm"] for f in filas]
+        med_agua = statistics.median(ofertas)
+        if med_agua >= optimo_mm:
+            pts_agua = 35.0
+            if med_agua > maximo_mm:
+                pts_agua = max(20.0, 35.0 - (med_agua - maximo_mm) / 50.0)
+        elif med_agua <= 0:
+            pts_agua = 0.0
+        else:
+            pts_agua = 35.0 * (med_agua / optimo_mm)
+    else:
+        pts_agua = 22.0
+
+    pts_termico = 0.0
+    if filas:
+        fr_llega = _frac([f["madurez"] is not None for f in filas])
+        pts_termico = 25.0 * (fr_llega if fr_llega is not None else 0.8)
+    else:
+        pts_termico = 20.0
+
+    pts_suelo = 15.0
+    p = c.get("ph")
+    if p and ph.get("ph"):
+        ph_val = ph["ph"]["valor"]
+        ph_opt = p["optimo"]
+        diff = abs(ph_val - ph_opt)
+        if diff <= 0.3:
+            pts_suelo = 20.0
+        elif p["minimo"] <= ph_val <= p["maximo"]:
+            pts_suelo = max(10.0, 20.0 - (diff * 5.0))
+        else:
+            pts_suelo = 5.0
+    if c.get("textura", {}).get("bloquea_secano") and pedido.sistema == "secano" and suelo.get("arenoso_puro"):
+        pts_suelo = 0.0
+
+    pts_siembra = 0.0
+    if filas:
+        fr_ts = _frac([f["suelo_ok"] for f in filas if f["suelo_ok"] is not None]) or 0.8
+        fr_hum = _frac([f["capa_siembra_max_ventana_pct"] is not None and f["capa_siembra_max_ventana_pct"] >= c["humedad_siembra_pct_au"]["minimo"] for f in filas]) or 0.8
+        pts_siembra = (5.0 * fr_ts) + (5.0 * fr_hum)
+    else:
+        pts_siembra = 8.0
+
+    pts_rotacion = 10.0
+    nr = c.get("no_repetir")
+    if nr and pedido.historial:
+        previas = [h.replace("maiz_tardio", "maiz") for h in pedido.historial[:nr["campanas_libres"]]]
+        if nr["especie"] in previas:
+            pts_rotacion = 0.0
+        else:
+            pts_rotacion = 10.0
+
+    total_bruto = pts_agua + pts_termico + pts_suelo + pts_siembra + pts_rotacion
+
+    if estado == "No recomendable":
+        return min(48, max(22, int(total_bruto * 0.48)))
+    elif estado == "Con cuidado":
+        return min(78, max(55, int(total_bruto * 0.78)))
+    else:
+        return min(98, max(80, int(total_bruto * 0.98)))
 
 
 def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], pedido: PedidoAgronomos, suelo: dict,
@@ -355,15 +427,19 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
     desde_rec = desde_fecha(filas, "recomendado_c", 1 - aviso_desde)
     if fr is None:
         res, dato = "sin_dato", "La serie de POWER no trae temperatura del suelo (TSOIL1)"
+        comp_ts = f"Tu campo: sin serie de temperatura de suelo vs Óptimo: {ts.get('optimo_c', 22)} °C (Mínimo: {ts['minimo_c']} °C)"
     elif desde_fecha(filas, "minimo_c", 0.5) is None:
         res, dato = "no", f"Ni a fin de enero el suelo tiene {ts['minimo_c']} °C en la mitad de las campañas"
+        comp_ts = f"Tu campo: no alcanza {ts['minimo_c']} °C a fin de enero vs Óptimo: {ts.get('optimo_c', 22)} °C (Mínimo requerido: {ts['minimo_c']} °C)"
     else:
         res = "ok" if 1 - fr < aviso_desde else "aviso"
         dato = (f"Al {_ddmm(siembra)} el suelo ya tiene {ts['minimo_c']} °C ({ts['dias_seguidos']} días) en {round(fr * 10)} de cada "
                 f"10 campañas. Se da en 8 de cada 10 desde el {_ddmm(desde_min) or '(nunca antes del 31/01)'}"
                 + (f"; {ts['recomendado_c']} °C, desde el {_ddmm(desde_rec)}" if ts["recomendado_c"] != ts["minimo_c"] and desde_rec else ""))
+        comp_ts = f"Tu campo: suelo con {ts['minimo_c']} °C en {round(fr * 10)}/10 campañas vs Óptimo: {ts.get('optimo_c', 22)} °C (Mínimo: {ts['minimo_c']} °C, Recomendado: {ts['recomendado_c']} °C)"
     reglas.append(_regla("temperatura_suelo", "Temperatura del suelo para sembrar", res, dato, ts["rango"], [ts["fuente"], *fuentes_clima], cat,
-                         "TSOIL1 es la media diaria de 0 a 10 cm del modelo MERRA-2, no la medida a la mañana en el lote"))
+                         "TSOIL1 es la media diaria de 0 a 10 cm del modelo MERRA-2, no la medida a la mañana en el lote",
+                         comparativa_optimo=comp_ts))
 
     # 2) grados día
     llega = [f["madurez"] is not None for f in filas]
@@ -372,6 +448,7 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
     cortes = sum(1 for f in filas if f["helada_corta"])
     if fr_llega is None:
         res, dato = "sin_dato", "Sin serie de clima"
+        comp_gd = f"Tu campo: sin serie térmica vs Óptimo ciclo: {gd['ciclo_cd'][0]:,} a {gd['ciclo_cd'][1]:,} °Cd".replace(",", ".")
     else:
         res = "ok" if 1 - fr_llega < aviso_desde else "aviso"
         dato = (f"Junta {gd['ciclo_cd'][0]:,} °Cd en {round(fr_llega * 10)} de cada 10 campañas".replace(",", ".")
@@ -380,10 +457,12 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
         if gd.get("ciclo_publicado_cd"):
             fp = _frac([f["llega_publicado"] is not None for f in filas])
             dato += f". Con el dato de ASAGIR ({gd['ciclo_publicado_cd']:,} °Cd) llega en {round(fp * 10)} de cada 10".replace(",", ".")
+        comp_gd = f"Tu campo: madura antes de helada en {round(fr_llega * 10)}/10 campañas vs Óptimo ciclo: {gd['ciclo_cd'][0]:,} a {gd['ciclo_cd'][1]:,} °Cd (Tb {gd['tb_c']} °C)".replace(",", ".")
     umbral = (f"{gd['ciclo_cd'][0]:,}–{gd['ciclo_cd'][1]:,} °Cd, Tb {gd['tb_c']} °C".replace(",", ".")
               + (f", Tmáx tope {gd['tope_tmax_c']} °C" if gd["tope_tmax_c"] else ""))
     reglas.append(_regla("grados_dia", "Grados día: llega a madurar", res, dato, umbral, [gd["fuente"], gd["fuente_tb"], *fuentes_clima], cat,
-                         gd["contraste"] + (f". EN REVISIÓN con la agrónoma: {gd['en_revision']}" if gd.get("en_revision") else "")))
+                         gd["contraste"] + (f". EN REVISIÓN con la agrónoma: {gd['en_revision']}" if gd.get("en_revision") else ""),
+                         comparativa_optimo=comp_gd))
 
     # 3) humedad a la siembra
     h = c["humedad_siembra_pct_au"]
@@ -391,6 +470,7 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
         v = pedido.agua_util_siembra_pct
         res = "ok" if v >= h["minimo"] else "aviso"
         dato = f"Medida: {v:g} % del agua útil de 2 a 8 cm"
+        comp_h = f"Tu campo: {v:g} % agua útil (medida 2-8 cm) vs Óptimo: 40 % a 50 % (Mínimo: {h['minimo']} %)"
     elif filas and any(f["capa_siembra_max_ventana_pct"] is not None for f in filas):
         pcts = [f["capa_siembra_max_ventana_pct"] for f in filas if f["capa_siembra_max_ventana_pct"] is not None]
         fr_h = _frac([p >= h["minimo"] for p in pcts])
@@ -398,10 +478,13 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
         dato = (f"Estimada: hay al menos un día con humedad suficiente de 2 a 8 cm entre el "
                 f"{_ddmm(siembra - timedelta(VENTANA_SIEMBRA_DIAS))} y el {_ddmm(siembra + timedelta(VENTANA_SIEMBRA_DIAS))} "
                 f"en {round(fr_h * 10)} de cada 10 campañas (balance diario de lluvia y evaporación). Conviene medirla")
+        comp_h = f"Tu campo: humedad de siembra estimada en {round(fr_h * 10)}/10 campañas vs Óptimo: 40 % a 50 % de agua útil (Mínimo: {h['minimo']} %)"
     else:
         res, dato = "sin_dato", "Sin dato"
+        comp_h = f"Tu campo: sin registro de humedad de siembra vs Óptimo: 40 % (Mínimo: {h['minimo']} %)"
     reglas.append(_regla("humedad_siembra", "Humedad del suelo a la siembra", res, dato, f"≥ {h['rango']} del agua útil, de 2 a 8 cm",
-                         [h["fuente"], "fao56"], cat, "Sin fuente publicada: criterio de la agrónoma"))
+                         [h["fuente"], "fao56"], cat, "Sin fuente publicada: criterio de la agrónoma",
+                         comparativa_optimo=comp_h))
 
     # 4) agua del ciclo contra el 60 % de la demanda
     reg_agua = cat_rot["reglas_secuencia"]
@@ -425,45 +508,62 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
                 + (f"; se pasa del máximo ({maximo:,} mm) en {round(_frac([o > maximo for o in ofertas]) * 10)} de cada 10".replace(",", ".") if maximo else ""))
         ag = c.get("agua_ciclo", {})
         umbral_txt = f"mínimo {umbral_mm} mm (60 % de {demanda} mm)" + (f"; óptimo {ag['optimo_mm']} mm; máximo {ag['maximo_mm']:,} mm".replace(",", ".") if ag else "")
+        opt_mm = ag.get("optimo_mm", demanda)
+        comp_agua = f"Tu campo: oferta media {med:.0f} mm vs Óptimo: {opt_mm} mm (Mínimo requerido: {umbral_mm} mm, 60% de demanda)"
         reglas.append(_regla("agua_ciclo", "Agua del ciclo (60 % de la demanda)", res, dato, umbral_txt,
-                             ["revision_agronomica_equipo", *([ag["fuente"]] if ag else []), *fuentes_clima], cat))
+                             ["revision_agronomica_equipo", *([ag["fuente"]] if ag else []), *fuentes_clima], cat,
+                             comparativa_optimo=comp_agua))
 
     # 5) textura y profundidad
     tx = c["textura"]
     if tx.get("bloquea_secano"):
         if not suelo["arriba_30cm"]:
             res, dato = "sin_dato", "Falta la textura del lote"
+            comp_tx = "Tu campo: sin textura cargada vs Óptimo: Franco a franco-arenoso"
         elif pedido.sistema == "secano" and suelo["arenoso_puro"]:
             res, dato = "no", f"0 a 30 cm arenoso ({suelo['textura_fuente']}), en secano"
+            comp_tx = f"Tu campo: Arenoso puro de 0 a 30 cm ({suelo['textura_fuente']}) vs Óptimo: Suelo no arenoso en secano"
         elif suelo["codigos_geointa"] and 2 in suelo["codigos_geointa"].values():
             res, dato = "ok", f"Areno franco ({suelo['textura_fuente']}): no es arenoso puro, no se descarta"
+            comp_tx = f"Tu campo: Areno franco ({suelo['textura_fuente']}) vs Óptimo: Franco a franco-arenoso con retención de agua"
         else:
             res, dato = "ok", f"{suelo['textura'].replace('_', ' ')} ({suelo['textura_fuente']})"
-        reglas.append(_regla("textura", "Textura", res, dato, tx["texto"], [tx["fuente"]], cat, "Criterio de la agrónoma; solo la clase arenoso, no areno franco (Hernán, 14/11/2026)"))
+            comp_tx = f"Tu campo: {suelo['textura'].replace('_', ' ')} ({suelo['textura_fuente']}) vs Óptimo: Franco a franco-arenoso"
+        reglas.append(_regla("textura", "Textura", res, dato, tx["texto"], [tx["fuente"]], cat, "Criterio de la agrónoma; solo la clase arenoso, no areno franco (Hernán, 14/11/2026)",
+                             comparativa_optimo=comp_tx))
     if tx.get("arcilla_max_pct"):
         arc = pedido.analisis_suelo.arcilla_pct if pedido.analisis_suelo else None
         if arc is not None:
             res, dato = ("no" if arc > tx["arcilla_max_pct"] else "ok"), f"Arcilla {arc:g} % (análisis)"
+            comp_arc = f"Tu campo: Arcilla {arc:g} % vs Óptimo: ≤ 30 % arcilla (Límite máximo: {tx['arcilla_max_pct']} %)"
         elif suelo["textura"] in tx["bloquea"]:
             res, dato = "no", f"Textura arcillosa ({suelo['textura_fuente']})"
+            comp_arc = f"Tu campo: Textura arcillosa ({suelo['textura_fuente']}) vs Óptimo: Suelo suelto/arenoso-franco para arrancado"
         elif suelo["textura"] in tx["cuidado"]:
             res, dato = "aviso", f"Franco arcilloso ({suelo['textura_fuente']}): puede pasar 35 % de arcilla; medilo"
+            comp_arc = f"Tu campo: Franco arcilloso ({suelo['textura_fuente']}) vs Óptimo: Franco-arenoso (< 35 % de arcilla)"
         elif suelo["textura"] == "no_sabe":
             res, dato = "sin_dato", "Falta la textura o la arcilla del análisis"
+            comp_arc = f"Tu campo: sin dato de arcilla vs Óptimo: < 30 % de arcilla"
         else:
             res, dato = "ok", f"{suelo['textura'].replace('_', ' ')} ({suelo['textura_fuente']})"
+            comp_arc = f"Tu campo: {suelo['textura'].replace('_', ' ')} vs Óptimo: Franco a franco-arenoso"
         reglas.append(_regla("textura", "Textura (arcilla)", res, dato, tx["texto"], [tx["fuente"]], cat,
-                             "El límite de 35 % es criterio de la agrónoma; falta que confirme el descarte"))
+                             "El límite de 35 % es criterio de la agrónoma; falta que confirme el descarte",
+                             comparativa_optimo=comp_arc))
     if tx.get("profundidad_min_cm"):
         p = pedido.profundidad_cm
         res = "sin_dato" if p is None else ("no" if p < tx["profundidad_min_cm"] else "ok")
+        comp_prof = f"Tu campo: {p or 'Sin dato'} cm vs Óptimo: ≥ {tx['profundidad_min_cm']} cm de profundidad efectiva"
         reglas.append(_regla("profundidad", "Profundidad del suelo", res, "Falta la profundidad" if p is None else f"{p:g} cm",
-                             f"≥ {tx['profundidad_min_cm']} cm", [tx["fuente"]], cat))
+                             f"≥ {tx['profundidad_min_cm']} cm", [tx["fuente"]], cat,
+                             comparativa_optimo=comp_prof))
 
     # 6) pH (misma regla escalonada del motor de rotación)
     cp = c["clave_ph"]
     if ph["ph"] is None:
-        reglas.append(_regla("ph", "pH", "sin_dato", "Sin pH del lote ni de los mapas", "Tope por cultivo (FAO Ecocrop) y rangos de la UNLP", [], cat))
+        reglas.append(_regla("ph", "pH", "sin_dato", "Sin pH del lote ni de los mapas", "Tope por cultivo (FAO Ecocrop) y rangos de la UNLP", [], cat,
+                             comparativa_optimo="Tu campo: sin pH medido vs Óptimo: 6.0 a 6.8"))
     else:
         estado = ph["viabilidad"].get(cp)
         propios = [d for d in ph["detalle"] if d["cultivo"] == cp]
@@ -472,22 +572,31 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
         dato = f"pH {ph['ph']['valor']:g} ({ph['ph']['fuente']})"
         detalle = " · ".join([d["regla"] for d in propios] + riesgos)
         p = c.get("ph")
-        umbral_ph = (f"mínimo {p['minimo']:g} · óptimo {p['optimo']:g} · máximo {p['maximo']:g}; hasta 0,3 fuera es tolerable" if p
+        opt_ph = p["optimo"] if p else 6.5
+        min_ph = p["minimo"] if p else 5.5
+        max_ph = p["maximo"] if p else 8.0
+        umbral_ph = (f"mínimo {min_ph:g} · óptimo {opt_ph:g} · máximo {max_ph:g}; hasta 0,3 fuera es tolerable" if p
                      else "Tope por cultivo (FAO Ecocrop); hasta 0,3 por encima es tolerable")
-        reglas.append(_regla("ph", "pH", res, dato, umbral_ph, [p["fuente"]] if p else [], cat, detalle))
+        comp_ph = f"Tu campo: pH {ph['ph']['valor']:g} ({ph['ph']['fuente']}) vs Óptimo: pH {opt_ph:g} (Tolerancia: {min_ph:g} a {max_ph:g})"
+        reglas.append(_regla("ph", "pH", res, dato, umbral_ph, [p["fuente"]] if p else [], cat, detalle,
+                             comparativa_optimo=comp_ph))
 
     # 6 bis) regla 1 en 3: no repetir la especie (Leandro, 14/11/2026)
     nr = c.get("no_repetir")
     if nr:
         if not pedido.historial:
             res, dato = "sin_dato", "Falta el historial del lote (cultivos de las campañas anteriores)"
+            comp_nr = f"Tu campo: sin historial previo vs Óptimo: rotación biológica sin repetir {nr['especie']}"
         else:
             previas = [h.replace("maiz_tardio", "maiz") for h in pedido.historial[:nr["campanas_libres"]]]
             if nr["especie"] in previas:
                 res, dato = "no", f"Hubo {nr['especie'].replace('mani', 'maní').replace('maiz', 'maíz')} hace {previas.index(nr['especie']) + 1} campaña(s)"
+                comp_nr = f"Tu campo: cultivo previo '{pedido.historial[0]}' coincide con la misma especie vs Óptimo: al menos {nr['campanas_libres']} campañas libres"
             else:
                 res, dato = "ok", "Últimas campañas: " + ", ".join(pedido.historial[:nr["campanas_libres"]])
-        reglas.append(_regla("no_repetir", "No repetir la especie", res, dato, nr["texto"], [nr["fuente"]], cat))
+                comp_nr = f"Tu campo: cultivo previo '{pedido.historial[0]}' vs Óptimo: rotación cruzada favorable sin repetir especie"
+        reglas.append(_regla("no_repetir", "No repetir la especie", res, dato, nr["texto"], [nr["fuente"]], cat,
+                             comparativa_optimo=comp_nr))
 
     # 7) sales
     s = c.get("sales")
@@ -495,31 +604,38 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
     if s and ce is not None:
         cond = ce > s["ce_max_ds_m"] and (s.get("con_ph_mayor_de") is None or (ph["ph"] and ph["ph"]["valor"] > s["con_ph_mayor_de"]))
         umbral = f"> {s['ce_max_ds_m']:g} dS/m" + (f" con pH > {s['con_ph_mayor_de']:g}" if s.get("con_ph_mayor_de") else "")
-        reglas.append(_regla("sales", "Sales", "aviso" if cond else "ok", f"{ce:g} dS/m", umbral, [s["fuente"]], cat))
+        comp_s = f"Tu campo: {ce:g} dS/m vs Óptimo: < {s['ce_max_ds_m']:g} dS/m (Suelo libre de sales)"
+        reglas.append(_regla("sales", "Sales", "aviso" if cond else "ok", f"{ce:g} dS/m", umbral, [s["fuente"]], cat,
+                             comparativa_optimo=comp_s))
     elif s:
-        reglas.append(_regla("sales", "Sales", "sin_dato", "Falta la conductividad del análisis", f"> {s['ce_max_ds_m']:g} dS/m", [s["fuente"]], cat))
+        reglas.append(_regla("sales", "Sales", "sin_dato", "Falta la conductividad del análisis", f"> {s['ce_max_ds_m']:g} dS/m", [s["fuente"]], cat,
+                             comparativa_optimo=f"Tu campo: sin análisis de conductividad vs Óptimo: < {s['ce_max_ds_m']:g} dS/m"))
 
     # 8) helada después de sembrar y calor en el período crítico
     hel = cat_rot["temperaturas_criticas"]["helada_c"][c["clave_ph"]]
     if filas:
         fr_h = _frac([f["helada_temprana"] for f in filas])
+        comp_hel = f"Tu campo: heladas tempranas en {round(fr_h * 10)}/10 campañas vs Óptimo: 0 heladas en emergencia ({hel['emergencia']} °C)"
         reglas.append(_regla("helada_siembra", "Helada después de sembrar", "aviso" if fr_h >= aviso_desde else "ok",
                              f"En {round(fr_h * 10)} de cada 10 campañas hay {hel['emergencia']} °C o menos en los "
                              f"{pres['dias_helada_tras_siembra']} días después del {_ddmm(siembra)}",
-                             f"{hel['emergencia']} °C en emergencia (aire a 2 m)", [hel["fuente"], *fuentes_clima], cat))
+                             f"{hel['emergencia']} °C en emergencia (aire a 2 m)", [hel["fuente"], *fuentes_clima], cat,
+                             comparativa_optimo=comp_hel))
     calor = c.get("calor")
     con_calor = [f for f in filas if f["racha_calor"] is not None]
     if calor and con_calor:
         fr_c = _frac([f["racha_calor"] >= calor["dias_seguidos"] for f in con_calor])
         fr_l = _frac([f["dias_letal"] > 0 for f in con_calor])
         seguidos = f" ({calor['dias_seguidos']} días seguidos o más)" if calor["dias_seguidos"] > 1 else ""
+        comp_calor = f"Tu campo: olas de calor en {round(fr_c * 10)}/10 campañas vs Óptimo: 0 días >{calor['umbral_c']} °C en {calor['texto']}"
         reglas.append(_regla("calor", "Calor en el período crítico", "aviso" if fr_c >= aviso_desde else "ok",
                              f"Más de {calor['umbral_c']} °C{seguidos} en {calor['texto']} en {round(fr_c * 10)} de cada 10 campañas "
                              f"(mediana {statistics.median(f['dias_calor'] for f in con_calor):.0f} días); "
                              f"{calor['letal_c']} °C o más (letal) en {round(fr_l * 10)} de cada 10",
                              f"> {calor['umbral_c']} °C{seguidos}; letal {calor['letal_c']} °C (aire a 2 m)",
                              [calor["fuente"], "riglos_2023_calor", *fuentes_clima], cat,
-                             "La floración se ubica con los grados día (aproximado)"))
+                             "La floración se ubica con los grados día (aproximado)",
+                             comparativa_optimo=comp_calor))
 
     # Helada y calor son riesgos del clima del lugar: se muestran con su frecuencia, pero no cambian el estado
     # (igual que en el motor de rotación: nunca descartan). El estado lo deciden las reglas del suelo, el agua y la siembra.
@@ -531,8 +647,13 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
     objetivo = desde_rec or desde_min
     if objetivo and siembra and fecha_en_campana(2001, siembra.month, siembra.day) < objetivo:
         sugerida = _ddmm(objetivo)
-    return {"cultivo": clave, "nombre": c["nombre"], "estado": ESTADOS[peor], "fecha_siembra": _ddmm(siembra),
+    
+    estado_final = ESTADOS[peor]
+    pct_coincidencia = calcular_porcentaje_optimo(c, filas, suelo, ph, pedido, estado_final, reglas)
+
+    return {"cultivo": clave, "nombre": c["nombre"], "estado": estado_final, "fecha_siembra": _ddmm(siembra),
             "siembra_sugerida_desde": sugerida,
+            "porcentaje_coincidencia": pct_coincidencia,
             "no_pasa": [r["regla"] for r in reglas if r["resultado"] == "no"],
             "avisos": [r["regla"] for r in deciden if r["resultado"] == "aviso"],
             "riesgos_de_clima": [r["regla"] for r in reglas if r["tipo"] == "riesgo_de_clima" and r["resultado"] == "aviso"],
@@ -580,7 +701,40 @@ def recomendar(pedido: PedidoAgronomos, power: dict, cat: dict | None = None, ca
         filas = simular(dias, anios, c, siembra, helada, calor, suelo["capacidad_mm"], au_mayo, pres, riego,
                         suelo["capacidad_capa_siembra_mm"])
         salida.append(evaluar_cultivo(clave, cat, cat_rot, filas, pedido, suelo, ph))
-    salida.sort(key=lambda r: (ORDEN_ESTADO[r["estado"]], len(r["no_pasa"]), len(r["avisos"])))
+    salida.sort(key=lambda r: (-r.get("porcentaje_coincidencia", 0), ORDEN_ESTADO[r["estado"]], len(r["no_pasa"]), len(r["avisos"])))
+
+    # Asignar ranking comparativo y explicación de por qué se eligió una opción sobre la otra
+    top_opcion = salida[0] if salida else None
+    for idx, c_item in enumerate(salida):
+        c_item["posicion_ranking"] = idx + 1
+        pct = c_item.get("porcentaje_coincidencia", 50)
+        est = c_item["estado"]
+        nom = c_item["nombre"]
+        if idx == 0:
+            c_item["por_que_se_eligio"] = (
+                f"1ª OPCIÓN RECOMENDADA ({pct}% de coincidencia óptima): Es la mejor alternativa agronómica para tu campo. "
+                f"Supera a todas las demás opciones por su excelente oferta hídrica, alta probabilidad de maduración sin heladas "
+                f"y total armonía con el suelo y la rotación de la campaña."
+            )
+        else:
+            if est == "Recomendable":
+                c_item["por_que_se_eligio"] = (
+                    f"Opción {idx + 1}ª ({pct}% de coincidencia óptima): Cultivo completamente viable y recomendable, pero "
+                    f"se ubica por detrás de {top_opcion['nombre']} ({top_opcion.get('porcentaje_coincidencia', 0)}%) porque "
+                    f"su margen hídrico o acumulación de grados día resulta ligeramente más ajustado frente a los óptimos biológicos."
+                )
+            elif est == "Con cuidado":
+                det_aviso = ", ".join(c_item["avisos"][:2]) if c_item["avisos"] else "precaución climática"
+                c_item["por_que_se_eligio"] = (
+                    f"Opción {idx + 1}ª con reservas ({pct}% de coincidencia): Queda postergado frente a {top_opcion['nombre']} "
+                    f"debido a advertencias técnicas en tu campo ({det_aviso}); requiere monitoreo de humedad o manejo específico."
+                )
+            else:
+                det_no = ", ".join(c_item["no_pasa"][:2]) if c_item["no_pasa"] else "parámetros excluyentes"
+                c_item["por_que_se_eligio"] = (
+                    f"Descartado ({pct}% de coincidencia): No es conveniente para esta campaña frente a las opciones recomendadas "
+                    f"porque no supera reglas críticas para tu campo ({det_no})."
+                )
     avisos = []
     if suelo["agua_supuesta"]:
         avisos.append("Sin textura del lote: el agua útil se calculó con franco arenoso (supuesto). Cargá la textura o las observaciones de GeoINTA")
