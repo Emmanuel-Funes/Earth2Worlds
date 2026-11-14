@@ -12,10 +12,10 @@ on:
         description: "Esquinas del lote como 'lat, lon; lat, lon; lat, lon; lat, lon' (copiadas de Google Maps)"
         default: "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"
       desde:
-        description: "Desde (AAAA-MM-DD). Vacío = automático: hace 317 días"
+        description: "Desde (AAAA-MM-DD). Vacío = automático: hace 150 días"
         default: ""
       hasta:
-        description: "Hasta (AAAA-MM-DD). Vacío = automático: hace 304 días"
+        description: "Hasta (AAAA-MM-DD). Vacío = automático: hace 137 días"
         default: ""
 
 jobs:
@@ -33,4 +33,4 @@ jobs:
           ESQUINAS: ${{ inputs.esquinas || '-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300' }}
           DESDE: ${{ inputs.desde }}
           HASTA: ${{ inputs.hasta }}
-        run: DESDE="${DESDE:-$(date -u -d "-317 days" +%F)}"; HASTA="${HASTA:-$(date -u -d "-304 days" +%F)}"; python probar_persiann.py "$ESQUINAS" "$DESDE" "$HASTA"
+        run: DESDE="${DESDE:-$(date -u -d "-150 days" +%F)}"; HASTA="${HASTA:-$(date -u -d "-137 days" +%F)}"; python probar_persiann.py "$ESQUINAS" "$DESDE" "$HASTA"
