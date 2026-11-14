@@ -1,6 +1,6 @@
 # Spec 054 · Radar NISAR sobre el lote (20 m, con nubes o sin nubes)
 
-**Estado:** construida y probada con datos reales · **Aprobada por:** Hernán, 27/10/2026 ("Okey, avanzamos", sobre el informe de satélites nuevos del 27/10) · **Rama:** `NISAR-radar_del_lote` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** Earthdata (ya cargado)
+**Estado:** construida y probada con datos reales · **Aprobada por:** Hernán ("Okey, avanzamos", sobre el informe de satélites nuevos) · **Rama:** `NISAR-radar_del_lote` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** Earthdata (ya cargado)
 
 ## Objetivo
 
