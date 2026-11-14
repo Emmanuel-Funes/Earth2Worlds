@@ -35,12 +35,12 @@ Todo se lee por **OPeNDAP de la NASA** (solo el punto del lote), con un token de
 2. `radiacion`: promedio de las 24 horas de `SWGDN` (W/m²) × 0,0864 = MJ/m²/día, la misma unidad que POWER.
 3. Se usa la celda más cercana al centro del lote.
 4. Los días que MERRA-2 todavía no publicó no se devuelven (no se inventan).
-5. Si la NASA lista el archivo de un día pero OPeNDAP no lo entrega (404), ese día vuelve con `valor: null`, `calidad: "descartada"` y la `nota` lo dice, y los demás días siguen. Antes ese único día hacía caer todo el pedido: lo encontró el control diario de las fuentes (spec 042) con el archivo del 11/8/2026.
+5. Si la NASA lista el archivo de un día pero OPeNDAP no lo entrega (404), ese día vuelve con `valor: null`, `calidad: "descartada"` y la `nota` lo dice, y los demás días siguen. Antes ese único día hacía caer todo el pedido: lo encontró el control diario de las fuentes (spec 042) con el archivo del 14/11/2026.
 
 ## Salida (contrato común)
 
 ```json
-{"lote_id": "lote-7", "fecha": "2026-01-13", "variable": "lluvia_mm", "valor": 22.3,
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "lluvia_mm", "valor": 22.3,
  "unidad": "mm/día", "fuente": "IMERG", "resolucion_m": 10000, "calidad": "buena",
  "nota": "IMERG Late, sin corregir con pluviómetros · celda de 0,1°"}
 ```
