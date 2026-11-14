@@ -17,7 +17,7 @@ echo ============================================================
 echo   Earth2Worlds - Gestor de Servicios Locales
 echo ============================================================
 echo.
-echo   [1] Iniciar todos los servicios (Rotaterra + Backend + Frontend)
+echo   [1] Iniciar Plataforma Unificada Earth2Worlds (Puerto 8000 + Abrir Web)
 echo   [2] Detener todos los servicios
 echo   [3] Ver estado de los puertos (8000, 3000, 5173)
 echo   [4] Salir
@@ -32,38 +32,32 @@ goto :MENU
 
 :START_ALL
 echo.
-echo [Earth2Worlds] Iniciando servicios locales...
+echo [Earth2Worlds] Preparando e iniciando plataforma unificada...
 
-if not defined ROTATERRA_API_KEY set "ROTATERRA_API_KEY=clave-local-dev"
-set "ROTATERRA_API_KEYS=%ROTATERRA_API_KEY%"
+set "PYTHON_EXE=python"
+set "UVICORN_EXE=uvicorn"
+if exist ".venv\Scripts\python.exe" set "PYTHON_EXE=.venv\Scripts\python.exe"
+if exist ".venv\Scripts\uvicorn.exe" set "UVICORN_EXE=.venv\Scripts\uvicorn.exe"
 
-if exist ".venv\Scripts\uvicorn.exe" (
-    if exist "rotaterra\api.py" (
-        echo   - Iniciando motor satelital Rotaterra en http://127.0.0.1:8000 ...
-        start "Earth2Worlds - Rotaterra (8000)" cmd /k "cd /d "%~dp0" && set ROTATERRA_API_KEYS=%ROTATERRA_API_KEYS% && .\.venv\Scripts\uvicorn.exe rotaterra.api:app --host 127.0.0.1 --port 8000"
-        if not defined ROTATERRA_API_URL set "ROTATERRA_API_URL=http://127.0.0.1:8000/consulta"
-    ) else (
-        echo   - [Aviso] No se encontro rotaterra\api.py en esta rama; el backend usara ROTATERRA_API_URL por defecto.
-    )
-) else (
-    echo   - [Aviso] No se encontro .venv\Scripts\uvicorn.exe; el backend usara ROTATERRA_API_URL por defecto.
+echo   - Inicializando base de datos (earth2worlds.db)...
+"%PYTHON_EXE%" -m app.init_db
+if errorlevel 1 (
+    echo   [Error] Fallo la inicializacion de la base de datos.
+    if "%~1"=="" pause & goto :MENU
+    exit /b 1
 )
 
-echo   - Iniciando Backend Fastify en http://127.0.0.1:3000 ...
-if defined ROTATERRA_API_URL (
-    start "Earth2Worlds - Backend (3000)" cmd /k "cd /d "%~dp0backend" && set ROTATERRA_API_KEY=%ROTATERRA_API_KEY% && set ROTATERRA_API_URL=%ROTATERRA_API_URL% && npm run dev"
-) else (
-    start "Earth2Worlds - Backend (3000)" cmd /k "cd /d "%~dp0backend" && set ROTATERRA_API_KEY=%ROTATERRA_API_KEY% && npm run dev"
-)
+echo   - Iniciando servidor Earth2Worlds + Rotaterra en http://127.0.0.1:8000 ...
+start "Earth2Worlds - Plataforma Unificada (8000)" cmd /k "cd /d "%~dp0" && "%UVICORN_EXE%" app.main:app --host 127.0.0.1 --port 8000 --reload"
 
-echo   - Iniciando Frontend Vite en http://localhost:5173 ...
-start "Earth2Worlds - Frontend (5173)" cmd /k "cd /d "%~dp0frontend" && npm run dev"
+echo   - Esperando a que el servidor termine de cargar para abrir el navegador...
+powershell -NoProfile -Command "for ($i=0; $i -lt 60; $i++) { Start-Sleep -Milliseconds 500; try { $r = Invoke-WebRequest -Uri 'http://127.0.0.1:8000/login' -UseBasicParsing -TimeoutSec 1 -ErrorAction Stop; if ($r.StatusCode -eq 200) { Start-Process 'http://127.0.0.1:8000'; break } } catch {} }"
 
 echo.
-echo [OK] Servicios lanzados:
-echo   - Frontend Web:      http://localhost:5173
-echo   - Backend API:       http://127.0.0.1:3000/api/v1/catalog
-echo   - Rotaterra API:     http://127.0.0.1:8000/salud
+echo [OK] Plataforma Earth2Worlds activa y abierta en el navegador:
+echo   - Panel Principal:     http://127.0.0.1:8000
+echo   - Mapa de Secciones:   http://127.0.0.1:8000/mapa
+echo   - Diagrama de BD:      http://127.0.0.1:8000/diagrama
 echo.
 if "%~1"=="" pause & goto :MENU
 exit /b 0
@@ -72,9 +66,7 @@ exit /b 0
 echo.
 echo [Earth2Worlds] Deteniendo servicios en puertos 8000, 3000 y 5173...
 
-taskkill /FI "WINDOWTITLE eq Earth2Worlds - Rotaterra (8000)*" /T /F >nul 2>&1
-taskkill /FI "WINDOWTITLE eq Earth2Worlds - Backend (3000)*" /T /F >nul 2>&1
-taskkill /FI "WINDOWTITLE eq Earth2Worlds - Frontend (5173)*" /T /F >nul 2>&1
+taskkill /FI "WINDOWTITLE eq Earth2Worlds*" /T /F >nul 2>&1
 
 for %%P in (8000 3000 5173) do (
     for /f "tokens=5" %%A in ('netstat -aon ^| findstr /R "[:\.]%%P[ ]" ^| findstr "LISTENING"') do (
