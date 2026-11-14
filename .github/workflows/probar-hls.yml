@@ -1,0 +1,37 @@
+name: Probar HLS (NDVI y NDMI)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/hls.py"
+      - "probar_hls.py"
+      - ".github/workflows/probar-hls.yml"
+  workflow_dispatch:
+    inputs:
+      esquinas:
+        description: "Esquinas del lote como 'lat, lon; lat, lon; lat, lon; lat, lon' (copiadas de Google Maps)"
+        default: "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"
+      desde:
+        description: "Desde (AAAA-MM-DD). Vacío = automático: hace 40 días"
+        default: ""
+      hasta:
+        description: "Hasta (AAAA-MM-DD). Vacío = automático: hace 5 días"
+        default: ""
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Pedir NDVI y NDMI a HLS
+        env:
+          EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+          EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
+          ESQUINAS: ${{ inputs.esquinas || '-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300' }}
+          DESDE: ${{ inputs.desde }}
+          HASTA: ${{ inputs.hasta }}
+        run: DESDE="${DESDE:-$(date -u -d "-40 days" +%F)}"; HASTA="${HASTA:-$(date -u -d "-5 days" +%F)}"; python probar_hls.py "$ESQUINAS" "$DESDE" "$HASTA"
