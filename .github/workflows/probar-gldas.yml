@@ -12,11 +12,11 @@ on:
         description: "Esquinas del lote como 'lat, lon; lat, lon; lat, lon; lat, lon' (copiadas de Google Maps)"
         default: "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"
       desde:
-        description: "Desde (AAAA-MM-DD)"
-        default: "2026-09-15"
+        description: "Desde (AAAA-MM-DD). Vacío = automático: hace 60 días"
+        default: ""
       hasta:
-        description: "Hasta (AAAA-MM-DD)"
-        default: "2026-09-21"
+        description: "Hasta (AAAA-MM-DD). Vacío = automático: hace 54 días"
+        default: ""
 
 jobs:
   probar:
@@ -34,6 +34,6 @@ jobs:
           EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
           # en un PR no hay inputs: lote de ejemplo de San Luis y una semana de septiembre de 2026
           ESQUINAS: ${{ inputs.esquinas || '-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300' }}
-          DESDE: ${{ inputs.desde || '2026-09-15' }}
-          HASTA: ${{ inputs.hasta || '2026-09-21' }}
-        run: python probar_gldas.py "$ESQUINAS" "$DESDE" "$HASTA"
+          DESDE: ${{ inputs.desde }}
+          HASTA: ${{ inputs.hasta }}
+        run: DESDE="${DESDE:-$(date -u -d "-60 days" +%F)}"; HASTA="${HASTA:-$(date -u -d "-54 days" +%F)}"; python probar_gldas.py "$ESQUINAS" "$DESDE" "$HASTA"

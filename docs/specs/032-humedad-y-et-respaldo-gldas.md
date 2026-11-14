@@ -63,7 +63,7 @@ El lote como lo reciben los satélites: `lote["id"]`, su centro (`lat`/`lon`) y 
 
 ## Prueba real
 
-Workflow `Probar GLDAS (humedad y ET)` (`.github/workflows/probar-gldas.yml`, `probar_gldas.py`). Por defecto, el lote de prueba de San Luis y una semana de septiembre de 2026. Corre en cada PR que toque estos archivos y a mano con un clic. Necesita las credenciales de Earthdata (ya cargadas como secrets).
+Workflow `Probar GLDAS (humedad y ET)` (`.github/workflows/probar-gldas.yml`, `probar_gldas.py`). Por defecto, el lote de prueba de San Luis, con un período automático que se cuenta desde el día en que corre. Corre en cada PR que toque estos archivos y a mano con un clic. Necesita las credenciales de Earthdata (ya cargadas como secrets).
 
 ## Resultado de la prueba real
 
