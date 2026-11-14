@@ -1,0 +1,36 @@
+name: Probar CPC (lluvia de respaldo)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/cpc_lluvia.py"
+      - "probar_cpc_lluvia.py"
+      - ".github/workflows/probar-cpc-lluvia.yml"
+  workflow_dispatch:
+    inputs:
+      esquinas:
+        description: "Esquinas del lote como 'lat, lon; lat, lon; lat, lon; lat, lon' (copiadas de Google Maps)"
+        default: "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"
+      desde:
+        description: "Desde (AAAA-MM-DD). Vacío = automático: hace 317 días"
+        default: ""
+      hasta:
+        description: "Hasta (AAAA-MM-DD). Vacío = automático: hace 304 días"
+        default: ""
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Pedir la lluvia de respaldo a NOAA CPC
+        env:
+          ESQUINAS: ${{ inputs.esquinas || '-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300' }}
+          DESDE: ${{ inputs.desde }}
+          HASTA: ${{ inputs.hasta }}
+        run: DESDE="${DESDE:-$(date -u -d "-317 days" +%F)}"; HASTA="${HASTA:-$(date -u -d "-304 days" +%F)}"; python probar_cpc_lluvia.py "$ESQUINAS" "$DESDE" "$HASTA"
