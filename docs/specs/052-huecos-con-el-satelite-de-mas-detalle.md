@@ -34,7 +34,7 @@ El núcleo sigue sin nombrar satélites: usa el orden que cada uno declara (`ord
 
 ## Salida
 
-La respuesta de `POST /consulta` suma `rellenada_con`: la lista de respaldos que rellenaron huecos (vacía si no hizo falta). Cada uno aparece en `intentos` con `resultado: "relleno"` y un mensaje como "rellenó 10 días de huecos entre el 2026-01-16 y el 2026-01-25". `fuente_usada` sigue siendo el satélite que contestó primero.
+La respuesta de `POST /consulta` suma `rellenada_con`: la lista de respaldos que rellenaron huecos (vacía si no hizo falta). Cada uno aparece en `intentos` con `resultado: "relleno"` y un mensaje como "rellenó 10 días de huecos entre el 2026-11-14 y el 2026-11-14". `fuente_usada` sigue siendo el satélite que contestó primero.
 
 ## Criterios de aceptación
 

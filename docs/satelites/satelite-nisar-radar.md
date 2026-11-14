@@ -32,14 +32,14 @@ Solo del núcleo (rama `nucleo-api-y-contrato-comun`): no importa ningún otro s
 
 Corrida el 14/11/2026 contra la fuente real, con datos de los últimos días (desde esta máquina de trabajo). Lote de prueba de San Luis.
 
-Comando: `python probar_nisar.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" "2026-09-15" "2026-11-12"`
+Comando: `python probar_nisar.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" "2026-11-14" "2026-11-14"`
 
 ```
-Radar NISAR (banda L, 20 m) del lote del 2026-09-15 al 2026-11-12 · 16 s
+Radar NISAR (banda L, 20 m) del lote del 2026-11-14 al 2026-11-14 · 16 s
 
 Fecha          HH dB   HV dB  Calidad     Detalle
-2026-10-21    -13.84  -22.07  dudosa      válidos 100% · HV − HH -8.2 dB (más alto = más planta) · NISAR banda L, gamma0 corregido por relieve · órbita descendente, traza 140 · pasada 2026-10-21 22:24 UTC · leídos 14 MB del archiv
-2026-11-01     -9.13  -17.59  dudosa      válidos 100% · HV − HH -8.5 dB (más alto = más planta) · NISAR banda L, gamma0 corregido por relieve · órbita ascendente, traza 118 · pasada 2026-11-01 10:19 UTC · leídos 22 MB del archivo
+2026-11-14    -13.84  -22.07  dudosa      válidos 100% · HV − HH -8.2 dB (más alto = más planta) · NISAR banda L, gamma0 corregido por relieve · órbita descendente, traza 140 · pasada 2026-11-14 22:24 UTC · leídos 14 MB del archiv
+2026-11-14     -9.13  -17.59  dudosa      válidos 100% · HV − HH -8.5 dB (más alto = más planta) · NISAR banda L, gamma0 corregido por relieve · órbita ascendente, traza 118 · pasada 2026-11-14 10:19 UTC · leídos 22 MB del archivo
 
 2 pasadas · 2 con dato
 ```
