@@ -32,3 +32,19 @@ recorta en sus servidores la zona y solo 6 variables por haz (~1,4 MB en total).
 ## Depende de
 
 Solo del núcleo (rama `nucleo-api-y-contrato-comun`): no importa ningún otro satélite.
+
+## Prueba real del 14/11/2026
+
+Corrida el 14/11/2026 contra la fuente real, con datos de los últimos días (desde esta máquina de trabajo). Lote de prueba de San Luis.
+
+Comando: `python probar_gedi.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"`
+
+```
+GEDI en el lote y 2 km alrededor, últimos 3 años · 39 s
+
+· gedi_cobertura_zona_pct: 2.8 % · buena · último disparo 2025-09-09 · Cobertura de la vegetación en la zona, mediana de los disparos (fracción del suelo tapada vista desde arriba) · dato de la ZONA, no del lote · 1121 disparos · 
+· gedi_cobertura_zona_p90_pct: 24.9 % · buena · último disparo 2025-09-09 · Cobertura de la vegetación en la zona, el 10 % más tapado (montes, cortinas) · dato de la ZONA · 1121 disparos · GEDI L2B (NASA, láser de la Estación Espa
+· gedi_monte_zona_pct: 7.7 % · buena · último disparo 2025-09-09 · Disparos con cobertura ≥ 30 % (vegetación leñosa: monte, cortina, arbustal; supuesto a validar) · dato de la ZONA · 1121 disparos · GEDI L2B (NASA, láser de la Est
+· gedi_pai_zona: 0.06 m²/m² · buena · último disparo 2025-09-09 · Índice de área de planta (hojas y ramas por m² de suelo), mediana de la zona · dato de la ZONA · 1121 disparos · GEDI L2B (NASA, láser de la Estación Espacial), 01/
+· gedi_cobertura_lote_pct: 26.2 % · buena · último disparo 2025-09-09 · Cobertura de la vegetación dentro del lote, mediana de los disparos que cayeron adentro · 10 disparos · GEDI L2B (NASA, láser de la Estación Espacial), 01/11/
+```
