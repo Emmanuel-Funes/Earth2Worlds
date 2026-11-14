@@ -1,0 +1,40 @@
+name: Actualizar copia de MAGyP (rindes de referencia)
+
+# Renueva la copia del CSV de Estimaciones Agrícolas del Ministerio que lee el conector MAGyP (spec 040) y la guarda
+# en la rama desde la que se lanza. Se lanza a mano cuando el Ministerio publica un archivo nuevo, y también corre
+# cuando cambia la herramienta en la rama del conector.
+on:
+  push:
+    branches: [MAGYP-rindes_de_referencia]
+    paths: ["actualizar_copia_magyp.py", ".github/workflows/actualizar-copia-magyp.yml"]
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "URL del CSV (vacío = el vigente del portal del Ministerio)"
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Bajar el CSV del Ministerio y armar la copia
+        env:
+          URL_CSV: ${{ inputs.url }}
+        run: python actualizar_copia_magyp.py "$URL_CSV"
+      - name: Guardar la copia en la rama
+        run: |
+          git add rotaterra/fuentes/datos/
+          if git diff --cached --quiet; then echo "La copia no cambió"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "MAGyP - copia de los rindes del Ministerio ($(python -c "import json;print(json.load(open('rotaterra/fuentes/datos/magyp_rindes.json'))['archivo'])"))"
+          git push
