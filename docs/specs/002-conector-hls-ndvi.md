@@ -1,6 +1,6 @@
 # Spec 002 · Conector HLS: NDVI y NDMI del lote
 
-**Estado:** implementada y verificada (PR #3 y #5) · **Etapa:** pipeline satélite → API → app (sin interfaz) · **Requiere:** cuenta NASA Earthdata
+**Estado:** implementada y verificada · **Etapa:** pipeline satélite → API → app (sin interfaz) · **Requiere:** cuenta NASA Earthdata
 
 ## Objetivo
 
