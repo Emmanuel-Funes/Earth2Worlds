@@ -46,10 +46,14 @@ export class ApiError extends Error {
   }
 }
 
+const viteEnv = (
+  import.meta as ImportMeta & {
+    readonly env?: { readonly VITE_API_BASE_URL?: string }
+  }
+).env
+
 const API_BASE_URL =
-  typeof import.meta.env === 'undefined'
-    ? ''
-    : (import.meta.env.VITE_API_BASE_URL ?? '')
+  typeof viteEnv === 'undefined' ? '' : (viteEnv.VITE_API_BASE_URL ?? '')
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   let response: Response

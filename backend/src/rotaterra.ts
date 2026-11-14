@@ -62,6 +62,14 @@ function isString(value: unknown): value is string {
   return typeof value === 'string'
 }
 
+function isStringOrNull(value: unknown): value is string | null {
+  return typeof value === 'string' || value === null
+}
+
+function isFiniteNumberOrNull(value: unknown): value is number | null {
+  return (typeof value === 'number' && Number.isFinite(value)) || value === null
+}
+
 function isIsoDate(value: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
     return false
@@ -99,19 +107,12 @@ function parseRotaterraResponse(value: unknown): RotaterraResponse {
       !isString(entry.fecha) ||
       !isIsoDate(entry.fecha) ||
       !isString(entry.variable) ||
-      !(
-        (typeof entry.valor === 'number' && Number.isFinite(entry.valor)) ||
-        entry.valor === null
-      ) ||
+      !isFiniteNumberOrNull(entry.valor) ||
       !isString(entry.unidad) ||
       !isString(entry.fuente) ||
-      !(
-        (typeof entry.resolucion_m === 'number' &&
-          Number.isFinite(entry.resolucion_m)) ||
-        entry.resolucion_m === null
-      ) ||
+      !isFiniteNumberOrNull(entry.resolucion_m) ||
       !isObservationQuality(entry.calidad) ||
-      !(isString(entry.nota) || entry.nota === null)
+      !isStringOrNull(entry.nota)
     ) {
       throw new ProviderError(
         502,
