@@ -43,7 +43,7 @@ NOTA_ET = ("Dato del día de NASA GEOS-FP (modelo del GMAO, no una medición), c
 ORIENTATIVAS = {"lluvia_mm": "la lluvia de un modelo es orientativa",
                 "et_mm_dia": "la evapotranspiración de un modelo de 28 km es orientativa"}
 MAX_DIAS = 366
-# cada hora es un archivo distinto en el servidor: más de ~24 horas por pedido da 504 (prueba real del 16/10/2026)
+# cada hora es un archivo distinto en el servidor: más de ~24 horas por pedido da 504 (prueba real)
 BLOQUE_HORAS = 12
 HILOS = 4
 REINTENTOS = 2
