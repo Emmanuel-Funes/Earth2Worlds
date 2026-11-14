@@ -1,6 +1,6 @@
 # Spec 023 · SEPA INTA: historial completo, balance hídrico y GOES
 
-**Estado:** aprobada por Hernán el 5/10/2026 ("Te doy el okey SPEC023"). Fase 1 (inventario) terminada; fase 2 (conector) programada y probada. No se une a `main` hasta que Hernán lo ordene.
+**Estado:** aprobada por Hernán ("Te doy el okey SPEC023"). Fase 1 (inventario) terminada; fase 2 (conector) programada y probada. No se une a `main` hasta que Hernán lo ordene.
 **Autor:** Hernán (vía IA) · **Rama:** `SEPA_INTA-historial_goes_y_variables` · **Conector:** `rotaterra/fuentes/sepa_inta.py`
 **Pedido:** "Es vital que investigues cómo extraer datos puntuales de todos esos mapas y visores del INTA (Series Temporales, GOES-19, Balance Hídrico, Anomalías)".
 
@@ -8,7 +8,7 @@
 
 Desarrollar la fuente `sepa_inta` para consultar el sistema SEPA del INTA (sepa.inta.gob.ar) y sus visores satelitales, incluido GOES-19. La meta es hacer **ingeniería inversa** de los pedidos que hace la web y extraer la **serie temporal histórica completa** y en tiempo real de las variables de §2, en el lote.
 
-**Fuentes permitidas:** SEPA es del INTA, que es una excepción prevista (AGENTS §2). GOES-19 es de la NOAA, agencia socia de la NASA (spec 005, regla de socios del PR #23). Los productos de SEPA que usan MODIS o VIIRS son de la NASA y la NOAA.
+**Fuentes permitidas:** SEPA es del INTA, que es una excepción prevista (AGENTS §2). GOES-19 es de la NOAA, agencia socia de la NASA (spec 005, regla de socios). Los productos de SEPA que usan MODIS o VIIRS son de la NASA y la NOAA.
 
 ## 2. Variables a extraer e investigar (mapeo al contrato `Observacion`)
 
@@ -128,20 +128,20 @@ SEPA lo estima con el pronóstico NOAA GFS (dato modelado, no observado). El con
 
 Los términos de SEPA permiten el uso personal y no comercial. El uso comercial necesita **autorización escrita del Instituto de Clima y Agua (CIRN-INTA)**. Los términos también dicen que no se pueden crear enlaces que muestren una página o imagen del sitio sin autorización, y eso alcanza a las URL de imágenes que el conector pone en la `nota`. Además piden citar al INTA y al equipo SEPA, y poner un link a https://sepa.inta.gob.ar/productos/. Por eso cada observación de SEPA lleva en la `nota` la cita y la autorización. GOES (NOAA) y POWER (NASA) no tienen esa restricción.
 
-**Decisión de Hernán (4/10/2026):** pedir la autorización al INTA, aclarando que Rotaterra es para la hackatón de la NASA. El borrador del mail va a Lucas Gusmerotti (contacto del balance hídrico en GeoSEPA), con copia a Patricio Oricchio (consultas de los visores). Mientras no haya respuesta, el uso se mantiene sin fines comerciales, y se arma un balance hídrico propio con datos de la NASA como respaldo (spec 024).
+**Decisión de Hernán:** pedir la autorización al INTA, aclarando que Rotaterra es para la hackatón de la NASA. El borrador del mail va a Lucas Gusmerotti (contacto del balance hídrico en GeoSEPA), con copia a Patricio Oricchio (consultas de los visores). Mientras no haya respuesta, el uso se mantiene sin fines comerciales, y se arma un balance hídrico propio con datos de la NASA como respaldo (spec 024).
 
-**Respuesta del INTA (5/10/2026):** Patricio Oricchio (CIRN-INTA) contestó: "Adelante con el uso de los productos que mencionas en tu correo. […] Si debo aclararte que si uso es comercial, tendríamos que averiguar con el INTA las condiciones de uso." O sea:
+**Respuesta del INTA:** Patricio Oricchio (CIRN-INTA) contestó: "Adelante con el uso de los productos que mencionas en tu correo. […] Si debo aclararte que si uso es comercial, tendríamos que averiguar con el INTA las condiciones de uso." O sea:
 
 | Uso | Estado |
 |---|---|
 | Rotaterra en la hackatón de la NASA, con los productos del mail | Autorizado |
 | Uso comercial | Hay que averiguar las condiciones con el INTA antes |
 
-La `nota` de cada dato de SEPA dice "uso autorizado por el CIRN-INTA el 5/10/2026 para Rotaterra en la hackatón NASA; el uso comercial necesita acordar condiciones con el INTA", y sigue llevando la cita al INTA. El balance propio (spec 024) queda como respaldo para cuando SEPA no conteste, y como camino sin SEPA si el uso comercial no se acuerda.
+La `nota` de cada dato de SEPA dice "uso autorizado por el CIRN-INTA para Rotaterra en la hackatón NASA; el uso comercial necesita acordar condiciones con el INTA", y sigue llevando la cita al INTA. El balance propio (spec 024) queda como respaldo para cuando SEPA no conteste, y como camino sin SEPA si el uso comercial no se acuerda.
 
-**Enlaces a imágenes (Hernán, 4/10/2026: "Lo de la imagen da igual, usarlo igualmente"):** el conector sigue poniendo la URL de la imagen de SEPA en la `nota`.
+**Enlaces a imágenes (Hernán: "Lo de la imagen da igual, usarlo igualmente"):** el conector sigue poniendo la URL de la imagen de SEPA en la `nota`.
 
-**Si SEPA está caído (Hernán, 4/10/2026: "no considerarlo, ver la forma de costearlos nosotros mismos"):** el conector pregunta primero si el sitio de SEPA contesta (20 s como máximo). Si no contesta, devuelve el agua del suelo como `descartada` con el motivo, sin esperar minutos por cada archivo, y sigue con el Q de trigo (POWER). La prueba real no lo cuenta como falla: avisa y exige solo lo que no depende de SEPA. El dato de agua lo cubre el balance propio (spec 024). **En `POST /consulta` (agregado el 16/10/2026):** si SEPA está caído, el conector da error en vez de devolver solo el Q, para que conteste el respaldo `SEPA_INTA:BALANCE` con el agua del suelo. Lo encontró la prueba del piloto: con SEPA caído, la consulta de dos parcelas reales devolvía el Q y el agua vacía, y el balance nunca entraba. Ese día el Q de trigo no viene (sale de POWER y el motor no lo usa). `POST /sepa` sigue igual que antes.
+**Si SEPA está caído (Hernán: "no considerarlo, ver la forma de costearlos nosotros mismos"):** el conector pregunta primero si el sitio de SEPA contesta (20 s como máximo). Si no contesta, devuelve el agua del suelo como `descartada` con el motivo, sin esperar minutos por cada archivo, y sigue con el Q de trigo (POWER). La prueba real no lo cuenta como falla: avisa y exige solo lo que no depende de SEPA. El dato de agua lo cubre el balance propio (spec 024). **En `POST /consulta` (agregado):** si SEPA está caído, el conector da error en vez de devolver solo el Q, para que conteste el respaldo `SEPA_INTA:BALANCE` con el agua del suelo. Lo encontró la prueba del piloto: con SEPA caído, la consulta de dos parcelas reales devolvía el Q y el agua vacía, y el balance nunca entraba. Ese día el Q de trigo no viene (sale de POWER y el motor no lo usa). `POST /sepa` sigue igual que antes.
 
 **Un pedido por vez (prueba de lotes grandes, 6/10/2026, spec 022 §10):** un mes de SEPA tarda unos 3,5 minutos con cualquier lote (213 s con 25 ha y 210 s con 944 ha). Después de un pedido completo, el servidor del INTA rechaza la conexión (`ConnectError`) por un rato, sea cual sea el tamaño del lote siguiente. El conector lo maneja con el aviso de arriba. Si muchos usuarios piden SEPA a la vez, la mayoría va a recibir ese aviso y el agua del balance propio.
 
@@ -151,13 +151,13 @@ Se suman `SEPA_INTA` y `GOES` al tipo `Fuente` (`contrato.py`) y a `PRIORIDAD` (
 
 ## 6. Criterios de aceptación
 
-Verificado el 4/10/2026 en GitHub (workflow **Probar SEPA INTA y GOES (agua, heladas, Q de trigo)**, lote de San Luis -33,700; -65,300).
+Verificado en GitHub (workflow **Probar SEPA INTA y GOES (agua, heladas, Q de trigo)**, lote de San Luis -33,700; -65,300).
 
 - [x] Existe `rotaterra/fuentes/sepa_inta.py` y los tests del núcleo y de todos los satélites siguen pasando (68 tests sin internet, workflow **Tests** en verde).
-- [x] Extrae el historial del balance hídrico hasta 2 m, con número, promediando todos los píxeles que toca el lote (6 píxeles de 500 m en el lote de San Luis). Últimos 35 días (355 s, 4/10/2026): agua disponible 92,1 → 86,0 → 83,9 → **84,0 mm** al 30/9/2026 (mín 31,3 y máx 135,5 entre píxeles); agua útil 41,8 → 39,1 → **38,2 %**; confort hídrico 100 → 100 → 98,2 → **91,3 %** (3 píxeles con −99 quedan afuera); variación clase **2** (reparto 50 % clase 2 y 50 % clase 3); excedente 0 mm. Una corrida anterior que leía un solo píxel dio 61,8 mm; por eso se corrigió la ventana. Enero de 2025 (corrida de un píxel, 54 s): agua 58,1 → 39,2 → **25,9 mm**, agua útil 26 → 12 %, confort 87 → 59,9 → **29,9 %** (estrés de enero).
+- [x] Extrae el historial del balance hídrico hasta 2 m, con número, promediando todos los píxeles que toca el lote (6 píxeles de 500 m en el lote de San Luis). Últimos 35 días (355 s): agua disponible 92,1 → 86,0 → 83,9 → **84,0 mm** al 30/9/2026 (mín 31,3 y máx 135,5 entre píxeles); agua útil 41,8 → 39,1 → **38,2 %**; confort hídrico 100 → 100 → 98,2 → **91,3 %** (3 píxeles con −99 quedan afuera); variación clase **2** (reparto 50 % clase 2 y 50 % clase 3); excedente 0 mm. Una corrida anterior que leía un solo píxel dio 61,8 mm; por eso se corrigió la ventana. Enero de 2025 (corrida de un píxel, 54 s): agua 58,1 → 39,2 → **25,9 mm**, agua útil 26 → 12 %, confort 87 → 59,9 → **29,9 %** (estrés de enero).
 - [x] Historial de índices y de evapotranspiración del INTA: **solo como imágenes** (URL en la `nota`, comprobada), porque SEPA no publica el número (§5). El número de NDVI, EVI y ET lo dan otros satélites de la app.
 - [x] Se conecta a GOES-19 y extrae la temperatura de superficie y el riesgo de heladas. Del 28/9 al 4/10/2026 (6 s): mínimas de 11,9; 9,0; **−8,6**; **−5,3**; 7,1 y 10,3 °C (las bajo cero con calidad `dudosa` de la NOAA), máximas de 31,5 a 35,5 °C, con dos días nublados `descartada`. Además infrarrojo −2,4 °C, topes nubosos −32,9 °C, 0 rayos en 15 minutos y la animación.
 - [x] Q de trigo con NASA POWER: diario y por década (1,813; 1,687 y 1,402 en septiembre de 2026), sin valor los días con Tmedia − 4,5 ≤ 0,5 °C o sin dato de POWER.
 - [x] Existe `.github/workflows/probar_sepa_inta_completo.yml`, con el lote de prueba (-33,700; -65,300). Corre en cada PR que toque el conector; el botón para lanzarlo con un clic aparece en GitHub cuando el workflow esté en `main`.
 - [x] Lo que no se puede leer como número queda descartado con el motivo, o con su URL en la `nota`.
-- [x] Hernán aprobó esta spec (5/10/2026).
+- [x] Hernán aprobó esta spec.
