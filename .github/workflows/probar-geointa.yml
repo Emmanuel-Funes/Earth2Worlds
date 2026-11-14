@@ -1,0 +1,46 @@
+name: Probar GeoINTA (suelos y cultivos)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/geointa.py"
+      - "probar_geointa.py"
+      - ".github/workflows/probar-geointa.yml"
+  workflow_dispatch:
+    inputs:
+      esquinas:
+        description: "Esquinas del lote como 'lat, lon; lat, lon; lat, lon; lat, lon' (copiadas de Google Maps)"
+        default: "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"
+      pampeano:
+        description: "Lote de control con carta 1:50.000 (campo al suroeste de Pergamino)"
+        default: "-33.960, -60.650; -33.960, -60.645; -33.965, -60.645; -33.965, -60.650"
+      explorar:
+        description: "Listar antes las capas de suelo de los servidores del INTA (tarda unos minutos)"
+        type: boolean
+        default: false
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      # en un PR no hay inputs: se usan los lotes de ejemplo
+      ESQUINAS: ${{ inputs.esquinas || '-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300' }}
+      PAMPEANO: ${{ inputs.pampeano || '-33.960, -60.650; -33.960, -60.645; -33.965, -60.645; -33.965, -60.650' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Explorar los servidores del INTA (capas de suelo en San Luis y Pergamino)
+        if: ${{ inputs.explorar }}
+        continue-on-error: true
+        run: python -u probar_geointa.py --explorar "-33.7025, -65.2975" "-33.9625, -60.6475"
+      - name: Metadatos del carbono orgánico 2023 del INTA (unidad, píxel y leyenda que publica el catálogo)
+        continue-on-error: true
+        run: python -u probar_geointa.py --metadatos-carbono
+      - name: Suelo y cultivos del lote (San Luis; hoja 1:100.000 Villa Mercedes del nodo 15)
+        run: python -u probar_geointa.py "$ESQUINAS" --exigir suelo_indice_productividad,suelo_clase_capacidad_uso,suelo_indice_productividad_detallado,cultivo_mnc_verano,suelo_textura_0_15cm,suelo_ph_0_30cm,suelo_carbono_organico_0_30cm_t_ha
+      - name: Suelo del lote de control (Pergamino; con carta 1:50.000)
+        run: python -u probar_geointa.py "$PAMPEANO" --exigir suelo_indice_productividad,suelo_clase_capacidad_uso,cultivo_mnc_verano,suelo_carbono_organico_0_30cm_t_ha
