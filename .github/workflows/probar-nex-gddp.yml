@@ -1,0 +1,33 @@
+name: Probar NEX-GDDP (clima futuro)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/nex_gddp.py"
+      - "probar_nex_gddp.py"
+      - ".github/workflows/probar-nex-gddp.yml"
+  workflow_dispatch:
+    inputs:
+      lat:
+        description: "Latitud del centro del lote"
+        default: "-33.7025"
+      lon:
+        description: "Longitud del centro del lote"
+        default: "-65.2975"
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Pedir el clima futuro de la celda del lote (sin cuenta, unos 15 minutos)
+        env:
+          # en un PR no hay inputs: lote de ejemplo de San Luis
+          LAT: ${{ inputs.lat || '-33.7025' }}
+          LON: ${{ inputs.lon || '-65.2975' }}
+        run: python probar_nex_gddp.py "$LAT" "$LON"
