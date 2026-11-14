@@ -16,10 +16,10 @@ on:
         description: "Longitud del centro del lote (ej. -65.30)"
         default: "-65.30"
       desde:
-        description: "Desde (AAAA-MM-DD). Vacío = automático: hace 317 días"
+        description: "Desde (AAAA-MM-DD). Vacío = automático: hace 17 días"
         default: ""
       hasta:
-        description: "Hasta (AAAA-MM-DD). Vacío = automático: hace 304 días"
+        description: "Hasta (AAAA-MM-DD). Vacío = automático: hace 4 días"
         default: ""
 
 jobs:
@@ -40,4 +40,4 @@ jobs:
           LON: ${{ inputs.lon || '-65.30' }}
           DESDE: ${{ inputs.desde }}
           HASTA: ${{ inputs.hasta }}
-        run: DESDE="${DESDE:-$(date -u -d "-317 days" +%F)}"; HASTA="${HASTA:-$(date -u -d "-304 days" +%F)}"; python probar_imerg.py "$LAT" "$LON" "$DESDE" "$HASTA"
+        run: DESDE="${DESDE:-$(date -u -d "-17 days" +%F)}"; HASTA="${HASTA:-$(date -u -d "-4 days" +%F)}"; python probar_imerg.py "$LAT" "$LON" "$DESDE" "$HASTA"
