@@ -1,0 +1,31 @@
+name: Cargar lote
+
+on:
+  workflow_dispatch:
+    inputs:
+      id:
+        description: "Identificador corto, sin espacios (ej. lote-7)"
+        required: true
+      nombre:
+        description: "Nombre para mostrar (ej. Lote 7 - La Esperanza)"
+        required: true
+      esquinas:
+        description: "Esquinas como 'lat, lon; lat, lon; lat, lon; lat, lon' (copiadas de Google Maps)"
+        required: true
+
+jobs:
+  cargar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Guardar el lote en la base
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          ID: ${{ inputs.id }}
+          NOMBRE: ${{ inputs.nombre }}
+          ESQUINAS: ${{ inputs.esquinas }}
+        run: python cargar_lote.py "$ID" "$NOMBRE" "$ESQUINAS"
