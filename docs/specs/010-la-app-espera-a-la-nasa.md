@@ -1,6 +1,6 @@
 # Spec 010 · La app espera a la NASA
 
-**Estado:** aprobada por Hernán el 3 de octubre de 2026 ("en realidad sí debe esperar a la NASA") · **Etapa:** pipeline satélite → API → app · **Reemplaza:** la regla "la app nunca espera a la NASA" de la spec 004
+**Estado:** aprobada por Hernán ("en realidad sí debe esperar a la NASA") · **Etapa:** pipeline satélite → API → app · **Reemplaza:** la regla "la app nunca espera a la NASA" de la spec 004
 
 ## Objetivo
 
@@ -10,7 +10,7 @@ Que la app pida los datos a la NASA **en el momento** en que los necesita y **es
 |---|---|
 | La NASA se consultaba de noche y la app leía la base | La app consulta a la NASA al pedir y espera |
 | Los endpoints directos eran solo para pruebas internas | Los endpoints directos son el camino principal de la app |
-| Sin base de datos, la app no tenía datos | Funciona sin base de datos (Hernán postergó la base el 3/10/2026) |
+| Sin base de datos, la app no tenía datos | Funciona sin base de datos (Hernán postergó la base) |
 
 ## Cómo pide la app
 

@@ -1,6 +1,6 @@
 # Spec 052 · Los huecos largos del NDVI los rellena el satélite de más detalle que haya pasado
 
-**Estado:** pedida por Hernán el 27/10/2026 ("lo que yo pedía es que traiga el que más cercano de la tierra nos dé el resultado, así también considerar cada cuánto tiempo pasa"); umbral elegido por Hernán el 27/10/2026: **más de 2 días** ("Rellenar huecos con más de 2 días") · **Etapa:** núcleo (consulta en el momento) · **Rama:** `NUCLEO-rellenar_huecos_por_detalle` · **Depende de:** `TIEMPO_REAL-datos_del_dia` (spec 043)
+**Estado:** pedida por Hernán ("lo que yo pedía es que traiga el que más cercano de la tierra nos dé el resultado, así también considerar cada cuánto tiempo pasa"); umbral elegido por Hernán: **más de 2 días** ("Rellenar huecos con más de 2 días") · **Etapa:** núcleo (consulta en el momento) · **Rama:** `NUCLEO-rellenar_huecos_por_detalle` · **Depende de:** `TIEMPO_REAL-datos_del_dia` (spec 043)
 
 ## Objetivo
 
@@ -20,7 +20,7 @@ Hernán pide que, día por día, el dato venga del satélite **que más detalle 
 
 ## Por qué 2 días
 
-Hernán eligió 2 días (27/10/2026). La tarjeta proponía 5 (el NDVI cambia lento y Sentinel-3 tarda ~6 min por mes); con 2, la serie queda casi sin huecos a cambio de una consulta más lenta (ver la prueba real). El número vive en `HUECO_MAXIMO_DIAS` y se cambia en una línea.
+Hernán eligió 2 días. La tarjeta proponía 5 (el NDVI cambia lento y Sentinel-3 tarda ~6 min por mes); con 2, la serie queda casi sin huecos a cambio de una consulta más lenta (ver la prueba real). El número vive en `HUECO_MAXIMO_DIAS` y se cambia en una línea.
 
 ## Proceso
 
@@ -48,15 +48,15 @@ La respuesta de `POST /consulta` suma `rellenada_con`: la lista de respaldos que
 
 ## Resultado de la prueba real
 
-**Con 2 días (lo elegido), 28/10/2026**, mismo lote y método:
+**Con 2 días (lo elegido)**, mismo lote y método:
 
 - **Enero de 2026** (372 s, antes 133 s): HLS 12 días; Sentinel-2 no tenía nada útil en los huecos; **Sentinel-3 rellenó el 7, 10, 17 y 20/1** (0,452 · 0,572 · 0,615 · 0,631). VIIRS cortó la conexión (error, no frenó nada) y MODIS no tenía nada.
 - **Febrero de 2026** (433 s, antes 111 s): **Sentinel-2 rellenó el 10 y 12/2; Sentinel-3 el 3, 16 y 28/2** (0,666 · 0,798 · 0,775). Quedan 12 días con dato contra 7 de HLS solo.
 - **Ojo agronómico:** en enero Sentinel-3 da NDVI más alto que el HLS de los días vecinos (10/1 0,572 contra 0,414 el 11/1 en HLS; 17/1 0,615 contra 0,531 el 16/1): +0,08 a +0,16, como ya se vio en la spec 050 (+0,08 el 1/1). La serie mezclada muestra saltos que no son del cultivo; cada punto dice su fuente para poder separarlos. En febrero la diferencia es chica (16/2 0,798 contra 0,783 el 17/2).
 
-**Primera prueba, con 5 días**, 27/10/2026:
+**Primera prueba, con 5 días**:
 
-27/10/2026, desde la máquina de trabajo (entorno con acceso a la NASA), con todos los satélites de la rama de Render más esta spec, lote de prueba de San Luis (-33,700/-65,300 a -33,705/-65,295), `POST /consulta` de HLS:
+Desde la máquina de trabajo (entorno con acceso a la NASA), con todos los satélites de la rama de Render más esta spec, lote de prueba de San Luis (-33,700/-65,300 a -33,705/-65,295), `POST /consulta` de HLS:
 
 - **Enero de 2026** (133 s): HLS tuvo 12 días con dato; el hueco más largo fue del 6 al 10/1 (5 días, dentro del margen). **No se pidió ningún respaldo**: la consulta tardó lo mismo que antes.
 - **Febrero de 2026** (111 s): HLS quedó nublado del 8 al 16/2 (9 días). **Sentinel-2 rellenó el 10/2 (NDVI 0,723, `buena`) y el 12/2 (0,531, `dudosa`)**; los huecos que quedaron (13-16/2 y 26-28/2) son de 4 y 3 días, así que Sentinel-3, VIIRS y MODIS no hicieron falta. Resultado: 7 días de HLS + 2 de Sentinel-2, cada uno con su fuente.

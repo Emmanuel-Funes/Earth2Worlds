@@ -1,8 +1,8 @@
 # Spec 004 · Base de datos y actualización nocturna
 
-**Estado:** implementada (PR #7); falta que Hernán elija dónde vive la base · **Etapa:** pipeline satélite → API → app · **Pedido por:** Hernán ("la app no debería tardar en devolver información")
+**Estado:** implementada; falta que Hernán elija dónde vive la base · **Etapa:** pipeline satélite → API → app · **Pedido por:** Hernán ("la app no debería tardar en devolver información")
 
-> **Reemplazada en parte por la spec 010 (3/10/2026):** Hernán decidió que la app sí espera a la NASA y consulta en el momento. Esta base y la actualización nocturna quedan como complemento opcional para cuando haya una base de datos.
+> **Reemplazada en parte por la spec 010:** Hernán decidió que la app sí espera a la NASA y consulta en el momento. Esta base y la actualización nocturna quedan como complemento opcional para cuando haya una base de datos.
 
 ## Objetivo
 
