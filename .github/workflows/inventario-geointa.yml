@@ -1,0 +1,32 @@
+name: Probar GeoINTA (inventario del catálogo)
+
+on:
+  push:
+    branches: [fuente-geointa-suelo-del-lote]
+    paths:
+      - "inventariar_geointa.py"
+      - ".github/workflows/inventario-geointa.yml"
+  pull_request:
+    paths:
+      - "inventariar_geointa.py"
+      - ".github/workflows/inventario-geointa.yml"
+  workflow_dispatch:
+    inputs:
+      esquinas:
+        description: "Esquinas del lote como 'lat, lon; lat, lon; lat, lon; lat, lon' (copiadas de Google Maps)"
+        default: "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"
+
+jobs:
+  inventario:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ESQUINAS: ${{ inputs.esquinas || '-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install httpx
+      - name: Inventario del catálogo GeoINTA y cobertura en el lote
+        run: python -u inventariar_geointa.py "$ESQUINAS"

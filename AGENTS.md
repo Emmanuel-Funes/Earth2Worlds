@@ -18,7 +18,7 @@ Todas las fuentes y todos los respaldos son de la NASA. Las excepciones prevista
 Toda fuente entrega una lista de `Observacion` (`rotaterra/contrato.py`):
 
 ```json
-{"lote_id": "lote-7", "fecha": "2026-01-13", "variable": "lluvia_mm", "valor": 22.5,
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "lluvia_mm", "valor": 22.5,
  "unidad": "mm/día", "fuente": "IMERG", "resolucion_m": 10000, "calidad": "buena", "nota": "..."}
 ```
 
