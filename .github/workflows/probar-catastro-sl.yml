@@ -1,0 +1,46 @@
+name: Probar CATASTRO_SL (límites y parcelas)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/catastro_sl.py"
+      - "probar_catastro_sl.py"
+      - ".github/workflows/probar-catastro-sl.yml"
+  workflow_dispatch:
+    inputs:
+      punto:
+        description: "Punto dentro del lote como 'lat, lon' (copiado de Google Maps)"
+        default: "-33.700, -65.300"
+      nomenclatura:
+        description: "Opcional: nomenclatura catastral a buscar (ej. E5-03-01-00-000000-003565)"
+        default: ""
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      # en un PR no hay inputs: se usa el lote de prueba de San Luis
+      PUNTO: ${{ inputs.punto || '-33.700, -65.300' }}
+      NOMENCLATURA: ${{ inputs.nomenclatura }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install httpx shapely fastapi pydantic
+      - name: Parcela del Catastro de San Luis en el punto (y la misma por nomenclatura y por partida)
+        run: python -u probar_catastro_sl.py $(echo "$PUNTO" | tr ',' ' ')
+      - name: Punto fuera de San Luis (Pergamino) devuelve vacío, sin inventar
+        run: python -u probar_catastro_sl.py --fuera -33.960 -60.650
+      - name: Mapa completo de parcelas rurales (archivo para el frontend)
+        run: python -u probar_catastro_sl.py --exportar parcelas-rurales-san-luis.geojson
+      - name: Guardar el mapa como archivo descargable
+        uses: actions/upload-artifact@v4
+        with:
+          name: parcelas-rurales-san-luis
+          path: parcelas-rurales-san-luis.geojson
+          retention-days: 30
+      - name: Parcela por nomenclatura
+        if: ${{ inputs.nomenclatura != '' && inputs.nomenclatura != null }}
+        run: python -u probar_catastro_sl.py --nomenclatura "$NOMENCLATURA"
