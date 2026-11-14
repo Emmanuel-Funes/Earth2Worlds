@@ -30,7 +30,7 @@ POST https://<dirección-de-la-api>/consulta
 X-API-Key: <clave de Daniel>
 Content-Type: application/json
 
-{"satelite": "HLS", "lote_id": "lote-7", "poligono": {...}, "desde": "2026-01-01", "hasta": "2026-01-31"}
+{"satelite": "HLS", "lote_id": "lote-7", "poligono": {...}, "desde": "2026-11-14", "hasta": "2026-11-14"}
 ```
 
 ## 4. Proceso
@@ -139,8 +139,8 @@ La API no limita la superficie del lote. Para ver si aguanta lotes grandes se pi
 - [x] Rama de prueba `RENDER-api_con_todos_los_satelites`: el núcleo con la clave más los 16 satélites y respaldos se unen sin conflictos, pasan los 451 tests, `GET /satelites` lista los 7 principales con sus respaldos, y los endpoints de los satélites (`/clima`, `/lluvia`, `/humedad-suelo`…) dan `401` sin clave.
 - [x] Publicada en Render (`https://rotaterra-api.onrender.com`, plan gratis, rama `RENDER-api_con_todos_los_satelites`), probada por Hernán desde `/docs` con su clave:
   - `GET /salud` → `{"ok": true}`.
-  - `POST /consulta` POWER, lote de San Luis, 1 al 10/9/2026 → `200`, `fuente_usada: POWER`, máxima de 24,88 °C el 1/9 y 28,7 °C el 2/9, calidad buena.
-  - `POST /consulta` HLS, 1 al 15/1/2026 → `200`, `fuente_usada: HLS`. El 1/1 dio NDVI 0,322 y NDMI -0,089, con 100 % de píxeles válidos (HLSS30), igual que la prueba real de la spec 002. El plan gratis aguantó la consulta más pesada.
+  - `POST /consulta` POWER, lote de San Luis, 1 al 14/11/2026 → `200`, `fuente_usada: POWER`, máxima de 24,88 °C el 1/9 y 28,7 °C el 2/9, calidad buena.
+  - `POST /consulta` HLS, 1 al 14/11/2026 → `200`, `fuente_usada: HLS`. El 1/1 dio NDVI 0,322 y NDMI -0,089, con 100 % de píxeles válidos (HLSS30), igual que la prueba real de la spec 002. El plan gratis aguantó la consulta más pesada.
 - [x] Lotes de 900 ha: las 19 fuentes probadas responden con el cuadrado de 903 ha y la parcela de 944 ha, en el mismo tiempo que con 25 ha y con menos de 150 MB de memoria. SEPA solo anda con un pedido por vez, sea cual sea el tamaño.
 - [ ] Daniel confirma que su frontend recibe la respuesta.
 - [x] Hernán aprobó esta spec y eligió el servicio (Render).
