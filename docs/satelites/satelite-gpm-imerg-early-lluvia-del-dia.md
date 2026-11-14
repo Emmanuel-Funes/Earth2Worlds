@@ -36,13 +36,13 @@ Corrida el 14/11/2026 contra la fuente real, con datos de los últimos días (de
 Comando: `python probar_imerg_early.py "-33.70" "-65.30" "" ""`
 
 ```
-GPM_3IMERGDE: colección C2723754850-GES_DISC · 1 archivos con OPeNDAP entre ayer y hoy · último GPM_3IMERGDE.07:3B-DAY-E.MS.MRG.3IMERG.20261113-S000000-E235959.V07C.nc4
+GPM_3IMERGDE: colección C2723754850-GES_DISC · 1 archivos con OPeNDAP entre ayer y hoy · último GPM_3IMERGDE.07:3B-DAY-E.MS.MRG.3IMERG.20261114-S000000-E235959.V07C.nc4
 GPM_3IMERGHHE: colección C2723758340-GES_DISC · 64 archivos con OPeNDAP entre ayer y hoy · último GPM_3IMERGHHE.07:3B-HHR-E.MS.MRG.3IMERG.20261114-S073000-E075959.0450.V07C.HDF5
 
-IMERG Early en (-33.7, -65.3) del 2026-11-11 al 2026-11-14 (días UTC) · 3 s
+IMERG Early en (-33.7, -65.3) del 2026-11-14 al 2026-11-14 (días UTC) · 3 s
 
-2026-11-11     0.0 mm  buena      IMERG Early de la NASA (GPM), sin corregir con pluviómetros · celda de 0,1° · día UTC · archivo diario
-2026-11-12     0.0 mm  buena      IMERG Early de la NASA (GPM), sin corregir con pluviómetros · celda de 0,1° · día UTC · archivo diario
-2026-11-13     4.0 mm  buena      IMERG Early de la NASA (GPM), sin corregir con pluviómetros · celda de 0,1° · día UTC · archivo diario
+2026-11-14     0.0 mm  buena      IMERG Early de la NASA (GPM), sin corregir con pluviómetros · celda de 0,1° · día UTC · archivo diario
+2026-11-14     0.0 mm  buena      IMERG Early de la NASA (GPM), sin corregir con pluviómetros · celda de 0,1° · día UTC · archivo diario
+2026-11-14     4.0 mm  buena      IMERG Early de la NASA (GPM), sin corregir con pluviómetros · celda de 0,1° · día UTC · archivo diario
 2026-11-14     0.3 mm  dudosa     IMERG Early de la NASA (GPM), sin corregir con pluviómetros · celda de 0,1° · día UTC · día en curso: lluvia hasta las 08:00 UTC (16 de 48 medias horas)
 ```

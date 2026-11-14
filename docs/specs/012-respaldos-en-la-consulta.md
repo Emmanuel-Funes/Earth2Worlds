@@ -17,7 +17,7 @@ Que la app reciba el dato del respaldo, marcado con su fuente, cuando el satéli
 
 ```json
 {"satelite": "HLS", "lote_id": "lote-7", "poligono": {"type": "Polygon", "coordinates": [...]},
- "desde": "2026-01-01", "hasta": "2026-01-31"}
+ "desde": "2026-11-14", "hasta": "2026-11-14"}
 ```
 
 - `satelite`: el principal, tal como figura en `GET /satelites` (ej. `POWER`, `HLS`, `SMAP`, `IMERG`, `NASADEM`).
@@ -39,7 +39,7 @@ Que la app reciba el dato del respaldo, marcado con su fuente, cuando el satéli
 
 ```json
 {"fuente_usada": "HLS:VIIRS",
- "observaciones": [{"lote_id": "lote-7", "fecha": "2026-01-14", "variable": "ndvi", "valor": 0.51,
+ "observaciones": [{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "ndvi", "valor": 0.51,
                     "fuente": "VIIRS", "...": "contrato común"}],
  "intentos": [{"satelite": "HLS", "resultado": "error", "mensaje": "ErrorHLS: ..."},
               {"satelite": "HLS:VIIRS", "resultado": "ok", "filas": 6, "mensaje": ""}]}
