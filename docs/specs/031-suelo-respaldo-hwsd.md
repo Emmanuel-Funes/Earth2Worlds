@@ -33,7 +33,7 @@ El lote como lo recibe cualquier satélite: `lote["id"]` y `lote["poligono"]` (G
 ## Salida (contrato común)
 
 ```json
-{"lote_id": "lote-7", "fecha": "2012-03-01", "variable": "suelo_textura_0_15cm", "valor": 2.0,
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "suelo_textura_0_15cm", "valor": 2.0,
  "unidad": "clase textural (1 arenoso … 12 arcilloso, spec 021)", "fuente": "HWSD", "resolucion_m": 5500,
  "calidad": "dudosa", "nota": "Respaldo de GeoINTA · HWSD v1.2 de la NASA (ORNL DAAC) · arena 83 %, limo 11 %, arcilla 6 % → areno franco (clase común 2) · celda de 0,05° (~5,5 km), 0–30 cm usada para 0–15 cm · dato REGIONAL de modelo, no una medición del lote"}
 ```
