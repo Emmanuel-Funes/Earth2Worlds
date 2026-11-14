@@ -183,7 +183,7 @@ def validar_pedido(poligono: dict, desde: date, hasta: date) -> None:
 def grilla_de_enlace(valores: np.ndarray, filas: int) -> np.ndarray:
     """Los puntos de enlace vienen en una tira: columna de enlace por columna de enlace, cada una con todas las filas.
 
-    Verificado el 27/10/2026 en S3A_SY_2_SYN del 20/9/2026: 314.930 puntos = 77 columnas × 4.090 filas, y los
+    Verificado en S3A_SY_2_SYN del 20/9/2026: 314.930 puntos = 77 columnas × 4.090 filas, y los
     primeros 4.090 bajan por la primera columna. Se devuelve como (filas, columnas de enlace).
     """
     return valores.reshape(valores.size // filas, filas).T
