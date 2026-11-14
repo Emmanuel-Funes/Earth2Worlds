@@ -619,7 +619,7 @@ def _banco_inta(filas: list[dict], especie_a_perfil: dict, ruta_catalogo: Path |
             "solicitante_rnc": f["solicitante_rnc"], "vinculo_inta": vinculo,
             "unidad_inta": v["unidad"], "tipo_licencia": v["tipo_licencia"], "licenciatario": v["licenciatario"],
             "evento_transgenico": f["evento_transgenico"], "ensayos": "; ".join(sorted(ensayado.get(f"INASE-{f['numero']}", []))),
-            "obtentor_inta": "SI", "nombre_busqueda": nombre, "fecha_corte": fecha_corte.isoformat(),
+            "obtentor_inta": "SI" if es_inta(solicitante) else "NO", "nombre_busqueda": nombre, "fecha_corte": fecha_corte.isoformat(),
         })
     salida.sort(key=lambda x: (x["grupo"], x["cultivo"], -int(x["inscripcion_rnc"][:4] or 0), x["cultivar"]))
     return salida
