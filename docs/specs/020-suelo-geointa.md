@@ -15,8 +15,8 @@ Es la **excepción prevista a la regla NASA** (AGENTS.md § 2 y Guía técnica):
 
 | Capa | Qué es | Escala | Atributos que se usan | Fecha que se guarda |
 |---|---|---|---|---|
-| `geonode:suelos_argentina_1_500` | Atlas de Suelos de la República Argentina, INTA, v9 | 1:500.000 (1:1.000.000 en Neuquén, Mendoza, San Juan, La Rioja, Chubut y Santa Cruz) | `simbc`, `tipo_uc`, `provincia`, `ind_prod`, `porc_sue1..3`, `sgrup_sue1..3`, `posi_sue1..3`, `text_sups1`, `text_bs1`, `drenaje_s1`, `limit_ppal/secu/terc` | 2013-01-07 (versión digital 9.0, según los metadatos de GeoINTA) |
-| `geonode:Suelos_BA_50mil_V2` | Cartas de Suelo de la provincia de Buenos Aires, INTA, v2 | 1:50.000 | `SIMBC`, `Nombre_UC`, `SERIE1..6`, `PORC1..6`, `FASE1..6`, `PAISAJE`, `CAP_USO`, `taxo_ppal` | 2023-04-17 (versión 2.0 publicada por el Instituto de Suelos del INTA) |
+| `geonode:suelos_argentina_1_500` | Atlas de Suelos de la República Argentina, INTA, v9 | 1:500.000 (1:1.000.000 en Neuquén, Mendoza, San Juan, La Rioja, Chubut y Santa Cruz) | `simbc`, `tipo_uc`, `provincia`, `ind_prod`, `porc_sue1..3`, `sgrup_sue1..3`, `posi_sue1..3`, `text_sups1`, `text_bs1`, `drenaje_s1`, `limit_ppal/secu/terc` | 2026-11-14 (versión digital 9.0, según los metadatos de GeoINTA) |
+| `geonode:Suelos_BA_50mil_V2` | Cartas de Suelo de la provincia de Buenos Aires, INTA, v2 | 1:50.000 | `SIMBC`, `Nombre_UC`, `SERIE1..6`, `PORC1..6`, `FASE1..6`, `PAISAJE`, `CAP_USO`, `taxo_ppal` | 2026-11-14 (versión 2.0 publicada por el Instituto de Suelos del INTA) |
 
 La fecha de la observación es la de la **versión digital de la carta**, no la del relevamiento de campo (que en las cartas 1:50.000 va de 1964 en adelante y no viene en el servicio). Se aclara en la nota.
 
@@ -55,9 +55,9 @@ Una observación por variable, `fuente: "GeoINTA"`.
 Ejemplo (Pergamino):
 
 ```json
-{"lote_id": "lote-prueba", "fecha": "2023-04-17", "variable": "suelo_clase_capacidad_uso", "valor": 1,
+{"lote_id": "lote-prueba", "fecha": "2026-11-14", "variable": "suelo_clase_capacidad_uso", "valor": 1,
  "unidad": "clase 1-8", "fuente": "GeoINTA", "resolucion_m": 25, "calidad": "buena",
- "nota": "Unidad Pe4 (Consociacion Pergamino 4) · series: Pergamino 100 % (llana) · Argiudol tipico · capacidad de uso 'I-1' = clase 1 · cubre 100% del lote (muestreo de puntos) · Cartas de Suelo de Buenos Aires (INTA) v2, escala 1:50.000 (versión digital del 17/04/2023)"}
+ "nota": "Unidad Pe4 (Consociacion Pergamino 4) · series: Pergamino 100 % (llana) · Argiudol tipico · capacidad de uso 'I-1' = clase 1 · cubre 100% del lote (muestreo de puntos) · Cartas de Suelo de Buenos Aires (INTA) v2, escala 1:50.000 (versión digital del 14/11/2026)"}
 ```
 
 ## Reglas de calidad

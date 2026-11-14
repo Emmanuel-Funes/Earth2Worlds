@@ -16,7 +16,7 @@ Buenos Aires, son enormes): primero qué unidades tocan el lote y después en qu
 grilla dentro del lote. La unidad dominante es la que tiene más puntos.
 El Mapa Nacional de Cultivos se recorta por WCS al lote y se cuentan sus píxeles de 30 m (spec 021).
 La textura y el pH se leen por WMS en una grilla de puntos, porque el INTA no los publica por WCS ni WFS
-(spec 021, decisión de Hernán del 4/10/2026).
+(spec 021, decisión de Hernán del 14/11/2026).
 El carbono orgánico del suelo 2023 se recorta por WCS al lote y se promedian sus píxeles de 250 m (spec 021, §23.6).
 
 
