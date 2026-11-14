@@ -27,3 +27,24 @@ ASTER GDEM v3 es un COMPUESTO de tomas de 2000 a 2013 (publicado en 2019): es un
 ## Depende de
 
 Solo del núcleo (rama `nucleo-api-y-contrato-comun`): no importa ningún otro satélite.
+
+## Prueba real del 14/11/2026
+
+Corrida el 14/11/2026 contra la fuente real, con datos de los últimos días (desde esta máquina de trabajo). Lote de prueba de San Luis.
+
+Comando: `python probar_aster.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"`
+
+```
+Altimetría del lote (ASTER GDEM v3, NASA/METI, 30 m, fecha 2019-08-05) · 3 s
+
+Variable                      Valor  Unidad Calidad     NASADEM
+altura_media_m                487.7  m      buena         488.4
+altura_min_m                    479  m      buena           485
+altura_max_m                    493  m      buena           492
+pendiente_media_pct            6.94  %      buena          2.76
+superficie_bajo_ha             7.78  ha     buena          8.28
+superficie_media_loma_ha       7.38  ha     buena         10.86
+superficie_loma_ha            10.56  ha     buena          6.58
+
+Detalle: bajo / loma = más de 1 m por debajo / por encima de la media del lote (umbral supuesto, a calibrar) · proporción de píxeles × 25.7 ha del lote · ASTER GDEM v3 de la NASA y el METI (compuesto de tomas 2000–2013, publicado 
+```

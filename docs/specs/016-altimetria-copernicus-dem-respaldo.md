@@ -1,6 +1,6 @@
 # Spec 016 · Altimetría de respaldo con Copernicus DEM (ESA)
 
-**Estado:** aprobada por Hernán el 4/10/2026 ("Sumar lo necesario para cubrir lo que hace falta") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** nada (acceso público, sin credenciales) · **Respalda a:** NASADEM (spec 008)
+**Estado:** aprobada por Hernán ("Sumar lo necesario para cubrir lo que hace falta") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** nada (acceso público, sin credenciales) · **Respalda a:** NASADEM (spec 008)
 
 ## Objetivo
 
@@ -12,7 +12,7 @@ Que el lote tenga altura, pendiente y ambientes aunque NASADEM falle. Hoy NASADE
 
 **Cómo se accede:** por el distribuidor público **AWS Open Data**, bucket `copernicus-dem-30m` (`https://copernicus-dem-30m.s3.amazonaws.com`), que publica los archivos originales de la ESA sin cambios y sin pedir usuario ni clave. AWS no es la fuente del dato: solo lo aloja (lo permite el brief de fuentes: "un distribuidor público de datos de una agencia se puede usar si se aclara").
 
-**Verificado (4/10/2026) leyendo el bucket:**
+**Verificado leyendo el bucket:**
 - Un mosaico de 1° × 1° por carpeta. Para el lote de prueba: `Copernicus_DSM_COG_10_S34_00_W066_00_DEM/Copernicus_DSM_COG_10_S34_00_W066_00_DEM.tif`. El nombre lleva la esquina **suroeste**, igual que NASADEM (`s34w066`): el mosaico va de -34° a -33° de latitud y de -66° a -65° de longitud.
 - El GeoTIFF es un COG (*Cloud Optimized GeoTIFF*): se lee **solo la ventana del lote** con rasterio, sin bajar el mosaico entero.
 - Valores en `float32`, metros sobre el geoide EGM2008 (NASADEM usa EGM96; en la llanura la diferencia es de centímetros), sin valor de relleno declarado. Grilla de 3600 × 3600 con el centro de cada píxel en múltiplos exactos de 1" (la misma grilla que NASADEM). Por encima de 50° de latitud la grilla es más ancha en longitud (1,5" a 10"): el conector usa la resolución que trae cada mosaico.
@@ -79,7 +79,7 @@ Una observación por variable, con:
 
 ## Criterios de aceptación
 
-- [x] Con el lote de prueba real (25,7 ha en -33,70; -65,30) se obtienen las 7 variables de Copernicus DEM, sin credenciales (GitHub Actions, 4/10/2026, mosaico `S34_00_W066_00`, en 3 segundos: altura media 489,4 m, de 487,1 a 493,4 m, pendiente media 2,09 %, 289 de 289 píxeles con dato, todas `buena`).
+- [x] Con el lote de prueba real (25,7 ha en -33,70; -65,30) se obtienen las 7 variables de Copernicus DEM, sin credenciales (GitHub Actions, mosaico `S34_00_W066_00`, en 3 segundos: altura media 489,4 m, de 487,1 a 493,4 m, pendiente media 2,09 %, 289 de 289 píxeles con dato, todas `buena`).
 - [x] Las superficies de los tres ambientes suman la superficie del lote (8,36 + 10,60 + 6,76 = 25,72 ha).
 - [x] La fecha de la observación sale del XML del mosaico, no se inventa: `2013-10-30` (toma de TanDEM-X del 17/01/2011 al 30/10/2013). Un XML sin fecha hace fallar al conector (test `test_sin_fecha_en_el_xml_no_se_inventa`).
 - [x] Comparación con NASADEM en el mismo lote:
