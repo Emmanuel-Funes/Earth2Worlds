@@ -1,8 +1,8 @@
 # Spec 022 · La API publicada en internet, con clave para el frontend
 
-**Estado:** aprobada por Hernán el 4/10/2026: primero eligió Google Cloud Run en la tarjeta y a las 16:42 decidió "Lo voy a subir a Render de momento". Se publica en **Render** ahora; Cloud Run queda para más adelante (§6). El PR no se une sin su orden.
+**Estado:** aprobada por Hernán: primero eligió Google Cloud Run en la tarjeta y a las 16:42 decidió "Lo voy a subir a Render de momento". Se publica en **Render** ahora; Cloud Run queda para más adelante (§6). El PR no se une sin su orden.
 **Etapa:** pipeline satélite → API → app · **Completa:** spec 010 (la app espera a la NASA) y spec 012 (`POST /consulta`)
-**Pedido:** Daniel (frontend), por medio de Hernán, el 4/10/2026: "ejecutar la API desde GitHub o algún contenedor asociado" y que "solo mi frontend pueda preguntar", "codificado con una key".
+**Pedido:** Daniel (frontend), por medio de Hernán: "ejecutar la API desde GitHub o algún contenedor asociado" y que "solo mi frontend pueda preguntar", "codificado con una key".
 
 ## 1. Objetivo
 
@@ -61,7 +61,7 @@ Content-Type: application/json
 
 | Servicio | Estado | Por qué |
 |---|---|---|
-| **Render** | Elegido por Hernán para empezar (4/10/2026, 16:42) | Muy simple: se conecta al repositorio de GitHub y publica solo |
+| **Render** | Elegido por Hernán para empezar | Muy simple: se conecta al repositorio de GitHub y publica solo |
 | Google Cloud Run | Para más adelante | Mejor con mucho tráfico: se apaga sin uso, escala solo y acepta pedidos de hasta 60 minutos (§6.2) |
 | Codespaces | Solo prueba | Se apaga solo y la dirección cambia |
 
@@ -101,7 +101,7 @@ Content-Type: application/json
 
 La API publica lo que está en `main`. Hoy en `main` está solo el núcleo, **sin ningún satélite**, así que la API respondería que no hay satélites. Para que Daniel reciba datos hay que unir antes, como mínimo, el #24, el #26 y los satélites que quiera usar (ver el orden en `Proyect-context.md` §6). Mientras tanto, Render sigue la rama de prueba `RENDER-api_con_todos_los_satelites`, que junta este PR con todos los satélites sin tocar `main`. Esa rama nunca se une: se rearma cuando cambia un satélite y se borra cuando todo esté en `main`.
 
-## 10. Lotes grandes (prueba del 6/10/2026)
+## 10. Lotes grandes (prueba)
 
 La API no limita la superficie del lote. Para ver si aguanta lotes grandes se pidió cada fuente con tres lotes de San Luis: el de prueba de 25,7 ha, un cuadrado de 903 ha y una parcela real del Catastro de 944 ha (partida 01-95687, 23 vértices). Se usó el workflow `Probar lotes grandes (900 ha)` de la rama de prueba `PRUEBA-lotes_de_900_ha`, que no se une.
 
@@ -135,12 +135,12 @@ La API no limita la superficie del lote. Para ver si aguanta lotes grandes se pi
 - [x] Un pedido de navegador desde un origen que no está en `ROTATERRA_ORIGENES` no recibe el permiso CORS; el del frontend autorizado sí (test).
 - [x] La clave equivocada no aparece en la respuesta (test). La API no registra encabezados en sus logs.
 - [x] Los endpoints de los satélites unidos también piden la clave (probado con un endpoint de prueba; los tests de cada satélite la saltean con `tests/conftest.py`).
-- [x] La API arranca como en Render y responde `GET /salud` en GitHub Actions; sin clave da `401` y con clave `200` (job `tests` del PR #38, 4/10/2026).
+- [x] La API arranca como en Render y responde `GET /salud` en GitHub Actions; sin clave da `401` y con clave `200` (job `tests`).
 - [x] Rama de prueba `RENDER-api_con_todos_los_satelites`: el núcleo con la clave más los 16 satélites y respaldos se unen sin conflictos, pasan los 451 tests, `GET /satelites` lista los 7 principales con sus respaldos, y los endpoints de los satélites (`/clima`, `/lluvia`, `/humedad-suelo`…) dan `401` sin clave.
-- [x] Publicada en Render (`https://rotaterra-api.onrender.com`, plan gratis, rama `RENDER-api_con_todos_los_satelites`), probada por Hernán desde `/docs` con su clave el 4/10/2026:
+- [x] Publicada en Render (`https://rotaterra-api.onrender.com`, plan gratis, rama `RENDER-api_con_todos_los_satelites`), probada por Hernán desde `/docs` con su clave:
   - `GET /salud` → `{"ok": true}`.
   - `POST /consulta` POWER, lote de San Luis, 1 al 10/9/2026 → `200`, `fuente_usada: POWER`, máxima de 24,88 °C el 1/9 y 28,7 °C el 2/9, calidad buena.
   - `POST /consulta` HLS, 1 al 15/1/2026 → `200`, `fuente_usada: HLS`. El 1/1 dio NDVI 0,322 y NDMI -0,089, con 100 % de píxeles válidos (HLSS30), igual que la prueba real de la spec 002. El plan gratis aguantó la consulta más pesada.
-- [x] Lotes de 900 ha: las 19 fuentes probadas responden con el cuadrado de 903 ha y la parcela de 944 ha, en el mismo tiempo que con 25 ha y con menos de 150 MB de memoria (6/10/2026, §10). SEPA solo anda con un pedido por vez, sea cual sea el tamaño.
+- [x] Lotes de 900 ha: las 19 fuentes probadas responden con el cuadrado de 903 ha y la parcela de 944 ha, en el mismo tiempo que con 25 ha y con menos de 150 MB de memoria. SEPA solo anda con un pedido por vez, sea cual sea el tamaño.
 - [ ] Daniel confirma que su frontend recibe la respuesta.
-- [x] Hernán aprobó esta spec y eligió el servicio (Render, 4/10/2026).
+- [x] Hernán aprobó esta spec y eligió el servicio (Render).

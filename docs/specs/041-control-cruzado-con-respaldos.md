@@ -1,6 +1,6 @@
 # Spec 041 · Control cruzado: el respaldo revisa al satélite principal
 
-**Estado:** Parte B aprobada por Hernán el 15/10/2026 ("Si, en ese caso necesito el respaldo") y construida; Parte A (control cruzado) propuesta, espera su aprobación · **Etapa:** pipeline satélite → API → app · **Completa:** spec 012 (respaldos en la consulta) y spec 005 (respaldos en orden)
+**Estado:** Parte B aprobada por Hernán ("Si, en ese caso necesito el respaldo") y construida; Parte A (control cruzado) propuesta, espera su aprobación · **Etapa:** pipeline satélite → API → app · **Completa:** spec 012 (respaldos en la consulta) y spec 005 (respaldos en orden)
 
 ## Objetivo
 
@@ -16,7 +16,7 @@ Hoy un respaldo solo entra si el principal falla. Si el principal contesta con u
 
 ## Por qué no un promedio
 
-Lo decidió Hernán el 15/10/2026 ("Perfecto" a la recomendación del hilo de investigación):
+Lo decidió Hernán ("Perfecto" a la recomendación del hilo de investigación):
 
 - Las fuentes miran **distinto tamaño de terreno**: HLS ve el lote a 30 m, MODIS a 250 m y CPC a 55 km. Un promedio diluye el dato fino del lote con el de los vecinos.
 - Algunas tienen **un sesgo fijo conocido**: VIIRS da el NDVI 0,07 a 0,14 más bajo que HLS. Promediar mete ese sesgo en el dato bueno.
@@ -74,7 +74,7 @@ Los umbrales viven en una tabla del núcleo, por **variable** (no por satélite)
 
 ## Parte B (aprobada y construida): un principal todo descartado deja pasar al respaldo
 
-Antes, si el principal contestaba pero **todas** sus observaciones vienen `descartada` (ej. HLS con todas las imágenes del mes nubladas), la consulta lo daba por bueno y no probaba los respaldos: la app recibía todo `null`. Hernán lo aprobó el 15/10/2026.
+Antes, si el principal contestaba pero **todas** sus observaciones vienen `descartada` (ej. HLS con todas las imágenes del mes nubladas), la consulta lo daba por bueno y no probaba los respaldos: la app recibía todo `null`. Hernán lo aprobó.
 
 Ahora ese intento cuenta como `sin_datos` y entra el respaldo siguiente, como si el principal hubiera fallado. Si ningún respaldo trae algo útil, se devuelve la primera fuente con sus descartadas y su `nota` (nunca un 502 por esto). Una observación cuenta como descartada si trae `valor: null` o `calidad: "descartada"`; con un solo dato útil, el principal alcanza. El `mensaje` del intento copia la `nota` de la primera descartada (ej. "todas las imágenes nubladas").
 
@@ -82,11 +82,11 @@ Va en la misma rama porque toca el mismo código (`rotaterra/consulta.py`), pero
 
 Efecto en fuentes reales: HLS todo nublado → Sentinel-2/VIIRS/MODIS; GRACE con todas las semanas sin publicar → mascons de JPL; SEPA con el INTA caído → balance hídrico propio. Las fuentes sin respaldo (GOES-19, MAGyP) siguen devolviendo sus descartadas como hasta ahora.
 
-(Idea traída del hilo "Conexión satélites a la app", que había abierto una spec parecida, PR #56, ya cerrado.)
+(Idea traída del hilo "Conexión satélites a la app", que había abierto una spec parecida, ya cerrado.)
 
 ### Resultado de la prueba real (Parte B)
 
-15/10/2026, workflow "Probar respaldo si el principal viene todo descartado (spec 041)" (run 38820685773, rama `PRUEBA-respaldo_si_todo_descartado`, con el mismo código que publica Render), lote de San Luis (-33,700 a -33,705; -65,295 a -65,300), NASA real.
+Workflow "Probar respaldo si el principal viene todo descartado (spec 041)" (rama `PRUEBA-respaldo_si_todo_descartado`, con el mismo código que publica Render), lote de San Luis (-33,700 a -33,705; -65,295 a -65,300), NASA real.
 
 - HLS en enero y febrero de 2026: 25 días con imagen, 19 con dato y **6 todo descartados** por nubes (18/1, 29/1, 6/2, 10/2, 12/2 y 14/2).
 - **Tramo del 8 al 16/2/2026**, sin ninguna pasada limpia de HLS (3 pasadas, la mejor con 2 % de píxeles limpios): antes la app recibía todo `null`. Ahora el intento de HLS sale `sin_datos` y **contesta Sentinel-2**: NDVI **0,723** (`buena`) y NDMI 0,216, más una pasada con el lote parcialmente cubierto (NDVI 0,531, `dudosa`).
@@ -128,7 +128,7 @@ Si no hubo testigo, `control.testigo` es `null` y `mensaje` dice por qué (el pr
 
 ## Qué se toca
 
-Es un cambio del **núcleo**, no de un satélite: `rotaterra/consulta.py` (el control), `rotaterra/api.py` (el campo `control` del pedido y de la respuesta) y la tabla de umbrales. Ningún satélite cambia. Rama `NUCLEO-control_cruzado`, sobre `NUCLEO-api_publicada_con_clave` (PR #38).
+Es un cambio del **núcleo**, no de un satélite: `rotaterra/consulta.py` (el control), `rotaterra/api.py` (el campo `control` del pedido y de la respuesta) y la tabla de umbrales. Ningún satélite cambia. Rama `NUCLEO-control_cruzado`, sobre `NUCLEO-api_publicada_con_clave`.
 
 ## Criterios de aceptación
 
