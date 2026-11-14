@@ -1,6 +1,6 @@
 # Spec 011 · NDVI de respaldo con VIIRS (continuidad de MODIS)
 
-**Estado:** aprobada por Hernán el 3/10/2026 (opción "VIIRS y MODIS") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** cuenta NASA Earthdata · **Origen:** archivo "Info Satelital FODA" (3/10/2026)
+**Estado:** aprobada por Hernán (opción "VIIRS y MODIS") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** cuenta NASA Earthdata · **Origen:** archivo "Info Satelital FODA"
 
 ## Objetivo
 
@@ -15,7 +15,7 @@ Que el lote siga teniendo NDVI de la NASA cuando HLS falla, después de que MODI
 
 `VNP13A1` (Suomi NPP) **queda afuera**: deja de entregar datos el 1/11/2026.
 
-**Verificado en la prueba real (3/10/2026):**
+**Verificado en la prueba real:**
 - Los dos productos existen en CMR con esos nombres y tienen OPeNDAP: se lee solo la ventana del lote.
 - Las capas están en `/HDFEOS/GRIDS/VIIRS_Grid_16Day_VI_500m/Data_Fields/` (`_500_m_16_days_NDVI`, `..._pixel_reliability`, `..._composite_day_of_the_year`).
 - Cada satélite publica un compuesto nuevo cada 8 días (ventanas de 16 días que se superponen), así que NOAA-20 solo ya alcanza; NOAA-21 suma fechas.
@@ -45,7 +45,7 @@ Calidad con los mismos umbrales que HLS y MODIS (60 % / 20 %). Nunca se inventa 
 
 ## Dónde entra
 
-Hernán eligió **VIIRS y MODIS**: si falla HLS entra VIIRS, y si VIIRS tampoco trae datos entra MODIS (HLS → VIIRS → MODIS). Para eso el núcleo acepta varios respaldos en orden (`orden=` en `Satelite`, rama `NUCLEO-varios_respaldos_en_orden`). El 4/10/2026 se sumó Sentinel-2 (ESA) como primer respaldo (spec 014), así que el orden quedó HLS → Sentinel-2 → VIIRS → MODIS: VIIRS se registra como `Satelite("HLS:VIIRS", ..., respaldo_de="HLS", orden=2)` y MODIS con `orden=3`.
+Hernán eligió **VIIRS y MODIS**: si falla HLS entra VIIRS, y si VIIRS tampoco trae datos entra MODIS (HLS → VIIRS → MODIS). Para eso el núcleo acepta varios respaldos en orden (`orden=` en `Satelite`, rama `NUCLEO-varios_respaldos_en_orden`). Después se sumó Sentinel-2 (ESA) como primer respaldo (spec 014), así que el orden quedó HLS → Sentinel-2 → VIIRS → MODIS: VIIRS se registra como `Satelite("HLS:VIIRS", ..., respaldo_de="HLS", orden=2)` y MODIS con `orden=3`.
 
 Detalles del conector (`rotaterra/fuentes/viirs.py`):
 - Los nombres exactos de las capas se leen de los metadatos del archivo (`.dmr`), buscando NDVI, *pixel reliability* y *day of the year* de 500 m, para no depender de cómo los escriba la NASA.
@@ -62,7 +62,7 @@ Detalles del conector (`rotaterra/fuentes/viirs.py`):
 - [x] Los valores quedan cerca de los de HLS y MODIS para las mismas fechas (se anota la diferencia). Sigue la misma curva de crecimiento, pero **unos 0,07 a 0,14 más bajo**: 30/1 VIIRS 0,66 contra HLS 0,73 (-0,07); 3/1 VIIRS 0,39 contra MODIS 0,53 (-0,14); fin de enero VIIRS 0,66 contra MODIS 0,76 (28/1). Causa probable: el píxel de 500 m mezcla el lote con lo que lo rodea. Por eso VIIRS sirve para seguir la tendencia, no para comparar valores absolutos con HLS.
 - [x] Si HLS falla, entra VIIRS para el mismo período (tests del núcleo con varios respaldos en orden, rama `NUCLEO-varios_respaldos_en_orden`).
 - [x] VIIRS no importa código de ningún otro satélite (`tests/test_nucleo.py` en verde).
-- [x] Tests sin internet (17 en `tests/test_viirs.py`); prueba real "Probar VIIRS (NDVI de respaldo)" verde en el PR #25, con un clic y en cada PR que toque el conector.
+- [x] Tests sin internet (17 en `tests/test_viirs.py`); prueba real "Probar VIIRS (NDVI de respaldo)" verde, con un clic y en cada PR que toque el conector.
 
 ## Fuera de alcance
 
