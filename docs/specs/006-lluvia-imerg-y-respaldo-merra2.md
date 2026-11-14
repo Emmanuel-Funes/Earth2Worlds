@@ -1,6 +1,6 @@
 # Spec 006 · Lluvia GPM IMERG y respaldo MERRA-2 para el clima
 
-**Estado:** aprobada por Hernán el 3 de octubre de 2026 (tarjeta "Solo NASA"; IMERG figura como fuente del MVP en la Guía técnica) · **Etapa:** pipeline satélite → API → app (sin interfaz) · **Requiere:** cuenta NASA Earthdata con la aplicación "NASA GESDISC DATA ARCHIVE" autorizada
+**Estado:** aprobada por Hernán (tarjeta "Solo NASA"; IMERG figura como fuente del MVP en la Guía técnica) · **Etapa:** pipeline satélite → API → app (sin interfaz) · **Requiere:** cuenta NASA Earthdata con la aplicación "NASA GESDISC DATA ARCHIVE" autorizada
 
 ## Objetivo
 
@@ -35,7 +35,7 @@ Todo se lee por **OPeNDAP de la NASA** (solo el punto del lote), con un token de
 2. `radiacion`: promedio de las 24 horas de `SWGDN` (W/m²) × 0,0864 = MJ/m²/día, la misma unidad que POWER.
 3. Se usa la celda más cercana al centro del lote.
 4. Los días que MERRA-2 todavía no publicó no se devuelven (no se inventan).
-5. Si la NASA lista el archivo de un día pero OPeNDAP no lo entrega (404), ese día vuelve con `valor: null`, `calidad: "descartada"` y la `nota` lo dice, y los demás días siguen. Antes ese único día hacía caer todo el pedido: lo encontró el control diario de las fuentes (spec 042) el 15/10/2026 con el archivo del 11/8/2026.
+5. Si la NASA lista el archivo de un día pero OPeNDAP no lo entrega (404), ese día vuelve con `valor: null`, `calidad: "descartada"` y la `nota` lo dice, y los demás días siguen. Antes ese único día hacía caer todo el pedido: lo encontró el control diario de las fuentes (spec 042) con el archivo del 11/8/2026.
 
 ## Salida (contrato común)
 

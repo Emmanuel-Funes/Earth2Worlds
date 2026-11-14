@@ -40,7 +40,7 @@ def _primero(datos: dict, nombre: str) -> list[float | None]:
 
 
 def _leer_o_nada(cliente: httpx.Client, url: str, expresion: str) -> dict | None:
-    """None si OPeNDAP no entrega un archivo que la NASA ya lista (pasó el 15/10/2026 con el 11/8/2026, spec 042):
+    """None si OPeNDAP no entrega un archivo que la NASA ya lista (pasó con el 11/8/2026, spec 042):
     ese día queda sin dato y los demás siguen, en lugar de caerse todo el pedido."""
     try:
         return earthdata.leer_csv(cliente, url, expresion)
