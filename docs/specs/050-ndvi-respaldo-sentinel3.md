@@ -71,7 +71,7 @@ Workflow `Probar Sentinel-3 (NDVI de respaldo)` (`.github/workflows/probar-senti
 
 ## Resultado de la prueba real
 
-**27/10/2026**, lote de prueba (esquinas -33,700/-65,300 a -33,705/-65,295, ~25 ha), del 15 al 30/9/2026, 176 s:
+Lote de prueba (esquinas -33,700/-65,300 a -33,705/-65,295, ~25 ha), del 15 al 30/9/2026, 176 s:
 
 - **16 de 16 días con pasada** (Sentinel-3A y 3B se alternan): **11 `buena`** y 5 `descartada` por nubes (18, 24, 28, 29 y 30/9). 2 a 5 píxeles de 300 m por día.
 - NDVI de **0,21 a 0,31** (fin del invierno seco en San Luis).
