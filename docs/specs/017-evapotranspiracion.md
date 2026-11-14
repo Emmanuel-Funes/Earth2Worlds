@@ -81,7 +81,7 @@ Dos observaciones por compuesto, con nombres fijos (los usan los respaldos ECOST
 
 - Satélite independiente (spec 009): `rotaterra/fuentes/et.py`, registrado como `Satelite("ET", pedir)` (principal). No importa ningún otro satélite.
 - Endpoint de prueba `POST /evapotranspiracion` (spec 010): la app lo llama y espera la respuesta (segundos).
-- Prueba real: workflow "Probar MODIS (evapotranspiración)" (`.github/workflows/probar-et.yml`, `probar_et.py`), lote de ejemplo de San Luis y enero de 2026. Además de los valores, imprime qué productos de ET encuentra CMR, con OPeNDAP o sin él, y busca por palabra clave si la NASA ya publicó la ET de VIIRS.
+- Prueba real: workflow "Probar MODIS (evapotranspiración)" (`.github/workflows/probar-et.yml`, `probar_et.py`), lote de ejemplo de San Luis, con un período automático que se cuenta desde el día en que corre. Además de los valores, imprime qué productos de ET encuentra CMR, con OPeNDAP o sin él, y busca por palabra clave si la NASA ya publicó la ET de VIIRS.
 
 ## Criterios de aceptación
 
