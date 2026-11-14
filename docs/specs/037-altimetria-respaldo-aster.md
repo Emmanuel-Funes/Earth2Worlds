@@ -69,7 +69,7 @@ Una observación por variable, con `fuente: "ASTER"`, `resolucion_m: 30` y `fech
 
 ## Criterios de aceptación
 
-- [x] Con el lote de prueba real (25,7 ha en -33,70; -65,30) se obtienen las 7 variables de ASTER GDEM, todas `buena`, en GitHub Actions (PR #53, 15/10/2026, workflow "Probar ASTER GDEM (altimetría de respaldo)" en verde): 324 de 324 píxeles de ~31 × 26 m con dato, altura media 487,7 m (de 479 a 493), pendiente media 6,94 %, fecha 2019-08-05.
+- [x] Con el lote de prueba real (25,7 ha en -33,70; -65,30) se obtienen las 7 variables de ASTER GDEM, todas `buena`, en GitHub Actions (workflow "Probar ASTER GDEM (altimetría de respaldo)" en verde): 324 de 324 píxeles de ~31 × 26 m con dato, altura media 487,7 m (de 479 a 493), pendiente media 6,94 %, fecha 2019-08-05.
 - [x] Las superficies de los tres ambientes suman la superficie del lote: 7,78 + 7,38 + 10,56 = 25,72 ha (lote 25,7 ha).
 - [x] Comparación con NASADEM (spec 008) en el mismo lote:
 
