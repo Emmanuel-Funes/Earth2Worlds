@@ -35,7 +35,7 @@ Corrida el 14/11/2026 contra la fuente real, con datos de los últimos días (de
 Comando: `python probar_aster.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"`
 
 ```
-Altimetría del lote (ASTER GDEM v3, NASA/METI, 30 m, fecha 2019-08-05) · 3 s
+Altimetría del lote (ASTER GDEM v3, NASA/METI, 30 m, fecha 2026-11-14) · 3 s
 
 Variable                      Valor  Unidad Calidad     NASADEM
 altura_media_m                487.7  m      buena         488.4
