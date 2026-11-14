@@ -1,0 +1,39 @@
+name: Probar Sentinel-3 (NDVI de respaldo)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/sentinel3.py"
+      - "probar_sentinel3.py"
+      - ".github/workflows/probar-sentinel3.yml"
+  workflow_dispatch:
+    inputs:
+      esquinas:
+        description: "Esquinas del lote como 'lat, lon; lat, lon; lat, lon; lat, lon' (copiadas de Google Maps)"
+        default: "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"
+      desde:
+        description: "Desde (AAAA-MM-DD)"
+        default: "2026-09-15"
+      hasta:
+        description: "Hasta (AAAA-MM-DD)"
+        default: "2026-09-30"
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Pedir NDVI a Sentinel-3
+        env:
+          EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+          EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
+          # en un PR no hay inputs: lote de ejemplo y la segunda quincena de septiembre de 2026
+          ESQUINAS: ${{ inputs.esquinas || '-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300' }}
+          DESDE: ${{ inputs.desde || '2026-09-15' }}
+          HASTA: ${{ inputs.hasta || '2026-09-30' }}
+        run: python probar_sentinel3.py "$ESQUINAS" "$DESDE" "$HASTA"

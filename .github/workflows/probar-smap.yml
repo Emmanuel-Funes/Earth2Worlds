@@ -1,0 +1,49 @@
+name: Probar SMAP (humedad del suelo)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/smap.py"
+      - "probar_smap.py"
+      - ".github/workflows/probar-smap.yml"
+  workflow_dispatch:
+    inputs:
+      lat:
+        description: "Latitud del centro del lote (ej. -33.70)"
+        default: "-33.70"
+      lon:
+        description: "Longitud del centro del lote (ej. -65.30)"
+        default: "-65.30"
+      desde:
+        description: "Desde (AAAA-MM-DD)"
+        default: "2026-01-01"
+      hasta:
+        description: "Hasta (AAAA-MM-DD)"
+        default: "2026-01-31"
+      camino:
+        description: "directo (rápido, principal) o appeears (respaldo, puede tardar)"
+        type: choice
+        options: [directo, appeears]
+        default: directo
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Pedir humedad del suelo a SMAP
+        env:
+          EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+          EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
+          # en un PR no hay inputs: se usa el lote de ejemplo y dos semanas de verano
+          LAT: ${{ inputs.lat || '-33.70' }}
+          LON: ${{ inputs.lon || '-65.30' }}
+          DESDE: ${{ inputs.desde || '2026-01-01' }}
+          HASTA: ${{ inputs.hasta || '2026-01-14' }}
+          CAMINO: ${{ inputs.camino || 'directo' }}
+        run: python probar_smap.py "$LAT" "$LON" "$DESDE" "$HASTA" "$CAMINO"
