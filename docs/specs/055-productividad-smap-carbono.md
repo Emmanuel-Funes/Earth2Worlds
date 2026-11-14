@@ -1,6 +1,6 @@
 # Spec 055 · Productividad diaria con SMAP L4 Carbono
 
-**Estado:** construida y probada con datos reales · **Aprobada por:** Hernán, 27/10/2026 ("Okey, avanzamos", sobre el informe de satélites nuevos del 27/10) · **Rama:** `SMAP-productividad_carbono` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** Earthdata (ya cargado)
+**Estado:** construida y probada con datos reales · **Aprobada por:** Hernán ("Okey, avanzamos", sobre el informe de satélites nuevos) · **Rama:** `SMAP-productividad_carbono` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** Earthdata (ya cargado)
 
 ## Objetivo
 
@@ -64,7 +64,7 @@ Cada archivo pesa ~140 MB. El conector no lo baja: pide por OPeNDAP solo las 4 c
 
 Workflow `Probar SMAP (productividad)` y `probar_smap_carbono.py`. Por defecto usa el lote de prueba de San Luis, del 1/8 al 27/10/2026.
 
-## Resultado de la prueba real (27-28/10/2026)
+## Resultado de la prueba real
 
 Corrida desde el entorno NASA (GitHub Actions sigue pausado). Lote de prueba, celda fila 1262, columna 1228. Del 1/8 al 27/10/2026: **84 días, 84 con dato, 70 s.** El último día publicado es el 23/10.
 
