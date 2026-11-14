@@ -1,12 +1,12 @@
 # Spec 026 · GRACE-FO: napa y agua profunda de la región
 
-**Estado:** aprobada por Hernán el 14/10/2026 ("Doy ok") · **Etapa:** pipeline satélite → API → app · **Requiere:** los secretos de Earthdata (`EARTHDATA_USERNAME`, `EARTHDATA_PASSWORD`) · **Rama:** `GRACE-napa_y_agua_profunda`
+**Estado:** aprobada por Hernán ("Doy ok") · **Etapa:** pipeline satélite → API → app · **Requiere:** los secretos de Earthdata (`EARTHDATA_USERNAME`, `EARTHDATA_PASSWORD`) · **Rama:** `GRACE-napa_y_agua_profunda`
 
 ## 1. Objetivo
 
 Dar el estado del **agua subterránea (napa)** y del agua de la zona de raíces alrededor del lote. Ningún otro satélite del pipeline la mide: SMAP llega a 1 m, y SEPA y el balance propio llegan a 2 m.
 
-Hernán lo pidió el 13/10/2026 ("Si, hazlo") después de preguntar si usábamos GRACE y GRACE-FO. El SDD de la plataforma de recomendación que pasó Leandro pide la profundidad de napa como dato del lote (cuestionario, "Profundidad de napa"). Este dato no la reemplaza: da el contexto regional cuando el productor no la conoce.
+Hernán lo pidió ("Si, hazlo") después de preguntar si usábamos GRACE y GRACE-FO. El SDD de la plataforma de recomendación que pasó Leandro pide la profundidad de napa como dato del lote (cuestionario, "Profundidad de napa"). Este dato no la reemplaza: da el contexto regional cuando el productor no la conoce.
 
 **Qué NO es:** no es un dato del lote. GRACE-FO mide la gravedad con una resolución real de unos 300 km. El producto de abajo lo baja a una grilla de 0,25° (~25 km) con un modelo, pero sigue describiendo la región. Sirve para saber si la zona viene en recarga o en pérdida de agua profunda, no para saber a cuántos metros está la napa en el lote.
 
@@ -20,10 +20,10 @@ Hernán lo pidió el 13/10/2026 ("Si, hazlo") después de preguntar si usábamos
 | Grilla | 0,25°, de 60° S a 90° N (San Luis entra) | 0,5° (señal real de ~300 km) |
 | Frecuencia | Semanal (un dato por lunes) | Mensual |
 | Desde | 3/2/2003 | 4/2002 |
-| Atraso | 3 a 6 meses. El 13/10/2026 el último archivo era la semana del 29/6 al 5/7/2026 | Unos 2 meses |
-| Acceso | CMR + OPeNDAP (`opendap.earthdata.nasa.gov`, colección C2283200566-GES_DISC) con el núcleo `earthdata` | CMR + descarga del archivo de PO.DAAC con el token de Earthdata. Es un solo NetCDF de ~44 MB con todos los meses; se baja una vez y se guarda hasta que JPL publique otro. PO.DAAC no lo sirve por OPeNDAP (la NASA responde 404, verificado el 14/10/2026) |
+| Atraso | 3 a 6 meses. En la prueba, el último archivo era la semana del 29/6 al 5/7/2026 | Unos 2 meses |
+| Acceso | CMR + OPeNDAP (`opendap.earthdata.nasa.gov`, colección C2283200566-GES_DISC) con el núcleo `earthdata` | CMR + descarga del archivo de PO.DAAC con el token de Earthdata. Es un solo NetCDF de ~44 MB con todos los meses; se baja una vez y se guarda hasta que JPL publique otro. PO.DAAC no lo sirve por OPeNDAP (la NASA responde 404, verificado) |
 
-Verificado en CMR el 13/10/2026: las dos colecciones existen, cubren San Luis y el principal tiene archivos semanales hasta julio de 2026.
+Verificado en CMR: las dos colecciones existen, cubren San Luis y el principal tiene archivos semanales hasta julio de 2026.
 
 Variables del principal, según el README de GES DISC (`README_GRACEDADM3GL.pdf`):
 
@@ -90,13 +90,13 @@ Se suma `GRACE` al tipo `Fuente` (`contrato.py`) y a `PRIORIDAD` (`base.py`), co
 
 ## 9. Criterios de aceptación
 
-- [x] Con el lote de San Luis, de enero a junio de 2026, devuelve una observación semanal por variable (unas 26 semanas × 3 variables), con percentiles entre 0 y 100. *Verificado el 14/10/2026 (corrida 38490185626): 26 semanas × 3 = 78 observaciones buenas en 21 s. Napa 0,2 a 3,7 (sequía extrema o excepcional todo el semestre); raíces 2,4 a 71,3; superficie 0,2 a 92,1.*
-- [x] Una semana todavía no publicada sale `descartada` y la nota dice cuál es la última publicada. *Verificado el 14/10/2026 (corrida 38490286427, junio a septiembre): 5 semanas publicadas (napa 2,6 → 1,1, de sequía extrema a excepcional) y 13 semanas desde el 6/7 descartadas con la última publicada (29/6/2026); 54 observaciones: 15 buenas y 39 descartadas.*
-- [x] El respaldo `GRACE:MASCON` devuelve la anomalía mensual en cm para el mismo lote. *Verificado el 14/10/2026: enero a junio, 6 meses en 4 s (−22,4; −23,4; −23,0; −21,0; −20,8; −21,6 cm); junio a septiembre, 2 meses (−21,6 y −21,0 cm, julio es el último que publicó JPL).*
+- [x] Con el lote de San Luis, de enero a junio de 2026, devuelve una observación semanal por variable (unas 26 semanas × 3 variables), con percentiles entre 0 y 100. *Verificado: 26 semanas × 3 = 78 observaciones buenas en 21 s. Napa 0,2 a 3,7 (sequía extrema o excepcional todo el semestre); raíces 2,4 a 71,3; superficie 0,2 a 92,1.*
+- [x] Una semana todavía no publicada sale `descartada` y la nota dice cuál es la última publicada. *Verificado (junio a septiembre): 5 semanas publicadas (napa 2,6 → 1,1, de sequía extrema a excepcional) y 13 semanas desde el 6/7 descartadas con la última publicada (29/6/2026); 54 observaciones: 15 buenas y 39 descartadas.*
+- [x] El respaldo `GRACE:MASCON` devuelve la anomalía mensual en cm para el mismo lote. *Verificado: enero a junio, 6 meses en 4 s (−22,4; −23,4; −23,0; −21,0; −20,8; −21,6 cm); junio a septiembre, 2 meses (−21,6 y −21,0 cm, julio es el último que publicó JPL).*
 - [x] La nota de cada dato dice que es regional y da la categoría de sequía. *Ejemplo real: "Percentil de agua subterránea (napa): 2.6 = sequía extrema · … · dato REGIONAL, no del lote: GRACE-FO mide la gravedad con una resolución real de unos 300 km".*
 - [x] `pytest` pasa sin internet. *20 pruebas de `tests/test_grace.py`; la suite completa, 61 pasadas.*
 - [x] El workflow `Probar GRACE (napa y agua profunda)` pasa con datos reales. *Corridas 38490185626 y 38490286427 en verde.*
-- [x] Hernán aprobó esta spec (14/10/2026).
+- [x] Hernán aprobó esta spec.
 
 ## 10. Preguntas abiertas
 
