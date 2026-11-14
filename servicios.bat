@@ -66,15 +66,15 @@ exit /b 0
 echo.
 echo [Earth2Worlds] Deteniendo servicios en puertos 8000, 3000 y 5173...
 
-taskkill /FI "WINDOWTITLE eq Earth2Worlds*" /T /F >nul 2>&1
+taskkill /FI "WINDOWTITLE eq Earth2Worlds - Plataforma Unificada (8000)" /F >nul 2>&1
 
 for %%P in (8000 3000 5173) do (
     for /f "tokens=5" %%A in ('netstat -aon ^| findstr /r /c:"[:\.]%%P " ^| findstr "LISTENING"') do (
         if not "%%A"=="0" (
-            tasklist /FI "PID eq %%A" 2>nul | findstr /i /r "python uvicorn node cmd" >nul
+            tasklist /FI "PID eq %%A" 2>nul | findstr /i /r "python uvicorn node" >nul
             if not errorlevel 1 (
                 echo   - Terminando proceso en puerto %%P (PID %%A)...
-                taskkill /PID %%A /T /F >nul 2>&1
+                taskkill /PID %%A /F >nul 2>&1
             )
         )
     )

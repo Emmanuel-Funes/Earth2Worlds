@@ -12,7 +12,7 @@ La plataforma permite el ingreso directo sin barreras de registro para evaluaci�
 1. **🌾 Perfil Agricultor (Asistente Guiado en 3 Pasos)**:
    - **Paso 1: Delimitación del Lote**: Trazado interactivo de parcelas mediante Leaflet + Geoman, restringido estrictamente al territorio de la República Argentina con alertas visuales de frontera y advertencias prioritarias.
    - **Paso 2: Cultivo Previo**: Selección ágil entre 5 cultivos estratégicos (**Maíz**, **Soja**, **Girasol**, **Sorgo**, **Maní**).
-   - **Paso 3: Telemetría y Recomendación**: Visualización del polígono, carga progresiva inmediata de las tarjetas satelitales con las mediciones más recientes y slot agronómico `[SLOT-RECOMENDACION-CULTIVOS]` de Rotaterra.
+   - **Paso 3: Telemetría y Recomendación**: Visualización del polígono, carga progresiva inmediata de las 6 tarjetas satelitales con las mediciones más recientes (incluyendo Altimetría en metros y orientación cardinal de la pendiente) y motor agronómico de recomendación de cultivos (`[SLOT-RECOMENDACION-CULTIVOS]`, Spec 064) evaluando 34 campañas de NASA POWER y alternancia de especies contra el cultivo previo.
 2. **🛰️ Perfil Técnico Agropecuario (Explorador Territorial Completo)**:
    - Centro de control integral GIS: visualización multirresolución, Dock Satelital con enlace a constelaciones de la NASA, panel de capas sectorizadas, las 6 tarjetas métricas interactivas y generación de gráficas de series temporales de hasta 5 años (Chart.js).
 3. **🔒 Acceso Administrador**:

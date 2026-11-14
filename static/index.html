@@ -629,10 +629,10 @@ CONTROLADORES JAVASCRIPT:
                                 <span class="text-xs font-mono text-purple-400">TOPOGRAFÍA</span>
                                 <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">NASADEM</span>
                             </div>
-                            <h4 class="font-heading font-bold text-white text-base">Cota Altimétrica / Pendiente</h4>
+                            <h4 class="font-heading font-bold text-white text-base">Altimetría</h4>
                             <div class="flex items-baseline gap-2">
                                 <span id="basicoRelieveValor" class="font-heading font-extrabold text-2xl text-purple-400">-</span>
-                                <span class="text-xs text-slate-400">msnm</span>
+                                <span class="text-xs text-slate-400">m</span>
                             </div>
                             <p id="basicoRelieveNota" class="text-xs text-slate-400">Consultando modelo digital de elevación...</p>
                         </div>
@@ -787,7 +787,7 @@ CONTROLADORES JAVASCRIPT:
                     >
                         <span class="text-emerald-400 font-semibold" id="badgeSupHa">📐 -- ha</span>
                         <span class="text-slate-600">|</span>
-                        <span class="text-amber-300" id="badgeCotaMsnm">⛰️ -- msnm</span>
+                        <span class="text-amber-300" id="badgeCotaMsnm">⛰️ -- m</span>
                         <span class="text-slate-600">|</span>
                         <span class="text-sky-300" id="badgePendientePct">--% pend.</span>
                         <span class="text-slate-600">|</span>
@@ -1680,6 +1680,7 @@ CONTROLADORES JAVASCRIPT:
         let mapaBasico = null;
         let loteBasicoLayer = null;
         let loteBasicoGeoJSON = null;
+        let loteBasicoCentroide = null;
         let cultivoPrevioBasico = "";
 
         function mostrarSelectorModalidad() {
@@ -1858,15 +1859,23 @@ CONTROLADORES JAVASCRIPT:
             mapaBasico = L.map("mapaBasicoSlot", {
                 zoomControl: true,
                 attributionControl: true,
-            }).setView([-33.67, -65.46], 5);
+                minZoom: 3,
+                maxBounds: [[-85, -180], [85, 180]],
+                maxBoundsViscosity: 1.0,
+                worldCopyJump: false,
+            }).setView([-38.4161, -63.6167], 4);
 
             L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
                 maxZoom: 19,
+                noWrap: true,
+                bounds: [[-85, -180], [85, 180]],
                 attribution: "Tiles &copy; Esri &mdash; Earth2Worlds",
             }).addTo(mapaBasico);
 
             L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}", {
                 maxZoom: 19,
+                noWrap: true,
+                bounds: [[-85, -180], [85, 180]],
                 opacity: 0.8,
             }).addTo(mapaBasico);
 
@@ -1967,6 +1976,7 @@ CONTROLADORES JAVASCRIPT:
                     cLon /= (coords.length - 1);
                     cLat /= (coords.length - 1);
                 }
+                loteBasicoCentroide = { lat: cLat, lon: cLon };
                 const ha = (areaM2 / 10000).toFixed(2);
                 document.getElementById("superficieBasicoHa").textContent = `${ha} ha`;
                 document.getElementById("badgeCoordenadasBasico").textContent = `Centroide: [${cLat.toFixed(4)}, ${cLon.toFixed(4)}] · ${ha} ha`;
@@ -1980,6 +1990,7 @@ CONTROLADORES JAVASCRIPT:
                 if (alerta) alerta.classList.add("hidden");
                 loteBasicoLayer = null;
                 loteBasicoGeoJSON = null;
+                loteBasicoCentroide = null;
                 document.getElementById("superficieBasicoHa").textContent = "0.00 ha";
                 document.getElementById("badgeCoordenadasBasico").textContent = "Haz clic en el mapa para iniciar el polígono";
                 const btnPaso2 = document.getElementById("btnContinuarPaso2");
@@ -2160,9 +2171,15 @@ CONTROLADORES JAVASCRIPT:
             const vEl = document.getElementById("basicoRelieveValor");
             const nEl = document.getElementById("basicoRelieveNota");
             if (oRel) {
-                const pendStr = oPend ? ` · Pendiente: ${Number(oPend.valor).toFixed(1)}%` : "";
+                let orientacion = "";
+                if (oPend && oPend.nota) {
+                    const match = oPend.nota.match(/hacia el ([A-Za-z]+)/i);
+                    if (match) orientacion = match[1];
+                }
+                const oriStr = orientacion ? ` hacia el ${orientacion}` : "";
+                const pendStr = oPend ? ` · Pendiente: ${Number(oPend.valor).toFixed(1)}%${oriStr}` : "";
                 if (vEl) vEl.textContent = Math.round(oRel.valor);
-                if (nEl) nEl.textContent = `${oRel.fuente} · Cota media${pendStr}`;
+                if (nEl) nEl.textContent = `${oRel.fuente} · Altimetría${pendStr}`;
             } else {
                 if (vEl) vEl.textContent = "-";
                 if (nEl) nEl.textContent = "Altimetría no disponible para el cuadrante";
@@ -2213,6 +2230,7 @@ CONTROLADORES JAVASCRIPT:
             ];
 
             let fuentesCargadas = 0;
+            const todasLasObs = [];
 
             // 1. Poblado progresivo e inmediato por satélite conforme llega cada respuesta
             const promesas = satelites.map(async (sat) => {
@@ -2228,7 +2246,9 @@ CONTROLADORES JAVASCRIPT:
                     });
                     if (res.ok) {
                         const data = await res.json();
-                        sat.fn(data.observaciones || []);
+                        const obs = data.observaciones || [];
+                        sat.fn(obs);
+                        todasLasObs.push(...obs);
                         fuentesCargadas++;
                         if (estadoLabel) {
                             estadoLabel.innerHTML = `<span class="text-sky-300 font-mono text-xs">Poblando tarjetas en vivo (${fuentesCargadas}/${satelites.length} satélites de la NASA)...</span>`;
@@ -2241,7 +2261,12 @@ CONTROLADORES JAVASCRIPT:
 
             await Promise.all(promesas);
 
-            // 2. Carga asincrónica de la serie histórica de 5 años en segundo plano
+            // 2. Consulta inmediata del Motor de Recomendación para Agrónomos (Spec 064)
+            const cLat = loteBasicoCentroide?.lat || -33.7;
+            const cLon = loteBasicoCentroide?.lon || -65.42;
+            solicitarRecomendacionAgronomica(cLat, cLon, cultivo, todasLasObs);
+
+            // 3. Carga asincrónica de la serie histórica de 5 años en segundo plano
             if (estadoLabel) {
                 estadoLabel.innerHTML = `
                     <span class="inline-flex items-center gap-1.5 text-amber-300">
@@ -2277,6 +2302,198 @@ CONTROLADORES JAVASCRIPT:
                     estadoLabel.innerHTML = `<span class="text-emerald-400 font-mono">&#10003; Telemetría satelital en línea</span>`;
                 }
             }
+        }
+
+        async function solicitarRecomendacionAgronomica(lat, lon, cultivoPrevio, observaciones) {
+            const cont = document.getElementById("contenidoRecomendacionCultivo");
+            if (cont) {
+                cont.innerHTML = `
+                    <div class="p-6 rounded-2xl bg-slate-950/80 border border-emerald-500/30 flex items-center gap-4 animate-pulse">
+                        <svg class="animate-spin h-7 w-7 text-emerald-400 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                        </svg>
+                        <div>
+                            <p class="text-sm font-bold text-white">Evaluando rotación con el Motor Agronómico Rotaterra...</p>
+                            <p class="text-xs text-slate-400 mt-0.5">Analizando serie histórica de NASA POWER, física de suelo y alternancia de especies contra cultivo previo (${escapeHtml(cultivoPrevio)})...</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            const mapCultivos = {
+                "Maíz": "maiz",
+                "Soja": "soja",
+                "Girasol": "girasol",
+                "Sorgo": "sorgo",
+                "Maní": "mani"
+            };
+            const claveCultivo = mapCultivos[cultivoPrevio] || "soja";
+
+            try {
+                const res = await authFetch("/api/rotaterra/agronomos/recomendacion", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        latitud: Number(lat.toFixed(4)),
+                        longitud: Number(lon.toFixed(4)),
+                        sistema: "secano",
+                        historial: [claveCultivo],
+                        cultivos: ["maiz", "maiz_tardio", "soja", "sorgo", "mani", "girasol"],
+                        observaciones: observaciones || []
+                    })
+                });
+                if (!res.ok) {
+                    throw new Error(`HTTP ${res.status}`);
+                }
+                const data = await res.json();
+                renderizarRecomendacionAgronomica(data, cultivoPrevio);
+            } catch (err) {
+                console.error("[Recomendacion] Error:", err);
+                if (cont) {
+                    cont.innerHTML = `
+                        <div class="p-5 rounded-2xl bg-amber-950/40 border border-amber-500/40 text-amber-200 text-xs flex items-center justify-between gap-4">
+                            <div>
+                                <strong class="block text-white text-sm">Aviso de Motor Agronómico</strong>
+                                <span>No se pudo conectar con el motor de recomendación en este momento (${escapeHtml(err.message)}). Por favor intenta nuevamente.</span>
+                            </div>
+                            <button type="button" onclick="solicitarRecomendacionAgronomica(${lat}, ${lon}, '${escapeHtml(cultivoPrevio)}', [])" class="px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 font-semibold text-amber-200 transition">
+                                Reintentar ↺
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        function renderizarRecomendacionAgronomica(data, cultivoPrevio) {
+            const cont = document.getElementById("contenidoRecomendacionCultivo");
+            if (!cont) return;
+
+            const iconMap = {
+                "maiz": "🌽",
+                "maiz_tardio": "🌽",
+                "soja": "🌱",
+                "girasol": "🌻",
+                "sorgo": "🌾",
+                "mani": "🥜"
+            };
+
+            const rec = data.resumen?.["Recomendable"] || [];
+            const cui = data.resumen?.["Con cuidado"] || [];
+            const noRec = data.resumen?.["No recomendable"] || [];
+
+            const campanasTxt = data.clima ? `${data.clima.campanas} campañas (${data.clima.desde} a ${data.clima.hasta})` : "34 campañas";
+            const sueloTxt = data.lote ? `Textura: ${data.lote.textura_fuente || data.lote.textura || 'franco arenoso'} · Agua útil: ${data.lote.agua_util_0_100cm_mm} mm` : "";
+
+            const html = `
+                <div class="space-y-5">
+                    <!-- Resumen del Dictamen Agronómico -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="p-4 rounded-xl bg-emerald-950/50 border border-emerald-500/40 flex items-center justify-between">
+                            <div>
+                                <span class="text-[11px] font-mono text-emerald-400 font-semibold uppercase">Recomendables</span>
+                                <h4 class="font-heading font-extrabold text-2xl text-emerald-200 mt-0.5">${rec.length} Cultivos</h4>
+                            </div>
+                            <span class="text-3xl">🟢</span>
+                        </div>
+                        <div class="p-4 rounded-xl bg-amber-950/50 border border-amber-500/40 flex items-center justify-between">
+                            <div>
+                                <span class="text-[11px] font-mono text-amber-400 font-semibold uppercase">Con Cuidado</span>
+                                <h4 class="font-heading font-extrabold text-2xl text-amber-200 mt-0.5">${cui.length} Cultivos</h4>
+                            </div>
+                            <span class="text-3xl">🟡</span>
+                        </div>
+                        <div class="p-4 rounded-xl bg-rose-950/50 border border-rose-500/40 flex items-center justify-between">
+                            <div>
+                                <span class="text-[11px] font-mono text-rose-400 font-semibold uppercase">No Recomendables</span>
+                                <h4 class="font-heading font-extrabold text-2xl text-rose-200 mt-0.5">${noRec.length} Cultivo${noRec.length === 1 ? '' : 's'}</h4>
+                            </div>
+                            <span class="text-3xl">🔴</span>
+                        </div>
+                    </div>
+
+                    <!-- Ficha del Diagnóstico -->
+                    <div class="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 text-xs text-slate-300 flex flex-wrap items-center justify-between gap-3">
+                        <div>
+                            <span>Lote analizado con <strong>${campanasTxt}</strong> de NASA POWER.</span>
+                            <span class="text-slate-500 ml-1.5">${sueloTxt}</span>
+                        </div>
+                        <span class="px-2.5 py-0.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 font-mono text-[11px]">
+                            Última plantación declarada: <strong>${escapeHtml(cultivoPrevio)}</strong>
+                        </span>
+                    </div>
+
+                    <!-- Grilla de Cultivos Evaluados -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
+                        ${(data.cultivos || []).map(c => {
+                            const ico = iconMap[c.cultivo] || "🌱";
+                            const esRec = c.estado === "Recomendable";
+                            const esCui = c.estado === "Con cuidado";
+                            const borderCol = esRec
+                                ? "border-emerald-500/50 hover:border-emerald-400 bg-emerald-950/20"
+                                : (esCui ? "border-amber-500/50 hover:border-amber-400 bg-amber-950/20" : "border-rose-500/50 hover:border-rose-400 bg-rose-950/20");
+                            
+                            const badgeStyle = esRec
+                                ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
+                                : (esCui ? "bg-amber-500/20 text-amber-300 border-amber-500/40" : "bg-rose-500/20 text-rose-300 border-rose-500/40");
+
+                            const iconoEstado = esRec ? "✓" : (esCui ? "⚠️" : "✕");
+
+                            let motivo = "";
+                            if (c.no_pasa && c.no_pasa.length > 0) {
+                                motivo = `<p class="text-xs text-rose-300 font-medium mt-2"><strong>Descarte:</strong> ${escapeHtml(c.no_pasa.join(' · '))}</p>`;
+                            } else if (c.avisos && c.avisos.length > 0) {
+                                motivo = `<p class="text-xs text-amber-300 font-medium mt-2"><strong>Atención:</strong> ${escapeHtml(c.avisos.join(' · '))}</p>`;
+                            } else {
+                                motivo = `<p class="text-xs text-emerald-300 font-medium mt-2">✓ Recomendado: Cumple alternancia agronómica y umbrales de humedad.</p>`;
+                            }
+
+                            const siembraStr = c.siembra_sugerida_desde
+                                ? `Siembra recomendada: desde el ${c.siembra_sugerida_desde}`
+                                : (c.fecha_siembra ? `Siembra típica: ${c.fecha_siembra}` : "");
+
+                            return `
+                                <div class="rounded-2xl border ${borderCol} p-4 flex flex-col justify-between space-y-3 shadow-lg transition">
+                                    <div class="space-y-2">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-2xl">${ico}</span>
+                                            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold border ${badgeStyle}">
+                                                ${iconoEstado} ${escapeHtml(c.estado)}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-heading font-bold text-white text-base">${escapeHtml(c.nombre)}</h4>
+                                            ${siembraStr ? `<span class="text-[11px] font-mono text-slate-400 block">${siembraStr}</span>` : ''}
+                                        </div>
+                                        ${motivo}
+                                    </div>
+
+                                    ${c.reglas && c.reglas.length > 0 ? `
+                                        <details class="text-[11px] font-mono text-slate-400 pt-2 border-t border-slate-800">
+                                            <summary class="cursor-pointer hover:text-slate-200 py-1 font-semibold text-slate-300 select-none">
+                                                Ver ${c.reglas.length} reglas técnicas ▾
+                                            </summary>
+                                            <ul class="space-y-1.5 mt-2 text-slate-300">
+                                                ${c.reglas.map(r => `
+                                                    <li class="p-1.5 rounded-lg bg-slate-950/70 border border-slate-800/80">
+                                                        <div class="flex items-center justify-between">
+                                                            <strong class="text-slate-200">${escapeHtml(r.regla)}</strong>
+                                                            <span>${r.resultado === 'ok' ? '✅' : (r.resultado === 'aviso' ? '⚠️' : (r.resultado === 'no' ? '❌' : 'ℹ️'))}</span>
+                                                        </div>
+                                                        <div class="text-[10px] text-slate-400 mt-0.5 leading-snug">${escapeHtml(r.dato)}</div>
+                                                        ${r.umbral ? `<div class="text-[9px] text-slate-500 mt-0.5">Umbral: ${escapeHtml(r.umbral)}</div>` : ''}
+                                                    </li>
+                                                `).join('')}
+                                            </ul>
+                                        </details>
+                                    ` : ''}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+            cont.innerHTML = html;
         }
 
         function reiniciarAsistenteBasico() {
@@ -2622,7 +2839,7 @@ CONTROLADORES JAVASCRIPT:
 
                                 <!-- Relieve topográfico fijo NASADEM por campo -->
                                 <div class="rounded-xl bg-slate-950/90 border border-slate-800/90 px-3 py-2 flex flex-wrap items-center justify-between gap-1 text-[11px] font-mono">
-                                    <span class="text-amber-300">⛰️ ${escapeHtml(cota)} msnm</span>
+                                    <span class="text-amber-300">⛰️ ${escapeHtml(cota)} m</span>
                                     <span class="text-slate-600">|</span>
                                     <span class="text-sky-300">${escapeHtml(pend)}% pend.</span>
                                     <span class="text-slate-600">|</span>
@@ -2694,7 +2911,7 @@ CONTROLADORES JAVASCRIPT:
                 nombreEl.textContent = "Ningún campo seleccionado todavía";
                 detalleEl.textContent = "Registra o selecciona un establecimiento para vincular los módulos de mapa y telemetría.";
                 if (supEl) supEl.textContent = "📐 -- ha";
-                if (cotaEl) cotaEl.textContent = "⛰️ -- msnm";
+                if (cotaEl) cotaEl.textContent = "⛰️ -- m";
                 if (pendEl) pendEl.textContent = "--% pend.";
                 if (escEl) escEl.textContent = "Orientación Desnivel/Escurrimiento: 💧 SE ↘";
                 if (slotMapaEl) slotMapaEl.textContent = "Esperando selección de campo activo";
@@ -2713,7 +2930,7 @@ CONTROLADORES JAVASCRIPT:
             detalleEl.textContent = `${campo.descripcion_ubicacion || "Sin ubicación detallada"} • Titular: ${campo.propietario_nombre || campo.propietario_id}`;
 
             if (supEl) supEl.textContent = `📐 ${campo.superficie_ha ?? "S/D"} ha`;
-            if (cotaEl) cotaEl.textContent = `⛰️ ${cota} msnm`;
+            if (cotaEl) cotaEl.textContent = `⛰️ ${cota} m`;
             if (pendEl) pendEl.textContent = `${pend}% pend.`;
             if (escEl) escEl.textContent = `Orientación Desnivel/Escurrimiento: ${esc}`;
 

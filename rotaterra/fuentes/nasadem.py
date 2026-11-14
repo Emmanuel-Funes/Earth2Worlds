@@ -171,10 +171,19 @@ def resumir(lote_id: str, poligono: dict, alturas: np.ndarray, lats: np.ndarray,
     aviso = f"menos de {MIN_PIXELES} píxeles (lote menor a ~1 ha) · " if calidad == "dudosa" else ""
     ambientes = (f"bajo / loma = más de {UMBRAL_AMBIENTE_M:g} m por debajo / por encima de la media del lote "
                  f"(umbral supuesto, a calibrar) · proporción de píxeles × {hectareas:.1f} ha del lote · ")
+    # Orientación media de la pendiente (rumbo hacia donde desciende el terreno)
+    gx = float(np.nanmean(-dz_dx[validos])) if np.isfinite(dz_dx[validos]).any() else 0.0
+    gy = float(np.nanmean(dz_dy[validos])) if np.isfinite(dz_dy[validos]).any() else 0.0
+    angulo = (math.degrees(math.atan2(gx, gy)) + 360) % 360
+    rumbos = ["Norte", "Noreste", "Este", "Sureste", "Sur", "Suroeste", "Oeste", "Noroeste"]
+    rumbo = rumbos[int((angulo + 22.5) // 45) % 8]
+
     observaciones = []
     for variable, unidad in variables:
         valor = valores[variable]
         nota = aviso + (ambientes if variable.startswith("superficie") else "") + detalle
+        if variable == "pendiente_media_pct" and valor is not None:
+            nota = f"Pendiente con orientación hacia el {rumbo} ({angulo:.0f}°) · " + nota
         if valor is None:
             observaciones.append(Observacion(**base, variable=variable, valor=None, unidad=unidad,
                                              calidad="descartada", nota=f"Sin vecinos para calcular la pendiente · {nota}"))
