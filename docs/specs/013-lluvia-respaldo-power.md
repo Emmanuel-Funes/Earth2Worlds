@@ -31,7 +31,7 @@ Es un pedido propio: no importa el conector `power.py` de la rama `POWER-clima` 
 ## Salida (contrato común)
 
 ```json
-{"lote_id": "lote-7", "fecha": "2026-01-13", "variable": "lluvia_mm", "valor": 12.4,
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "lluvia_mm", "valor": 12.4,
  "unidad": "mm/día", "fuente": "POWER", "resolucion_m": 55000, "calidad": "buena",
  "nota": "Respaldo de IMERG · NASA POWER (MERRA-2/IMERG corregido) · celda de 0,5°"}
 ```

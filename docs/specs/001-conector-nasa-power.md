@@ -18,7 +18,7 @@ Que la app pueda pedir el clima diario de un lote (temperatura máxima y mínima
 |---|---|---|
 | `lote_id` | texto | `lote-7` |
 | `lat`, `lon` | grados decimales (EPSG:4326), centro del lote | `-33.68`, `-65.46` |
-| `desde`, `hasta` | fecha `AAAA-MM-DD` | `2026-09-01` |
+| `desde`, `hasta` | fecha `AAAA-MM-DD` | `2026-11-14` |
 
 ## Salida
 
@@ -27,7 +27,7 @@ Lista de observaciones, una por fecha y variable, con este formato:
 ```json
 {
   "lote_id": "lote-7",
-  "fecha": "2026-09-01",
+  "fecha": "2026-11-14",
   "variable": "temp_max",
   "valor": 21.4,
   "unidad": "°C",

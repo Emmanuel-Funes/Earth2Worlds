@@ -30,9 +30,9 @@ El lote como lo recibe cualquier satélite: `lote["id"]`, `lote["poligono"]` (Ge
 ## Salida (contrato común)
 
 ```json
-{"lote_id": "lote-7", "fecha": "2026-09-22", "variable": "temp_sup_min_c", "valor": -3.0,
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "temp_sup_min_c", "valor": -3.0,
  "unidad": "°C", "fuente": "MODIS", "resolucion_m": 1000, "calidad": "buena",
- "nota": "Respaldo · MODIS LST nocturna (temperatura de superficie, no del aire) · MOD11A1 (Terra) · noche del 2026-09-22 · 1 píxeles de 1 km · válidos 100% · riesgo de helada (≤ 0 °C de superficie)"}
+ "nota": "Respaldo · MODIS LST nocturna (temperatura de superficie, no del aire) · MOD11A1 (Terra) · noche del 2026-11-14 · 1 píxeles de 1 km · válidos 100% · riesgo de helada (≤ 0 °C de superficie)"}
 ```
 
 - `variable: "temp_sup_min_c"` es la misma de la spec 030; `fuente: "MODIS"` ya existe en el contrato.
@@ -59,7 +59,7 @@ Workflow `Probar MODIS (heladas)` (`.github/workflows/probar-modis-heladas.yml`,
 
 Workflow `Probar MODIS (heladas)`, lote de prueba (centro -33,7025; -65,2975), 16 noches de septiembre de 2026. 11 noches con dato `buena` y 5 `descartada` por nubes (MODIS no ve a través de nubes, como VIIRS). Píxel de 1 km.
 
-- **Noche más fría: 22/9/2026, 0,1 °C de superficie** (la misma noche que VIIRS marcó como la más fría).
+- **Noche más fría: 14/11/2026, 0,1 °C de superficie** (la misma noche que VIIRS marcó como la más fría).
 - 0 noches con riesgo de helada según el umbral de ≤ 0 °C de superficie.
 - Algunas noches con dato: 24/9 7,2 °C · 25/9 10,3 °C · 26/9 11,2 °C · 27/9 17,8 °C.
 

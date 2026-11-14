@@ -40,7 +40,7 @@ Reglas:
 | `nivel` | `San Luis` (el sitio es de San Luis o Villa Mercedes), `Argentina` (todas las fuentes son de dominios .ar) o `global` (FAO, EcoCrop o estudios de otros países) |
 | `nivel_original` | La calificación que puso el dossier (A, B, C…) o sus alertas de calidad |
 | `fuente`, `fuente_url`, `advertencia`, `pestana` | De dónde sale, el límite de uso y la pestaña del dossier |
-| `verificacion` | "dossier ChatGPT 31/10/2026, sin releer el original", salvo las pestañas cotejadas con el documento original (`LEIDAS`) y las filas de `cotejo_originales.csv` |
+| `verificacion` | "dossier ChatGPT 14/11/2026, sin releer el original", salvo las pestañas cotejadas con el documento original (`LEIDAS`) y las filas de `cotejo_originales.csv` |
 
 Resultado: **1.597 datos**.
 - Por nivel: 86 de San Luis, 664 de Argentina y 847 globales.

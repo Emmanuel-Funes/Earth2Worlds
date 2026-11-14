@@ -22,7 +22,7 @@ La misma de la spec 025: `lat` y `lon`, `nomenclatura` o `partida`; o la zona de
 ## Proceso
 
 1. **La copia.** `rotaterra/fuentes/datos/catastro_sl_parcelas_rurales.geojson.gz` tiene las parcelas rurales en el mismo formato liviano que entrega `/catastro-sl/parcelas-rurales`: polígono EPSG:4326 con 6 decimales, nomenclatura, partida, número de parcela, plano de mensura y superficie registrada. Al lado, `catastro_sl_parcelas_rurales.json` dice la fecha de la copia y cuántas parcelas tiene.
-   - La primera copia sale del mapa bajado el **5/10/2026**: 17.976 parcelas, 2,3 MB comprimidos.
+   - La primera copia sale del mapa bajado el **14/11/2026**: 17.976 parcelas, 2,3 MB comprimidos.
    - Solo trae las **rurales**, que son las de los lotes agrícolas. Las suburbanas y urbanas siguen dependiendo del Catastro.
 2. **Primero el Catastro.** Cada pedido va primero al Catastro, igual que hoy. La copia se usa **solo** cuando el Catastro no contesta o contesta algo ilegible.
 3. **Parcela por punto.** Se buscan en la copia las parcelas cuyo rectángulo contiene el punto, y después las que lo contienen de verdad. Si son varias, se elige la más chica, igual que con el Catastro.
@@ -48,4 +48,4 @@ La misma de la spec 025: `ParcelaCatastral` para una parcela y un GeoJSON `Featu
 
 - [x] Tests sin internet con el Catastro simulado caído (`ConnectTimeout`): la parcela por punto, por partida y por nomenclatura sale de la copia con la nota y la fecha de la copia; el mapa completo y una zona salen de la copia; una parcela que no está en la copia da 502 con los dos motivos; con el Catastro andando no se usa la copia.
 - [x] Con la copia real: las 3 parcelas del piloto (partidas 01-90230, 06-924206 y 02-950571) salen de la copia por partida y por un punto adentro de cada una, con la nomenclatura y la superficie que dio el Catastro en la prueba del piloto (123,3, 456,1 y 196,5 ha), calidad buena, en 0,5 a 0,7 s cada búsqueda. Una zona de 0,3° × 0,3° cerca de Villa Mercedes trae 618 parcelas en 0,5 s.
-- [ ] Prueba real (1/11/2026 o cuando haya minutos de Actions): correr "Actualizar copia del Catastro" y comprobar que la copia nueva tiene unas 18.000 parcelas.
+- [ ] Prueba real (14/11/2026 o cuando haya minutos de Actions): correr "Actualizar copia del Catastro" y comprobar que la copia nueva tiene unas 18.000 parcelas.

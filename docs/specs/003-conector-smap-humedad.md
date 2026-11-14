@@ -48,7 +48,7 @@ En los dos caminos:
 
 ```json
 {
-  "lote_id": "lote-7", "fecha": "2026-01-15", "variable": "humedad_zona_raiz",
+  "lote_id": "lote-7", "fecha": "2026-11-14", "variable": "humedad_zona_raiz",
   "valor": 0.214, "unidad": "m³/m³", "fuente": "SMAP",
   "resolucion_m": 9000, "calidad": "buena",
   "nota": "Promedio de 8 valores de 3 h · celda de 9 km: contexto regional, no dato del lote · vía NASA directo"

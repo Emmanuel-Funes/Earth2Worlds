@@ -43,7 +43,7 @@ Es una **proyección de modelos, no un pronóstico**, y un dato **regional de ~2
 | `dias_lluvia_extrema_50_<período>` | días/año | Días con lluvia ≥ 50 mm |
 | `racha_seca_campana_dias_<período>` | días | Racha más larga de días con menos de 1 mm, de octubre a marzo |
 
-`<período>` = `historico`, `ssp245` o `ssp585`. La `fecha` de cada observación es el último día del período (31/12/2014 o 31/12/2060).
+`<período>` = `historico`, `ssp245` o `ssp585`. La `fecha` de cada observación es el último día del período (14/11/2026 o 31/12/2060).
 
 ## Salida (contrato común)
 

@@ -660,7 +660,7 @@ Se agregaron al sumar la spec. No cambian lo que pide la spec; aclaran cómo se 
 | Punto de la spec | Cómo se aplica | Por qué |
 |---|---|---|
 | §7: `"calidad": "verificada"` | Se usa `buena`, `dudosa` o `descartada`. | Son los únicos valores que acepta `Observacion` (`rotaterra/contrato.py`). |
-| §7: `"fecha": null` | La fecha es la de la versión digital de la carta, como en la spec 020 (Atlas: 2013-01-07; Buenos Aires: 2023-04-17). | `fecha` es obligatoria en el contrato. |
+| §7: `"fecha": null` | La fecha es la de la versión digital de la carta, como en la spec 020 (Atlas: 2026-11-14; Buenos Aires: 2026-11-14). | `fecha` es obligatoria en el contrato. |
 | §7: `"resolucion_m": null` | Se calcula desde la escala: 0,5 mm del mapa (1:500.000 da 250 m; 1:50.000 da 25 m), como en la spec 020. | `resolucion_m` es obligatoria. La regla queda anotada como supuesto en la `nota`. |
 | §8: `fuente = "GeoINTA:<dataset>"` | `fuente` sigue siendo `"GeoINTA"`. El dataset queda en el nombre de la `variable` y en la `nota` (capa, escala y versión). | `fuente` es una lista cerrada del contrato, y `PRIORIDAD` la usa para combinar. Cambiarla tocaría el núcleo, cosa que esta spec descarta (§9 y §18). La spec deja elegir la convención del conector. |
 | §16: rama `GEOINTA-INFORMACIÓN` | Rama `GeoINTA-capas_verificadas`, con el mismo nombre de fuente que la spec 020. | Convención `SATÉLITE-INFORMACIÓN`. |
@@ -690,17 +690,17 @@ Lo que el catálogo no publica queda como "no publicado". Los valores del lote s
 
 | id | Dataset | Grupo | Variable | Escala / resolución | Fecha | Acceso | Valor en el lote | Utilidad para la rotación |
 |---|---|---|---|---|---|---|---|---|
-| 750 | Suelos Villa Mercedes, San Luis | Suelo | unidad, capacidad de uso, índice de productividad | 1:100.000 | 2025-09-22 (alta en el catálogo) | WMS `geo-nodo15`, capa `geonode:villamercedes_v0` | UC `Cr`, capacidad de uso **VIes**, IP **50** | Alta |
-| 230 | Suelos de la República Argentina (Atlas v9) | Suelo | unidad, IP, limitaciones, suelo dominante | 1:500.000 | 2013-01-07 | WFS y WMS central (ya usado en la spec 020) | `EPtc-1`, Ustortentes típico, franco arenosa, drenaje algo excesivo, limitación climática y erosión eólica, IP 50 | Alta (ya integrado) |
-| 692, 693, 691, 694 | Clases texturales 0-15, 15-30, 30-60 y 60-100 cm | Suelo | clase textural | no publicada | 2024-12-10 | WMS `geo-nodo05` | código 8, 8, 9 y 8: **franco arenoso** en las cuatro (la capa de 30-60 cm usa otra leyenda, donde 9 es franco arenoso) | Alta |
-| 689, 690 | Mapa de pH del suelo 0-30 y 30-100 cm | Suelo | pH | píxel de 1 km; ajuste RMSE 0,84, R² 0,456 | 2024-12-09 | WMS `geo-nodo05` | **8,56** y **8,48** | Media (modelo de 1 km con error de ±0,84) |
-| 487 | Almacenamiento de carbono 2023 | Suelo | carbono orgánico del suelo | no publicada | 2023-10-27 | WMS y WCS central | 37,13 (unidad no publicada en el resumen) | Media |
-| 700 | Almacenamiento de carbono 2018 | Suelo | carbono orgánico 0-30 cm | no publicada | 2024-12-30 | WMS `geo-nodo05` | 30,94 Mg/ha | Baja (lo reemplaza el de 2023) |
-| 479, 481, 482, 488 a 491, 496, 497, 687, 688 | Mapa Nacional de Cultivos 2018/19 a verano 2023/24 | Territorio | cultivo por campaña | 30 m | 2023-10-19 a 2024-10-31 | WMS y WCS central | 2018/19 vegetación natural leñosa; 2019 a 2022 no agrícola; invierno 2022 barbecho; verano 2022/23 **maíz**; invierno 2023 barbecho; verano 2023/24 **soja** | Alta (historia real del lote) |
-| 121 | Cobertura del suelo 2006-2007 (LCCS-FAO) | Territorio | cobertura | 1:500.000 | 2022-12-13 | WFS y WMS central | Cultivos de herbáceas graminoideas | Baja |
+| 750 | Suelos Villa Mercedes, San Luis | Suelo | unidad, capacidad de uso, índice de productividad | 1:100.000 | 2026-11-14 (alta en el catálogo) | WMS `geo-nodo15`, capa `geonode:villamercedes_v0` | UC `Cr`, capacidad de uso **VIes**, IP **50** | Alta |
+| 230 | Suelos de la República Argentina (Atlas v9) | Suelo | unidad, IP, limitaciones, suelo dominante | 1:500.000 | 2026-11-14 | WFS y WMS central (ya usado en la spec 020) | `EPtc-1`, Ustortentes típico, franco arenosa, drenaje algo excesivo, limitación climática y erosión eólica, IP 50 | Alta (ya integrado) |
+| 692, 693, 691, 694 | Clases texturales 0-15, 15-30, 30-60 y 60-100 cm | Suelo | clase textural | no publicada | 2026-11-14 | WMS `geo-nodo05` | código 8, 8, 9 y 8: **franco arenoso** en las cuatro (la capa de 30-60 cm usa otra leyenda, donde 9 es franco arenoso) | Alta |
+| 689, 690 | Mapa de pH del suelo 0-30 y 30-100 cm | Suelo | pH | píxel de 1 km; ajuste RMSE 0,84, R² 0,456 | 2026-11-14 | WMS `geo-nodo05` | **8,56** y **8,48** | Media (modelo de 1 km con error de ±0,84) |
+| 487 | Almacenamiento de carbono 2023 | Suelo | carbono orgánico del suelo | no publicada | 2026-11-14 | WMS y WCS central | 37,13 (unidad no publicada en el resumen) | Media |
+| 700 | Almacenamiento de carbono 2018 | Suelo | carbono orgánico 0-30 cm | no publicada | 2026-11-14 | WMS `geo-nodo05` | 30,94 Mg/ha | Baja (lo reemplaza el de 2023) |
+| 479, 481, 482, 488 a 491, 496, 497, 687, 688 | Mapa Nacional de Cultivos 2018/19 a verano 2023/24 | Territorio | cultivo por campaña | 30 m | 2026-11-14 a 2026-11-14 | WMS y WCS central | 2018/19 vegetación natural leñosa; 2019 a 2022 no agrícola; invierno 2022 barbecho; verano 2022/23 **maíz**; invierno 2023 barbecho; verano 2023/24 **soja** | Alta (historia real del lote) |
+| 121 | Cobertura del suelo 2006-2007 (LCCS-FAO) | Territorio | cobertura | 1:500.000 | 2026-11-14 | WFS y WMS central | Cultivos de herbáceas graminoideas | Baja |
 | 113, 111, 112, 133 a 206 | Atlas climático digital (Bianchi y Cravero) | Contexto | lluvia normal anual y mensual, ETP mensual, P-EP, aridez | no publicada | 2022-12 a 2023-03 | WMS y WCS central | lluvia anual 673 mm; balance P-EP -135 mm; Martonne 25 (subhúmedo); ETP enero 138 mm | Media (normales para comparar; el dato diario ya lo dan POWER e IMERG) |
-| 667, 665 | Humedales (Pampa Interior, Monte Central) | Contexto | probabilidad de humedal | no publicada | 2024-08-28 | WMS y WCS central | 0,10 y 0 | Baja |
-| 737, 736, 735 | Pequeños productores (CNA 2018) | Contexto | proporción por departamento | departamento | 2025-07-29 | WMS `geo-nodo05` | Departamento General Pedernera, 39,96 % de EAP de pequeños productores | Baja |
+| 667, 665 | Humedales (Pampa Interior, Monte Central) | Contexto | probabilidad de humedal | no publicada | 2026-11-14 | WMS y WCS central | 0,10 y 0 | Baja |
+| 737, 736, 735 | Pequeños productores (CNA 2018) | Contexto | proporción por departamento | departamento | 2026-11-14 | WMS `geo-nodo05` | Departamento General Pedernera, 39,96 % de EAP de pequeños productores | Baja |
 
 ## 22.3 Sin dato en el lote
 
@@ -736,7 +736,7 @@ Nada de esto se implementa hasta que Hernán lo apruebe (TASK-005).
 
 Hernán eligió "Prioridad 1 y 2": cartas 1:100.000 de San Luis, textura, Mapa Nacional de Cultivos y pH. El mismo día sumó el [anexo de geoservicios](021-anexo-geoservicios.md), que pide WFS para vectores, WCS para rásters y WMS solo para ver.
 
-El 15/10/2026 Hernán pidió "necesito que conectes a los datasets de INTA". La única capa del INTA que faltaba para el lote de San Luis era la de prioridad 3, el carbono orgánico 2023, y se sumó (§23.6).
+El 14/11/2026 Hernán pidió "necesito que conectes a los datasets de INTA". La única capa del INTA que faltaba para el lote de San Luis era la de prioridad 3, el carbono orgánico 2023, y se sumó (§23.6).
 
 ## 23.1 Cómo se lee cada capa
 
@@ -795,17 +795,17 @@ Hernán encontró el Mapa Nacional de Cultivos verano 2024/25 (`MNC_verano_2024-
 - **Leyenda:** GeoSEPA no tiene `GetLegendGraphic`; se usan sus archivos `MNC_verano.qml` y `MNC_invierno.qml`. Verano: 10 Maíz, 11 Soja, 12 Girasol, 13 Poroto, 14 Caña de azúcar, 15 Algodón, 16 Maní, 17 Arroz, 18 Sorgo, 19 Girasol-CV, 21 Barbecho, 22 No agrícola, 26 Papa, 27 Verdeo de maíz, 28 Verdeo de sorgo, 30 Tabaco, 31 Máscara. Invierno: 6 Garbanzo, 16 Cereales de invierno, 17 Otros cultivos de invierno, 18 Barbecho, 19 Caña de azúcar, 20 No agrícola, 24 Arveja, 25 Máscara, 26 Papa. Se traducen al código común de §23.2 por el nombre, igual que las demás.
 - **Nombre del archivo de invierno:** `MNC_invierno_2024-2025.tif`, igual que el de verano. Se supuso por analogía y la prueba real confirmó que existe.
 - **Uso:** al venir de GeoSEPA, rigen los términos de SEPA (uso comercial con autorización escrita del CIRN-INTA, spec 023 §5.3). La `nota` lo dice.
-- **Verificado en la prueba real (GitHub, 4/10/2026, leído de GeoSEPA por rangos):** lote de San Luis, verano 2024/25 **maíz 52 %** y no agrícola 48 % (324 píxeles), `buena` por poco; invierno 2024 **barbecho 52 %**. Pergamino: verano 2024/25 **soja 64 %** (no agrícola 20 %, maíz 16 %); invierno 2024 **barbecho 74 %**. Con el archivo que subió Hernán dio lo mismo. Cada lote tarda 17 a 18 s con las 13 campañas.
+- **Verificado en la prueba real (GitHub, 14/11/2026, leído de GeoSEPA por rangos):** lote de San Luis, verano 2024/25 **maíz 52 %** y no agrícola 48 % (324 píxeles), `buena` por poco; invierno 2024 **barbecho 52 %**. Pergamino: verano 2024/25 **soja 64 %** (no agrícola 20 %, maíz 16 %); invierno 2024 **barbecho 74 %**. Con el archivo que subió Hernán dio lo mismo. Cada lote tarda 17 a 18 s con las 13 campañas.
 - **Tope de tiempo (agregado):** en la prueba del piloto con parcelas reales del Catastro, la lectura de GeoSEPA quedó trabada más de una hora en dos parcelas de San Luis (Justo Daract, 456 ha, y Buena Esperanza, 196 ha), y la consulta del suelo no volvía nunca. Ahora todo el Mapa Nacional de Cultivos tiene un tope de 90 s: las campañas que no llegan quedan `descartada` con la `nota` "no respondió en 90 s" y el resto del suelo contesta igual. Además, GDAL corta un rango que baja a menos de 1000 bytes por segundo durante 15 s.
 
 ## 23.3 Supuestos
 
-- **Fecha de cada campaña:** la de verano se fecha el 1 de enero del año de cosecha (verano 2023/24 → 1/1/2024), la de invierno el 1 de julio y la 2018/19 el 1/1/2019. Los títulos del INTA solo dicen la campaña.
-- **Fecha de las hojas de San Luis:** la de alta de la versión digital en el catálogo (19 y 22/9/2025). El relevamiento original es anterior.
+- **Fecha de cada campaña:** la de verano se fecha el 1 de enero del año de cosecha (verano 2023/24 → 14/11/2026), la de invierno el 1 de julio y la 2018/19 el 14/11/2026. Los títulos del INTA solo dicen la campaña.
+- **Fecha de las hojas de San Luis:** la de alta de la versión digital en el catálogo (19 y 14/11/2026). El relevamiento original es anterior.
 - **Resolución de las hojas:** 0,5 mm del mapa, como en la spec 020 (1:100.000 da 50 m; 1:200.000, 100 m).
 - **Píxel del Mapa de Cultivos:** 0,000269° (DescribeCoverage), unos 30 m.
 - **Resolución de la textura:** no está publicada; se toma 1 km, la del pH (mismo proyecto y autor). El pH sí publica 1 km.
-- **Fecha de textura y pH:** la de alta en el catálogo (10 y 9/12/2024). Son mapas de modelo, no mediciones: la nota lo dice, y el pH lleva su error publicado (RMSE 0,84; R² 0,456).
+- **Fecha de textura y pH:** la de alta en el catálogo (10 y 14/11/2026). Son mapas de modelo, no mediciones: la nota lo dice, y el pH lleva su error publicado (RMSE 0,84; R² 0,456).
 - **Calidad:** `buena` si la clase o unidad dominante cubre al menos la mitad del lote (en el pH, si al menos la mitad de los puntos tiene dato); si no, `dudosa`.
 
 ## 23.4 Prueba real
@@ -851,13 +851,13 @@ El rango de la nota muestra si hay un píxel raro.
 
 **Resolución, fecha y calidad.**
 - `resolucion_m = 250`: el píxel es de 0,002245788° (`offsetVector` del `DescribeCoverage`), unos 250 m de latitud.
-- `fecha = 2023-10-27`: la fecha de publicación del recurso 487 en el catálogo. Las muestras son de 2015 a 2022.
+- `fecha = 2026-11-14`: la fecha de publicación del recurso 487 en el catálogo. Las muestras son de 2015 a 2022.
 - La calidad es siempre `dudosa`. Es un modelo nacional, no una medición del lote. El resumen dice que se estimó la incertidumbre del modelo, pero el catálogo no publica ni el error ni la validación (remite al repositorio del INTA, handle 20.500.12123/14624). Sin una validación publicada no hay base para `buena`.
 - Sin píxeles válidos, o si el WCS falla, el valor es `null` y la calidad `descartada`, con el motivo en la nota. Un error del WCS de carbono no frena el resto del suelo: es un paso aparte de `obtener_suelo`.
 
 **Licencia.** El recurso 487 se publica bajo CC BY-NC-SA 2.5, que es de uso no comercial, y la nota lo dice. Hernán tiene que decidir si eso sirve para el uso que piensa darle a Rotaterra.
 
-**Verificado en la prueba real** (corrida [38731508056](https://github.com/hernanfirmapaz-ops/N4-4-1.2/actions/runs/38731508056), 15/10/2026, commit `cf0b79f`):
+**Verificado en la prueba real** (corrida [38731508056](https://github.com/hernanfirmapaz-ops/N4-4-1.2/actions/runs/38731508056), 14/11/2026, commit `cf0b79f`):
 
 | Lote | Carbono orgánico 0-30 cm | Píxeles | Rango |
 |---|---|---|---|
@@ -868,6 +868,6 @@ En el inventario (§22.2), el punto central del lote de San Luis por WMS había 
 
 **Criterios de aceptación**
 - [x] La unidad y la profundidad salen de una fuente del INTA: el resumen del recurso 487 dice "0 – 30 cm, t/ha" (corridas 38730176751 y 38731508056).
-- [x] El conector lee la cobertura por WCS dentro del lote y entrega `suelo_carbono_organico_0_30cm_t_ha`. Los valores son `unidad = "t/ha"`, `fuente = "GeoINTA"`, `resolucion_m = 250` y `fecha = 2023-10-27`. La nota trae la cantidad de píxeles, el rango, la capa, la fuente de la unidad y la licencia. Dio San Luis 37,9 t/ha (4 píxeles, de 35,86 a 40,12) y Pergamino 54,66 t/ha (4 píxeles, de 53,13 a 56,77) en la corrida real.
+- [x] El conector lee la cobertura por WCS dentro del lote y entrega `suelo_carbono_organico_0_30cm_t_ha`. Los valores son `unidad = "t/ha"`, `fuente = "GeoINTA"`, `resolucion_m = 250` y `fecha = 2026-11-14`. La nota trae la cantidad de píxeles, el rango, la capa, la fuente de la unidad y la licencia. Dio San Luis 37,9 t/ha (4 píxeles, de 35,86 a 40,12) y Pergamino 54,66 t/ha (4 píxeles, de 53,13 a 56,77) en la corrida real.
 - [x] Si no hay píxeles válidos, o el WCS falla o devuelve un GeoTIFF ilegible, el valor es `null` y la calidad `descartada` con el motivo, y el resto del suelo sigue saliendo. Lo cubren los tests sin internet de `tests/test_geointa.py`, con GeoTIFF reales en memoria.
 - [x] `probar_geointa.py` imprime el carbono de los dos lotes y lo exige (`--exigir`). Con `--metadatos-carbono` imprime la unidad, la fecha, la licencia, el píxel y la leyenda que publica el INTA.

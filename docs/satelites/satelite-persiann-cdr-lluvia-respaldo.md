@@ -33,27 +33,27 @@ Solo del núcleo (rama `nucleo-api-y-contrato-comun`): no importa ningún otro s
 
 Corrida el 14/11/2026 contra la fuente real, con datos de los últimos días (desde esta máquina de trabajo). Lote de prueba de San Luis.
 
-Comando: `python probar_persiann.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" "2026-06-17" "2026-06-30"`
+Comando: `python probar_persiann.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" "2026-11-14" "2026-11-14"`
 
 ```
 Lluvia NOAA PERSIANN-CDR (estimación por satélite, precip) como respaldo de IMERG · satélite IMERG:PERSIANN (respaldo de IMERG, orden 3)
-Centro del lote (-33.7025, -65.2975) · del 2026-06-17 al 2026-06-30 · 5.3 s
+Centro del lote (-33.7025, -65.2975) · del 2026-11-14 al 2026-11-14 · 5.3 s
 
 Fecha        Lluvia mm  Calidad     Nota
-2026-06-17        1.02  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
-2026-06-18        1.40  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
-2026-06-19        0.13  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
-2026-06-20        0.56  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
-2026-06-21        0.95  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
-2026-06-22        0.40  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
-2026-06-23        0.00  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
-2026-06-24        1.41  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
-2026-06-25        0.00  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
-2026-06-26        0.52  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
-2026-06-27        0.47  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
-2026-06-28        0.00  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
-2026-06-29        0.00  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
-2026-06-30        0.00  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
+2026-11-14        1.02  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
+2026-11-14        1.40  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
+2026-11-14        0.13  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
+2026-11-14        0.56  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
+2026-11-14        0.95  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
+2026-11-14        0.40  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
+2026-11-14        0.00  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
+2026-11-14        1.41  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
+2026-11-14        0.00  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
+2026-11-14        0.52  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
+2026-11-14        0.47  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
+2026-11-14        0.00  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
+2026-11-14        0.00  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
+2026-11-14        0.00  buena       Respaldo de IMERG · NOAA PERSIANN-CDR (estimación por satélite, calibrada con GPCP) · celda de 0,25°
 
 14 días · calidad {'buena': 14} · total 6.9 mm
 Variable lluvia_mm en mm/día, fuente PERSIANN, resolución 27000 m

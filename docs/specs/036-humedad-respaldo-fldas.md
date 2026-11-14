@@ -28,7 +28,7 @@ El lote: `lote["id"]`, su centro `lote["lat"]`/`lote["lon"]` y el período `desd
 ## Salida (contrato común)
 
 ```json
-{"lote_id": "lote-7", "fecha": "2026-02-01", "variable": "humedad_superficial", "valor": 0.234,
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "humedad_superficial", "valor": 0.234,
  "unidad": "m³/m³", "fuente": "FLDAS", "resolucion_m": 11000, "calidad": "dudosa",
  "nota": "Respaldo · humedad del suelo de 0 a 10 cm del modelo FLDAS Noah de la NASA (GES DISC) · promedio del mes · píxel de 0,1° (~11 km), dato REGIONAL y MENSUAL de modelo, no una medición del lote"}
 ```

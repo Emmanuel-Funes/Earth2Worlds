@@ -16,9 +16,9 @@ de referencia por cultivo: la mediana de las últimas 10 campañas con rinde. Es
 lote: sirve para comparar cultivos y tener un orden de magnitud, no reemplaza el historial del productor.
 
 El departamento del lote sale de la API Georef del Estado nacional (o viene en el pedido). No es una fuente de la
-NASA: entra como excepción aprobada por Hernán el 14/10/2026 (Georef, el 15/10/2026). No hay respaldo.
+NASA: entra como excepción aprobada por Hernán el 14/11/2026 (Georef, el 14/11/2026). No hay respaldo.
 
-El servidor del Ministerio no responde desde fuera del país (15/10/2026), y Render está en Estados Unidos. Por eso
+El servidor del Ministerio no responde desde fuera del país (14/11/2026), y Render está en Estados Unidos. Por eso
 la app lee una copia del CSV vigente guardada en el repo (`datos/magyp_rindes.csv.gz`, solo los cultivos del
 catálogo desde 2000/01). El Ministerio publica un archivo nuevo una o dos veces por año; la copia se renueva con
 el workflow "Actualizar copia de MAGyP (rindes de referencia)".

@@ -25,15 +25,15 @@ Solo del núcleo (rama `nucleo-api-y-contrato-comun`): no importa ningún otro s
 
 Corrida el 14/11/2026 contra la fuente real, con datos de los últimos días (desde esta máquina de trabajo). Lote de prueba de San Luis.
 
-Comando: `python probar_modis.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" "2026-09-15" "2026-11-09"`
+Comando: `python probar_modis.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" "2026-11-14" "2026-11-14"`
 
 ```
-NDVI del lote (MODIS Terra, 250 m, compuestos de 16 días) del 2026-09-15 al 2026-11-09 · 5 s
+NDVI del lote (MODIS Terra, 250 m, compuestos de 16 días) del 2026-11-14 al 2026-11-14 · 5 s
 
 Fecha          NDVI  Calidad     Detalle
-2026-09-16     0.34  buena       Respaldo de HLS · MOD13Q1 compuesto del 2026-09-14 · 4 píxeles de 250 m · válidos 100%
-2026-10-03     0.32  buena       Respaldo de HLS · MOD13Q1 compuesto del 2026-09-30 · 4 píxeles de 250 m · válidos 100%
-2026-10-21     0.42  buena       Respaldo de HLS · MOD13Q1 compuesto del 2026-10-16 · 4 píxeles de 250 m · válidos 100%
+2026-11-14     0.34  buena       Respaldo de HLS · MOD13Q1 compuesto del 2026-11-14 · 4 píxeles de 250 m · válidos 100%
+2026-11-14     0.32  buena       Respaldo de HLS · MOD13Q1 compuesto del 2026-11-14 · 4 píxeles de 250 m · válidos 100%
+2026-11-14     0.42  buena       Respaldo de HLS · MOD13Q1 compuesto del 2026-11-14 · 4 píxeles de 250 m · válidos 100%
 
 3 compuestos, 3 con el lote despejado.
 ```

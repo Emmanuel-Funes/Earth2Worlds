@@ -6,7 +6,7 @@
 
 Dar una señal de **riesgo de helada** en el lote: la temperatura de la **superficie** durante la noche, que es cuando hiela. Es un dato nuevo que hoy el pipeline no tiene (clima, NDVI, lluvia, humedad, relieve, ET y suelo, pero no temperatura nocturna del suelo). La helada define ventanas de siembra y puede arruinar un cultivo, así que es de las señales más útiles para la rotación.
 
-La fuente es **VIIRS LST** (Land Surface Temperature) nocturna de 1 km, de NOAA (agencia socia permitida, spec 008), la misma familia de satélites que ya usamos para el NDVI de respaldo (spec 011). Se verificó en la investigación 028: la noche del 22/9/2026 en el lote de San Luis dio **−3,0 °C** de superficie.
+La fuente es **VIIRS LST** (Land Surface Temperature) nocturna de 1 km, de NOAA (agencia socia permitida, spec 008), la misma familia de satélites que ya usamos para el NDVI de respaldo (spec 011). Se verificó en la investigación 028: la noche del 14/11/2026 en el lote de San Luis dio **−3,0 °C** de superficie.
 
 ## Fuente
 
@@ -14,7 +14,7 @@ La fuente es **VIIRS LST** (Land Surface Temperature) nocturna de 1 km, de NOAA 
 |---|---|---|---|---|---|
 | VJ121A1N (NOAA-20) y VJ221A1N (NOAA-21), capa `LST_1KM` del paso nocturno | NOAA / NASA | Temperatura de la superficie de noche (~1:30 AM local), diaria | sinusoidal de 1 km | ~1 a 2 días | CMR + OPeNDAP de Earthdata (igual que VIIRS NDVI) |
 
-Suomi NPP (VNP21A1N) queda afuera: deja de entregar datos el 1/11/2026. Con dos satélites hay hasta dos pasos por noche, y entra el más despejado.
+Suomi NPP (VNP21A1N) queda afuera: deja de entregar datos el 14/11/2026. Con dos satélites hay hasta dos pasos por noche, y entra el más despejado.
 
 ## Entrada
 
@@ -30,9 +30,9 @@ El lote como lo recibe cualquier satélite: `lote["id"]`, `lote["poligono"]` (Ge
 ## Salida (contrato común)
 
 ```json
-{"lote_id": "lote-7", "fecha": "2026-09-22", "variable": "temp_sup_min_c", "valor": -3.0,
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "temp_sup_min_c", "valor": -3.0,
  "unidad": "°C", "fuente": "VIIRS", "resolucion_m": 1000, "calidad": "buena",
- "nota": "VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-09-22 · 1 píxeles de 1 km · válidos 100% · riesgo de helada (≤ 0 °C de superficie)"}
+ "nota": "VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-11-14 · 1 píxeles de 1 km · válidos 100% · riesgo de helada (≤ 0 °C de superficie)"}
 ```
 
 - `variable: "temp_sup_min_c"` es nueva (temperatura de superficie mínima nocturna, en °C). No cambia el contrato: `variable` es texto libre y `fuente: "VIIRS"` ya existe.

@@ -30,9 +30,9 @@ Se lee por **OPeNDAP de la NASA** solo la ventana de píxeles que cubre el lote.
 ## Salida (contrato común)
 
 ```json
-{"lote_id": "lote-7", "fecha": "2026-01-09", "variable": "ndvi", "valor": 0.61,
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "ndvi", "valor": 0.61,
  "unidad": "índice (-1 a 1)", "fuente": "MODIS", "resolucion_m": 250, "calidad": "buena",
- "nota": "Respaldo de HLS · MOD13Q1 compuesto del 2026-01-01 · 14 píxeles de 250 m · válidos 100%"}
+ "nota": "Respaldo de HLS · MOD13Q1 compuesto del 2026-11-14 · 14 píxeles de 250 m · válidos 100%"}
 ```
 
 ## Reglas de calidad (las mismas umbrales que HLS)

@@ -28,7 +28,7 @@ El umbral de 1 m es un **supuesto** de arranque para lotes de llanura; tiene que
 
 ## Salida (contrato común)
 
-Una observación por variable, con `fecha: "2000-02-11"` (fecha de la misión SRTM), `fuente: "NASADEM"`, `resolucion_m: 30`.
+Una observación por variable, con `fecha: "2026-11-14"` (fecha de la misión SRTM), `fuente: "NASADEM"`, `resolucion_m: 30`.
 
 | Variable | Unidad |
 |---|---|

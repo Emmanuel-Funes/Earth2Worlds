@@ -70,7 +70,7 @@ Cada pasada pesa ~1 GB. Sin pedir variables, el recorte de la zona igual pesaba 
 
 ## Prueba real
 
-Desde el entorno de la nube (`probar_gedi.py` con el lote de prueba, 25 ha). Período 1/10/2023 a 30/10/2026. **136 s.** 11 pasadas, 2.849 disparos en la zona, **1.121 buenos** (el resto, de noche nublada o con poca señal).
+Desde el entorno de la nube (`probar_gedi.py` con el lote de prueba, 25 ha). Período 14/11/2026 a 14/11/2026. **136 s.** 11 pasadas, 2.849 disparos en la zona, **1.121 buenos** (el resto, de noche nublada o con poca señal).
 
 | Variable | Valor | Calidad |
 |---|---|---|

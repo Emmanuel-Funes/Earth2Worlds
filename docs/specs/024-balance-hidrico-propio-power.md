@@ -77,9 +77,9 @@ Sin textura se usa **franco (217 mm)** y los valores salen con calidad `dudosa`.
 | `agua_relativa_balance` | % | Agua del último día en % entre lo más seco (0) y lo más húmedo (100) del último año del balance: el valor "equiparado" | No (sirve para comparar con cualquier fuente) |
 
 ```json
-{"lote_id": "lote-7", "fecha": "2026-09-20", "variable": "agua_disponible_2m", "valor": 87.3,
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "agua_disponible_2m", "valor": 87.3,
  "unidad": "mm", "fuente": "POWER", "resolucion_m": 55000, "calidad": "buena",
- "nota": "Balance propio (spec 024), respaldo de SEPA · década 2 de 09/2026: lluvia 11,3 mm, ETc 9,7 mm, ETR 9,7 mm · suelo franco arenoso, 182 mm de agua útil en 2 m · Kc 0,5 (de junio a septiembre 0,25) · arranque 50% el 31/08/2025 · lluvia: la menor entre POWER (0,5°) e IMERG (0,1°) de cada día; ET0 FAO-56 con POWER · calibrado contra 87 décadas de SEPA en San Luis, diferencia media 16 mm (spec 024)"}
+ "nota": "Balance propio (spec 024), respaldo de SEPA · década 2 de 09/2026: lluvia 11,3 mm, ETc 9,7 mm, ETR 9,7 mm · suelo franco arenoso, 182 mm de agua útil en 2 m · Kc 0,5 (de junio a septiembre 0,25) · arranque 50% el 14/11/2026 · lluvia: la menor entre POWER (0,5°) e IMERG (0,1°) de cada día; ET0 FAO-56 con POWER · calibrado contra 87 décadas de SEPA en San Luis, diferencia media 16 mm (spec 024)"}
 ```
 
 - `agua_disponible_2m` y `agua_suelo_porcentaje` tienen **el mismo nombre que en SEPA**: si SEPA falla, la app recibe la misma serie venga de donde venga.
@@ -109,7 +109,7 @@ Sin textura se usa **franco (217 mm)** y los valores salen con calidad `dudosa`.
 - **Workflow:** `Probar POWER (balance hídrico propio)` (`.github/workflows/probar-balance-hidrico.yml`, `probar_balance_hidrico.py`).
 - **Lote:** el de San Luis (-33,700; -65,300), textura franco arenoso.
 - **Períodos:**
-  - 25/8 a 20/9/2026, comparable con SEPA del 31/8 al 20/9: 92,1 → 86,0 → 83,9 mm, y 41,8 → 39,1 → 38,2 %.
+  - 25/8 a 14/11/2026, comparable con SEPA del 31/8 al 20/9: 92,1 → 86,0 → 83,9 mm, y 41,8 → 39,1 → 38,2 %.
   - Enero de 2025, comparable con SEPA (los 6 píxeles del lote): 89,4 → 59,4 → 30,0 mm. Antes se anotó 58,1 → 39,2 → 25,9, que era de un solo píxel, antes de arreglar la ventana del conector de SEPA.
 - **Cuándo corre:** en cada PR que toque estos archivos y a mano con un clic.
 
@@ -119,13 +119,13 @@ Workflow **Probar POWER (balance hídrico propio)**, lote de San Luis (-33,7025;
 
 | Década | Balance propio (mm) | % | Lluvia POWER en la década | SEPA (mm) |
 |---|---|---|---|---|
-| 31/8/2026 | 260,0 | 100 | 121,7 mm | 92,1 |
-| 10/9/2026 | 238,3 | 91,6 | 3,5 mm | 86,0 |
-| 20/9/2026 | 231,4 | 89,0 | 20,4 mm | 83,9 |
-| 30/9/2026 | 227,1 | 87,3 | 29,9 mm | 84,0 |
-| 10/1/2025 | 227,4 | 87,5 | 38,1 mm | 58,1 |
-| 20/1/2025 | 214,8 | 82,6 | 25,9 mm | 39,2 |
-| 31/1/2025 | 186,9 | 71,9 | 14,6 mm | 25,9 |
+| 14/11/2026 | 260,0 | 100 | 121,7 mm | 92,1 |
+| 14/11/2026 | 238,3 | 91,6 | 3,5 mm | 86,0 |
+| 14/11/2026 | 231,4 | 89,0 | 20,4 mm | 83,9 |
+| 14/11/2026 | 227,1 | 87,3 | 29,9 mm | 84,0 |
+| 14/11/2026 | 227,4 | 87,5 | 38,1 mm | 58,1 |
+| 14/11/2026 | 214,8 | 82,6 | 25,9 mm | 39,2 |
+| 14/11/2026 | 186,9 | 71,9 | 14,6 mm | 25,9 |
 
 Con Kc 0,9: 231 → 216 → 202 mm en septiembre y 127 → 110 → 83 mm en enero de 2025.
 
@@ -141,7 +141,7 @@ Con Kc 0,9: 231 → 216 → 202 mm en septiembre y 127 → 110 → 83 mm en ener
 
 **Próximo paso propuesto:** comparar década por década con todo el historial de SEPA (desde mayo de 2024), cuando el servidor del INTA responda. Probar también la lluvia de IMERG (10 km) en lugar de la de POWER, y el Kc.
 
-POWER tuvo huecos de radiación el 7/9 y el 30/9/2026, que se completaron con Hargreaves (FAO-56 ec. 50).
+POWER tuvo huecos de radiación el 7/9 y el 14/11/2026, que se completaron con Hargreaves (FAO-56 ec. 50).
 
 ## Si el INTA no responde: otras fuentes y cómo equiparar
 
@@ -151,7 +151,7 @@ Hernán pidió "ver más formas de equiparar datos, de dónde podemos sacar dato
 |---|---|---|---|---|---|
 | Balance propio (esta spec) | NASA POWER | Agua útil hasta 2 m, por década | ~55 km | ~4 días | Sí, desde 2024 |
 | SMAP L4 zona de raíces (`SMAP-humedad_suelo`, #19) | NASA | Humedad 0-100 cm en m³/m³ | 9 km | ~3 días | Sí (spec 003) |
-| GLDAS 2.2 Catchment con GRACE | NASA | Agua en la zona de raíces y en el perfil, en mm | 25 km | **~3 meses** (último dato: 30/6/2026) | Sí, por OPeNDAP |
+| GLDAS 2.2 Catchment con GRACE | NASA | Agua en la zona de raíces y en el perfil, en mm | 25 km | **~3 meses** (último dato: 14/11/2026) | Sí, por OPeNDAP |
 | GLDAS 2.1 Noah | NASA | Agua 0-100 cm, en mm | 25 km | ~3 meses | Sí, por OPeNDAP |
 | SAOCOM: mapa de humedad del perfil (MSM) y visor de series (VST) | CONAE (socia) | Agua hasta 2 m en capas de 10 cm, diaria | Zonas homogéneas, nodos cada 3,5 km o más | Diaria | **No**: cubre solo Buenos Aires, Córdoba, Entre Ríos, La Pampa y Santa Fe (San Luis queda afuera). Se ve gratis; el CSV pide registrarse. |
 
@@ -160,7 +160,7 @@ Resultado de la comparación:
 - **Equiparar** = llevar cada serie a % entre su mínimo y su máximo del período. Así se compara la forma de la curva:
   - Septiembre de 2026: SEPA 100 → 90,8 → 87,7 → 87,8 y balance propio 100 → 88,5 → 84,8 → 82,5. **Coinciden.**
   - Enero de 2025: SEPA 48,6 → 20,1 → 0 y balance 82,7 → 76,0 → 61,1. Los dos bajan, pero SEPA mucho más.
-  - Septiembre de 2024: el balance y los dos GLDAS marcan el punto más seco (0 %) el 30/9/2024 y el humedecimiento de octubre.
+  - Septiembre de 2024: el balance y los dos GLDAS marcan el punto más seco (0 %) el 14/11/2026 y el humedecimiento de octubre.
 
 Formas de equiparar, en orden:
 1. **Entregar también el % equiparado** (o el percentil de cada década en su historia). Sirve para comparar fuentes con escalas distintas. **Hecho:** variable `agua_relativa_balance`.
@@ -196,12 +196,12 @@ Conclusiones:
 
 | Década | Balance Kc 1,0 (mm) | % equiparado | SEPA (mm) | Diferencia |
 |---|---|---|---|---|
-| 10/1/2025 | 105,5 | 36,4 | 58,1 | +47 |
-| 20/1/2025 | 91,6 | 31,4 | 39,2 | +52 |
-| 31/1/2025 | 68,1 | 23,0 | 25,9 | +42 |
-| 10/9/2026 | 227,5 | 86,5 | 86,0 | +142 |
-| 20/9/2026 | 208,9 | 78,8 | 83,9 | +125 |
-| 30/9/2026 | 190,0 | 70,9 | 84,0 | +106 |
+| 14/11/2026 | 105,5 | 36,4 | 58,1 | +47 |
+| 14/11/2026 | 91,6 | 31,4 | 39,2 | +52 |
+| 14/11/2026 | 68,1 | 23,0 | 25,9 | +42 |
+| 14/11/2026 | 227,5 | 86,5 | 86,0 | +142 |
+| 14/11/2026 | 208,9 | 78,8 | 83,9 | +125 |
+| 14/11/2026 | 190,0 | 70,9 | 84,0 | +106 |
 
   - Enero de 2025 bajó de 227 → 215 → 187 mm (Kc 0,7) a 106 → 92 → 68 mm: la diferencia con SEPA pasó de unos 170 mm a unos 47 mm.
   - Septiembre de 2026 sigue unos 100 a 140 mm arriba. La causa probable es la lluvia de POWER de fines de agosto de 2026 (121,7 mm en la década del 31/8), que llena el perfil y SEPA no muestra. Probar la lluvia de IMERG en lugar de la de POWER es el próximo paso.
@@ -254,17 +254,17 @@ La lluvia de invierno de POWER es la causa principal de que el balance diera 100
 - **Ronda 5, Kc con NDVI:** Kc = 0,2 sin verde a 0,6 con el máximo verde del lote da 15,9 mm (más parejo entre años: 15,7 y 16,3), pero corrido como la app da 17,2 mm. No mejora al Kc de dos temporadas y obligaría a leer otro satélite en cada pedido, así que **no se usa**.
 - Con datos de satélite, 16 mm es el piso. Lo único que podría bajarlo es una lluvia medida en el lote: el pluviómetro del productor (fuente permitida, "datos del productor").
 
-**Prueba real del conector con la combinación elegida** (workflow **Probar POWER (balance hídrico propio)**, 5/10/2026, franco arenoso, 182 mm). IMERG se leyó en 35 s (161 días con lluvia) y 50 s (147 días):
+**Prueba real del conector con la combinación elegida** (workflow **Probar POWER (balance hídrico propio)**, 14/11/2026, franco arenoso, 182 mm). IMERG se leyó en 35 s (161 días con lluvia) y 50 s (147 días):
 
 | Década | Balance propio | SEPA | Diferencia |
 |---|---|---|---|
-| 31/8/2026 | 92,3 mm | 92,1 mm | +0,2 |
-| 10/9/2026 | 85,8 mm | 86,0 mm | −0,2 |
-| 20/9/2026 | 87,3 mm | 83,9 mm | +3,4 |
-| 30/9/2026 | 84,7 mm | 84,0 mm | +0,7 |
-| 10/1/2025 | 62,6 mm | 89,4 mm | −26,8 |
-| 20/1/2025 | 49,6 mm | 59,4 mm | −9,8 |
-| 31/1/2025 | 33,7 mm | 30,0 mm | +3,7 |
+| 14/11/2026 | 92,3 mm | 92,1 mm | +0,2 |
+| 14/11/2026 | 85,8 mm | 86,0 mm | −0,2 |
+| 14/11/2026 | 87,3 mm | 83,9 mm | +3,4 |
+| 14/11/2026 | 84,7 mm | 84,0 mm | +0,7 |
+| 14/11/2026 | 62,6 mm | 89,4 mm | −26,8 |
+| 14/11/2026 | 49,6 mm | 59,4 mm | −9,8 |
+| 14/11/2026 | 33,7 mm | 30,0 mm | +3,7 |
 
 Con Kc 0,4 da unos 40 mm más, y con Kc 0,6 unos 30 mm menos: el Kc es lo que más mueve el resultado.
 

@@ -34,14 +34,14 @@ Igual que los otros respaldos del NDVI: `lote_id`, polígono GeoJSON (EPSG:4326)
 2. Pedir a CMR las pasadas de `S3A_SY_2_SYN` y `S3B_SY_2_SYN` que tocan el rectángulo del lote en el período.
 3. De cada pasada, **sin bajar el .zip**: leer el índice del zip y, de cada NetCDF que hace falta, solo los pedazos que tocan al lote (pedidos HTTP de 512 KB con el token de Earthdata). Unos **5 MB por pasada**.
 4. Ubicar el lote: el punto de enlace más cercano a su centro da la fila y la columna aproximadas (si está a más de 25 km, el lote queda **fuera de la franja** de esa pasada y se saltea). Después se leen las lat/lon de una ventana de ±48 píxeles y se toman los píxeles con el centro dentro del lote. Si no hay ninguno (lote más chico que un píxel de 9 ha), el píxel más cercano al centro, y la `nota` lo dice. Si ese píxel está a más de 300 m, el lote cae en el borde de la franja y la pasada se saltea.
-5. **Píxel válido:** `SYN_land` prendido; sin `SYN_cloud`, `SYN_snow_risk`, `SYN_high_error`, `SYN_SDR_OOR` ni `SYN_partly_water`; `CLOUD_flags` = 0 (sin nube, nube dudosa, borde de nube ni nieve); las dos bandas con dato. Los nombres y bits de las banderas se leen del archivo. `SYN_partly_cloudy` **no** descarta: en la pasada despejada del 20/9/2026 viene prendida en todo el lote (se refiere a la vista de 1 km de SLSTR) y `CLOUD_flags` de OLCI, a 300 m, decide.
+5. **Píxel válido:** `SYN_land` prendido; sin `SYN_cloud`, `SYN_snow_risk`, `SYN_high_error`, `SYN_SDR_OOR` ni `SYN_partly_water`; `CLOUD_flags` = 0 (sin nube, nube dudosa, borde de nube ni nieve); las dos bandas con dato. Los nombres y bits de las banderas se leen del archivo. `SYN_partly_cloudy` **no** descarta: en la pasada despejada del 14/11/2026 viene prendida en todo el lote (se refiere a la vista de 1 km de SLSTR) y `CLOUD_flags` de OLCI, a 300 m, decide.
 6. **NDVI = (Oa17 − Oa08) / (Oa17 + Oa08)** sobre reflectancia de superficie. Valor del lote = **mediana** de los píxeles válidos; la `nota` lleva media, p10, p90 y % válido.
 7. Si dos pasadas caen el mismo día (3A y 3B, o dos tramos vecinos), queda **la más limpia**.
 
 ## Salida (contrato común)
 
 ```json
-{"lote_id": "lote-7", "fecha": "2026-09-15", "variable": "ndvi", "valor": 0.31,
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "ndvi", "valor": 0.31,
  "unidad": "índice (-1 a 1)", "fuente": "SENTINEL3", "resolucion_m": 300, "calidad": "buena",
  "nota": "Respaldo de HLS · Sentinel-3A SYN L2 (OLCI+SLSTR, ESA, vía NASA LAADS) · 3 píxeles de 300 m · media 0.28 · p10 0.23 · p90 0.33 · válidos 100%"}
 ```
@@ -71,7 +71,7 @@ Workflow `Probar Sentinel-3 (NDVI de respaldo)` (`.github/workflows/probar-senti
 
 ## Resultado de la prueba real
 
-Lote de prueba (esquinas -33,700/-65,300 a -33,705/-65,295, ~25 ha), del 15 al 30/9/2026, 176 s:
+Lote de prueba (esquinas -33,700/-65,300 a -33,705/-65,295, ~25 ha), del 15 al 14/11/2026, 176 s:
 
 - **16 de 16 días con pasada** (Sentinel-3A y 3B se alternan): **11 `buena`** y 5 `descartada` por nubes (18, 24, 28, 29 y 30/9). 2 a 5 píxeles de 300 m por día.
 - NDVI de **0,21 a 0,31** (fin del invierno seco en San Luis).

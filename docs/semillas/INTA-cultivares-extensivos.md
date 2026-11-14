@@ -1,6 +1,6 @@
 # Cultivares del INTA para cultivos extensivos
 
-**Corte:** catálogo INASE con inscripciones hasta el 23/10/2026
+**Corte:** catálogo INASE con inscripciones hasta el 14/11/2026
 **Planilla:** pestaña **"Cultivares INTA"** de `base_semillas_extensivas.xlsx` (también en `cultivares_inta.csv`). Las empresas privadas quedan como referencia, en la pestaña "Privados (referencia)".
 
 ---
@@ -62,7 +62,7 @@ El INTA no vende semilla directamente: la licencia a empresas y cooperativas, y 
 - Los subtipos (granífero, forrajero, cervecero, etc.) son los que declara INASE. "BMR", "CL" y "PV" son siglas del nombre que figura en el registro.
 - Desde este entorno no puedo abrir las fichas técnicas del INTA (ciclo, rinde, sanidad). Hay que bajarlas de inta.gob.ar en un hilo que tenga acceso.
 
-## 4. Quién multiplica cada cultivar INTA (catálogo público del INTA, bajado el 28/10/2026)
+## 4. Quién multiplica cada cultivar INTA (catálogo público del INTA, bajado el 14/11/2026)
 
 Fuente: catálogo de variedades del INTA (argentina.gob.ar/inta/variedades), 745 registros. No trae ciclo, zona ni sanidad: sólo la unidad del INTA que lo creó, la situación registral, el tipo de licencia y el licenciatario.
 

@@ -43,7 +43,7 @@ El viento de POWER ya está a 2 m (`WS2M`), así que no hace falta la correcció
 ## Salida (contrato común)
 
 ```json
-{"lote_id": "lote-7", "fecha": "2026-01-14", "variable": "et0_mm_dia", "valor": 6.87,
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "et0_mm_dia", "valor": 6.87,
  "unidad": "mm/día", "fuente": "POWER", "resolucion_m": 55000, "calidad": "buena",
  "nota": "ET de referencia de pasto (FAO-56 Penman-Monteith), NO es la ET real del cultivo: ET cultivo = Kc × ET0 · NASA POWER: T 36,3/19,6 °C, rocío 13,8 °C, viento 0,9 m/s, Rs 31,6 MJ/m², altura 568 m · Rn 18,1 MJ/m² · último respaldo de la ET"}
 ```

@@ -16,11 +16,11 @@ El dato es **del departamento, no del lote**. Sirve para comparar cultivos entre
 | Excepción | No es una agencia espacial. Entra como excepción aprobada por Hernán, junto al INTA y al Catastro de San Luis |
 | Acceso | La API del portal (`/api/3/action/package_search?q=estimaciones agricolas`) da el CSV vigente (hoy `estimaciones-agricolas-2026-03.csv`). Sin cuenta |
 | Copia en el repo | Desde el servidor del Ministerio (la misma máquina atiende `datos`, `datosestimaciones`, `geoportal` y `www.magyp.gob.ar`) no responde desde fuera del país, y Render está en Estados Unidos. Por eso la app lee una **copia del CSV vigente guardada en el repo** (`rotaterra/fuentes/datos/magyp_rindes.csv.gz`, 0,44 MB: los cultivos del catálogo desde 2000/01, 36.333 filas, con las mismas columnas) y su ficha (`magyp_rindes.json`: archivo, URL del Ministerio, de dónde se bajó y fecha de la copia). El dato cambia una o dos veces por año |
-| Renovar la copia | Workflow `Actualizar copia de MAGyP (rindes de referencia)` (`actualizar_copia_magyp.py`), a mano cuando el Ministerio publica otro archivo: busca el CSV vigente en el portal del Ministerio (si no contesta, en el portal nacional `datos.gob.ar`, que lista el mismo recurso), lo baja del Ministerio y, si no contesta, baja **el mismo archivo** guardado en el Archivo de Internet (`web.archive.org`). Solo esta herramienta usa esos caminos; la app nunca. La copia salió del Archivo de Internet (foto del 24/4/2026 de `estimaciones-agricolas-2026-03.csv`) |
+| Renovar la copia | Workflow `Actualizar copia de MAGyP (rindes de referencia)` (`actualizar_copia_magyp.py`), a mano cuando el Ministerio publica otro archivo: busca el CSV vigente en el portal del Ministerio (si no contesta, en el portal nacional `datos.gob.ar`, que lista el mismo recurso), lo baja del Ministerio y, si no contesta, baja **el mismo archivo** guardado en el Archivo de Internet (`web.archive.org`). Solo esta herramienta usa esos caminos; la app nunca. La copia salió del Archivo de Internet (foto del 14/11/2026 de `estimaciones-agricolas-2026-03.csv`) |
 | Columnas | cultivo, anio, campania, provincia, provincia_id, departamento, departamento_id, superficie_sembrada_ha, superficie_cosechada_ha, produccion_tm, rendimiento_kgxha |
 | Cobertura | Todo el país, por departamento, desde 1969/70 hasta 2024/25 |
 | Respaldo | No hay otra fuente oficial con rindes por departamento (la API de series de tiempo del Estado, `apis.datos.gob.ar/series`, tiene rindes del país, no del departamento). Si falta la copia o Georef no responde, el conector avisa con un error (`ErrorMAGyP`, HTTP 502 en el endpoint de prueba) y no se inventa nada. La productividad de MODIS (MOD17, investigación 033) muestra una tendencia, pero no es un rinde, así que no lo reemplaza |
-| Verificado | 14/10/2026 (investigación 033): General Pedernera (San Luis) tiene 1969/70 a 2024/25 |
+| Verificado | 14/11/2026 (investigación 033): General Pedernera (San Luis) tiene 1969/70 a 2024/25 |
 
 ## 3. Entrada
 
@@ -41,7 +41,7 @@ Verificado: para (-33,7025; -65,2975) Georef responde `{"departamento": {"id": "
 
 ## 5. Salida
 
-Una `Observacion` por cada cultivo del catálogo (`maiz`, `soja`, `soja_2da`, `sorgo`, `mani`, `girasol`, `trigo`, `alfalfa`, `algodon`), siempre las nueve, con `fuente: "MAGyP"`, `unidad: "kg/ha"`, `resolucion_m: 100000` (escala de departamento) y `fecha` del 30/6 del año en que termina la última campaña usada (2024/25 → 30/6/2025). Un cultivo descartado lleva el 30/6 del año en que termina la campaña más nueva del archivo.
+Una `Observacion` por cada cultivo del catálogo (`maiz`, `soja`, `soja_2da`, `sorgo`, `mani`, `girasol`, `trigo`, `alfalfa`, `algodon`), siempre las nueve, con `fuente: "MAGyP"`, `unidad: "kg/ha"`, `resolucion_m: 100000` (escala de departamento) y `fecha` del 30/6 del año en que termina la última campaña usada (2024/25 → 14/11/2026). Un cultivo descartado lleva el 30/6 del año en que termina la campaña más nueva del archivo.
 
 | `variable` | Ejemplo, General Pedernera (mediana de 2015/16 a 2024/25) |
 |---|---|
@@ -86,8 +86,8 @@ Endpoint de prueba: `GET /rindes-referencia`, además de la entrada por `POST /c
 - [x] Con el lote de San Luis, el departamento sale General Pedernera. Verificado en la prueba real (corridas 38670025488 y 38671001505): Georef devolvió `74035`, General Pedernera, San Luis, para (-33,7025; -65,2975).
 - [x] Las medianas dan las de la tabla de la sección 5 (maíz 4950, soja 2100, sorgo 3650, maní 3055). Verificado con la copia del CSV real `estimaciones-agricolas-2026-03.csv`: maíz 4950, soja 2100, sorgo 3650, maní 3055, girasol 1850 y trigo 1450, iguales a la investigación 033; soja de segunda 1400; alfalfa y algodón descartados.
 - [x] El motor muestra el rinde de referencia por cultivo y el nivel de completitud no cambia. Verificado con la prueba sin internet del motor (rama `MOTOR-recomendacion_de_cultivos`): maíz 4950 kg/ha, escala regional, aviso por clase VI, y "historial de rindes" sigue en los faltantes.
-- [x] `pytest` pasa sin internet (15/10/2026: 64 tests en verde, 23 de este conector).
-- [x] El workflow real pasa. 15/10/2026, corrida real: Georef en vivo da 74035 (General Pedernera) y las seis medianas de la copia coinciden con la investigación 033. El portal del Ministerio seguía sin responder desde GitHub.
+- [x] `pytest` pasa sin internet (14/11/2026: 64 tests en verde, 23 de este conector).
+- [x] El workflow real pasa. 14/11/2026, corrida real: Georef en vivo da 74035 (General Pedernera) y las seis medianas de la copia coinciden con la investigación 033. El portal del Ministerio seguía sin responder desde GitHub.
 - [x] Hernán aprobó esta spec: "Ok a los 3" (incluye usar Georef).
 
 ## 10. Preguntas abiertas

@@ -26,7 +26,7 @@ Las demás partes (banco solo INTA, fichas por variedad, manejo por cultivo) se 
 
 ## 3. Qué tiene hoy el banco
 
-Base armada con el catálogo de INASE del 28/10/2026.
+Base armada con el catálogo de INASE del 14/11/2026.
 
 | Parte | Cantidad | De dónde sale |
 |---|---|---|

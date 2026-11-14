@@ -1,6 +1,6 @@
 # Base de fuentes de semillas extensivas · Argentina
 
-**Corte:** catálogo INASE descargado el **28/10/2026** · **Spec:** 049
+**Corte:** catálogo INASE descargado el **14/11/2026** · **Spec:** 049
 **Archivo principal:** `base_semillas_extensivas.xlsx` (la hoja LEEME explica cada pestaña). Los mismos datos están en CSV en esta carpeta.
 
 ---
@@ -66,7 +66,7 @@ Maíz, soja, sorgo, girasol, maní y trigo suman **6.094 cultivares**. Solo hay 
 | Paso | Quién | Por qué |
 |---|---|---|
 | Contrastar los 27 eventos con la lista oficial de SAGyP | Claude, en un hilo con acceso a sitios .gob.ar | Desde este entorno los sitios .gob.ar no responden |
-| Anotar la fecha exacta en que bajaste el CSV de INASE | Hernán | Hoy solo sabemos que es del 23/10/2026 o posterior |
+| Anotar la fecha exacta en que bajaste el CSV de INASE | Hernán | Hoy solo sabemos que es del 14/11/2026 o posterior |
 | Revisar los 10 nombres "a revisión" y los 13 "no encontrados" | Claude + Hernán | No se unen solos por parecido |
 | Extraer ensayos (San Luis, RECSO, RET, Marcos Juárez) | Claude | Para pasar de "inscripto" a "rinde en tu ambiente" |
 | Cotizaciones de semilleros de la zona | Hernán | Única forma de marcar disponibilidad y precio |
@@ -93,7 +93,7 @@ Hoja **"Oferta 2026-27"** del Excel (`oferta_comercial.csv`). Junta lo que las e
 |---|---|---|
 | LT 722 VT3 PRO, LT 723 TRE | Maíz: más de 9.000 kg/ha con alta densidad, ensayo INTA San Luis en secano, Villa Mercedes 2025/26 | LT722VT3P (2015), LT723TRE (2022) |
 | NK 835 VIP3, ARG 7718 VT3 PRO | Destacados en el mismo ensayo. Promedio general: 7.408 kg/ha con alta densidad y 5.825 con baja | NK835 VIPTERA3 (2023), ARG 7718 (2021) |
-| Sorgo, 10 materiales | Ensayo en Villa Mercedes sembrado el 02/12/2025 sobre alfalfa, sin fertilizar. La nota no da los nombres | Hay que pedir el informe a INTA San Luis |
+| Sorgo, 10 materiales | Ensayo en Villa Mercedes sembrado el 14/11/2026 sobre alfalfa, sin fertilizar. La nota no da los nombres | Hay que pedir el informe a INTA San Luis |
 | Soja | El ensayo de Villa Mercedes **se perdió** por la falta de lluvia en diciembre y enero. En Granville rindió cerca de 4.000 kg/ha | — |
 
 Estos rindes vienen de la prensa, sin repeticiones ni estadística. Sirven de orientación, no para el ranking.
@@ -261,7 +261,7 @@ Son dos campañas como mucho. Sirve para armar una lista corta, no para elegir u
 
 **Fuente:** *Ensayo comparativo de rendimiento de híbridos de sorgo granífero, campaña 2024-25 en INTA EEA Manfredi* (Rosas, Senn, Ortiz y Maguire, Cartilla Digital Manfredi 2025/02, [repositorio INTA](https://repositorio.inta.gob.ar/handle/20.500.12123/22621)). Lo bajó Hernán y está en `/mnt/project-files/rotaterra/inta/informes-2024-25/`. No hay red nacional de sorgo con planillas públicas; este es el ensayo del INTA más completo y más cercano a San Luis que se consiguió.
 
-**Qué hay:** 40 híbridos graníferos y doble propósito de 13 empresas más uno del INTA, con rinde, ciclo, tanino, días a floración, panojas por hectárea, altura y peso hectolítrico. Un solo sitio (Manfredi, centro de Córdoba, zona semiárida norte), siembra 30/10/2024 sobre soja, 594 mm en el ciclo, alfa látice con 3 repeticiones. Media 6.798 kg/ha. La diferencia mínima significativa es **1.344 kg/ha**: los **19 híbridos** que quedan a menos de eso del mejor no se distinguen entre sí.
+**Qué hay:** 40 híbridos graníferos y doble propósito de 13 empresas más uno del INTA, con rinde, ciclo, tanino, días a floración, panojas por hectárea, altura y peso hectolítrico. Un solo sitio (Manfredi, centro de Córdoba, zona semiárida norte), siembra 14/11/2026 sobre soja, 594 mm en el ciclo, alfa látice con 3 repeticiones. Media 6.798 kg/ha. La diferencia mínima significativa es **1.344 kg/ha**: los **19 híbridos** que quedan a menos de eso del mejor no se distinguen entre sí.
 
 **Arriba en rinde** (todos sin diferencia significativa entre sí):
 - Santa Ana (Radixagro, doble propósito): 8.235 kg/ha, 121% de la media.
@@ -323,7 +323,7 @@ El informe es la Información Técnica N.º 213 (sep. 2026, 81 págs., [reposito
 Hernán: "trae lo de todos los cultivos, va a ser de suma utilidad para la aplicación".
 
 - Tabla nueva `fichas_inta.csv` (hoja "Fichas INTA" del Excel y tabla del mismo nombre en `semillas.sqlite`): una fila por dato de cada variedad (ciclo, época de siembra, zona recomendada, suelo, sanidad, tolerancias a sequía/heladas/salinidad/herbicidas, aptitud, rinde publicado, comercializador), siempre con `fuente` y `fuente_url`.
-- Fuentes: planilla de descriptores de soja de INASE (24/06/2026), grupos de calidad y ciclo del trigo pan (Comité de Cereales de Invierno, INASE, 2012 a 2025), grupo de reposo de la alfalfa (catálogo INASE), fichas del catálogo INTA, oferta tecnológica INTA y noticias oficiales del INTA en argentina.gob.ar (con su fecha).
+- Fuentes: planilla de descriptores de soja de INASE (14/11/2026), grupos de calidad y ciclo del trigo pan (Comité de Cereales de Invierno, INASE, 2012 a 2025), grupo de reposo de la alfalfa (catálogo INASE), fichas del catálogo INTA, oferta tecnológica INTA y noticias oficiales del INTA en argentina.gob.ar (con su fecha).
 - Cobertura: 151 de 460 variedades. Completas o casi: soja 15/15, trigo 31/40, alfalfa 22/27, garbanzo 3/3, arroz 8/11, triticale 7/12, papa 10/24, avena 13/40, cebada 10/25, caña 5/7, maní 5/7, algodón 4/7. Casi sin datos publicados: sorgo 2/60, maíz 2/54, porotos 1/33, centeno 2/22; sin nada: mijo, lenteja, caupí, cártamo, mostaza, cáñamo. Son sobre todo variedades viejas (años 80-90) de las que el INTA no publica ficha en línea.
 - Sin dato verificado = no hay fila. No se copia el dato de otra variedad. El código es `semillas/fichas.py` y lo transcripto a mano está en `semillas/datos/fichas_transcriptas.csv`.
 - API: `GET /semillas/fichas` y campo `ficha` en `GET /semillas/cultivares/{id}` (rama SEMILLAS-consultas_en_la_api, todavía no en Render).

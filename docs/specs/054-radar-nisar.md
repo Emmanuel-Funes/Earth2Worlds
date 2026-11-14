@@ -36,9 +36,9 @@ Cada archivo pesa ~1,8 GB y cubre unos 300 km. El conector **no lo baja**: lee s
 ## Salida (contrato común)
 
 ```json
-{"lote_id": "lote-prueba", "fecha": "2026-10-09", "variable": "radar_hh_db", "valor": -8.1, "unidad": "dB",
+{"lote_id": "lote-prueba", "fecha": "2026-11-14", "variable": "radar_hh_db", "valor": -8.1, "unidad": "dB",
  "fuente": "NISAR", "resolucion_m": 20, "calidad": "dudosa",
- "nota": "válidos 100% · HV − HH -7.9 dB (más alto = más planta) · NISAR banda L, gamma0 corregido por relieve · producto PROVISIONAL de la NASA · órbita descendente, traza 140 · pasada 2026-10-09 22:24 UTC · leídos 14 MB del archivo · NISAR_L2_PR_GCOV_..."}
+ "nota": "válidos 100% · HV − HH -7.9 dB (más alto = más planta) · NISAR banda L, gamma0 corregido por relieve · producto PROVISIONAL de la NASA · órbita descendente, traza 140 · pasada 2026-11-14 22:24 UTC · leídos 14 MB del archivo · NISAR_L2_PR_GCOV_..."}
 {"variable": "radar_hv_db", "valor": -15.98, "...": "misma fecha, calidad y nota"}
 ```
 
@@ -65,7 +65,7 @@ Workflow `Probar NISAR (radar)` y `probar_nisar.py`. Por defecto usa el lote de 
 
 ## Resultado de la prueba real
 
-Corrida desde el entorno NASA (GitHub Actions sigue pausado). Lote de prueba, del 1/8 al 27/10/2026. **12 pasadas, 12 con dato, 100 % de píxeles válidos, respuesta en 83 s.**
+Corrida desde el entorno NASA (GitHub Actions sigue pausado). Lote de prueba, del 1/8 al 14/11/2026. **12 pasadas, 12 con dato, 100 % de píxeles válidos, respuesta en 83 s.**
 
 | Fecha | Traza | HH dB | HV dB | HV − HH |
 |---|---|---|---|---|

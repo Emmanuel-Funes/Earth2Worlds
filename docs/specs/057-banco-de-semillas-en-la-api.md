@@ -25,7 +25,7 @@ Que la app consulte el banco de semillas desde la API de Render: los cultivares 
 En la rama de semillas (spec 049):
 
 ```
-python -m semillas.construir_base semillas/datos/raw/inase/catalogo_inase_2026-10-28.csv salida/ --fecha-corte 2026-10-28
+python -m semillas.construir_base semillas/datos/raw/inase/catalogo_inase_2026-10-28.csv salida/ --fecha-corte 2026-11-14
 python -m semillas.exportar_sqlite salida/ semillas.sqlite
 ```
 
@@ -63,11 +63,11 @@ Errores:
 - Precio y stock no forman parte de esto. Hernán dijo que la app no los necesita por ahora.
 - "Cerca de San Luis" es `referencia_san_luis` distinto de `OTRA_REGION`. Las vecinas las propuso Claude y Hernán todavía no las confirmó.
 
-- Fichas de cultivo (Hernán: "trae lo de todos los cultivos, va a ser de suma utilidad para la aplicación"): tabla `fichas_inta`, una fila por (variedad, dato) con `fuente` y `fuente_url`. Sale de la planilla de descriptores de soja de INASE, los grupos de calidad y ciclo del trigo (INASE), el reposo invernal de la alfalfa (catálogo INASE) y lo que publican el INTA y sus noticias oficiales (ciclo, época de siembra, zona, suelo, sanidad, tolerancias). Al 30/10/2026: 151 de 460 variedades. Si una variedad no tiene filas, la ficha dice "sin dato verificado": no se completa con datos de otra variedad.
+- Fichas de cultivo (Hernán: "trae lo de todos los cultivos, va a ser de suma utilidad para la aplicación"): tabla `fichas_inta`, una fila por (variedad, dato) con `fuente` y `fuente_url`. Sale de la planilla de descriptores de soja de INASE, los grupos de calidad y ciclo del trigo (INASE), el reposo invernal de la alfalfa (catálogo INASE) y lo que publican el INTA y sus noticias oficiales (ciclo, época de siembra, zona, suelo, sanidad, tolerancias). Al 14/11/2026: 151 de 460 variedades. Si una variedad no tiene filas, la ficha dice "sin dato verificado": no se completa con datos de otra variedad.
 
 ## 6. Criterios de aceptación
 
-- [x] `GET /semillas` sobre el archivo real: más de 8.000 cultivares, fecha de corte 2026-10-28 (test `test_el_archivo_real_viaja_con_la_api`).
+- [x] `GET /semillas` sobre el archivo real: más de 8.000 cultivares, fecha de corte 2026-11-14 (test `test_el_archivo_real_viaja_con_la_api`).
 - [x] Los 5 cultivos con ensayos devuelven resultados. EXP-G66 (sorgo) figura como del INTA.
 - [x] El filtro de cercanía a San Luis deja afuera `OTRA_REGION`.
 - [x] Un id de cultivar no se confunde con otro que empieza igual (INASE-3 contra INASE-30).

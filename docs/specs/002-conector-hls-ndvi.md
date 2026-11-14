@@ -41,7 +41,7 @@ Una observación por fecha e índice:
 
 ```json
 {
-  "lote_id": "lote-7", "fecha": "2026-01-15", "variable": "ndvi",
+  "lote_id": "lote-7", "fecha": "2026-11-14", "variable": "ndvi",
   "valor": 0.82, "unidad": "índice (-1 a 1)", "fuente": "HLS",
   "resolucion_m": 30, "calidad": "buena",
   "nota": "media 0.80 · p10 0.71 · p90 0.87 · válidos 96% · HLSS30"

@@ -37,11 +37,11 @@ Corrida el 14/11/2026 contra la fuente real, con datos de los últimos días (de
 Comando: `python probar_goes_heladas.py "-33.70" "-65.30" "" ""`
 
 ```
-GOES-19, mínima de la madrugada en (-33.7, -65.3) del 2026-11-10 al 2026-11-14 · 3 s
+GOES-19, mínima de la madrugada en (-33.7, -65.3) del 2026-11-14 al 2026-11-14 · 3 s
 
-2026-11-10    15.9 °C  buena      mínima de 1 lectura, a las 4 h
-2026-11-11    12.9 °C  buena      mínima de 4 lecturas, a las 5 h
-2026-11-12    13.9 °C  buena      mínima de 3 lecturas, a las 6 h
-2026-11-13    22.8 °C  buena      mínima de 4 lecturas, a las 6 h
+2026-11-14    15.9 °C  buena      mínima de 1 lectura, a las 4 h
+2026-11-14    12.9 °C  buena      mínima de 4 lecturas, a las 5 h
+2026-11-14    13.9 °C  buena      mínima de 3 lecturas, a las 6 h
+2026-11-14    22.8 °C  buena      mínima de 4 lecturas, a las 6 h
 2026-11-14       — °C  descartada sin temperatura válida en el lote entre las 4 y las 7 h (nubes o sin dato)
 ```

@@ -10,7 +10,7 @@ Que la app no tenga que dibujar el lote a mano: con un punto (lat, lon), una nom
 
 ## Excepción a la regla de fuentes
 
-Las fuentes permitidas son la NASA, sus agencias socias y el INTA. Con esta spec, Hernán suma como excepción explícita a la **Dirección Provincial de Catastro y Tierras Fiscales de San Luis**, como fuente oficial de límites territoriales (decisión de Hernán, 4/10/2026, en su SDD).
+Las fuentes permitidas son la NASA, sus agencias socias y el INTA. Con esta spec, Hernán suma como excepción explícita a la **Dirección Provincial de Catastro y Tierras Fiscales de San Luis**, como fuente oficial de límites territoriales (decisión de Hernán, 14/11/2026, en su SDD).
 
 ## Fuente (relevada con ingeniería inversa)
 

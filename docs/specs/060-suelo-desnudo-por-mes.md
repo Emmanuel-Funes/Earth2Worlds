@@ -12,7 +12,7 @@ El desafío pide mostrar **cuándo los lotes quedan típicamente desnudos**. En 
 |---|---|---|---|---|
 | `MOD13Q1` (la versión más nueva en CMR; hoy la 061) | NASA (MODIS Terra, LP DAAC) | NDVI de compuestos de 16 días con confiabilidad por píxel | 250 m | CMR + OPeNDAP de Earthdata, solo la ventana del lote |
 
-- **Período: los últimos 48 meses completos** (por ejemplo, del 1/10/2022 al 30/9/2026). El OPeNDAP de la NASA sirve MOD13Q1 recién desde mediados de 2022: los compuestos anteriores dan 404 (probado año por año, de 2015 a 2026).
+- **Período: los últimos 48 meses completos** (por ejemplo, del 14/11/2026 al 14/11/2026). El OPeNDAP de la NASA sirve MOD13Q1 recién desde mediados de 2022: los compuestos anteriores dan 404 (probado año por año, de 2015 a 2026).
 - Satélite independiente (spec 009): repite a propósito la lectura de MODIS del conector de NDVI y no lo importa.
 
 ## Proceso

@@ -32,7 +32,7 @@ Reglas de la base: lo que la fuente no dice queda como "sin dato verificado"; es
 - Volver a armar la base desde cero y comparar con la que viaja:
 
 ```bash
-python -m semillas.construir_base semillas/datos/raw/inase/catalogo_inase_2026-10-28.csv salida --fecha-corte 2026-10-28
+python -m semillas.construir_base semillas/datos/raw/inase/catalogo_inase_2026-10-28.csv salida --fecha-corte 2026-11-14
 python -m semillas.exportar_sqlite salida salida/semillas.sqlite
 ```
 

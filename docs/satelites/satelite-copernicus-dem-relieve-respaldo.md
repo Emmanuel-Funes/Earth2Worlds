@@ -31,7 +31,7 @@ Corrida el 14/11/2026 contra la fuente real, con datos de los últimos días (de
 Comando: `python probar_copdem.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"`
 
 ```
-Altimetría del lote (Copernicus DEM GLO-30 de la ESA, 30 m, fecha 2013-10-30) · 2 s · mosaicos ['S34_00_W066_00']
+Altimetría del lote (Copernicus DEM GLO-30 de la ESA, 30 m, fecha 2026-11-14) · 2 s · mosaicos ['S34_00_W066_00']
 
 Variable                      Valor  Unidad Calidad     NASADEM
 altura_media_m                489.4  m      buena         488.4
@@ -42,5 +42,5 @@ superficie_bajo_ha             8.36  ha     buena          8.28
 superficie_media_loma_ha       10.6  ha     buena         10.86
 superficie_loma_ha             6.76  ha     buena          6.58
 
-Detalle: bajo / loma = más de 1 m por debajo / por encima de la media del lote (umbral supuesto, a calibrar) · proporción de píxeles × 25.7 ha del lote · Copernicus DEM GLO-30 de la ESA (TanDEM-X, tomado del 17/01/2011 al 30/10/20
+Detalle: bajo / loma = más de 1 m por debajo / por encima de la media del lote (umbral supuesto, a calibrar) · proporción de píxeles × 25.7 ha del lote · Copernicus DEM GLO-30 de la ESA (TanDEM-X, tomado del 14/11/2026 al 30/10/20
 ```

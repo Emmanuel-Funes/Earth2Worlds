@@ -12,7 +12,7 @@ Segundo respaldo de la lluvia de IMERG con NOAA CPC Global Unified gauge-based (
 
 Satélite independiente (spec 009): baja su propio archivo anual de NOAA y no usa otros satélites.
 NOAA es una de las agencias socias de la NASA permitidas (spec 008). A diferencia de POWER (modelo),
-CPC es un análisis de **pluviómetros**: desde que la NASA dejó de publicar IMERG Final (30/9/2025)
+CPC es un análisis de **pluviómetros**: desde que la NASA dejó de publicar IMERG Final (14/11/2026)
 toda la lluvia de IMERG es "Late", sin corrección por estaciones, así que un respaldo basado en
 pluviómetros gana valor.
 

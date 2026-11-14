@@ -31,31 +31,31 @@ Solo del núcleo (rama `nucleo-api-y-contrato-comun`): no importa ningún otro s
 
 Corrida el 14/11/2026 contra la fuente real, con datos de los últimos días (desde esta máquina de trabajo). Lote de prueba de San Luis.
 
-Comando: `python probar_viirs_heladas.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" "2026-10-28" "2026-11-12"`
+Comando: `python probar_viirs_heladas.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" "2026-11-14" "2026-11-14"`
 
 ```
-Temperatura de superficie nocturna del lote (VIIRS NOAA-20/21, LST de 1 km) del 2026-10-28 al 2026-11-12 · mosaico h12v12 · 13 s
+Temperatura de superficie nocturna del lote (VIIRS NOAA-20/21, LST de 1 km) del 2026-11-14 al 2026-11-14 · mosaico h12v12 · 13 s
 Capas leídas: {'VJ121A1N': '/HDFEOS/GRIDS/VIIRS_Grid_Daily_1km_LST21/Data_Fields/LST_1KM', 'VJ221A1N': '/HDFEOS/GRIDS/VIIRS_Grid_Daily_1km_LST21/Data_Fields/LST_1KM'}
 
 Fecha        T sup °C  Calidad     Detalle
-2026-10-28        7.9  buena       VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-10-28 · 1 píxeles de 1 km · válidos 100%
-2026-10-29        7.1  buena       VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-10-29 · 1 píxeles de 1 km · válidos 100%
-2026-10-30       —     descartada  Nubes o sin dato · VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-10-30 · 1 píxeles de 1 km · válidos 0%
-2026-10-31       —     descartada  Nubes o sin dato · VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-10-31 · 1 píxeles de 1 km · válidos 0%
-2026-11-01       —     descartada  Nubes o sin dato · VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-11-01 · 1 píxeles de 1 km · válidos 0%
-2026-11-02        9.4  buena       VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-11-02 · 1 píxeles de 1 km · válidos 100%
-2026-11-03       —     descartada  Nubes o sin dato · VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-11-03 · 1 píxeles de 1 km · válidos 0%
-2026-11-04       —     descartada  Nubes o sin dato · VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-11-04 · 1 píxeles de 1 km · válidos 0%
-2026-11-05        8.9  buena       VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-11-05 · 1 píxeles de 1 km · válidos 100%
-2026-11-06       12.9  buena       VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-11-06 · 1 píxeles de 1 km · válidos 100%
-2026-11-07       —     descartada  Nubes o sin dato · VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ221A1N (NOAA-21) · noche del 2026-11-07 · 1 píxeles de 1 km · válidos 0%
-2026-11-08        5.3  buena       VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ221A1N (NOAA-21) · noche del 2026-11-08 · 1 píxeles de 1 km · válidos 100%
-2026-11-09       10.8  buena       VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ221A1N (NOAA-21) · noche del 2026-11-09 · 1 píxeles de 1 km · válidos 100%
-2026-11-10       19.9  buena       VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ221A1N (NOAA-21) · noche del 2026-11-10 · 1 píxeles de 1 km · válidos 100%
-2026-11-11       11.4  buena       VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ221A1N (NOAA-21) · noche del 2026-11-11 · 1 píxeles de 1 km · válidos 100%
-2026-11-12       —     descartada  Nubes o sin dato · VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ221A1N (NOAA-21) · noche del 2026-11-12 · 1 píxeles de 1 km · válidos 0%
+2026-11-14        7.9  buena       VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-11-14 · 1 píxeles de 1 km · válidos 100%
+2026-11-14        7.1  buena       VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-11-14 · 1 píxeles de 1 km · válidos 100%
+2026-11-14       —     descartada  Nubes o sin dato · VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-11-14 · 1 píxeles de 1 km · válidos 0%
+2026-11-14       —     descartada  Nubes o sin dato · VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-11-14 · 1 píxeles de 1 km · válidos 0%
+2026-11-14       —     descartada  Nubes o sin dato · VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-11-14 · 1 píxeles de 1 km · válidos 0%
+2026-11-14        9.4  buena       VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-11-14 · 1 píxeles de 1 km · válidos 100%
+2026-11-14       —     descartada  Nubes o sin dato · VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-11-14 · 1 píxeles de 1 km · válidos 0%
+2026-11-14       —     descartada  Nubes o sin dato · VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-11-14 · 1 píxeles de 1 km · válidos 0%
+2026-11-14        8.9  buena       VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-11-14 · 1 píxeles de 1 km · válidos 100%
+2026-11-14       12.9  buena       VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ121A1N (NOAA-20) · noche del 2026-11-14 · 1 píxeles de 1 km · válidos 100%
+2026-11-14       —     descartada  Nubes o sin dato · VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ221A1N (NOAA-21) · noche del 2026-11-14 · 1 píxeles de 1 km · válidos 0%
+2026-11-14        5.3  buena       VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ221A1N (NOAA-21) · noche del 2026-11-14 · 1 píxeles de 1 km · válidos 100%
+2026-11-14       10.8  buena       VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ221A1N (NOAA-21) · noche del 2026-11-14 · 1 píxeles de 1 km · válidos 100%
+2026-11-14       19.9  buena       VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ221A1N (NOAA-21) · noche del 2026-11-14 · 1 píxeles de 1 km · válidos 100%
+2026-11-14       11.4  buena       VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ221A1N (NOAA-21) · noche del 2026-11-14 · 1 píxeles de 1 km · válidos 100%
+2026-11-14       —     descartada  Nubes o sin dato · VIIRS LST nocturna (temperatura de superficie, no del aire) · VJ221A1N (NOAA-21) · noche del 2026-11-14 · 1 píxeles de 1 km · válidos 0%
 
 16 noches · calidad {'buena': 9, 'descartada': 7} · 9 con dato · 0 con riesgo de helada (≤ 0 °C)
-Noche más fría: 2026-11-08 con 5.3 °C de superficie
+Noche más fría: 2026-11-14 con 5.3 °C de superficie
 Variable temp_sup_min_c en °C, fuente VIIRS, resolución 1000 m
 ```

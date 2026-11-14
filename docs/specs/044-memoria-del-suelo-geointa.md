@@ -43,4 +43,4 @@ La misma lista de `Observacion` de siempre. Solo cambia la `nota` cuando el dato
 ## Criterios de aceptación
 
 - [x] Tests sin internet: el mismo lote pedido dos veces le pide al INTA una sola vez; otro `lote_id` con el mismo polígono sale de la memoria con su propio `lote_id`; una respuesta con un error no se guarda; pasados 30 días se vuelve a pedir; con más de 500 lotes sale el más viejo; nunca hay más de 3 pedidos HTTP a la vez.
-- [ ] Prueba real (1/11/2026 o cuando haya minutos de Actions): las 3 parcelas del piloto seguidas, y después las mismas otra vez. La segunda vuelta no le pide nada al INTA y el suelo no cae al respaldo HWSD.
+- [ ] Prueba real (14/11/2026 o cuando haya minutos de Actions): las 3 parcelas del piloto seguidas, y después las mismas otra vez. La segunda vuelta no le pide nada al INTA y el suelo no cae al respaldo HWSD.

@@ -33,29 +33,29 @@ Solo del núcleo (rama `nucleo-api-y-contrato-comun`): no importa ningún otro s
 
 Corrida el 14/11/2026 contra la fuente real, con datos de los últimos días (desde esta máquina de trabajo). Lote de prueba de San Luis.
 
-Comando: `python probar_sentinel3_heladas.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" "2026-10-28" "2026-11-12"`
+Comando: `python probar_sentinel3_heladas.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" "2026-11-14" "2026-11-14"`
 
 ```
-Temperatura de superficie nocturna del lote (Sentinel-3A/3B SLSTR SL_2_LST, 1 km, RESPALDO de VIIRS después de MODIS) del 2026-10-28 al 2026-11-12 · 27 s
+Temperatura de superficie nocturna del lote (Sentinel-3A/3B SLSTR SL_2_LST, 1 km, RESPALDO de VIIRS después de MODIS) del 2026-11-14 al 2026-11-14 · 27 s
 
 Fecha        T sup °C  Calidad     Detalle
-2026-10-28        8.8  buena       Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3A, ESA Copernicus) · noche del 
-2026-10-29        8.1  buena       Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3B, ESA Copernicus) · noche del 
-2026-10-30       —     descartada  Nubes o sin dato · Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3B, ESA Coper
-2026-10-31       13.7  buena       Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3A, ESA Copernicus) · noche del 
-2026-11-01       —     descartada  Nubes o sin dato · Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3A, ESA Coper
-2026-11-02       10.2  buena       Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · SL_2_LST (Sentinel-3B, ESA Copernicus) · noche del 2026-11-02, paso de las 22:42 hora solar (temprano: la madru
-2026-11-03       —     descartada  Nubes o sin dato · Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3B, ESA Coper
-2026-11-04       —     descartada  Nubes o sin dato · Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3A, ESA Coper
-2026-11-05       10.4  buena       Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3A, ESA Copernicus) · noche del 
-2026-11-06       —     descartada  Nubes o sin dato · Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3B, ESA Coper
-2026-11-07       —     descartada  Nubes o sin dato · Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3B, ESA Coper
-2026-11-08        6.7  buena       Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · SL_2_LST (Sentinel-3A, ESA Copernicus) · noche del 2026-11-08, paso de las 22:24 hora solar (temprano: la madru
-2026-11-09       11.5  buena       Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3B, ESA Copernicus) · noche del 
-2026-11-10       —     descartada  Nubes o sin dato · Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3B, ESA Coper
-2026-11-11       13.6  buena       Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · SL_2_LST (Sentinel-3B, ESA Copernicus) · noche del 2026-11-11, paso de las 22:08 hora solar (temprano: la madru
-2026-11-12       18.8  buena       Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3A, ESA Copernicus) · noche del 
+2026-11-14        8.8  buena       Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3A, ESA Copernicus) · noche del 
+2026-11-14        8.1  buena       Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3B, ESA Copernicus) · noche del 
+2026-11-14       —     descartada  Nubes o sin dato · Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3B, ESA Coper
+2026-11-14       13.7  buena       Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3A, ESA Copernicus) · noche del 
+2026-11-14       —     descartada  Nubes o sin dato · Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3A, ESA Coper
+2026-11-14       10.2  buena       Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · SL_2_LST (Sentinel-3B, ESA Copernicus) · noche del 2026-11-14, paso de las 22:42 hora solar (temprano: la madru
+2026-11-14       —     descartada  Nubes o sin dato · Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3B, ESA Coper
+2026-11-14       —     descartada  Nubes o sin dato · Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3A, ESA Coper
+2026-11-14       10.4  buena       Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3A, ESA Copernicus) · noche del 
+2026-11-14       —     descartada  Nubes o sin dato · Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3B, ESA Coper
+2026-11-14       —     descartada  Nubes o sin dato · Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3B, ESA Coper
+2026-11-14        6.7  buena       Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · SL_2_LST (Sentinel-3A, ESA Copernicus) · noche del 2026-11-14, paso de las 22:24 hora solar (temprano: la madru
+2026-11-14       11.5  buena       Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3B, ESA Copernicus) · noche del 
+2026-11-14       —     descartada  Nubes o sin dato · Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3B, ESA Coper
+2026-11-14       13.6  buena       Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · SL_2_LST (Sentinel-3B, ESA Copernicus) · noche del 2026-11-14, paso de las 22:08 hora solar (temprano: la madru
+2026-11-14       18.8  buena       Respaldo · Sentinel-3 SLSTR LST nocturna (temperatura de superficie, no del aire) · lote menor a un píxel de 1 km: se usa el píxel del centro · SL_2_LST (Sentinel-3A, ESA Copernicus) · noche del 
 
 16 noches · calidad {'buena': 9, 'descartada': 7} · 9 con dato · 0 con riesgo de helada (≤ 0 °C)
-Noche más fría: 2026-11-08 con 6.7 °C de superficie
+Noche más fría: 2026-11-14 con 6.7 °C de superficie
 ```

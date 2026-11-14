@@ -37,7 +37,7 @@ Cada archivo pesa ~140 MB. El conector no lo baja: pide por OPeNDAP solo las 4 c
 ## Salida (contrato común)
 
 ```json
-{"lote_id": "lote-prueba", "fecha": "2026-10-15", "variable": "gpp_g_c_m2_dia", "valor": 2.037,
+{"lote_id": "lote-prueba", "fecha": "2026-11-14", "variable": "gpp_g_c_m2_dia", "valor": 2.037,
  "unidad": "g C/m²/día", "fuente": "SMAP", "resolucion_m": 9000, "calidad": "buena",
  "nota": "SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 2.05 · latifoliadas 1.88 · celda fila 1262, columna 1228 · SMAP_L4_C_mdl_20261015T000000_Vv8043_001.h5_PpqDJbbz"}
 {"variable": "nee_g_c_m2_dia", "valor": 0.718, "...": "positivo = la zona pierde carbono (respira más de lo que fija)"}
@@ -66,7 +66,7 @@ Workflow `Probar SMAP (productividad)` y `probar_smap_carbono.py`. Por defecto u
 
 ## Resultado de la prueba real
 
-Corrida desde el entorno NASA (GitHub Actions sigue pausado). Lote de prueba, celda fila 1262, columna 1228. Del 1/8 al 27/10/2026: **84 días, 84 con dato, 70 s.** El último día publicado es el 23/10.
+Corrida desde el entorno NASA (GitHub Actions sigue pausado). Lote de prueba, celda fila 1262, columna 1228. Del 1/8 al 14/11/2026: **84 días, 84 con dato, 70 s.** El último día publicado es el 23/10.
 
 | Mes | Días | GPP media | GPP mín.–máx. | NEE media |
 |---|---|---|---|---|

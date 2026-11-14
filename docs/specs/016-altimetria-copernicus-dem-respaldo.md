@@ -16,7 +16,7 @@ Que el lote tenga altura, pendiente y ambientes aunque NASADEM falle. Hoy NASADE
 - Un mosaico de 1° × 1° por carpeta. Para el lote de prueba: `Copernicus_DSM_COG_10_S34_00_W066_00_DEM/Copernicus_DSM_COG_10_S34_00_W066_00_DEM.tif`. El nombre lleva la esquina **suroeste**, igual que NASADEM (`s34w066`): el mosaico va de -34° a -33° de latitud y de -66° a -65° de longitud.
 - El GeoTIFF es un COG (*Cloud Optimized GeoTIFF*): se lee **solo la ventana del lote** con rasterio, sin bajar el mosaico entero.
 - Valores en `float32`, metros sobre el geoide EGM2008 (NASADEM usa EGM96; en la llanura la diferencia es de centímetros), sin valor de relleno declarado. Grilla de 3600 × 3600 con el centro de cada píxel en múltiplos exactos de 1" (la misma grilla que NASADEM). Por encima de 50° de latitud la grilla es más ancha en longitud (1,5" a 10"): el conector usa la resolución que trae cada mosaico.
-- Cada carpeta trae un XML de metadatos (`Copernicus_DSM_10_S34_00_W066_00.xml`) con el período de toma del radar en ese mosaico (`tsxx_startTime` / `tsxx_stopTime`). Para el lote de prueba: del 17/01/2011 al 30/10/2013.
+- Cada carpeta trae un XML de metadatos (`Copernicus_DSM_10_S34_00_W066_00.xml`) con el período de toma del radar en ese mosaico (`tsxx_startTime` / `tsxx_stopTime`). Para el lote de prueba: del 14/11/2026 al 14/11/2026.
 - Si un mosaico no existe (mar abierto), la carpeta no está y el XML da 404.
 
 ## Diferencias con NASADEM (importante para leer los datos)
@@ -52,7 +52,7 @@ El umbral de 1 m es el mismo **supuesto** de arranque que NASADEM; tiene que cal
 
 Una observación por variable, con:
 - `fuente: "COPDEM"`, `resolucion_m: 30`;
-- `fecha`: el **último día de toma del radar** en el mosaico (`tsxx_stopTime` del XML; si el lote cruza mosaicos, el más reciente). Es la fecha real más cercana a "cuándo se midió" el relieve. Para el lote de prueba: `2013-10-30`.
+- `fecha`: el **último día de toma del radar** en el mosaico (`tsxx_stopTime` del XML; si el lote cruza mosaicos, el más reciente). Es la fecha real más cercana a "cuándo se midió" el relieve. Para el lote de prueba: `2026-11-14`.
 
 | Variable | Unidad |
 |---|---|
@@ -74,14 +74,14 @@ Una observación por variable, con:
 
 - **Actualización nocturna (spec 004 y 005):** `Satelite("NASADEM:COPDEM", …, respaldo_de="NASADEM", estatico=True)`. Solo se pide cuando NASADEM termina en error. Como NASADEM es estático, mientras NASADEM no haya guardado nunca un dato, cada noche se vuelve a intentar NASADEM primero; si vuelve a fallar, Copernicus DEM se pide de nuevo (es liviano: unos pocos kB por lote).
 - **Consulta en el momento (spec 012):** entra igual, como respaldo de NASADEM.
-- **`combinar=true`:** COPDEM tiene prioridad de respaldo (2), por debajo de NASADEM (1). Como las fechas son distintas (2000-02-11 contra la de la toma de TanDEM-X), en la serie combinada pueden aparecer las dos: cada una con su fecha y su fuente.
+- **`combinar=true`:** COPDEM tiene prioridad de respaldo (2), por debajo de NASADEM (1). Como las fechas son distintas (2026-11-14 contra la de la toma de TanDEM-X), en la serie combinada pueden aparecer las dos: cada una con su fecha y su fuente.
 - Sin endpoint propio: el endpoint de la app es `POST /altimetria` de NASADEM, y el respaldo entra por el núcleo.
 
 ## Criterios de aceptación
 
 - [x] Con el lote de prueba real (25,7 ha en -33,70; -65,30) se obtienen las 7 variables de Copernicus DEM, sin credenciales (GitHub Actions, mosaico `S34_00_W066_00`, en 3 segundos: altura media 489,4 m, de 487,1 a 493,4 m, pendiente media 2,09 %, 289 de 289 píxeles con dato, todas `buena`).
 - [x] Las superficies de los tres ambientes suman la superficie del lote (8,36 + 10,60 + 6,76 = 25,72 ha).
-- [x] La fecha de la observación sale del XML del mosaico, no se inventa: `2013-10-30` (toma de TanDEM-X del 17/01/2011 al 30/10/2013). Un XML sin fecha hace fallar al conector (test `test_sin_fecha_en_el_xml_no_se_inventa`).
+- [x] La fecha de la observación sale del XML del mosaico, no se inventa: `2026-11-14` (toma de TanDEM-X del 14/11/2026 al 14/11/2026). Un XML sin fecha hace fallar al conector (test `test_sin_fecha_en_el_xml_no_se_inventa`).
 - [x] Comparación con NASADEM en el mismo lote:
 
   | Variable | Copernicus DEM | NASADEM | Diferencia |
@@ -96,7 +96,7 @@ Una observación por variable, con:
   | Píxeles | 289 de 289 | 289 de 289 | la misma grilla |
 
   La altura sale alrededor de 1 m más alta (geoide distinto, superficie con vegetación y 11-13 años de diferencia) y los ambientes casi coinciden (menos de 0,3 ha de diferencia en cada uno). La pendiente es menor porque Copernicus tiene menos ruido de píxel a píxel (valores con decimales, no enteros como NASADEM).
-- [x] Un lote que cruza dos mosaicos se une en una sola grilla (test `test_lote_que_cruza_mosaicos_se_une_en_una_grilla`). Verificado también con datos reales en un lote de 12,3 ha en la esquina -34; -65, que toca 4 mosaicos: 165 de 165 píxeles con dato y fecha `2014-02-17`, la toma más reciente de los cuatro.
+- [x] Un lote que cruza dos mosaicos se une en una sola grilla (test `test_lote_que_cruza_mosaicos_se_une_en_una_grilla`). Verificado también con datos reales en un lote de 12,3 ha en la esquina -34; -65, que toca 4 mosaicos: 165 de 165 píxeles con dato y fecha `2026-11-14`, la toma más reciente de los cuatro.
 - [x] Tests sin internet con mosaicos sintéticos (15 tests en `tests/test_copdem.py`); prueba real con un clic y automática en cada PR que toque el conector (workflow "Probar Copernicus DEM (altimetría de respaldo)", en verde).
 
 ## Riesgos conocidos
