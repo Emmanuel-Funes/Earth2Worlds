@@ -47,13 +47,13 @@ Polígono del lote (GeoJSON, EPSG:4326) y período `desde`–`hasta` (máximo 36
 
 ## Salida (contrato común)
 
-Ejemplo real (lote de prueba, 19/2/2026):
+Ejemplo real (lote de prueba, 14/11/2026):
 
 ```json
-{"lote_id": "lote-7", "fecha": "2026-02-19", "variable": "et_mm_dia", "valor": 4.88,
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "et_mm_dia", "valor": 4.88,
  "unidad": "mm/día", "fuente": "ECOSTRESS", "resolucion_m": 70, "calidad": "buena",
  "nota": "Respaldo de la ET · ET del día de la pasada (ensamble JET) · media 5.01 · p10 4.42 · p90 5.63 · válidos 90% · ECO_L3T_JET ETdaily · pasada 19:18 UTC (14:56 hora solar) · máscaras: cloud, water · ECOv003_L3T_JET_43235_004_20HKH_20260219T191801_02 · 2 pasadas ese día, queda la más limpia"}
-{"lote_id": "lote-7", "fecha": "2026-02-19", "variable": "esi", "valor": 0.59,
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "esi", "valor": 0.59,
  "unidad": "índice (0 a 1)", "fuente": "ECOSTRESS", "resolucion_m": 70, "calidad": "buena",
  "nota": "Respaldo de la ET · ESI = ET real / ET potencial: 0 = estrés máximo, 1 = sin estrés · …"}
 ```

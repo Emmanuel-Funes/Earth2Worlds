@@ -27,23 +27,23 @@ Solo del núcleo (rama `nucleo-api-y-contrato-comun`): no importa ningún otro s
 
 Corrida el 14/11/2026 contra la fuente real, con datos de los últimos días (desde esta máquina de trabajo). Lote de prueba de San Luis.
 
-Comando: `python probar_ecostress.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" "2026-09-15" "2026-11-12"`
+Comando: `python probar_ecostress.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" "2026-11-14" "2026-11-14"`
 
 ```
 ECO_L3T_JET (et_mm_dia): colección C4057232489-LPCLOUD
-  3 gránulos que tocan el lote del 2026-09-15 al 2026-11-12; mosaicos ['20HKH']
+  3 gránulos que tocan el lote del 2026-11-14 al 2026-11-14; mosaicos ['20HKH']
   capas del primero (ECOv003_L3T_JET_46928_025_20HKH_20261014T212735_01): ['bessjpldaily', 'cloud', 'etdaily', 'etuncertainty', 'pmjpldaily', 'ptjplsmcanopy', 'ptjplsmdaily', 'ptjplsminst', 'ptjplsminterception', 'ptjplsmsoil', 's
 ECO_L4T_ESI (esi): colección C4057232495-LPCLOUD
-  3 gránulos que tocan el lote del 2026-09-15 al 2026-11-12; mosaicos ['20HKH']
+  3 gránulos que tocan el lote del 2026-11-14 al 2026-11-14; mosaicos ['20HKH']
   capas del primero (ECOv003_L4T_ESI_46928_025_20HKH_20261014T212735_01): ['cloud', 'esi', 'pet', 'water']
 
-ECOSTRESS del 2026-09-15 al 2026-11-12: 4 observaciones en 10 s
+ECOSTRESS del 2026-11-14 al 2026-11-14: 4 observaciones en 10 s
 
 Evapotranspiración (mm/día) y estrés hídrico (ESI: 0 = estrés máximo, 1 = sin estrés), 70 m
 
 Fecha            ET    ESI  Calidad ET Calidad ESI  Detalle
-2026-10-14      —      —    descartada descartada   Solo 0% de píxeles válidos (nube, agua o sin dato) · ECO_L3T_JET ETdaily · pasada 21:27 UTC (17:06 hora solar) · máscaras: cloud, water · ECOv003_L3T_JET_46928_025_20HKH_20261014
-2026-10-18      —     0.32  descartada buena        Solo 0% de píxeles válidos (nube, agua o sin dato) · ECO_L3T_JET ETdaily · pasada 19:54 UTC (15:33 hora solar) · máscaras: cloud, water · ECOv003_L3T_JET_46989_023_20HKH_20261018
+2026-11-14      —      —    descartada descartada   Solo 0% de píxeles válidos (nube, agua o sin dato) · ECO_L3T_JET ETdaily · pasada 21:27 UTC (17:06 hora solar) · máscaras: cloud, water · ECOv003_L3T_JET_46928_025_20HKH_20261014
+2026-11-14      —     0.32  descartada buena        Solo 0% de píxeles válidos (nube, agua o sin dato) · ECO_L3T_JET ETdaily · pasada 19:54 UTC (15:33 hora solar) · máscaras: cloud, water · ECOv003_L3T_JET_46989_023_20HKH_20261018
 
 2 fechas con pasada, 1 valores con dato (1 con el lote despejado).
 ```
