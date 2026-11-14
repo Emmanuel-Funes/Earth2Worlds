@@ -1,6 +1,6 @@
 # Spec 008 · Altimetría y ambientes del lote con NASADEM
 
-**Estado:** implementada · **Origen:** la Guía técnica pone NASADEM en el MVP y Hernán pidió guiarse por ella (3 de octubre de 2026) · **Etapa:** pipeline satélite → API → app (sin interfaz) · **Requiere:** cuenta NASA Earthdata
+**Estado:** implementada · **Origen:** la Guía técnica pone NASADEM en el MVP y Hernán pidió guiarse por ella · **Etapa:** pipeline satélite → API → app (sin interfaz) · **Requiere:** cuenta NASA Earthdata
 
 ## Objetivo
 
