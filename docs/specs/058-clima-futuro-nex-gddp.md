@@ -1,6 +1,6 @@
 # Spec 058 · Clima futuro de la zona con NEX-GDDP-CMIP6
 
-**Estado:** construida y probada con datos reales (30/10/2026) · **Aprobada por:** Hernán, 30/10/2026 ("Vamos con la partes de satelites y obtencion de datos que es lo mio, avancemos", sobre los faltantes del desafío Field Shift) · **Rama:** `NEX_GDDP-clima_futuro_CMIP6` · **Depende de:** PR #24 (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** nada (el servidor de la NASA es público)
+**Estado:** construida y probada con datos reales · **Aprobada por:** Hernán ("Vamos con la partes de satelites y obtencion de datos que es lo mio, avancemos", sobre los faltantes del desafío Field Shift) · **Rama:** `NEX_GDDP-clima_futuro_CMIP6` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** nada (el servidor de la NASA es público)
 
 ## Objetivo
 
@@ -81,7 +81,7 @@ Es una **proyección de modelos, no un pronóstico**, y un dato **regional de ~2
 
 ## Prueba real
 
-Corrida del 30/10/2026 a las 01:06 UTC desde el entorno de la nube (`probar_nex_gddp.py -33.7025 -65.2975`). Celda centrada en −33,625; −65,375. **978 s (16 min)**, los 540 pedidos con dato, ningún modelo afuera.
+Corrida a las 01:06 UTC desde el entorno de la nube (`probar_nex_gddp.py -33.7025 -65.2975`). Celda centrada en −33,625; −65,375. **978 s (16 min)**, los 540 pedidos con dato, ningún modelo afuera.
 
 | Indicador | 1995-2014 (modelos) | SSP2-4.5 2041-2060 | SSP5-8.5 2041-2060 | Cambio SSP2-4.5 (rango de modelos) |
 |---|---|---|---|---|
