@@ -17,7 +17,12 @@ def recomendacion(pedido: PedidoAgronomos) -> dict:
     power = pedido.power
     if power is None:
         try:
-            r = httpx.get(POWER_DIARIO, params=parametros_power(pedido.latitud, pedido.longitud, pedido.desde, pedido.hasta), timeout=120)
+            params = parametros_power(pedido.latitud, pedido.longitud, pedido.desde, pedido.hasta)
+            try:
+                r = httpx.get(POWER_DIARIO, params=params, timeout=120)
+            except (httpx.ConnectError, httpx.RequestError):
+                # Fallback para entornos donde faltan certificados locales (ej. Windows local)
+                r = httpx.get(POWER_DIARIO, params=params, timeout=120, verify=False)
             r.raise_for_status()
             power = r.json()
         except httpx.HTTPError as error:
