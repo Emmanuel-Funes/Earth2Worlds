@@ -1,6 +1,6 @@
 # Spec 013 · Lluvia de respaldo con NASA POWER (cuando IMERG falla)
 
-**Estado:** aprobada por Hernán el 4/10/2026 ("Sumar lo necesario para cubrir lo que hace falta") · **Etapa:** pipeline satélite → API → app · **Requiere:** nada (API pública de la NASA, sin cuenta) · **Rama:** `POWER-lluvia_respaldo` · **Depende de:** PR #24 (`NUCLEO-varios_respaldos_en_orden`)
+**Estado:** aprobada por Hernán ("Sumar lo necesario para cubrir lo que hace falta") · **Etapa:** pipeline satélite → API → app · **Requiere:** nada (API pública de la NASA, sin cuenta) · **Rama:** `POWER-lluvia_respaldo` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`)
 
 ## Objetivo
 
@@ -55,11 +55,11 @@ Es un pedido propio: no importa el conector `power.py` de la rama `POWER-clima` 
 
 ## Prueba real
 
-Workflow `Probar POWER (lluvia de respaldo)` (`.github/workflows/probar-power-lluvia.yml`, `probar_power_lluvia.py`). Por defecto: lote de prueba de San Luis (esquinas `-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300`, centro -33,7025; -65,2975) y del 1 al 14 de enero de 2026, el mismo período en que IMERG dio **32,0 mm** en total, con **22,5 mm el 13/1**. Corre en cada PR que toque estos archivos y a mano con un clic.
+Workflow `Probar POWER (lluvia de respaldo)` (`.github/workflows/probar-power-lluvia.yml`, `probar_power_lluvia.py`). Por defecto: lote de prueba de San Luis (esquinas `-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300`, centro -33,7025; -65,2975), con un período automático que se cuenta desde el día en que corre. Corre en cada PR que toque estos archivos y a mano con un clic.
 
-## Resultado de la prueba real (4/10/2026)
+## Resultado de la prueba real
 
-Workflow `Probar POWER (lluvia de respaldo)` en el PR #27, lote de prueba (centro -33,7025; -65,2975), 1 al 14 de enero de 2026, día UTC (`time-standard=UTC` aceptado por POWER), respuesta en 0,4 s:
+Workflow `Probar POWER (lluvia de respaldo)`, lote de prueba (centro -33,7025; -65,2975), 1 al 14 de enero de 2026, día UTC (`time-standard=UTC` aceptado por POWER), respuesta en 0,4 s:
 
 | Fecha | 1/1 | 2/1 | 3-5/1 | 6/1 | 7/1 | 8/1 | 9/1 | 10/1 | 11-12/1 | 13/1 | 14/1 | Total |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -75,7 +75,7 @@ Workflow `Probar POWER (lluvia de respaldo)` en el PR #27, lote de prueba (centr
 - [x] Relleno `-999` y días faltantes → `descartada` con `valor: null`; fuera de rango → `dudosa` (tests `test_relleno_menos_999_no_se_inventa`, `test_dia_que_power_no_devuelve_queda_descartado`, `test_fuera_de_rango_es_dudosa_sin_corregir`).
 - [x] Se anuncia como `IMERG:POWER`, respaldo de IMERG, orden 1, y no importa ningún otro satélite (`test_se_anuncia_como_unico_respaldo_de_imerg` y `tests/test_nucleo.py`).
 - [x] IMERG caído → entra este respaldo por el mismo período; IMERG OK → no se consulta; sin IMERG unido → queda en espera (tests con la actualización de la spec 004: `test_imerg_caido_entra_power_por_el_mismo_periodo`, `test_imerg_ok_no_consulta_el_respaldo`, `test_sin_imerg_unido_queda_en_espera`). La consulta en el momento (spec 012) usa la misma lista de respaldos y todavía no está en esta rama base.
-- [x] Tests sin internet (64 pasan en local; `Tests` en verde en el PR #27); prueba real con un clic y automática en cada PR que toque el conector (`Probar POWER (lluvia de respaldo)` en verde).
+- [x] Tests sin internet (64 pasan en local; `Tests` en verde); prueba real con un clic y automática en cada PR que toque el conector (`Probar POWER (lluvia de respaldo)` en verde).
 
 ## Fuera de alcance
 
