@@ -20,7 +20,7 @@ Darle al motor de recomendación (spec 027) los datos de clima histórico que ho
 | Parámetros | `T2M_MIN`, `T2M_MAX` y `PRECTOTCORR` (1991-2025); `TSOIL1` (0-10 cm, 2001-2025) |
 | Resolución | Celda de ~0,5° (MERRA-2): es un dato **regional** |
 | Respaldo | MERRA-2 horario (`M2T1NXSLV`, `T2M`) por el servicio de series de tiempo de Giovanni (`api.giovanni.earthdata.nasa.gov/timeseries`, GES DISC, con el token de Earthdata), en 7 tramos de 5 años. Da la mínima y la máxima de cada día UTC. Solo da heladas y grados-día; la lluvia y el suelo quedan sin respaldo y salen descartados. El servicio viejo de GES DISC (`hydro1…/timeseries.cgi`) hoy devuelve una página web, por eso no se usa. POWER toma su meteorología de MERRA-2, así que el respaldo protege de una caída del servidor de POWER, no da una mirada independiente |
-| Verificado | 15/10/2026, corrida real: POWER respondió en 1,3 s y MERRA-2 por Giovanni en 16 s |
+| Verificado | 14/11/2026, corrida real: POWER respondió en 1,3 s y MERRA-2 por Giovanni en 16 s |
 
 ## 3. Entrada
 
@@ -37,7 +37,7 @@ El polígono del lote. Se usa su centro. No hace falta fecha: es una climatolog�
 
 ## 5. Salida
 
-Lista de `Observacion`, todas con `fuente: "POWER"`, `resolucion_m: 55000`, `calidad: "buena"` y la `fecha` del último día usado (31/12/2025).
+Lista de `Observacion`, todas con `fuente: "POWER"`, `resolucion_m: 55000`, `calidad: "buena"` y la `fecha` del último día usado (14/11/2026).
 
 | `variable` | `unidad` | Ejemplo del lote de San Luis |
 |---|---|---|
