@@ -54,13 +54,13 @@ lon, [1]
 -65.3125
 
 
-GEOS-FP (clima del día) en (-33.7, -65.3) del 2026-11-10 al 2026-11-14 · 31 s
+GEOS-FP (clima del día) en (-33.7, -65.3) del 2026-11-14 al 2026-11-14 · 31 s
 
 Fecha         Máx °C  Mín °C   MJ/m²  Lluvia mm  Calidad de la máxima
-2026-11-10      22.6    16.5     8.3        2.0  buena
-2026-11-11      31.8    15.0    30.8        0.0  buena
-2026-11-12      36.6    17.2    30.4        1.7  buena
-2026-11-13      36.3    20.3    26.4        2.3  buena
+2026-11-14      22.6    16.5     8.3        2.0  buena
+2026-11-14      31.8    15.0    30.8        0.0  buena
+2026-11-14      36.6    17.2    30.4        1.7  buena
+2026-11-14      36.3    20.3    26.4        2.3  buena
 2026-11-14         —       —       —          —  descartada
 
 Nota temp_max 2026-11-14: Dato del día de NASA GEOS-FP (modelo del GMAO, no una medición), celda de 0,25° × 0,3125° (~28 km, regional): completa los días que POWER todavía no publicó · GEOS-FP todavía no publicó este día
@@ -83,9 +83,9 @@ lon, [1]
 -65.3125
 
 GEOS-FP (evapotranspiración del día) · 15 s
-2026-11-10       1.1 mm/día  dudosa  
-2026-11-11       3.7 mm/día  dudosa  
-2026-11-12       4.3 mm/día  dudosa  
-2026-11-13       3.9 mm/día  dudosa  
+2026-11-14       1.1 mm/día  dudosa  
+2026-11-14       3.7 mm/día  dudosa  
+2026-11-14       4.3 mm/día  dudosa  
+2026-11-14       3.9 mm/día  dudosa  
 2026-11-14         — mm/día  descartada  GEOS-FP todavía no publicó este día
 ```
