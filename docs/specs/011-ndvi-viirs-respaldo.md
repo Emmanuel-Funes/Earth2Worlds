@@ -13,7 +13,7 @@ Que el lote siga teniendo NDVI de la NASA cuando HLS falla, después de que MODI
 | `VJ113A1` | VIIRS en NOAA-20 | 500 m, sinusoidal (como MODIS) | compuesto de 16 días | NDVI, confiabilidad del píxel, día de adquisición |
 | `VJ213A1` | VIIRS en NOAA-21 | igual | compuesto de 16 días | igual |
 
-`VNP13A1` (Suomi NPP) **queda afuera**: deja de entregar datos el 1/11/2026.
+`VNP13A1` (Suomi NPP) **queda afuera**: deja de entregar datos el 14/11/2026.
 
 **Verificado en la prueba real:**
 - Los dos productos existen en CMR con esos nombres y tienen OPeNDAP: se lee solo la ventana del lote.
@@ -36,9 +36,9 @@ Igual que MODIS (spec 007), cambiando 250 m por 500 m:
 ## Salida (contrato común)
 
 ```json
-{"lote_id": "lote-7", "fecha": "2026-01-09", "variable": "ndvi", "valor": 0.60,
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "ndvi", "valor": 0.60,
  "unidad": "índice (-1 a 1)", "fuente": "VIIRS", "resolucion_m": 500, "calidad": "buena",
- "nota": "Respaldo de HLS · VJ113A1 (NOAA-20) compuesto del 2026-01-01 · 2 píxeles de 500 m · válidos 100%"}
+ "nota": "Respaldo de HLS · VJ113A1 (NOAA-20) compuesto del 2026-11-14 · 2 píxeles de 500 m · válidos 100%"}
 ```
 
 Calidad con los mismos umbrales que HLS y MODIS (60 % / 20 %). Nunca se inventa un valor.
