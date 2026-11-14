@@ -17,8 +17,8 @@ Producto de evapotranspiración de 500 m y 8 días de la NASA (LP DAAC), algorit
 | `VJ116A2` | VIIRS en NOAA-20 | **no está** | — | — |
 | `VJ216A2` | VIIRS en NOAA-21 | **no está** | — | — |
 | `VNP16A2` | VIIRS en Suomi NPP | **no está** | — | — |
-| `MOD16A2` v061 (`C2343113232-LPCLOUD`) | MODIS en Terra | sí | sí (4 de 4 archivos de enero) | `A2026257` (14/9/2026) |
-| `MYD16A2` v061 (`C2565794064-LPCLOUD`) | MODIS en Aqua | sí | sí (4 de 4 archivos de enero) | `A2026257` (14/9/2026) |
+| `MOD16A2` v061 (`C2343113232-LPCLOUD`) | MODIS en Terra | sí | sí (4 de 4 archivos de enero) | `A2026257` (14/11/2026) |
+| `MYD16A2` v061 (`C2565794064-LPCLOUD`) | MODIS en Aqua | sí | sí (4 de 4 archivos de enero) | `A2026257` (14/11/2026) |
 | `MOD16A2GF` v061 | Terra, *gap-filled* anual | sí | — (0 archivos de 2026) | `A2025361`: sale una vez por año, después de que el año termina |
 
 La NASA **todavía no publica la ET de VIIRS**, así que la fuente principal queda en **MODIS** y el conector lee, en este orden:
@@ -60,10 +60,10 @@ Igual que el NDVI de VIIRS (spec 011):
 Dos observaciones por compuesto, con nombres fijos (los usan los respaldos ECOSTRESS y FAO-56):
 
 ```json
-{"lote_id": "lote-7", "fecha": "2026-01-01", "variable": "et_mm_dia", "valor": 1.26,
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "et_mm_dia", "valor": 1.26,
  "unidad": "mm/día", "fuente": "MODIS", "resolucion_m": 500, "calidad": "buena",
- "nota": "MOD16A2 (MODIS Terra) · fecha = inicio del compuesto de 8 días (2026-01-01 al 2026-01-08) · promedio diario = suma 10.1 mm / 8 días · 1 píxeles de 500 m · válidos 100% · algoritmo principal 100% · escala 0.1"}
-{"lote_id": "lote-7", "fecha": "2026-01-01", "variable": "pet_mm_dia", "valor": 8.14, "unidad": "mm/día", ...}
+ "nota": "MOD16A2 (MODIS Terra) · fecha = inicio del compuesto de 8 días (2026-11-14 al 2026-11-14) · promedio diario = suma 10.1 mm / 8 días · 1 píxeles de 500 m · válidos 100% · algoritmo principal 100% · escala 0.1"}
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "pet_mm_dia", "valor": 8.14, "unidad": "mm/día", ...}
 ```
 
 - `et_mm_dia`: evapotranspiración real, promedio diario del compuesto (suma ÷ días).
