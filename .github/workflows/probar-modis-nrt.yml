@@ -1,0 +1,43 @@
+name: Probar MODIS NRT (NDVI del día)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/modis_nrt.py"
+      - "rotaterra/fuentes/earthdata.py"
+      - "probar_modis_nrt.py"
+      - ".github/workflows/probar-modis-nrt.yml"
+  workflow_dispatch:
+    inputs:
+      lat:
+        description: "Latitud del centro del lote (ej. -33.70)"
+        default: "-33.70"
+      lon:
+        description: "Longitud del centro del lote (ej. -65.30)"
+        default: "-65.30"
+      desde:
+        description: "Desde (AAAA-MM-DD). Vacío = hace 8 días"
+        default: ""
+      hasta:
+        description: "Hasta (AAAA-MM-DD). Vacío = hoy"
+        default: ""
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Pedir el NDVI del día a LANCE MODIS NRT
+        env:
+          EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+          EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
+          LAT: ${{ inputs.lat || '-33.70' }}
+          LON: ${{ inputs.lon || '-65.30' }}
+          DESDE: ${{ inputs.desde }}
+          HASTA: ${{ inputs.hasta }}
+        run: python probar_modis_nrt.py "$LAT" "$LON" "$DESDE" "$HASTA"
