@@ -1,0 +1,47 @@
+name: Probar POWER (balance hídrico propio)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/balance_hidrico.py"
+      - "probar_balance_hidrico.py"
+      - ".github/workflows/probar-balance-hidrico.yml"
+  workflow_dispatch:
+    inputs:
+      esquinas:
+        description: "Esquinas del lote como 'lat, lon; lat, lon; lat, lon; lat, lon' (copiadas de Google Maps)"
+        default: "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"
+      desde:
+        description: "Desde (AAAA-MM-DD)"
+        default: "2026-08-31"
+      hasta:
+        description: "Hasta (AAAA-MM-DD)"
+        default: "2026-09-30"
+      textura:
+        description: "Textura del suelo (arenoso, arenoso franco, franco arenoso, franco, franco limoso, limoso, franco arcillo limoso, arcillo limoso, arcilloso). Vacío: se supone franco"
+        default: "franco arenoso"
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      # en un PR no hay inputs: lote de San Luis, franco arenoso, comparado con SEPA (spec 023)
+      ESQUINAS: ${{ inputs.esquinas || '-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Balance de septiembre de 2026 (o el período elegido)
+        env:
+          EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+          EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
+        run: python -u probar_balance_hidrico.py "$ESQUINAS" "${{ inputs.desde || '2026-08-31' }}" "${{ inputs.hasta || '2026-09-30' }}" "${{ github.event_name == 'workflow_dispatch' && inputs.textura || 'franco arenoso' }}"
+      - name: Balance de enero de 2025 (verano seco, para comparar con SEPA)
+        if: ${{ github.event_name != 'workflow_dispatch' }}
+        env:
+          EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+          EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
+        run: python -u probar_balance_hidrico.py "$ESQUINAS" 2025-01-01 2025-01-31 "franco arenoso"
