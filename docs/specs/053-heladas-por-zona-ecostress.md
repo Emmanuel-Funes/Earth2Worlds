@@ -1,6 +1,6 @@
 # Spec 053 · Heladas por zona del lote con ECOSTRESS (70 m, de noche)
 
-**Estado:** construida y probada con datos reales · **Aprobada por:** Hernán, 27/10/2026 ("Okey, avanzamos", sobre el informe de satélites nuevos del 27/10) · **Rama:** `ECOSTRESS-heladas_por_zona` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** Earthdata (ya cargado)
+**Estado:** construida y probada con datos reales · **Aprobada por:** Hernán ("Okey, avanzamos", sobre el informe de satélites nuevos) · **Rama:** `ECOSTRESS-heladas_por_zona` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** Earthdata (ya cargado)
 
 ## Objetivo
 
