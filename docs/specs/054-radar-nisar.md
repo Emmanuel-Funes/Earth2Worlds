@@ -1,6 +1,6 @@
 # Spec 054 · Radar NISAR sobre el lote (20 m, con nubes o sin nubes)
 
-**Estado:** construida y probada con datos reales (27/10/2026) · **Aprobada por:** Hernán, 27/10/2026 ("Okey, avanzamos", sobre el informe de satélites nuevos del 27/10) · **Rama:** `NISAR-radar_del_lote` · **Depende de:** PR #24 (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** Earthdata (ya cargado)
+**Estado:** construida y probada con datos reales · **Aprobada por:** Hernán ("Okey, avanzamos", sobre el informe de satélites nuevos) · **Rama:** `NISAR-radar_del_lote` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** Earthdata (ya cargado)
 
 ## Objetivo
 
@@ -61,9 +61,9 @@ Cada archivo pesa ~1,8 GB y cubre unos 300 km. El conector **no lo baja**: lee s
 
 ## Prueba real
 
-Workflow `Probar NISAR (radar)` y `probar_nisar.py`. Por defecto usa el lote de prueba de San Luis, del 1/8 al 27/10/2026.
+Workflow `Probar NISAR (radar)` y `probar_nisar.py`. Por defecto usa el lote de prueba de San Luis, con un período automático que se cuenta desde el día en que corre.
 
-## Resultado de la prueba real (27/10/2026)
+## Resultado de la prueba real
 
 Corrida desde el entorno NASA (GitHub Actions sigue pausado). Lote de prueba, del 1/8 al 27/10/2026. **12 pasadas, 12 con dato, 100 % de píxeles válidos, respuesta en 83 s.**
 
