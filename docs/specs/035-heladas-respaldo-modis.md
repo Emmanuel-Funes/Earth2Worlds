@@ -53,7 +53,7 @@ El lote como lo recibe cualquier satélite: `lote["id"]`, `lote["poligono"]` (Ge
 
 ## Prueba real
 
-Workflow `Probar MODIS (heladas)` (`.github/workflows/probar-modis-heladas.yml`, `probar_modis_heladas.py`). Por defecto: lote de prueba de San Luis y del 15 al 30 de septiembre de 2026, la quincena con la helada del 22/9 que vieron la investigación 028 y la spec 030. Corre en cada PR que toque estos archivos y a mano con un clic. Necesita las credenciales de Earthdata (ya cargadas como secrets).
+Workflow `Probar MODIS (heladas)` (`.github/workflows/probar-modis-heladas.yml`, `probar_modis_heladas.py`). Por defecto: lote de prueba de San Luis, con un período automático que se cuenta desde el día en que corre. Corre en cada PR que toque estos archivos y a mano con un clic. Necesita las credenciales de Earthdata (ya cargadas como secrets).
 
 ## Resultado de la prueba real
 
