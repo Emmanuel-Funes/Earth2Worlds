@@ -1,0 +1,38 @@
+name: Probar ECOSTRESS (evapotranspiración y estrés)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/ecostress.py"
+      - "probar_ecostress.py"
+      - ".github/workflows/probar-ecostress.yml"
+  workflow_dispatch:
+    inputs:
+      esquinas:
+        description: "Esquinas del lote como 'lat, lon; lat, lon; lat, lon; lat, lon' (copiadas de Google Maps)"
+        default: "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"
+      desde:
+        description: "Desde (AAAA-MM-DD)"
+        default: "2026-01-01"
+      hasta:
+        description: "Hasta (AAAA-MM-DD)"
+        default: "2026-01-31"
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Pedir evapotranspiración y estrés hídrico a ECOSTRESS
+        env:
+          EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+          EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
+          # en un PR no hay inputs: se usa el lote de ejemplo y enero de 2026
+          ESQUINAS: ${{ inputs.esquinas || '-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300' }}
+          DESDE: ${{ inputs.desde || '2026-01-01' }}
+          HASTA: ${{ inputs.hasta || '2026-01-31' }}
+        run: python probar_ecostress.py "$ESQUINAS" "$DESDE" "$HASTA"
