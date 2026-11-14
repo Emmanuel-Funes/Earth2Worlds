@@ -36,7 +36,7 @@ El polígono del lote (GeoJSON, EPSG:4326), como todas las fuentes.
 Dos observaciones del contrato común:
 
 ```json
-{"lote_id": "lote-7", "fecha": "1983-10-06", "variable": "suelo_ph_perfiles_0_30cm", "valor": 7.88,
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "suelo_ph_perfiles_0_30cm", "valor": 7.88,
  "unidad": "pH", "fuente": "SISINTA", "resolucion_m": 10000, "calidad": "dudosa",
  "nota": "Mediana de 5 perfiles medidos del INTA a 10 km o menos, 0-30 cm (de 7.22 a 8.71), años 1979-1983 · más cercano: perfil 4902, serie Cramer, a 7.2 km, 8.71 · pH en agua (relación 1:2,5 supuesta, la capa no la dice) · SISINTA (GeoINTA, capa 702) · solo de referencia: la última palabra la tiene el análisis de suelo del productor"}
 ```
@@ -66,7 +66,7 @@ Con una respuesta real del WFS guardada (recuadro de 25 km alrededor del lote de
 ## Criterios de aceptación
 
 - [x] El lote de prueba da 7,88 en 0-30 cm (5 perfiles a 10 km, de 7,22 a 8,71), igual que el informe. *Verificado sin internet con la respuesta real del WFS guardada (63 horizontes de 16 perfiles, 14 con pH): `tests/test_sisinta.py`.*
-- [x] Probado con el INTA real en los 3 lotes del piloto, anotando valor, cantidad de perfiles y tiempo. *20/10/2026 10:54 UTC, `probar_sisinta.py` desde el entorno de la nube con acceso al INTA (Actions frenado por facturación), 1,8 a 2,7 s por lote:*
+- [x] Probado con el INTA real en los 3 lotes del piloto, anotando valor, cantidad de perfiles y tiempo. *14/11/2026 10:54 UTC, `probar_sisinta.py` desde el entorno de la nube con acceso al INTA (Actions frenado por facturación), 1,8 a 2,7 s por lote:*
 
 | Lote | 0-30 cm (perfiles a 10 km) | 30-100 cm (perfiles) | Perfil más cercano | Años |
 |---|---|---|---|---|
