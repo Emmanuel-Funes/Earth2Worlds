@@ -303,6 +303,39 @@ function inicializarSlotMapaPrincipal() {
 
     dibujarPerimetroOficialSanLuis();
 
+    // Sombreado del resto del mundo (máscara oscura sobre el exterior de Argentina)
+    fetch("/static/argentina_mask.json")
+        .then(r => r.json())
+        .then(maskData => {
+            L.geoJSON(maskData, {
+                style: {
+                    fillColor: "#020617",
+                    fillOpacity: 0.70,
+                    color: "#0f172a",
+                    weight: 1,
+                    interactive: false,
+                }
+            }).addTo(e2wMainMap);
+        }).catch(() => {});
+
+    // Límite de frontera argentina con trazo cian
+    fetch("/static/argentina_boundary.json")
+        .then(r => r.json())
+        .then(argData => {
+            window._geometriaArgentina = argData;
+            L.geoJSON(argData, {
+                style: {
+                    fillColor: "transparent",
+                    fillOpacity: 0,
+                    color: "#38bdf8",
+                    weight: 2,
+                    opacity: 0.85,
+                    dashArray: "4, 4",
+                    interactive: false,
+                }
+            }).addTo(e2wMainMap);
+        }).catch(() => {});
+
     if (puedeEditar && e2wMainMap.pm) {
         e2wMainMap.pm.addControls({
             position: "topleft",
@@ -319,10 +352,15 @@ function inicializarSlotMapaPrincipal() {
         });
 
         e2wMainMap.on("pm:create", (e) => {
-            e2wMainDrawnLayer.clearLayers();
-            e2wMainDrawnLayer.addLayer(e.layer);
             const feat = e.layer.toGeoJSON();
             const poly = normalizarPoligonoGeoJson(feat);
+            if (typeof estaDentroDeArgentina === "function" && !estaDentroDeArgentina(poly)) {
+                e2wMainMap.removeLayer(e.layer);
+                mostrarToast("El lote debe estar ubicado dentro del territorio de la República Argentina.", "warning");
+                return;
+            }
+            e2wMainDrawnLayer.clearLayers();
+            e2wMainDrawnLayer.addLayer(e.layer);
             if (poly) {
                 registrarPoligonoPendienteMapaPrincipal(poly, "Polígono dibujado en el visor");
                 vincularEdicionCapaPrincipal(e.layer);
@@ -801,9 +839,14 @@ function prepararMapaEnModalNuevoCampo() {
             });
 
             e2wModalMap.on("pm:create", (e) => {
+                const poly = normalizarPoligonoGeoJson(e.layer.toGeoJSON());
+                if (typeof estaDentroDeArgentina === "function" && !estaDentroDeArgentina(poly)) {
+                    e2wModalMap.removeLayer(e.layer);
+                    mostrarToast("El lote debe estar ubicado dentro del territorio de la República Argentina.", "warning");
+                    return;
+                }
                 e2wModalDrawnLayer.clearLayers();
                 e2wModalDrawnLayer.addLayer(e.layer);
-                const poly = normalizarPoligonoGeoJson(e.layer.toGeoJSON());
                 if (poly) {
                     e2wModalPendingGeojson = poly;
                     const ha = calcularSuperficieHa(poly);
@@ -833,9 +876,10 @@ async function inicializarSlotTelemetria() {
     const slot = document.getElementById("slotModuloTelemetria");
     if (!slot) return;
 
-    // Anclar por defecto a una ventana satelital real con cobertura plena (octubre 2024)
-    const hastaStr = "2024-10-15";
-    const desdeStr = "2024-10-01";
+    // Anclar por defecto a la fecha actual y últimos 30 días
+    const hoyObj = new Date();
+    const hastaStr = hoyObj.toISOString().slice(0, 10);
+    const desdeStr = new Date(hoyObj.getTime() - 30 * 86400000).toISOString().slice(0, 10);
     const esAdmin = currentUser && currentUser.rol === "admin";
 
     slot.innerHTML = `
@@ -1324,7 +1368,7 @@ function aplicarPresetRangoFechas(dias) {
     const inpHasta = document.getElementById("rtFechaHasta");
     if (!inpDesde || !inpHasta) return;
 
-    const baseHasta = new Date("2024-10-15T12:00:00Z");
+    const baseHasta = inpHasta?.value ? new Date(inpHasta.value + "T12:00:00Z") : new Date();
     const baseDesde = new Date(baseHasta.getTime() - Number(dias) * 86400000);
     inpHasta.value = baseHasta.toISOString().slice(0, 10);
     inpDesde.value = baseDesde.toISOString().slice(0, 10);
@@ -1336,7 +1380,7 @@ function onMoverSliderHistoricoSec055(valor) {
     const lbl = document.getElementById("labelFechaSliderHistorico");
     const sliderMapa = document.getElementById("mapTimelineSlider");
 
-    const base = new Date((inpHasta?.value || "2024-10-15") + "T12:00:00Z");
+    const base = new Date((inpHasta?.value || new Date().toISOString().slice(0, 10)) + "T12:00:00Z");
     const delta = 30 - Number(valor);
     const fecha = new Date(base.getTime() - delta * 86400000);
     const iso = fecha.toISOString().slice(0, 10);
@@ -1366,8 +1410,10 @@ async function conectarSatelitesCampoActivo(mostrarNotificacion = true) {
         return;
     }
 
-    const desde = document.getElementById("rtFechaDesde")?.value || "2024-10-01";
-    const hasta = document.getElementById("rtFechaHasta")?.value || "2024-10-15";
+    const hoyIso = new Date().toISOString().slice(0, 10);
+    const desdeIso30 = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10);
+    const desde = document.getElementById("rtFechaDesde")?.value || desdeIso30;
+    const hasta = document.getElementById("rtFechaHasta")?.value || hoyIso;
 
     const checks = Array.from(document.querySelectorAll('input[name="sat_layer_cb"]:checked')).map((c) => c.value);
     const satelites = checks.length > 0 ? checks : ["HLS", "SMAP", "POWER", "IMERG", "ET", "GOES"];
@@ -1417,6 +1463,28 @@ async function conectarSatelitesCampoActivo(mostrarNotificacion = true) {
         }
         if (mostrarNotificacion) {
             mostrarToast(`6 tarjetas satelitales actualizadas (${ultimasObservacionesCampo.length} observaciones).`, "success");
+        }
+
+        // Descarga histórica de 5 años en segundo plano
+        if (poly) {
+            const desde5a = new Date(Date.now() - 5 * 365.25 * 86400000).toISOString().slice(0, 10);
+            authFetch("/api/rotaterra/consulta", {
+                method: "POST",
+                body: JSON.stringify({
+                    campo_id: campoActivoId,
+                    poligono: poly,
+                    satelites,
+                    desde: desde5a,
+                    hasta: hasta,
+                }),
+            }).then(r => r.json()).then(histData => {
+                if (statusTel) {
+                    statusTel.textContent = "✓ Descarga histórica de 5 años completada con éxito";
+                }
+                if (mostrarNotificacion) {
+                    mostrarToast("Descarga histórica de 5 años completada con éxito.", "success");
+                }
+            }).catch(() => {});
         }
     } catch (_err) {
         if (mostrarNotificacion) {
@@ -2042,7 +2110,7 @@ async function abrirModalGraficoHistorico(variable, titulo) {
 
 async function cambiarRangoGraficoHistorico(dias) {
     if (!campoActivoId) return;
-    const baseHasta = new Date("2024-10-15T12:00:00Z");
+    const baseHasta = new Date();
     const baseDesde = new Date(baseHasta.getTime() - Number(dias) * 86400000);
     const hastaStr = baseHasta.toISOString().slice(0, 10);
     const desdeStr = baseDesde.toISOString().slice(0, 10);

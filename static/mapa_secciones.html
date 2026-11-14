@@ -157,6 +157,18 @@
         <!-- VISTA 1: RÉPLICA VISUAL INTERACTIVA DE LA PÁGINA PRINCIPAL      -->
         <!-- =============================================================== -->
         <div id="vistaPrincipal" class="space-y-5">
+            <!-- [SEC-00] SELECTOR DE MODALIDAD Y [SEC-00.1] ADMIN LOGIN -->
+            <div onclick="seleccionarSeccion('SEC-00')" data-sec="SEC-00"
+                class="section-frame bg-slate-900/60 p-4 flex flex-wrap items-center justify-between gap-2 border-emerald-500/40">
+                <div class="flex items-center gap-3">
+                    <span class="section-badge">[SEC-00] SELECTOR DE MODALIDAD</span>
+                    <span class="text-xs text-slate-300">
+                        Selector Inicial: <strong>Perfil Agricultor</strong> (Asistente Guiado), <strong>Perfil Técnico Agropecuario</strong> (Explorador Completo GIS) y <strong>[SEC-00.1] Acceso Administrador</strong> (Modal seguro).
+                    </span>
+                </div>
+                <code class="text-[11px] font-mono text-emerald-400">static/index.html (#modalSelectorModo, #modalLoginAdmin)</code>
+            </div>
+
             <!-- [SEC-01] HEAD -->
             <div onclick="seleccionarSeccion('SEC-01')" data-sec="SEC-01"
                 class="section-frame bg-slate-900/60 p-4 flex flex-wrap items-center justify-between gap-2">
@@ -175,7 +187,7 @@
                 class="section-frame bg-slate-900/80 p-4 flex flex-wrap items-center justify-between gap-4">
                 <div class="flex items-center gap-3">
                     <span class="section-badge">[SEC-02] NAVBAR SUPERIOR</span>
-                    <span class="font-heading font-bold text-white">Earth2Worlds v2.0</span>
+                    <span class="font-heading font-bold text-white">Earth2Worlds</span>
                 </div>
                 <div class="flex flex-wrap items-center gap-2 text-xs font-mono">
                     <span
@@ -401,6 +413,18 @@
                     </div>
                 </div>
             </div>
+
+            <!-- [SEC-05.B] ASISTENTE MODO AGRICULTOR (3 PASOS) -->
+            <div onclick="seleccionarSeccion('SEC-05.B')" data-sec="SEC-05.B"
+                class="section-frame bg-slate-900/90 p-5 space-y-3 border-emerald-500/40">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <span class="section-badge">[SEC-05.B] ASISTENTE AGRICULTOR (#vistaModoBasico)</span>
+                    <span class="text-xs font-mono text-emerald-400">Prueba Rápida Efímera &bull; 3 Pasos</span>
+                </div>
+                <p class="text-xs text-slate-300">
+                    Flujo guiado para agricultores: <strong>1. Delimitar lote en Argentina</strong> con Leaflet + Geoman (con alerta en vivo de frontera nacional y z-index prioritario) &bull; <strong>2. Selección de cultivo previo</strong> (Maíz, Soja, Girasol, Sorgo, Maní) &bull; <strong>3. Telemetría de 5 años NASA</strong> (6 tarjetas satelitales con carga progresiva en tiempo real más cercana al día actual) y slot agronómico <strong>[SLOT-RECOMENDACION-CULTIVOS]</strong> de Rotaterra.
+                </p>
+            </div>
         </div>
 
         <!-- =============================================================== -->
@@ -601,6 +625,11 @@
         });
 
         const CATALOGO_SECCIONES = {
+            "SEC-00": {
+                titulo: "Selector de Modalidad (Agricultor vs Técnico Agropecuario) y Acceso Administrador",
+                dom: "#modalSelectorModo, #modalLoginAdmin",
+                archivo: "static/index.html",
+            },
             "SEC-01": {
                 titulo: "Head, Fuentes Google, Leaflet, Chart.js y Tailwind",
                 dom: "<head>, san_luis_geo.js, chart.js, leaflet.js",
@@ -655,6 +684,11 @@
                 titulo: "Las 6 Tarjetas Interactivas de Información Satelital",
                 dom: "#slotModuloTelemetria, #valNdvi, #valNdmi, #valHumedad, #valTempMean, #valLluvia, #valEstres, #valHeladas",
                 archivo: "static/js/rotaterra_modulos.js",
+            },
+            "SEC-05.B": {
+                titulo: "Asistente Guiado Agricultor (3 Pasos: Lote en Argentina, Cultivo Previo y Telemetría Progresiva 5 Años)",
+                dom: "#vistaModoBasico, #mapaBasicoSlot, #selectCultivoPrevio, #slotRecomendacionCultivos, #grillaTarjetasBasico",
+                archivo: "static/index.html",
             },
             "SEC-06": {
                 titulo: "Padrón Jerárquico de Propietarios, Campos y Operadores (Admin)",

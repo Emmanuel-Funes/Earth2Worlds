@@ -82,6 +82,10 @@ class LoginRequest(BaseModel):
     password: str = Field(..., min_length=1)
 
 
+class GuestLoginRequest(BaseModel):
+    modo: str = Field(default="basico", description="Modo de sesión: 'basico' o 'avanzado'")
+
+
 class PropietarioRegistro(BaseModel):
     nombre: str = Field(..., min_length=2, max_length=100)
     apellido: str = Field(..., min_length=2, max_length=100)

@@ -76,6 +76,31 @@ def get_current_user(
         sub = payload.get("sub")
         if sub is None:
             raise unauthorized_exc
+
+        # Soporte para sesiones de prueba efímeras (Básico y Avanzado) sin persistencia en DB
+        if payload.get("efimero") or str(sub).startswith("guest_"):
+            modo = payload.get("modo", "basico")
+            rol_str = payload.get("rol", "propietario")
+            try:
+                rol_val = RolEnum(rol_str)
+            except ValueError:
+                rol_val = RolEnum.PROPIETARIO
+            return Usuario(
+                id=0,
+                nombre="Invitado",
+                apellido="Básico" if "basico" in str(sub).lower() or modo == "basico" else "Avanzado",
+                email=f"{sub}@earth2worlds.local",
+                password_hash="",
+                rol=rol_val,
+                pais="Global",
+                provincia="Mundo",
+                ciudad="Explorador",
+                codigo_postal="0000",
+                propietario_id=None,
+                campos_asignados=[],
+                creado_en=datetime.utcnow(),
+            )
+
         user_id = int(sub)
     except (JWTError, ValueError, TypeError):
         raise unauthorized_exc

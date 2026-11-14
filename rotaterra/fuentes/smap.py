@@ -26,7 +26,8 @@ PRODUCTO = "SPL4SMGP"
 RESOLUCION_M = 9000
 VALOR_RELLENO = -9999
 MAX_DIAS = 366
-VALORES_POR_DIA = 8  # un valor cada 3 horas
+VALORES_POR_DIA = 8  # un valor cada 3 horas (referencia de colección completa)
+PASADAS_DIARIAS_REDUCIDAS = int(os.environ.get("SMAP_PASADAS_POR_DIA", "2"))
 RANGO_FISICO = (0.0, 0.6)
 NOTA_REGIONAL = "celda de 9 km: contexto regional, no dato del lote"
 
@@ -186,7 +187,7 @@ def leer_csv(texto: str, capas: dict[str, str]) -> dict[tuple[date, str], list[f
 
 
 def a_observacion(lote_id: str, dia: date, variable: str, crudos: list[float | None],
-                  via: str = "AppEEARS") -> Observacion:
+                  via: str = "AppEEARS", esperados: int | None = None) -> Observacion:
     base = dict(lote_id=lote_id, fecha=dia, variable=variable, unidad="m³/m³",
                 fuente="SMAP", resolucion_m=RESOLUCION_M)
     validos = [v for v in crudos if v is not None]
@@ -198,19 +199,21 @@ def a_observacion(lote_id: str, dia: date, variable: str, crudos: list[float | N
     motivos = []
     if not minimo <= valor <= maximo:
         motivos.append(f"Fuera del rango físico ({minimo} a {maximo} m³/m³)")
-    if len(validos) < VALORES_POR_DIA:
-        motivos.append(f"Promedio de solo {len(validos)} de {VALORES_POR_DIA} valores de 3 h")
+    esperados_num = esperados if esperados is not None else (VALORES_POR_DIA if via == "AppEEARS" else len(crudos))
+    if esperados_num and len(validos) < esperados_num:
+        motivos.append(f"Promedio de solo {len(validos)} de {esperados_num} valores de 3 h")
     if motivos:
         return Observacion(**base, valor=valor, calidad="dudosa",
                            nota=f"{' · '.join(motivos)} · {NOTA_REGIONAL} · vía {via}")
     return Observacion(**base, valor=valor, calidad="buena",
-                       nota=f"Promedio de {VALORES_POR_DIA} valores de 3 h · {NOTA_REGIONAL} · vía {via}")
+                       nota=f"Promedio de {len(validos)} valores de 3 h · {NOTA_REGIONAL} · vía {via}")
 
 
-def por_dia(lote_id: str, desde: date, hasta: date, valores: dict, via: str) -> list[Observacion]:
+def por_dia(lote_id: str, desde: date, hasta: date, valores: dict, via: str,
+            esperados: int | None = None) -> list[Observacion]:
     """Una observación por día y variable, aunque la NASA no haya mandado nada ese día (queda descartada)."""
     dias = [desde + timedelta(days=i) for i in range((hasta - desde).days + 1)]
-    return [a_observacion(lote_id, dia, variable, valores.get((dia, variable), []), via)
+    return [a_observacion(lote_id, dia, variable, valores.get((dia, variable), []), via, esperados=esperados)
             for dia in dias for variable in sorted(CAPAS.values())]
 
 
@@ -283,12 +286,36 @@ def coleccion_vigente(cliente: httpx.Client) -> str:
 _FECHA_ARCHIVO = re.compile(r"_(\d{8})T\d{6}_")
 
 
-def archivos_por_dia(cliente: httpx.Client, coleccion: str, desde: date, hasta: date) -> dict[date, list[str]]:
-    """URL OPeNDAP de cada archivo de 3 h, agrupadas por el día (UTC) de su hora central."""
+_CACHE_PIXEL_SMAP: dict[tuple[str, int, int], dict[str, float | None]] = {}
+
+
+def limpiar_cache() -> None:
+    """Limpia el caché de píxeles OPeNDAP en memoria."""
+    _CACHE_PIXEL_SMAP.clear()
+
+
+def archivos_por_dia(cliente: httpx.Client, coleccion: str, desde: date, hasta: date,
+                     pasadas_por_dia: int | None = None) -> dict[date, list[str]]:
+    """URL OPeNDAP de cada archivo de 3 h, agrupadas por el día (UTC) de su hora central.
+    Por defecto muestrea 2 pasadas homogéneas diarias para máxima velocidad y eficiencia."""
     params = {"collection_concept_id": coleccion, "page_size": 2000, "sort_key": "start_date",
               "temporal": f"{desde.isoformat()}T00:00:00Z,{hasta.isoformat()}T23:59:59Z"}
     por_dia_ = defaultdict(list)
     encabezados = {}
+    limite_pasadas = pasadas_por_dia if pasadas_por_dia is not None else PASADAS_DIARIAS_REDUCIDAS
+
+    def _filtrar_pasadas(brutos: dict[date, list[str]]) -> dict[date, list[str]]:
+        if not limite_pasadas:
+            return brutos
+        reducido = defaultdict(list)
+        for d, urls in brutos.items():
+            if len(urls) > limite_pasadas:
+                paso = len(urls) // limite_pasadas
+                reducido[d] = [urls[i * paso] for i in range(limite_pasadas)]
+            else:
+                reducido[d] = urls
+        return reducido
+
     while True:
         respuesta = cliente.get(f"{URL_CMR}/granules.umm_json", params=params, headers=encabezados)
         respuesta.raise_for_status()
@@ -302,12 +329,16 @@ def archivos_por_dia(cliente: httpx.Client, coleccion: str, desde: date, hasta: 
                     por_dia_[dia].append(urls[0])
         siguiente = respuesta.headers.get("CMR-Search-After")
         if not siguiente or len(items) < params["page_size"]:
-            return por_dia_
+            return _filtrar_pasadas(por_dia_)
         encabezados = {"CMR-Search-After": siguiente}
 
 
 def leer_pixel(cliente: httpx.Client, url: str, fila: int, columna: int) -> dict[str, float | None]:
     """Humedad de un píxel en un archivo de 3 h. Devuelve {'sm_surface': v, 'sm_rootzone': v}."""
+    clave = (url, fila, columna)
+    if clave in _CACHE_PIXEL_SMAP:
+        return _CACHE_PIXEL_SMAP[clave]
+
     # El servidor OPeNDAP devuelve vacío si se pide un único valor: se piden 2 columnas y se usa la primera.
     ce = ";".join(f"/Geophysical_Data/{capa}[{fila}][{columna}:1:{columna + 1}]" for capa in CAPAS)
     respuesta = cliente.get(f"{url}.dap.csv", params={"dap4.ce": ce})
@@ -321,18 +352,20 @@ def leer_pixel(cliente: httpx.Client, url: str, fila: int, columna: int) -> dict
                 valores[capa] = None if valor is None or valor <= VALOR_RELLENO else valor
     if set(valores) != set(CAPAS):
         raise ErrorSMAP(f"Respuesta OPeNDAP ilegible para {url}")
+    _CACHE_PIXEL_SMAP[clave] = valores
     return valores
 
 
 def obtener_humedad_directo(lote_id: str, lat: float, lon: float, desde: date, hasta: date,
-                            cliente: httpx.Client | None = None, hilos: int = HILOS) -> list[Observacion]:
+                            cliente: httpx.Client | None = None, hilos: int = HILOS,
+                            pasadas_por_dia: int | None = None) -> list[Observacion]:
     """Humedad SMAP del punto leída directo de los archivos de la NASA, por día, en el contrato común."""
     validar_pedido(lat, lon, desde, hasta)
     cliente = cliente or httpx.Client(timeout=120, follow_redirects=True)
     fila, columna = celda_ease2(lat, lon)
     try:
         cliente.headers["Authorization"] = f"Bearer {token_earthdata(cliente)}"
-        archivos = archivos_por_dia(cliente, coleccion_vigente(cliente), desde, hasta)
+        archivos = archivos_por_dia(cliente, coleccion_vigente(cliente), desde, hasta, pasadas_por_dia=pasadas_por_dia)
         tareas = [(dia, url) for dia, urls in sorted(archivos.items()) for url in urls]
         with ThreadPoolExecutor(max_workers=hilos) as grupo:
             leidos = list(grupo.map(lambda t: (t[0], leer_pixel(cliente, t[1], fila, columna)), tareas))
@@ -343,7 +376,8 @@ def obtener_humedad_directo(lote_id: str, lat: float, lon: float, desde: date, h
     for dia, pixel in leidos:
         for capa, variable in CAPAS.items():
             valores[(dia, variable)].append(pixel[capa])
-    return por_dia(lote_id, desde, hasta, valores, "NASA directo")
+    esperados_dia = pasadas_por_dia if pasadas_por_dia is not None else PASADAS_DIARIAS_REDUCIDAS
+    return por_dia(lote_id, desde, hasta, valores, "NASA directo", esperados=esperados_dia)
 
 
 # ---------- conexión con el núcleo (spec 009) ----------

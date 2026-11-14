@@ -4,6 +4,7 @@
 
 const E2W_TOKEN_KEY = "earth2worlds_token";
 const E2W_USER_KEY = "earth2worlds_user";
+const E2W_MODO_KEY = "earth2worlds_modo";
 
 /**
  * Sanitiza texto dinámico para evitar inyecciones XSS al insertar en HTML.
@@ -39,6 +40,42 @@ function getToken() {
 }
 
 /**
+ * Obtiene el modo activo ('basico', 'avanzado', 'admin').
+ * @returns {string|null}
+ */
+function getModo() {
+    return localStorage.getItem(E2W_MODO_KEY);
+}
+
+/**
+ * Establece el modo activo.
+ * @param {string} modo
+ */
+function setModo(modo) {
+    localStorage.setItem(E2W_MODO_KEY, modo);
+}
+
+/**
+ * Inicia una sesión de prueba efímera (Básico o Avanzado).
+ * @param {'basico'|'avanzado'} modo
+ * @returns {Promise<object>}
+ */
+async function iniciarSesionInvitado(modo = "basico") {
+    const res = await fetch("/api/auth/guest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ modo }),
+    });
+    if (!res.ok) {
+        throw new Error("No se pudo iniciar la sesión efímera.");
+    }
+    const data = await res.json();
+    saveSession(data.access_token, data.usuario);
+    setModo(modo);
+    return data;
+}
+
+/**
  * Obtiene el usuario cacheado en localStorage.
  * @returns {object|null}
  */
@@ -57,6 +94,7 @@ function getCachedUser() {
 function clearSession() {
     localStorage.removeItem(E2W_TOKEN_KEY);
     localStorage.removeItem(E2W_USER_KEY);
+    localStorage.removeItem(E2W_MODO_KEY);
 }
 
 /**
@@ -77,7 +115,7 @@ function getAuthHeaders(extraHeaders = {}) {
 }
 
 /**
- * Wrapper de fetch con cabeceras Bearer y redirección automática en 401.
+ * Wrapper de fetch con cabeceras Bearer.
  * @param {string} url
  * @param {object} options
  * @returns {Promise<Response>}
@@ -88,15 +126,19 @@ async function authFetch(url, options = {}) {
         ...options,
         headers,
     });
-    if (response.status === 401 && !window.location.pathname.startsWith("/login")) {
+    if (response.status === 401) {
         clearSession();
-        window.location.href = "/login";
+        if (typeof mostrarSelectorModalidad === "function") {
+            mostrarSelectorModalidad();
+        } else {
+            window.location.reload();
+        }
     }
     return response;
 }
 
 /**
- * Cierra la sesión actual de forma asíncrona contra /api/auth/logout y redirige a /login.
+ * Cierra la sesión actual y vuelve a la pantalla de selección.
  */
 async function logout() {
     const token = getToken();
@@ -111,7 +153,11 @@ async function logout() {
         }
     }
     clearSession();
-    window.location.href = "/login";
+    if (typeof mostrarSelectorModalidad === "function") {
+        mostrarSelectorModalidad();
+    } else {
+        window.location.reload();
+    }
 }
 
 /**
@@ -134,6 +180,9 @@ function togglePasswordVisibility(inputId, btnEl) {
 window.escapeHtml = escapeHtml;
 window.saveSession = saveSession;
 window.getToken = getToken;
+window.getModo = getModo;
+window.setModo = setModo;
+window.iniciarSesionInvitado = iniciarSesionInvitado;
 window.getCachedUser = getCachedUser;
 window.clearSession = clearSession;
 window.getAuthHeaders = getAuthHeaders;

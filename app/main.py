@@ -36,6 +36,7 @@ from app.schemas import (
     CampoUpdate,
     ConsultaRotaterraRequest,
     EvaluarCultivoRequest,
+    GuestLoginRequest,
     LoginRequest,
     OperadorCreacion,
     PropietarioDetalleOut,
@@ -47,7 +48,7 @@ from app.schemas import (
 )
 from rotaterra import consulta as rt_consulta
 from rotaterra.fuentes import catastro_sl, registro as rt_registro
-from rotaterra.geo import validar_poligono
+from rotaterra.geo import validar_poligono, validar_dentro_argentina
 from rotaterra.semillas import rutas as rutas_semillas
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -164,6 +165,7 @@ def _calcular_y_estampar_relieve_campo(campo: Campo, db: Session, forzar: bool =
 
     try:
         validar_poligono(poligono)
+        validar_dentro_argentina(poligono)
         unidos = rt_registro.descubrir()
         lote = rt_consulta.lote_para_consulta(f"campo-{campo.id or 'nuevo'}", poligono)
         hoy = date.today()
@@ -486,6 +488,45 @@ def login(credenciales: LoginRequest, db: Session = Depends(get_db)) -> Token:
         access_token=token,
         token_type="bearer",
         usuario=_serializar_usuario(usuario, db, incluir_detalle_campos=True),
+    )
+
+
+@app.post("/api/auth/guest", response_model=Token, tags=["Autenticación"])
+def login_invitado(payload: Optional[GuestLoginRequest] = None, db: Session = Depends(get_db)) -> Token:
+    """Inicia una sesión de prueba efímera (Básico o Avanzado) sin persistencia permanente en base de datos."""
+    modo = "basico"
+    if payload and payload.modo:
+        modo = payload.modo.strip().lower()
+    if modo not in ("basico", "avanzado"):
+        modo = "basico"
+
+    sub = f"guest_{modo}"
+    token = create_access_token({
+        "sub": sub,
+        "rol": RolEnum.PROPIETARIO.value,
+        "modo": modo,
+        "efimero": True,
+        "email": f"{sub}@earth2worlds.local",
+    })
+    guest_user = Usuario(
+        id=0,
+        nombre="Invitado",
+        apellido="Básico" if modo == "basico" else "Avanzado",
+        email=f"{sub}@earth2worlds.local",
+        password_hash="",
+        rol=RolEnum.PROPIETARIO,
+        pais="Global",
+        provincia="Mundo",
+        ciudad="Explorador",
+        codigo_postal="0000",
+        propietario_id=None,
+        campos_asignados=[],
+        creado_en=datetime.utcnow(),
+    )
+    return Token(
+        access_token=token,
+        token_type="bearer",
+        usuario=_serializar_usuario(guest_user, db, incluir_detalle_campos=False),
     )
 
 
@@ -1196,7 +1237,8 @@ CATALOGO_SATELITES_DOCK: List[Dict[str, str]] = [
 _ESTADO_SATELITES_CACHE: Dict[str, Any] = {"timestamp": 0.0, "datos": []}
 
 MAPEO_SENSORES_ENTRADA: Dict[str, str] = {
-    "ndvi": "HLS",
+    "ndvi": "MODIS",
+    "modis": "MODIS",
     "hls": "HLS",
     "humedad": "SMAP",
     "smap": "SMAP",
@@ -1444,25 +1486,21 @@ def ejecutar_consulta_rotaterra(
     hasta_req = payload.hasta
     if desde_req > hasta_req:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="La fecha 'desde' es posterior a 'hasta'.")
-    if hasta_req.year >= 2026:
-        delta_dias = max(0, min(365, (hasta_req - desde_req).days))
-        try:
-            hasta_req = date(2024, hasta_req.month, min(hasta_req.day, 28))
-        except ValueError:
-            hasta_req = date(2024, 10, 15)
-        desde_req = hasta_req - timedelta(days=max(delta_dias, 7))
     if (hasta_req - desde_req).days + 1 > 366:
         desde_req = hasta_req - timedelta(days=365)
 
     try:
         validar_poligono(poligono_geojson)
+        validar_dentro_argentina(poligono_geojson)
         unidos = _rotaterra_conectados()
         lote = rt_consulta.lote_para_consulta(lote_etiqueta, poligono_geojson)
     except ValueError as err:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(err))
 
-    # Si es un único satélite inexistente, devolver 404
-    nombres_conocidos = {s.nombre for s in unidos.satelites if not s.respaldo_de}
+    # Nombres principales admitidos y accesos directos
+    nombres_conocidos = {s.nombre for s in unidos.satelites if not s.respaldo_de} | {
+        "MODIS", "HLS:MODIS", "VIIRS", "SENTINEL2"
+    }
     if len(sensores_pedidos) == 1 and sensores_pedidos[0] not in nombres_conocidos:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -1470,6 +1508,16 @@ def ejecutar_consulta_rotaterra(
         )
 
     def _ejecutar_sensor(nombre_sat: str):
+        # Acceso directo y ultra rápido a MODIS (250m de la NASA) para NDVI sin demoras
+        if nombre_sat.upper() in ("MODIS", "HLS:MODIS"):
+            sat_mod = next((s for s in unidos.satelites if s.nombre == "HLS:MODIS"), None)
+            if sat_mod:
+                obs = sat_mod.pedir(lote, desde_req, hasta_req)
+                return nombre_sat, rt_consulta.Respuesta(
+                    fuente_usada="MODIS",
+                    observaciones=obs,
+                    intentos=[rt_consulta.Intento("HLS:MODIS", "ok", len(obs))],
+                )
         return nombre_sat, rt_consulta.consultar(lote, nombre_sat, desde_req, hasta_req, unidos.satelites)
 
     sensores_validos = [s for s in sensores_pedidos if s in nombres_conocidos]

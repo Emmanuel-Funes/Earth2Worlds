@@ -1,16 +1,43 @@
-# Earth2Worlds · Rotaterra — datos satelitales para planificar rotaciones
+# Earth2Worlds · Plataforma Web e Interfaz de Usuario (UI)
 
-Proyecto del equipo **Earth2Worlds** para el NASA Space Apps Challenge 2026 (14 y 15 de noviembre de 2026).
-Rotaterra trae datos de satélites de la **NASA** y de agencias socias (ESA, NOAA, ISRO) para cada lote,
-los pasa a un **contrato JSON común** y los entrega a la app por una API.
+Plataforma agroclimática y de inteligencia territorial desarrollada por el equipo **Earth2Worlds** para el NASA Space Apps Challenge 2026.
+Conecta telemetría satelital en tiempo real e histórica (5 años) de la **NASA** y agencias asociadas para optimizar la toma de decisiones agrícolas y rotación de cultivos.
+
+---
+
+## 🚀 Modalidades de Acceso y Experiencia de Usuario
+
+La plataforma permite el ingreso directo sin barreras de registro para evaluación ágil:
+
+1. **🌾 Perfil Agricultor (Asistente Guiado en 3 Pasos)**:
+   - **Paso 1: Delimitación del Lote**: Trazado interactivo de parcelas mediante Leaflet + Geoman, restringido estrictamente al territorio de la República Argentina con alertas visuales de frontera y advertencias prioritarias.
+   - **Paso 2: Cultivo Previo**: Selección ágil entre 5 cultivos estratégicos (**Maíz**, **Soja**, **Girasol**, **Sorgo**, **Maní**).
+   - **Paso 3: Telemetría y Recomendación**: Visualización del polígono, carga progresiva inmediata de las tarjetas satelitales con las mediciones más recientes y slot agronómico `[SLOT-RECOMENDACION-CULTIVOS]` de Rotaterra.
+2. **🛰️ Perfil Técnico Agropecuario (Explorador Territorial Completo)**:
+   - Centro de control integral GIS: visualización multirresolución, Dock Satelital con enlace a constelaciones de la NASA, panel de capas sectorizadas, las 6 tarjetas métricas interactivas y generación de gráficas de series temporales de hasta 5 años (Chart.js).
+3. **🔒 Acceso Administrador**:
+   - Acceso exclusivo para el administrador del sistema (`admin@earth2worlds.com`) con herramientas de supervisión, padrón jerárquico de campos y operadores, y diagramas de arquitectura.
+4. **🧹 Sesiones Efímeras**:
+   - Los perfiles de Agricultor y Técnico Agropecuario operan en memoria/cliente sin persistir registros residuales en la base de datos `earth2worlds.db`, garantizando una base depurada.
+
+---
+
+## 🛠️ Arquitectura Técnica
+
+- **Frontend**: SPA responsiva en Modo Oscuro (Tailwind CSS, Vanilla JS ES6+, Leaflet 1.9.4 con Geoman, Chart.js).
+- **Backend**: FastAPI con Python 3.11+, Pydantic v2, autenticación JWT HS256, RBAC estricto e introspección de esquema en vivo.
+- **Base de Datos**: SQLAlchemy 2.0 sobre SQLite (`earth2worlds.db`) con soporte para PostgreSQL.
+- **Motor Satelital Rotaterra**: Módulos independientes de consulta satelital NASA con respaldos automáticos por contrato JSON común (`rotaterra/contrato.py`).
+
+---
 
 ## Origen
 
 Código escrito y subido durante el evento (14/11/2026), a partir del diseño previo del equipo (SDD, en `docs/specs/`).
 
-## Cómo está organizado
+## Cómo está organizado el Pipeline Satelital
 
-`main` (después de unir esta rama) tiene solo el **núcleo**: contrato común, geometría del lote, base opcional,
+`main` tiene el **núcleo**: contrato común, geometría del lote, base opcional,
 consulta con respaldos y la API con clave. **Cada satélite vive en su propia rama** y se une a `main` cuando se
 aprueba su PR. Ningún satélite depende de otro (lo verifica `tests/test_nucleo.py`).
 

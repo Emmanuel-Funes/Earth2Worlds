@@ -67,6 +67,7 @@ class AppEEARSFalso:
 
 @pytest.fixture
 def credenciales(monkeypatch):
+    smap.limpiar_cache()
     monkeypatch.setenv("EARTHDATA_USERNAME", "usuario")
     monkeypatch.setenv("EARTHDATA_PASSWORD", "clave")
 
@@ -260,10 +261,20 @@ def directo(falsa, **kw):
                                         cliente=cliente, hilos=2, **kw)
 
 
+def test_directo_muestrea_2_pasadas_por_defecto(credenciales):
+    falsa = NASAFalsa(valores={1: (0.04, 0.05), 13: (0.06, 0.07)})
+    obs = directo(falsa)
+    assert len(falsa.pedidos_pixel) == 2  # 2 pasadas por día para máxima velocidad
+    assert "[1262][1228:1:1229]" in falsa.pedidos_pixel[0]
+    sup = next(o for o in obs if o.variable == "humedad_superficial")
+    assert sup.valor == pytest.approx((0.04 + 0.06) / 2, abs=1e-4)
+    assert all(o.calidad == "buena" and o.fuente == "SMAP" and "NASA directo" in o.nota for o in obs)
+
+
 def test_directo_promedia_los_8_archivos_del_dia(credenciales):
     falsa = NASAFalsa(valores={1: (0.04, 0.05), 4: (0.06, 0.07)})
-    obs = directo(falsa)
-    assert len(falsa.pedidos_pixel) == 8  # no lee el archivo de las 22:30 del día anterior
+    obs = directo(falsa, pasadas_por_dia=8)
+    assert len(falsa.pedidos_pixel) == 8  # si se piden 8 pasadas, lee las 8
     assert "[1262][1228:1:1229]" in falsa.pedidos_pixel[0]
     sup = next(o for o in obs if o.variable == "humedad_superficial")
     assert sup.valor == pytest.approx((0.04 + 0.06 + 6 * 0.05) / 8, abs=1e-4)
@@ -273,7 +284,7 @@ def test_directo_promedia_los_8_archivos_del_dia(credenciales):
 def test_directo_relleno_y_archivos_faltantes(credenciales):
     falsa = NASAFalsa(valores={1: (-9999.0, -9999.0)},
                       faltan={"SMAP_L4_SM_gph_20260115T043000_Vv8011_001.h5"})
-    obs = directo(falsa)
+    obs = directo(falsa, pasadas_por_dia=8)
     assert all(o.calidad == "dudosa" and "6 de 8" in o.nota for o in obs)
 
 

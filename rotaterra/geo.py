@@ -32,3 +32,15 @@ def validar_poligono(poligono: dict) -> None:
     minx, miny, maxx, maxy = geometria.bounds
     if not (-180 <= minx and maxx <= 180 and -90 <= miny and maxy <= 90):
         raise ValueError("Coordenadas fuera de rango: usá grados decimales (EPSG:4326)")
+
+
+def validar_dentro_argentina(poligono: dict) -> None:
+    """Valida que el polígono esté delimitado dentro de las fronteras de la República Argentina."""
+    from shapely.geometry import shape
+
+    validar_poligono(poligono)
+    geometria = shape(poligono)
+    minx, miny, maxx, maxy = geometria.bounds
+    # Bounding box de la República Argentina
+    if minx < -73.6 or maxx > -53.5 or miny < -55.5 or maxy > -21.5:
+        raise ValueError("El lote debe estar ubicado dentro del territorio de la República Argentina")

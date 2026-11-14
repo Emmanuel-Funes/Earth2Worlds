@@ -87,7 +87,9 @@ def test_relleno_no_inventa(credenciales):
     assert (obs[0].valor, obs[0].calidad) == (None, "descartada")
 
 
-def test_sin_credenciales():
+def test_sin_credenciales(monkeypatch):
+    monkeypatch.delenv("EARTHDATA_USERNAME", raising=False)
+    monkeypatch.delenv("EARTHDATA_PASSWORD", raising=False)
     with pytest.raises(earthdata.FaltanCredenciales):
         imerg_early.obtener_lluvia("lote-7", -33.7, -65.3, date(2026, 10, 15), date(2026, 10, 15))
 

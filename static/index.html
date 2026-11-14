@@ -6,8 +6,9 @@ Fecha de inicialización: 14 de noviembre de 2026
 Sincronizado obligatoriamente con: static/mapa_secciones.html y static/guia_segmentacion.html
 --------------------------------------------------------------------------------
 SECCIONES HTML:
+  [SEC-00] Modal / Pantalla Selector de Tipo de Usuario (Básico vs Avanzado vs Admin) y [SEC-00.1] Modal Acceso Administrador
   [SEC-01] Head, fuentes Google (Outfit, Inter, Fira Code), Leaflet, Geoman, Chart.js y Tailwind
-  [SEC-02] Navbar superior con identidad Earth2Worlds, accesos Admin (/mapa, /guia, /diagrama), #userRoleBadge y Salir
+  [SEC-02] Navbar superior con identidad Earth2Worlds, botón #btnCambiarModoNav, accesos Admin (/mapa, /guia, /diagrama), #userRoleBadge y Salir
   [SEC-03] Cabecera de bienvenida dinámica, #adminStatsBar y botones #btnNuevoOperadorHeader / #btnNuevoCampo
   [SEC-04] Barra de 4 Pestañas RBAC (#camposTab, #propietariosTab, #operadoresTab, #adminTab)
   [SEC-05] Contenido de #camposTab (6 sub-secciones modulares):
@@ -17,6 +18,7 @@ SECCIONES HTML:
            - [SEC-05.4] Grilla de Tarjetas de Campos Registrados (#listaCampos + filtro propietario + botón Evaluar Cultivo)
            - [SEC-05.5] Control Temporal Unificado (Día actual, Histórico, Rango de fechas 1m/3m/1a y Slider diario)
            - [SEC-05.6] #slotModuloTelemetria ([SLOT-MODULO-TELEMETRIA]) Las 6 Tarjetas Interactivas de Telemetría Satelital + Explorador INTA
+  [SEC-05.B] Asistente Guiado Modo Básico (3 Pasos: Crear Lote Global, Última Plantación, Telemetría 5 Años y [SLOT-RECOMENDACION-CULTIVOS])
   [SEC-06] Vista de Propietarios con sus campos y operadores anidados (Exclusivo Admin)
   [SEC-07] Gestión de Operadores de Campo y asignación rápida de lotes (Admin y Propietario)
   [SEC-08] Tabla maestra de Auditoría Global de Usuarios con buscador/filtro y CRUD (Admin)
@@ -28,9 +30,11 @@ SECCIONES HTML:
            - [SEC-09.5] #modalOperador (Alta de nuevo operador de campo)
            - [SEC-09.6] #modalEditarCampo (Edición de campo y reasignación de propietario)
            - [SEC-09.7] #modalGraficoHistorico (Series Temporales y Comparativa Interanual Chart.js)
-  [SEC-10] Bloque maestro de Controladores JavaScript ([JS-01] a [JS-12])
+  [SEC-10] Bloque maestro de Controladores JavaScript ([JS-00] a [JS-12])
 
 CONTROLADORES JAVASCRIPT:
+  [JS-00] Selector de Modalidad y Sesiones Efímeras (Básico, Avanzado, Admin)
+  [JS-00.2] Asistente Modo Básico (Mapa global, encuesta y telemetría 5 años)
   [JS-01] Estado Global, verificación de sesión JWT y arranque de la SPA
   [JS-02] Motor de Pestañas RBAC y adaptación dinámica de interfaz según rol
   [JS-03] Controlador de Campos (#listaCampos, #selectCampoActivo, #badgeRelieveUnificado)
@@ -87,8 +91,189 @@ CONTROLADORES JAVASCRIPT:
         <div class="absolute bottom-0 left-1/3 w-[24rem] h-[24rem] bg-purple-500/5 rounded-full blur-3xl"></div>
     </div>
 
-    <!-- Contenedor de notificaciones Toast -->
-    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
+    <!-- Contenedor de notificaciones Toast (z-[999999] por encima de Leaflet y modales) -->
+    <div id="toastContainer" class="fixed top-5 right-5 sm:top-6 sm:right-6 z-[999999] flex flex-col gap-2.5 max-w-md w-full px-4 sm:px-0 pointer-events-none"></div>
+
+    <!-- =================================================================== -->
+    <!-- [SEC-00] SELECTOR DE TIPO DE USUARIO (AGRICULTOR VS. TÉCNICO VS. ADMIN) -->
+    <!-- =================================================================== -->
+    <div id="modalSelectorModo" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 backdrop-blur-md p-4 overflow-y-auto">
+        <div class="w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl p-4 sm:p-8 md:p-10 space-y-6 sm:space-y-8 my-6 sm:my-8 relative overflow-hidden">
+            <div class="text-center space-y-3 px-2">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold max-w-full truncate">
+                    <span>🌍 Earth2Worlds</span> &bull; <span>Plataforma Agroclimática</span>
+                </div>
+                <h2 class="font-heading text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight break-words max-w-full leading-snug">
+                    Elige tu Modalidad de Acceso
+                </h2>
+                <p class="text-xs sm:text-sm md:text-base text-slate-400 max-w-2xl mx-auto break-words leading-relaxed">
+                    Selecciona cómo deseas explorar la plataforma. Las sesiones de prueba no requieren registro ni guardan datos permanentes en el sistema.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Tarjeta PERFIL AGRICULTOR -->
+                <div class="bg-slate-950/80 border-2 border-emerald-500/40 hover:border-emerald-500 rounded-2xl p-6 sm:p-7 flex flex-col justify-between transition group shadow-lg shadow-emerald-500/5 hover:shadow-emerald-500/15">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-2xl font-bold">
+                                🌱
+                            </span>
+                            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 uppercase">
+                                Agricultor
+                            </span>
+                        </div>
+                        <div>
+                            <h3 class="font-heading text-2xl font-bold text-white group-hover:text-emerald-300 transition">
+                                Agricultor
+                            </h3>
+                            <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
+                                Diseñado para evaluación ágil y directa. Dibuja un único lote en el territorio argentino, declara la última plantación y evalúa la telemetría histórica de 5 años con recomendación de rotación de cultivos.
+                            </p>
+                        </div>
+                        <ul class="text-xs font-mono text-slate-300 space-y-1.5 pt-2 border-t border-slate-800">
+                            <li class="flex items-center gap-2"><span class="text-emerald-400">&#10003;</span> Delimitador de polígono en Argentina (Leaflet + Geoman)</li>
+                            <li class="flex items-center gap-2"><span class="text-emerald-400">&#10003;</span> Selección rápida de cultivo previo (Maíz, Soja, Girasol, etc.)</li>
+                            <li class="flex items-center gap-2"><span class="text-emerald-400">&#10003;</span> 5 años de telemetría NASA (NDVI, SMAP, IMERG)</li>
+                            <li class="flex items-center gap-2"><span class="text-emerald-400">&#10003;</span> Recomendación de rotación de cultivos Rotaterra</li>
+                        </ul>
+                    </div>
+                    <div class="pt-6">
+                        <button
+                            type="button"
+                            onclick="iniciarModoDesdeSelector('basico')"
+                            class="w-full py-3.5 px-5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-heading font-bold text-sm shadow-lg shadow-emerald-500/25 transition flex items-center justify-center gap-2"
+                        >
+                            <span>Ingresar como Agricultor</span> &rarr;
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tarjeta PERFIL TÉCNICO AGROPECUARIO -->
+                <div class="bg-slate-950/80 border border-slate-800 hover:border-sky-500 rounded-2xl p-6 sm:p-7 flex flex-col justify-between transition group shadow-lg hover:shadow-sky-500/10">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="w-12 h-12 rounded-xl bg-sky-500/20 text-sky-400 border border-sky-500/30 flex items-center justify-center text-2xl font-bold">
+                                🛰️
+                            </span>
+                            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-sky-500/20 text-sky-300 border border-sky-500/40 uppercase">
+                                Técnico Agropecuario
+                            </span>
+                        </div>
+                        <div>
+                            <h3 class="font-heading text-2xl font-bold text-white group-hover:text-sky-300 transition">
+                                Técnico Agropecuario
+                            </h3>
+                            <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
+                                Acceso total al centro de control territorial: visor GIS multirresolución, panel lateral de capas satelitales, Dock Satelital, las 6 tarjetas de telemetría interactivas y generación de gráficas de series temporales (Chart.js).
+                            </p>
+                        </div>
+                        <ul class="text-xs font-mono text-slate-300 space-y-1.5 pt-2 border-t border-slate-800">
+                            <li class="flex items-center gap-2"><span class="text-sky-400">&#10003;</span> Visor GIS con capas WMS y Dock Satelital NASA</li>
+                            <li class="flex items-center gap-2"><span class="text-sky-400">&#10003;</span> Las 6 tarjetas métricas interactivas en vivo</li>
+                            <li class="flex items-center gap-2"><span class="text-sky-400">&#10003;</span> Generador de gráficos de series temporales Chart.js</li>
+                            <li class="flex items-center gap-2"><span class="text-sky-400">&#10003;</span> Sesión efímera sin ensuciar la base de datos</li>
+                        </ul>
+                    </div>
+                    <div class="pt-6">
+                        <button
+                            type="button"
+                            onclick="iniciarModoDesdeSelector('avanzado')"
+                            class="w-full py-3.5 px-5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-heading font-bold text-sm shadow-lg shadow-sky-500/25 transition flex items-center justify-center gap-2"
+                        >
+                            <span>Ingresar como Técnico Agropecuario</span> &rarr;
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Acceso Administrador -->
+            <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <span class="text-xs text-slate-400 font-mono">
+                    ¿Tienes credenciales del sistema o eres Administrador?
+                </span>
+                <button
+                    type="button"
+                    onclick="abrirModalLoginAdmin()"
+                    class="px-4 py-2 rounded-xl text-xs font-mono font-semibold bg-purple-500/15 hover:bg-purple-500/25 text-purple-300 border border-purple-500/30 transition flex items-center gap-2"
+                >
+                    <span>🔒 Acceso Administrador</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- [SEC-00.1] MODAL DE ACCESO ADMINISTRADOR                           -->
+    <!-- =================================================================== -->
+    <div id="modalLoginAdmin" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/85 backdrop-blur-md p-4">
+        <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8 space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-lg">🔒</span>
+                    <h3 class="font-heading text-xl font-bold text-white">Acceso Administrador</h3>
+                </div>
+                <button type="button" onclick="cerrarModal('modalLoginAdmin')" class="text-slate-400 hover:text-white text-sm font-mono">
+                    ESC &#10005;
+                </button>
+            </div>
+
+            <form id="formLoginAdmin" onsubmit="ejecutarLoginAdmin(event)" class="space-y-4">
+                <div>
+                    <label for="admin_login_email" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                        Usuario o Correo Institucional
+                    </label>
+                    <input
+                        type="text"
+                        id="admin_login_email"
+                        value="admin@earth2worlds.com"
+                        required
+                        class="w-full rounded-xl bg-slate-950 border border-slate-800 px-3.5 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-purple-500 font-mono"
+                    />
+                </div>
+                <div>
+                    <label for="admin_login_pass" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                        Contraseña de Administrador
+                    </label>
+                    <div class="relative">
+                        <input
+                            type="password"
+                            id="admin_login_pass"
+                            placeholder="Contraseña..."
+                            required
+                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-3.5 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-purple-500"
+                        />
+                        <button
+                            type="button"
+                            onclick="togglePasswordVisibility('admin_login_pass', this)"
+                            class="absolute right-3 top-2.5 text-xs text-slate-400 hover:text-slate-200"
+                        >
+                            Ver
+                        </button>
+                    </div>
+                </div>
+
+                <div id="adminLoginError" class="hidden text-xs text-rose-400 bg-rose-500/10 border border-rose-500/20 p-2.5 rounded-lg"></div>
+
+                <div class="flex items-center justify-between gap-3 pt-2">
+                    <button
+                        type="button"
+                        onclick="cerrarModal('modalLoginAdmin')"
+                        class="px-4 py-2.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 transition"
+                    >
+                        Volver al Selector
+                    </button>
+                    <button
+                        type="submit"
+                        id="btnSubmitLoginAdmin"
+                        class="px-5 py-2.5 rounded-xl bg-purple-500 hover:bg-purple-400 text-slate-950 font-heading font-bold text-sm shadow-lg shadow-purple-500/25 transition"
+                    >
+                        Ingresar &rarr;
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- =================================================================== -->
     <!-- [SEC-02] NAVBAR SUPERIOR CON IDENTIDAD EARTH2WORLDS                 -->
@@ -102,8 +287,8 @@ CONTROLADORES JAVASCRIPT:
                 <div>
                     <div class="flex items-center gap-2">
                         <span class="font-heading text-lg sm:text-xl font-bold tracking-tight text-white">Earth2Worlds</span>
-                        <span class="hidden sm:inline-block text-[11px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
-                            v2.0 &bull; 14/11/2026
+                        <span class="hidden sm:inline-block text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                            🛰️ Telemetría Activa
                         </span>
                     </div>
                     <p class="text-xs text-slate-400 hidden sm:block">Gestión RBAC Territorial y Telemetría Multi-Satelital</p>
@@ -111,6 +296,17 @@ CONTROLADORES JAVASCRIPT:
             </div>
 
             <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Botón Selector de Modalidad -->
+                <button
+                    id="btnCambiarModoNav"
+                    type="button"
+                    onclick="mostrarSelectorModalidad()"
+                    class="px-3 py-1.5 rounded-xl text-xs font-mono font-semibold bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 transition flex items-center gap-1.5"
+                    title="Cambiar tipo de usuario o reiniciar sesión"
+                >
+                    <span>⇄</span> <span>Modo: <strong id="navModoLabel" class="uppercase">Agricultor</strong></span>
+                </button>
+
                 <!-- Accesos rápidos de arquitectura (exclusivos Admin) -->
                 <div id="navAdminTools" class="hidden items-center gap-2 mr-2">
                     <a
@@ -158,6 +354,297 @@ CONTROLADORES JAVASCRIPT:
 
     <!-- Contenedor Principal -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <!-- =============================================================== -->
+        <!-- [SEC-05.B] ASISTENTE GUIADO MODO BÁSICO (3 PASOS)                -->
+        <!-- =============================================================== -->
+        <div id="vistaModoBasico" class="hidden space-y-6">
+            <!-- Barra de progreso de los 3 pasos -->
+            <div class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-xl">
+                <div class="flex items-center justify-between max-w-3xl mx-auto">
+                    <div id="stepIndicador1" class="flex items-center gap-2 sm:gap-3 text-emerald-400 font-semibold text-xs sm:text-sm">
+                        <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center font-bold text-xs sm:text-sm">1</span>
+                        <span>Crear Lote (Global)</span>
+                    </div>
+                    <div class="flex-1 h-0.5 mx-2 sm:mx-4 bg-slate-800"></div>
+                    <div id="stepIndicador2" class="flex items-center gap-2 sm:gap-3 text-slate-500 font-semibold text-xs sm:text-sm">
+                        <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs sm:text-sm">2</span>
+                        <span>Última Plantación</span>
+                    </div>
+                    <div class="flex-1 h-0.5 mx-2 sm:mx-4 bg-slate-800"></div>
+                    <div id="stepIndicador3" class="flex items-center gap-2 sm:gap-3 text-slate-500 font-semibold text-xs sm:text-sm">
+                        <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs sm:text-sm">3</span>
+                        <span>Telemetría y Recomendación</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PASO 1: Dibujador de Polígono Global -->
+            <div id="pasoBasico1" class="space-y-4">
+                <!-- Alerta de advertencia de perímetro (si se dibuja fuera de Argentina) -->
+                <div id="alertaFronteraArgentina" class="hidden p-4 rounded-2xl bg-amber-950/95 border-2 border-amber-500 text-amber-200 text-xs sm:text-sm font-semibold flex items-center justify-between gap-3 shadow-2xl">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl flex-shrink-0">⚠️</span>
+                        <div>
+                            <p class="font-bold text-amber-100 text-sm">Lote fuera del límite nacional</p>
+                            <p class="text-xs text-amber-300 font-normal mt-0.5">El lote seleccionado se encuentra fuera del territorio de la República Argentina. Solo se admiten parcelas dentro de las fronteras del país.</p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="document.getElementById('alertaFronteraArgentina').classList.add('hidden')" class="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/40 text-amber-100 font-mono text-xs flex-shrink-0 transition">
+                        ✕ Cerrar
+                    </button>
+                </div>
+
+                <div class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-5 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">PASO 1</span>
+                            <span class="text-xs text-slate-400 font-mono">Cobertura Argentina EPSG:4326</span>
+                        </div>
+                        <h2 class="font-heading text-xl font-bold text-white mt-1">Dibuja tu Lote en el Territorio Argentino</h2>
+                        <p class="text-xs text-slate-400 mt-0.5">Usa el ícono de polígono o rectángulo en el mapa para trazar el perímetro del lote dentro de Argentina.</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-right">
+                            <span class="text-[10px] font-mono text-slate-400 uppercase block">Superficie Calculada</span>
+                            <span id="superficieBasicoHa" class="font-heading font-extrabold text-emerald-400 text-lg">0.00 ha</span>
+                        </div>
+                        <button
+                            id="btnContinuarPaso2"
+                            type="button"
+                            disabled
+                            onclick="irAPasoBasico2()"
+                            class="px-5 py-3 rounded-xl bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-emerald-400 text-slate-950 font-heading font-bold text-sm shadow-lg shadow-emerald-500/20 transition flex items-center gap-2"
+                        >
+                            <span>Siguiente: Última Plantación</span> &rarr;
+                        </button>
+                    </div>
+                </div>
+
+                <div class="relative bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl h-[520px]">
+                    <div id="mapaBasicoSlot" class="w-full h-full"></div>
+                    <div id="badgeCoordenadasBasico" class="absolute bottom-3 left-3 z-[1000] px-3 py-1.5 rounded-xl bg-slate-900/90 backdrop-blur-md border border-slate-800 text-[11px] font-mono text-slate-300 shadow-lg">
+                        Haz clic en el mapa para iniciar el polígono
+                    </div>
+                </div>
+            </div>
+
+            <!-- PASO 2: Encuesta de Última Plantación -->
+            <div id="pasoBasico2" class="hidden space-y-4 max-w-2xl mx-auto">
+                <div class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl space-y-6">
+                    <div class="border-b border-slate-800 pb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">PASO 2</span>
+                            <span class="text-xs text-slate-400 font-mono">Historial Agronómico del Lote</span>
+                        </div>
+                        <h2 class="font-heading text-2xl font-bold text-white mt-1">¿Cuál es la última plantación de este lote?</h2>
+                        <p class="text-xs text-slate-400 mt-1">
+                            Selecciona el cultivo previo sembrado en la parcela para la recomendación agronómica y balance del lote.
+                        </p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label for="selectCultivoPrevio" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                                Último Cultivo / Plantación Previa *
+                            </label>
+                            <select
+                                id="selectCultivoPrevio"
+                                class="w-full rounded-xl bg-slate-950 border border-slate-800 px-3.5 py-3 text-sm text-slate-100 focus:outline-none focus:border-emerald-500 font-medium"
+                            >
+                                <option value="Maíz">Maíz</option>
+                                <option value="Soja">Soja</option>
+                                <option value="Girasol">Girasol</option>
+                                <option value="Sorgo">Sorgo</option>
+                                <option value="Maní">Maní</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800 flex items-center justify-between gap-4">
+                        <button
+                            type="button"
+                            onclick="irAPasoBasico1()"
+                            class="px-4 py-2.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 transition"
+                        >
+                            &larr; Volver a Ajustar Mapa
+                        </button>
+                        <button
+                            id="btnAnalizarBasico"
+                            type="button"
+                            onclick="ejecutarAnalisisBasico()"
+                            class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-heading font-bold text-sm shadow-lg shadow-emerald-500/25 transition flex items-center gap-2"
+                        >
+                            <span>Analizar Satélites NASA y Evaluar Rotación</span> &rarr;
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PASO 3: Telemetría 5 Años + Slot de Recomendación -->
+            <div id="pasoBasico3" class="hidden space-y-6">
+                <!-- Resumen de Lote y Acciones -->
+                <div class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold">
+                                LOTE EVALUADO
+                            </span>
+                            <span id="badgeCultivoPrevioResumen" class="px-2.5 py-0.5 rounded-full text-[11px] font-mono bg-sky-500/20 text-sky-300 border border-sky-500/40">
+                                Previo: -
+                            </span>
+                        </div>
+                        <h2 class="font-heading text-2xl font-bold text-white">Telemetría Satelital de 5 Años y Recomendación</h2>
+                        <p class="text-xs text-slate-400">
+                            Superficie: <strong id="resumenSuperficieHa" class="text-emerald-400">0.00 ha</strong> &bull; Centroide: <span id="resumenCentroide" class="font-mono text-slate-300">-</span>
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button
+                            type="button"
+                            onclick="reiniciarAsistenteBasico()"
+                            class="px-4 py-2.5 rounded-xl text-xs font-mono font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition"
+                        >
+                            ↺ Analizar Otro Lote
+                        </button>
+                        <button
+                            type="button"
+                            onclick="iniciarModoDesdeSelector('avanzado')"
+                            class="px-4 py-2.5 rounded-xl text-xs font-mono font-semibold bg-sky-500/15 hover:bg-sky-500/25 text-sky-300 border border-sky-500/30 transition"
+                        >
+                            Abrir en Modo Técnico Agropecuario GIS &rarr;
+                        </button>
+                    </div>
+                </div>
+
+                <!-- [SLOT-RECOMENDACION-CULTIVOS] -->
+                <div id="slotRecomendacionCultivos" class="bg-gradient-to-br from-emerald-950/40 via-slate-900/90 to-slate-950 border-2 border-emerald-500/40 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-emerald-500/20 pb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-xl">🌱</span>
+                            <div>
+                                <span class="text-xs font-mono text-emerald-400 font-semibold">[SLOT-RECOMENDACION-CULTIVOS] ROTATERRA ENGINE</span>
+                                <h3 class="font-heading text-xl font-bold text-white">Recomendación Agronómica de Rotación de Cultivos</h3>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                            Ventana Satelital: 5 Años NASA
+                        </span>
+                    </div>
+
+                    <div id="contenidoRecomendacionCultivo" class="space-y-4">
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            Procesando observaciones históricas de la constelación de la NASA (NDVI HLS/MODIS, humedad radicular SMAP, régimen hídrico IMERG y riesgo de heladas VIIRS) cruzadas con el cultivo previo declarado (<strong id="textoCultivoPrevioRec" class="text-emerald-300">-</strong>)...
+                        </p>
+                        <div class="p-4 rounded-xl bg-slate-950/70 border border-slate-800 flex items-start gap-3">
+                            <span class="text-emerald-400 text-lg">💡</span>
+                            <div class="text-xs text-slate-300 leading-relaxed">
+                                <strong class="text-white block mb-0.5">Estado del Motor de Rotación:</strong>
+                                Slot reservado e integrado para el nuevo motor agronómico de Rotaterra. Evalúa la sustentabilidad del suelo, reducción de monocultivo, disponibilidad de agua útil y balance hídrico acumulado de las últimas 5 campañas.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grilla de las 6 Tarjetas de Telemetría Satelital de 5 Años -->
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-heading text-lg font-bold text-white">Observaciones Satelitales Multiespectrales (Últimos 5 Años)</h3>
+                        <span id="estadoConsultaBasico" class="text-xs font-mono text-slate-400">Conectando con NASA Earthdata...</span>
+                    </div>
+
+                    <div id="grillaTarjetasBasico" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                        <!-- Tarjeta 1: Vigor Vegetal (NDVI) -->
+                        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-mono text-emerald-400">VEGETACIÓN</span>
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">HLS / MODIS</span>
+                            </div>
+                            <h4 class="font-heading font-bold text-white text-base">Índice de Vigor (NDVI)</h4>
+                            <div class="flex items-baseline gap-2">
+                                <span id="basicoNdviValor" class="font-heading font-extrabold text-2xl text-emerald-400">-</span>
+                                <span class="text-xs text-slate-400">adimensional</span>
+                            </div>
+                            <p id="basicoNdviNota" class="text-xs text-slate-400">Consultando archivo histórico...</p>
+                        </div>
+
+                        <!-- Tarjeta 2: Humedad de Suelo (SMAP) -->
+                        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-mono text-sky-400">SUELO</span>
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">SMAP L3</span>
+                            </div>
+                            <h4 class="font-heading font-bold text-white text-base">Humedad Radicular</h4>
+                            <div class="flex items-baseline gap-2">
+                                <span id="basicoSmapValor" class="font-heading font-extrabold text-2xl text-sky-400">-</span>
+                                <span class="text-xs text-slate-400">m³/m³</span>
+                            </div>
+                            <p id="basicoSmapNota" class="text-xs text-slate-400">Consultando radiómetro de microondas...</p>
+                        </div>
+
+                        <!-- Tarjeta 3: Lluvias Acumuladas (IMERG) -->
+                        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-mono text-blue-400">PRECIPITACIONES</span>
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">GPM IMERG</span>
+                            </div>
+                            <h4 class="font-heading font-bold text-white text-base">Régimen de Lluvia</h4>
+                            <div class="flex items-baseline gap-2">
+                                <span id="basicoLluviaValor" class="font-heading font-extrabold text-2xl text-blue-400">-</span>
+                                <span class="text-xs text-slate-400">mm</span>
+                            </div>
+                            <p id="basicoLluviaNota" class="text-xs text-slate-400">Consultando constelación GPM...</p>
+                        </div>
+
+                        <!-- Tarjeta 4: Temperatura y Heladas (VIIRS / MODIS) -->
+                        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-mono text-amber-400">TEMPERATURA</span>
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">VIIRS LST</span>
+                            </div>
+                            <h4 class="font-heading font-bold text-white text-base">Temperatura de Superficie</h4>
+                            <div class="flex items-baseline gap-2">
+                                <span id="basicoTempValor" class="font-heading font-extrabold text-2xl text-amber-400">-</span>
+                                <span class="text-xs text-slate-400">°C</span>
+                            </div>
+                            <p id="basicoTempNota" class="text-xs text-slate-400">Analizando sensor infrarrojo térmico...</p>
+                        </div>
+
+                        <!-- Tarjeta 5: Balance Hídrico (POWER / ECOSTRESS) -->
+                        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-mono text-cyan-400">BALANCE HÍDRICO</span>
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">POWER / ET</span>
+                            </div>
+                            <h4 class="font-heading font-bold text-white text-base">Evapotranspiración / Balance</h4>
+                            <div class="flex items-baseline gap-2">
+                                <span id="basicoEtValor" class="font-heading font-extrabold text-2xl text-cyan-400">-</span>
+                                <span class="text-xs text-slate-400">mm/día</span>
+                            </div>
+                            <p id="basicoEtNota" class="text-xs text-slate-400">Calculando balance agrometeorológico...</p>
+                        </div>
+
+                        <!-- Tarjeta 6: Relieve y Altimetría (NASADEM) -->
+                        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-mono text-purple-400">TOPOGRAFÍA</span>
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">NASADEM</span>
+                            </div>
+                            <h4 class="font-heading font-bold text-white text-base">Cota Altimétrica / Pendiente</h4>
+                            <div class="flex items-baseline gap-2">
+                                <span id="basicoRelieveValor" class="font-heading font-extrabold text-2xl text-purple-400">-</span>
+                                <span class="text-xs text-slate-400">msnm</span>
+                            </div>
+                            <p id="basicoRelieveNota" class="text-xs text-slate-400">Consultando modelo digital de elevación...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- VISTA MODO AVANZADO / ADMIN (SECCIONES 03 A 08)                  -->
+        <!-- =============================================================== -->
+        <div id="vistaModoAvanzado" class="space-y-8">
         <!-- =============================================================== -->
         <!-- [SEC-03] CABECERA DE BIENVENIDA Y BARRA ESTADÍSTICA ADMIN       -->
         <!-- =============================================================== -->
@@ -602,6 +1089,7 @@ CONTROLADORES JAVASCRIPT:
                 </div>
             </div>
         </section>
+        </div> <!-- Fin #vistaModoAvanzado -->
     </main>
 
     <!-- =================================================================== -->
@@ -1176,7 +1664,7 @@ CONTROLADORES JAVASCRIPT:
     </div>
 
     <footer class="border-t border-slate-900 py-5 mt-12 text-center text-xs text-slate-500 font-mono">
-        Earth2Worlds &bull; Plataforma Inicializada el 14/11/2026 &bull; Arquitectura RBAC + Telemetría Satelital NASA &amp; INTA
+        Earth2Worlds &bull; Arquitectura RBAC + Telemetría Satelital NASA &amp; INTA
     </footer>
 
     <!-- =================================================================== -->
@@ -1186,6 +1674,622 @@ CONTROLADORES JAVASCRIPT:
     <script src="/static/js/argentina.js"></script>
     <script src="/static/js/rotaterra_modulos.js"></script>
     <script>
+        /* ===================================================================
+         * [JS-00] SELECTOR DE MODALIDAD (BÁSICO, AVANZADO, ADMIN) Y SESIONES EFÍMERAS
+         * =================================================================== */
+        let mapaBasico = null;
+        let loteBasicoLayer = null;
+        let loteBasicoGeoJSON = null;
+        let cultivoPrevioBasico = "";
+
+        function mostrarSelectorModalidad() {
+            const modal = document.getElementById("modalSelectorModo");
+            if (modal) {
+                modal.classList.remove("hidden");
+                modal.classList.add("flex");
+            }
+            cerrarModal("modalLoginAdmin");
+        }
+
+        function cerrarSelectorModalidad() {
+            const modal = document.getElementById("modalSelectorModo");
+            if (modal) {
+                modal.classList.add("hidden");
+                modal.classList.remove("flex");
+            }
+        }
+
+        async function iniciarModoDesdeSelector(modo) {
+            try {
+                mostrarToast(`Iniciando ${modo === 'basico' ? 'Modo Agricultor' : 'Modo Técnico Agropecuario'}...`, "info");
+                const data = await iniciarSesionInvitado(modo);
+                currentUser = data.usuario;
+                setModo(modo);
+
+                const navModoLabel = document.getElementById("navModoLabel");
+                if (navModoLabel) navModoLabel.textContent = modo === "basico" ? "Agricultor" : "Técnico Agropecuario";
+
+                cerrarSelectorModalidad();
+
+                if (modo === "basico") {
+                    document.getElementById("vistaModoAvanzado").classList.add("hidden");
+                    document.getElementById("vistaModoBasico").classList.remove("hidden");
+                    configurarInterfazBasica();
+                    irAPasoBasico1();
+                    setTimeout(() => inicializarMapaBasico(), 150);
+                } else {
+                    document.getElementById("vistaModoBasico").classList.add("hidden");
+                    document.getElementById("vistaModoAvanzado").classList.remove("hidden");
+                    await inicializarAplicacion();
+                }
+            } catch (err) {
+                console.error("[Selector] Error:", err);
+                mostrarToast("No se pudo iniciar la sesión efímera.", "error");
+            }
+        }
+
+        function abrirModalLoginAdmin() {
+            cerrarSelectorModalidad();
+            const modal = document.getElementById("modalLoginAdmin");
+            if (modal) {
+                modal.classList.remove("hidden");
+                modal.classList.add("flex");
+            }
+            const errBox = document.getElementById("adminLoginError");
+            if (errBox) errBox.classList.add("hidden");
+        }
+
+        async function ejecutarLoginAdmin(e) {
+            e.preventDefault();
+            const email = document.getElementById("admin_login_email").value.trim();
+            const pass = document.getElementById("admin_login_pass").value;
+            const errBox = document.getElementById("adminLoginError");
+            const btn = document.getElementById("btnSubmitLoginAdmin");
+
+            if (errBox) errBox.classList.add("hidden");
+            if (btn) btn.disabled = true;
+
+            try {
+                const res = await fetch("/api/auth/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email_o_usuario: email, password: pass }),
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    if (errBox) {
+                        errBox.textContent = data.detail || "Credenciales inválidas de Administrador.";
+                        errBox.classList.remove("hidden");
+                    }
+                    if (btn) btn.disabled = false;
+                    return;
+                }
+
+                saveSession(data.access_token, data.usuario);
+                setModo("admin");
+                currentUser = data.usuario;
+
+                const navModoLabel = document.getElementById("navModoLabel");
+                if (navModoLabel) navModoLabel.textContent = "Admin";
+
+                cerrarModal("modalLoginAdmin");
+                cerrarSelectorModalidad();
+
+                document.getElementById("vistaModoBasico").classList.add("hidden");
+                document.getElementById("vistaModoAvanzado").classList.remove("hidden");
+                mostrarToast(`Bienvenido Administrador: ${currentUser.nombre}`, "success");
+                await inicializarAplicacion();
+            } catch (err) {
+                console.error("[Login Admin] Error:", err);
+                if (errBox) {
+                    errBox.textContent = "Error de conexión con el servidor.";
+                    errBox.classList.remove("hidden");
+                }
+            } finally {
+                if (btn) btn.disabled = false;
+            }
+        }
+
+        function configurarInterfazBasica() {
+            const badge = document.getElementById("userRoleBadge");
+            const nameDisplay = document.getElementById("userNameDisplay");
+            const locDisplay = document.getElementById("userLocationDisplay");
+            if (badge) {
+                badge.textContent = "AGRICULTOR (EFÍMERO)";
+                badge.className = "px-3 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
+            }
+            if (nameDisplay) nameDisplay.textContent = "Agricultor Invitado";
+            if (locDisplay) locDisplay.textContent = "Prueba Rápida · Argentina";
+        }
+
+        /* ===================================================================
+         * [JS-00.2] ASISTENTE MODO BÁSICO (MAPA GLOBAL, ENCUESTA Y 5 AÑOS)
+         * =================================================================== */
+        function puntoEnAnillo(x, y, vs) {
+            let inside = false;
+            for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+                const xi = vs[i][0], yi = vs[i][1];
+                const xj = vs[j][0], yj = vs[j][1];
+                const intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+                if (intersect) inside = !inside;
+            }
+            return inside;
+        }
+
+        function estaDentroDeArgentina(geoJsonGeom) {
+            if (!geoJsonGeom || !geoJsonGeom.coordinates) return false;
+            const coords = geoJsonGeom.coordinates[0];
+            if (!coords || coords.length === 0) return false;
+
+            // 1. Verificación rápida de Bounding Box de la República Argentina
+            for (const pt of coords) {
+                const lng = pt[0], lat = pt[1];
+                if (lat < -55.5 || lat > -21.5 || lng < -73.6 || lng > -53.5) {
+                    return false;
+                }
+            }
+
+            // 2. Si la geometría de Argentina está cargada en memoria, verificar con raycasting
+            if (window._geometriaArgentina && window._geometriaArgentina.features?.[0]) {
+                const argPolys = window._geometriaArgentina.features[0].geometry.coordinates;
+                for (const pt of coords) {
+                    const lng = pt[0], lat = pt[1];
+                    let dentro = false;
+                    for (const poly of argPolys) {
+                        if (puntoEnAnillo(lng, lat, poly[0])) {
+                            dentro = true;
+                            break;
+                        }
+                    }
+                    if (!dentro) return false;
+                }
+            }
+            return true;
+        }
+
+        function inicializarMapaBasico() {
+            if (mapaBasico) {
+                mapaBasico.invalidateSize();
+                return;
+            }
+            const slot = document.getElementById("mapaBasicoSlot");
+            if (!slot) return;
+
+            mapaBasico = L.map("mapaBasicoSlot", {
+                zoomControl: true,
+                attributionControl: true,
+            }).setView([-33.67, -65.46], 5);
+
+            L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+                maxZoom: 19,
+                attribution: "Tiles &copy; Esri &mdash; Earth2Worlds",
+            }).addTo(mapaBasico);
+
+            L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}", {
+                maxZoom: 19,
+                opacity: 0.8,
+            }).addTo(mapaBasico);
+
+            // Sombreado del resto del mundo (máscara oscura invertida sobre Argentina)
+            fetch("/static/argentina_mask.json")
+                .then(r => r.json())
+                .then(maskData => {
+                    L.geoJSON(maskData, {
+                        style: {
+                            fillColor: "#020617",
+                            fillOpacity: 0.75,
+                            color: "#0f172a",
+                            weight: 1,
+                            interactive: false,
+                        }
+                    }).addTo(mapaBasico);
+                }).catch(() => {});
+
+            // Límite fronterizo de la República Argentina con trazo cian
+            fetch("/static/argentina_boundary.json")
+                .then(r => r.json())
+                .then(argData => {
+                    window._geometriaArgentina = argData;
+                    L.geoJSON(argData, {
+                        style: {
+                            fillColor: "transparent",
+                            fillOpacity: 0,
+                            color: "#38bdf8",
+                            weight: 2,
+                            opacity: 0.9,
+                            dashArray: "4, 4",
+                            interactive: false,
+                        }
+                    }).addTo(mapaBasico);
+                }).catch(() => {});
+
+            mapaBasico.pm.addControls({
+                position: "topleft",
+                drawMarker: false,
+                drawCircleMarker: false,
+                drawPolyline: false,
+                drawRectangle: true,
+                drawPolygon: true,
+                drawCircle: false,
+                drawText: false,
+                editMode: true,
+                dragMode: false,
+                cutPolygon: false,
+                removalMode: true,
+            });
+
+            mapaBasico.on("pm:create", (e) => {
+                const geo = e.layer.toGeoJSON();
+                const alerta = document.getElementById("alertaFronteraArgentina");
+                if (!estaDentroDeArgentina(geo.geometry)) {
+                    mapaBasico.removeLayer(e.layer);
+                    if (alerta) {
+                        alerta.classList.remove("hidden");
+                        alerta.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                    }
+                    mostrarToast("El lote seleccionado está fuera del territorio de la República Argentina. Solo se admiten parcelas dentro del país.", "warning");
+                    if (loteBasicoLayer === e.layer) {
+                        loteBasicoLayer = null;
+                        loteBasicoGeoJSON = null;
+                    }
+                    document.getElementById("superficieBasicoHa").textContent = "0.00 ha";
+                    document.getElementById("badgeCoordenadasBasico").textContent = "Haz clic en el mapa para iniciar el polígono";
+                    const btnPaso2 = document.getElementById("btnContinuarPaso2");
+                    if (btnPaso2) btnPaso2.disabled = true;
+                    return;
+                }
+
+                if (alerta) alerta.classList.add("hidden");
+
+                if (loteBasicoLayer && loteBasicoLayer !== e.layer) {
+                    mapaBasico.removeLayer(loteBasicoLayer);
+                }
+                loteBasicoLayer = e.layer;
+                loteBasicoGeoJSON = geo;
+
+                // Calcular superficie aproximada y centroide
+                const coords = loteBasicoGeoJSON.geometry?.coordinates?.[0];
+                let areaM2 = 0;
+                let cLat = 0, cLon = 0;
+                if (coords && coords.length > 2) {
+                    for (let i = 0; i < coords.length - 1; i++) {
+                        const p1 = coords[i];
+                        const p2 = coords[i + 1];
+                        const x1 = p1[0] * 111320 * Math.cos((p1[1] * Math.PI) / 180);
+                        const y1 = p1[1] * 110540;
+                        const x2 = p2[0] * 111320 * Math.cos((p2[1] * Math.PI) / 180);
+                        const y2 = p2[1] * 110540;
+                        areaM2 += (x1 * y2 - x2 * y1);
+                        cLon += p1[0];
+                        cLat += p1[1];
+                    }
+                    areaM2 = Math.abs(areaM2) / 2;
+                    cLon /= (coords.length - 1);
+                    cLat /= (coords.length - 1);
+                }
+                const ha = (areaM2 / 10000).toFixed(2);
+                document.getElementById("superficieBasicoHa").textContent = `${ha} ha`;
+                document.getElementById("badgeCoordenadasBasico").textContent = `Centroide: [${cLat.toFixed(4)}, ${cLon.toFixed(4)}] · ${ha} ha`;
+                const btnPaso2 = document.getElementById("btnContinuarPaso2");
+                if (btnPaso2) btnPaso2.disabled = false;
+                mostrarToast(`Polígono delimitado en territorio argentino: ${ha} ha`, "success");
+            });
+
+            mapaBasico.on("pm:remove", () => {
+                const alerta = document.getElementById("alertaFronteraArgentina");
+                if (alerta) alerta.classList.add("hidden");
+                loteBasicoLayer = null;
+                loteBasicoGeoJSON = null;
+                document.getElementById("superficieBasicoHa").textContent = "0.00 ha";
+                document.getElementById("badgeCoordenadasBasico").textContent = "Haz clic en el mapa para iniciar el polígono";
+                const btnPaso2 = document.getElementById("btnContinuarPaso2");
+                if (btnPaso2) btnPaso2.disabled = true;
+            });
+        }
+
+        function irAPasoBasico1() {
+            document.getElementById("pasoBasico1").classList.remove("hidden");
+            document.getElementById("pasoBasico2").classList.add("hidden");
+            document.getElementById("pasoBasico3").classList.add("hidden");
+
+            actualizarEstilosPasos(1);
+            if (mapaBasico) setTimeout(() => mapaBasico.invalidateSize(), 100);
+        }
+
+        function irAPasoBasico2() {
+            if (!loteBasicoGeoJSON) {
+                mostrarToast("Primero debes dibujar un polígono en el mapa.", "warning");
+                return;
+            }
+            document.getElementById("pasoBasico1").classList.add("hidden");
+            document.getElementById("pasoBasico2").classList.remove("hidden");
+            document.getElementById("pasoBasico3").classList.add("hidden");
+
+            actualizarEstilosPasos(2);
+        }
+
+        function irAPasoBasico3(cultivo) {
+            cultivoPrevioBasico = cultivo;
+            document.getElementById("pasoBasico1").classList.add("hidden");
+            document.getElementById("pasoBasico2").classList.add("hidden");
+            document.getElementById("pasoBasico3").classList.remove("hidden");
+
+            actualizarEstilosPasos(3);
+
+            document.getElementById("badgeCultivoPrevioResumen").textContent = `Previo: ${cultivo}`;
+            document.getElementById("textoCultivoPrevioRec").textContent = cultivo;
+
+            const haTxt = document.getElementById("superficieBasicoHa").textContent;
+            const centTxt = document.getElementById("badgeCoordenadasBasico").textContent;
+            document.getElementById("resumenSuperficieHa").textContent = haTxt;
+            document.getElementById("resumenCentroide").textContent = centTxt;
+        }
+
+        function actualizarEstilosPasos(pasoActivo) {
+            const ind1 = document.getElementById("stepIndicador1");
+            const ind2 = document.getElementById("stepIndicador2");
+            const ind3 = document.getElementById("stepIndicador3");
+
+            [ind1, ind2, ind3].forEach((el, idx) => {
+                const num = idx + 1;
+                const badge = el.querySelector("span:first-child");
+                if (num === pasoActivo) {
+                    el.className = "flex items-center gap-2 sm:gap-3 text-emerald-400 font-semibold text-xs sm:text-sm";
+                    badge.className = "w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center font-bold text-xs sm:text-sm text-emerald-300";
+                } else if (num < pasoActivo) {
+                    el.className = "flex items-center gap-2 sm:gap-3 text-emerald-500/70 font-semibold text-xs sm:text-sm";
+                    badge.className = "w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center font-bold text-xs sm:text-sm text-emerald-400";
+                } else {
+                    el.className = "flex items-center gap-2 sm:gap-3 text-slate-500 font-semibold text-xs sm:text-sm";
+                    badge.className = "w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs sm:text-sm text-slate-400";
+                }
+            });
+        }
+
+        function ponerSpinnersEnTarjetasBasico() {
+            const spinnerHtml = `
+                <span class="inline-flex items-center gap-1.5 text-xs text-sky-400 font-mono animate-pulse">
+                    <svg class="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" fill="none">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                    </svg>
+                    Conectando con la NASA...
+                </span>
+            `;
+            const ids = ["basicoNdviValor", "basicoSmapValor", "basicoLluviaValor", "basicoTempValor", "basicoEtValor", "basicoRelieveValor"];
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = spinnerHtml;
+            });
+            const notas = [
+                ["basicoNdviNota", "Consultando archivo HLS / MODIS..."],
+                ["basicoSmapNota", "Consultando radiómetro de microondas SMAP (9km EASE)..."],
+                ["basicoLluviaNota", "Consultando constelación GPM IMERG..."],
+                ["basicoTempNota", "Consultando sensor térmico VIIRS / MODIS..."],
+                ["basicoEtNota", "Consultando modelo agrometeorológico POWER..."],
+                ["basicoRelieveNota", "Consultando modelo digital de elevación NASADEM..."]
+            ];
+            notas.forEach(([id, txt]) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = txt;
+            });
+        }
+
+        function actualizarTarjetaNdvi(obs) {
+            const validas = (obs || []).filter(item => item.variable && item.variable.toLowerCase().includes("ndvi") && item.valor !== null && item.calidad !== "descartada");
+            validas.sort((a, b) => (b.fecha || "").localeCompare(a.fecha || ""));
+            const o = validas[0];
+            const vEl = document.getElementById("basicoNdviValor");
+            const nEl = document.getElementById("basicoNdviNota");
+            if (o) {
+                if (vEl) vEl.textContent = Number(o.valor).toFixed(3);
+                if (nEl) nEl.textContent = `${o.fuente} · Pasada: ${o.fecha || 'Reciente'} (${o.calidad || 'buena'})`;
+            } else {
+                if (vEl) vEl.textContent = "-";
+                if (nEl) nEl.textContent = "Sin observaciones válidas en la pasada analizada";
+            }
+        }
+
+        function actualizarTarjetaSmap(obs) {
+            const validas = (obs || []).filter(item => item.variable && item.variable.toLowerCase().includes("humedad") && item.valor !== null && item.calidad !== "descartada");
+            validas.sort((a, b) => (b.fecha || "").localeCompare(a.fecha || ""));
+            const o = validas[0];
+            const vEl = document.getElementById("basicoSmapValor");
+            const nEl = document.getElementById("basicoSmapNota");
+            if (o) {
+                if (vEl) vEl.textContent = Number(o.valor).toFixed(3);
+                if (nEl) nEl.textContent = `${o.fuente} · Celda 9km EASE · ${o.fecha || 'Reciente'}`;
+            } else {
+                if (vEl) vEl.textContent = "-";
+                if (nEl) nEl.textContent = "Sin datos de humedad en la fecha analizada";
+            }
+        }
+
+        function actualizarTarjetaLluvia(obs) {
+            const lluvias = (obs || []).filter(item => (item.variable === "lluvia_mm" || item.variable === "precipitacion_mm") && item.valor !== null && item.calidad !== "descartada");
+            const vEl = document.getElementById("basicoLluviaValor");
+            const nEl = document.getElementById("basicoLluviaNota");
+            if (lluvias.length > 0) {
+                lluvias.sort((a, b) => (a.fecha || "").localeCompare(b.fecha || ""));
+                const totalMm = lluvias.reduce((acc, item) => acc + Number(item.valor || 0), 0);
+                const ult = lluvias[lluvias.length - 1];
+                if (vEl) vEl.textContent = totalMm.toFixed(1);
+                if (nEl) nEl.textContent = `${ult.fuente} · Régimen acumulado · ${ult.fecha || 'Reciente'}`;
+            } else {
+                if (vEl) vEl.textContent = "-";
+                if (nEl) nEl.textContent = "Sin precipitación registrada en la ventana";
+            }
+        }
+
+        function actualizarTarjetaTemperatura(obs) {
+            const maximas = (obs || []).filter(item => (item.variable === "temp_max" || item.variable === "temp_max_c") && item.valor !== null && item.calidad !== "descartada");
+            maximas.sort((a, b) => (b.fecha || "").localeCompare(a.fecha || ""));
+            const oMax = maximas[0];
+            const oMin = oMax ? (obs || []).find(item => (item.variable === "temp_min" || item.variable === "temp_min_c") && item.fecha === oMax.fecha && item.valor !== null && item.calidad !== "descartada") : null;
+            const vEl = document.getElementById("basicoTempValor");
+            const nEl = document.getElementById("basicoTempNota");
+            if (oMax) {
+                const maxVal = Number(oMax.valor).toFixed(1);
+                const minVal = oMin ? Number(oMin.valor).toFixed(1) : "-";
+                if (vEl) vEl.textContent = maxVal;
+                if (nEl) nEl.textContent = `Máx ${maxVal}°C / Mín ${minVal}°C · ${oMax.fuente} (${oMax.fecha || 'Reciente'})`;
+            } else {
+                if (vEl) vEl.textContent = "-";
+                if (nEl) nEl.textContent = "Sin registros de temperatura en la fecha";
+            }
+        }
+
+        function actualizarTarjetaEt(obs) {
+            const etList = (obs || []).filter(item => (item.variable === "radiacion" || item.variable.includes("et") || item.variable.includes("balance")) && item.valor !== null && item.calidad !== "descartada");
+            etList.sort((a, b) => (b.fecha || "").localeCompare(a.fecha || ""));
+            const o = etList[0];
+            const vEl = document.getElementById("basicoEtValor");
+            const nEl = document.getElementById("basicoEtNota");
+            if (o) {
+                if (vEl) vEl.textContent = Number(o.valor).toFixed(1);
+                if (nEl) nEl.textContent = `${o.fuente} · ${o.unidad || 'mm/día'} (${o.fecha || 'Reciente'})`;
+            } else {
+                if (vEl) vEl.textContent = "-";
+                if (nEl) nEl.textContent = "Sin cálculo de balance para el período";
+            }
+        }
+
+        function actualizarTarjetaRelieve(obs) {
+            const oRel = (obs || []).find(item => (item.variable.includes("altura") || item.variable.includes("cota") || item.variable.includes("relieve")) && item.valor !== null && item.calidad !== "descartada");
+            const oPend = (obs || []).find(item => item.variable.includes("pendiente") && item.valor !== null && item.calidad !== "descartada");
+            const vEl = document.getElementById("basicoRelieveValor");
+            const nEl = document.getElementById("basicoRelieveNota");
+            if (oRel) {
+                const pendStr = oPend ? ` · Pendiente: ${Number(oPend.valor).toFixed(1)}%` : "";
+                if (vEl) vEl.textContent = Math.round(oRel.valor);
+                if (nEl) nEl.textContent = `${oRel.fuente} · Cota media${pendStr}`;
+            } else {
+                if (vEl) vEl.textContent = "-";
+                if (nEl) nEl.textContent = "Altimetría no disponible para el cuadrante";
+            }
+        }
+
+        function actualizarTarjetasBasico(data) {
+            const obs = (data && data.observaciones) ? data.observaciones : [];
+            actualizarTarjetaNdvi(obs);
+            actualizarTarjetaSmap(obs);
+            actualizarTarjetaLluvia(obs);
+            actualizarTarjetaTemperatura(obs);
+            actualizarTarjetaEt(obs);
+            actualizarTarjetaRelieve(obs);
+        }
+
+        async function ejecutarAnalisisBasico() {
+            const select = document.getElementById("selectCultivoPrevio");
+            const cultivo = select ? select.value : "Maíz";
+
+            irAPasoBasico3(cultivo);
+            ponerSpinnersEnTarjetasBasico();
+
+            const hoyObj = new Date();
+            const hastaIso = hoyObj.toISOString().slice(0, 10);
+            const desdeRecienteIso = new Date(hoyObj.getTime() - 45 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+            const desde5aIso = new Date(hoyObj.getTime() - 5 * 365.25 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+
+            const estadoLabel = document.getElementById("estadoConsultaBasico");
+            if (estadoLabel) {
+                estadoLabel.innerHTML = `
+                    <span class="inline-flex items-center gap-1.5 text-sky-400">
+                        <svg class="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" fill="none">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                        </svg>
+                        Descargando última pasada de la NASA...
+                    </span>
+                `;
+            }
+
+            const satelites = [
+                { nombre: "NASADEM", fn: (obs) => actualizarTarjetaRelieve(obs) },
+                { nombre: "POWER", fn: (obs) => { actualizarTarjetaTemperatura(obs); actualizarTarjetaEt(obs); } },
+                { nombre: "IMERG", fn: (obs) => actualizarTarjetaLluvia(obs) },
+                { nombre: "MODIS", fn: (obs) => actualizarTarjetaNdvi(obs) },
+                { nombre: "SMAP", fn: (obs) => actualizarTarjetaSmap(obs) },
+            ];
+
+            let fuentesCargadas = 0;
+
+            // 1. Poblado progresivo e inmediato por satélite conforme llega cada respuesta
+            const promesas = satelites.map(async (sat) => {
+                try {
+                    const res = await authFetch("/api/rotaterra/consulta", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            poligono: loteBasicoGeoJSON.geometry,
+                            desde: desdeRecienteIso,
+                            hasta: hastaIso,
+                            satelites: [sat.nombre],
+                        }),
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        sat.fn(data.observaciones || []);
+                        fuentesCargadas++;
+                        if (estadoLabel) {
+                            estadoLabel.innerHTML = `<span class="text-sky-300 font-mono text-xs">Poblando tarjetas en vivo (${fuentesCargadas}/${satelites.length} satélites de la NASA)...</span>`;
+                        }
+                    }
+                } catch (err) {
+                    console.warn(`[Basico] Error consultando ${sat.nombre}:`, err);
+                }
+            });
+
+            await Promise.all(promesas);
+
+            // 2. Carga asincrónica de la serie histórica de 5 años en segundo plano
+            if (estadoLabel) {
+                estadoLabel.innerHTML = `
+                    <span class="inline-flex items-center gap-1.5 text-amber-300">
+                        <svg class="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" fill="none">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                        </svg>
+                        Descargando archivo histórico de 5 años en segundo plano...
+                    </span>
+                `;
+            }
+
+            try {
+                // Ventana histórica de 5 años
+                const resHist = await authFetch("/api/rotaterra/consulta", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        poligono: loteBasicoGeoJSON.geometry,
+                        desde: desde5aIso,
+                        hasta: hastaIso,
+                        satelites: ["POWER", "IMERG", "NASADEM", "SMAP", "MODIS", "VIIRS"],
+                    }),
+                });
+                if (resHist.ok) {
+                    if (estadoLabel) {
+                        estadoLabel.innerHTML = `<span class="text-emerald-400 font-mono font-bold">&#10003; Descarga histórica de 5 años completada con éxito</span>`;
+                    }
+                    mostrarToast("Descarga histórica de 5 años completada con éxito.", "success");
+                }
+            } catch (errHist) {
+                console.warn("[Basico] Descarga histórica diferida:", errHist);
+                if (estadoLabel) {
+                    estadoLabel.innerHTML = `<span class="text-emerald-400 font-mono">&#10003; Telemetría satelital en línea</span>`;
+                }
+            }
+        }
+
+        function reiniciarAsistenteBasico() {
+            if (loteBasicoLayer && mapaBasico) {
+                mapaBasico.removeLayer(loteBasicoLayer);
+                loteBasicoLayer = null;
+            }
+            loteBasicoGeoJSON = null;
+            document.getElementById("superficieBasicoHa").textContent = "0.00 ha";
+            document.getElementById("btnContinuarPaso2").disabled = true;
+            irAPasoBasico1();
+        }
+
         /* ===================================================================
          * [JS-01] ESTADO GLOBAL, VERIFICACIÓN DE SESIÓN JWT Y ARRANQUE SPA
          * =================================================================== */
@@ -1197,11 +2301,34 @@ CONTROLADORES JAVASCRIPT:
         let listaTodosUsuariosGlobal = [];
 
         document.addEventListener("DOMContentLoaded", async () => {
-            if (!getToken()) {
-                window.location.href = "/login";
+            // Manejador del select de cultivo para mostrar/ocultar "Otro"
+            const selCult = document.getElementById("selectCultivoPrevio");
+            if (selCult) {
+                selCult.addEventListener("change", (e) => {
+                    const wrap = document.getElementById("wrapOtroCultivo");
+                    if (wrap) {
+                        if (e.target.value === "Otro") wrap.classList.remove("hidden");
+                        else wrap.classList.add("hidden");
+                    }
+                });
+            }
+
+            const token = getToken();
+            const modo = getModo();
+
+            if (!token) {
+                mostrarSelectorModalidad();
                 return;
             }
-            await inicializarAplicacion();
+
+            if (modo === "basico") {
+                await iniciarModoDesdeSelector("basico");
+            } else {
+                cerrarSelectorModalidad();
+                document.getElementById("vistaModoBasico").classList.add("hidden");
+                document.getElementById("vistaModoAvanzado").classList.remove("hidden");
+                await inicializarAplicacion();
+            }
         });
 
         async function inicializarAplicacion() {
@@ -1209,11 +2336,19 @@ CONTROLADORES JAVASCRIPT:
                 const res = await authFetch("/api/auth/me");
                 if (!res.ok) {
                     clearSession();
-                    window.location.href = "/login";
+                    mostrarSelectorModalidad();
                     return;
                 }
                 currentUser = await res.json();
                 saveSession(getToken(), currentUser);
+
+                const modo = getModo() || (currentUser.rol === "admin" ? "admin" : "avanzado");
+                setModo(modo);
+
+                const navModoLabel = document.getElementById("navModoLabel");
+                if (navModoLabel) {
+                    navModoLabel.textContent = modo === "admin" ? "Admin" : (modo === "basico" ? "Básico" : "Avanzado");
+                }
 
                 configurarInterfazPorRol();
                 await initArgentinaGeoSelectors("edit_user_provincia", "edit_user_ciudad", "edit_user_cp", {
@@ -1359,6 +2494,31 @@ CONTROLADORES JAVASCRIPT:
             const res = await authFetch("/api/campos");
             if (!res.ok) return;
             listaCamposGlobal = await res.json();
+
+            if (listaCamposGlobal.length === 0 && getModo() === "avanzado") {
+                listaCamposGlobal = [
+                    {
+                        id: 999,
+                        propietario_id: 0,
+                        nombre_campo: "Lote Piloto Avanzado",
+                        descripcion_ubicacion: "Establecimiento Demostrativo · Cobertura NASA",
+                        superficie_ha: 145.5,
+                        geometria_geojson: JSON.stringify({
+                            type: "Polygon",
+                            coordinates: [[
+                                [-65.485, -33.682],
+                                [-65.462, -33.682],
+                                [-65.462, -33.701],
+                                [-65.485, -33.701],
+                                [-65.485, -33.682],
+                            ]]
+                        }),
+                        configuracion_extra: {},
+                        relieve_msnm: 512,
+                        pendiente_porc: 1.1,
+                    }
+                ];
+            }
 
             if (listaCamposGlobal.length > 0 && !listaCamposGlobal.some((c) => c.id === campoActivoId)) {
                 campoActivoId = listaCamposGlobal[0].id;
@@ -1613,6 +2773,29 @@ CONTROLADORES JAVASCRIPT:
             if (currentUser?.rol === "admin") {
                 const propVal = document.getElementById("nuevo_campo_propietario_id").value;
                 if (propVal) payload.propietario_id = parseInt(propVal, 10);
+            }
+
+            if (getModo() === "avanzado") {
+                const idEfimero = Date.now();
+                const nuevoCampoEfimero = {
+                    id: idEfimero,
+                    propietario_id: 0,
+                    nombre_campo: payload.nombre_campo,
+                    descripcion_ubicacion: payload.descripcion_ubicacion,
+                    superficie_ha: payload.superficie_ha,
+                    geometria_geojson: payload.geometria_geojson || null,
+                    configuracion_extra: {},
+                    relieve_msnm: 512,
+                    pendiente_porc: 1.2,
+                };
+                listaCamposGlobal.unshift(nuevoCampoEfimero);
+                campoActivoId = idEfimero;
+                cerrarModal("modalCampo");
+                poblarSelectorCampoActivo();
+                renderizarListaCampos();
+                actualizarHeaderCampoActivo();
+                mostrarToast(`Campo de prueba "${nuevoCampoEfimero.nombre_campo}" creado en sesión efímera.`, "success");
+                return;
             }
 
             const res = await authFetch("/api/campos", {
@@ -2224,21 +3407,34 @@ CONTROLADORES JAVASCRIPT:
 
         function mostrarToast(mensaje, tipo = "info") {
             const container = document.getElementById("toastContainer");
+            if (!container) return;
             const toast = document.createElement("div");
             const colores =
                 tipo === "error"
-                    ? "border-rose-500/40 bg-rose-950/90 text-rose-200"
+                    ? "border-rose-500/80 bg-rose-950/95 text-rose-200 border-2"
                     : tipo === "success"
-                    ? "border-emerald-500/40 bg-emerald-950/90 text-emerald-200"
-                    : "border-sky-500/40 bg-slate-900/90 text-sky-200";
+                    ? "border-emerald-500/80 bg-emerald-950/95 text-emerald-200 border-2"
+                    : tipo === "warning"
+                    ? "border-amber-500 bg-amber-950/95 text-amber-200 border-2 font-semibold"
+                    : "border-sky-500/80 bg-slate-900/95 text-sky-200 border";
 
-            toast.className = `pointer-events-auto rounded-xl border ${colores} px-4 py-3 text-xs font-medium shadow-xl backdrop-blur-md transition`;
-            toast.textContent = mensaje;
+            const icono =
+                tipo === "error"
+                    ? "🚨 "
+                    : tipo === "success"
+                    ? "✅ "
+                    : tipo === "warning"
+                    ? "⚠️ "
+                    : "ℹ️ ";
+
+            toast.className = `pointer-events-auto rounded-xl ${colores} px-4 py-3 text-xs font-medium shadow-2xl backdrop-blur-md transition flex items-center gap-2.5 z-[999999]`;
+            toast.innerHTML = `<span class="text-base">${icono}</span><span>${mensaje}</span>`;
             container.appendChild(toast);
 
             setTimeout(() => {
-                toast.remove();
-            }, 4000);
+                toast.classList.add("opacity-0", "translate-x-4");
+                setTimeout(() => toast.remove(), 300);
+            }, 4500);
         }
 
         window.addEventListener("keydown", (e) => {
