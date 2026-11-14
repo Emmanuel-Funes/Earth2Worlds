@@ -11,7 +11,7 @@ Reglas para cualquier persona o agente de IA que toque el pipeline de datos de R
 
 ## 2. Solo datos de la NASA
 
-Todas las fuentes y todos los respaldos son de la NASA (decisión de Hernán del 3 de octubre de 2026). Las excepciones previstas son los datos del productor y las cartas de suelo del INTA (GeoINTA), que figuran en la Guía técnica.
+Todas las fuentes y todos los respaldos son de la NASA. Las excepciones previstas son los datos del productor y las cartas de suelo del INTA (GeoINTA), que figuran en la Guía técnica.
 
 ## 3. Contrato común
 
@@ -29,7 +29,7 @@ Toda fuente entrega una lista de `Observacion` (`rotaterra/contrato.py`):
 
 ## 4. La app espera a la NASA (spec 010)
 
-La app pide los datos a la NASA en el momento y espera la respuesta (decisión de Hernán del 3 de octubre de 2026). Lo hace con los endpoints que trae cada satélite: `/clima`, `/ndvi`, `/humedad-suelo`, `/lluvia` y `/altimetria`. La espera va de segundos a minutos (HLS, y AppEEARS si entra), así que la app tiene que mostrar que está esperando. Para que entren los respaldos si el satélite falla, la app usa `POST /consulta` (spec 012).
+La app pide los datos a la NASA en el momento y espera la respuesta. Lo hace con los endpoints que trae cada satélite: `/clima`, `/ndvi`, `/humedad-suelo`, `/lluvia` y `/altimetria`. La espera va de segundos a minutos (HLS, y AppEEARS si entra), así que la app tiene que mostrar que está esperando. Para que entren los respaldos si el satélite falla, la app usa `POST /consulta` (spec 012).
 
 La base de datos y la actualización nocturna (`rotaterra/actualizar.py`, `GET /lotes/{id}/observaciones`) quedan como complemento opcional para cuando haya una base.
 
