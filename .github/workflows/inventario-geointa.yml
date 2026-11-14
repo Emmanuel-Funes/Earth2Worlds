@@ -2,7 +2,7 @@ name: Probar GeoINTA (inventario del catálogo)
 
 on:
   push:
-    branches: [GeoINTA-capas_verificadas]
+    branches: [fuente-geointa-suelo-del-lote]
     paths:
       - "inventariar_geointa.py"
       - ".github/workflows/inventario-geointa.yml"
