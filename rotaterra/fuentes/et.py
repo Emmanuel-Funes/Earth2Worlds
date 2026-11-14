@@ -19,7 +19,7 @@ from rotaterra.geo import validar_poligono
 
 # Productos en orden de preferencia (spec 017). Todos usan el algoritmo MOD16, la misma grilla y el mismo
 # calendario de compuestos, así que para cada compuesto vale el primero de la lista que tenga dato.
-# Verificado en CMR el 4/10/2026: MOD16A2 y MYD16A2 v061 tienen OPeNDAP; VIIRS (VJ116A2, VNP16A2) no está publicado.
+# Verificado en CMR: MOD16A2 y MYD16A2 v061 tienen OPeNDAP; VIIRS (VJ116A2, VNP16A2) no está publicado.
 PRODUCTOS = {  # producto -> (fuente del contrato, satélite)
     "MOD16A2": ("MODIS", "Terra"),
     "MYD16A2": ("MODIS", "Aqua"),

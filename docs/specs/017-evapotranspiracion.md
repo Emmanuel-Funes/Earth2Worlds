@@ -1,6 +1,6 @@
 # Spec 017 · Evapotranspiración real del lote (fuente principal de ET)
 
-**Estado:** aprobada por Hernán el 4/10/2026 ("Sumar lo necesario para cubrir lo que hace falta") · **Etapa:** pipeline satélite → API → app · **Requiere:** cuenta NASA Earthdata · **Rama:** `MODIS-evapotranspiracion`
+**Estado:** aprobada por Hernán ("Sumar lo necesario para cubrir lo que hace falta") · **Etapa:** pipeline satélite → API → app · **Requiere:** cuenta NASA Earthdata · **Rama:** `MODIS-evapotranspiracion`
 
 ## Objetivo
 
@@ -10,7 +10,7 @@ Saber **cuánta agua pierde el lote** por evaporación del suelo y transpiració
 
 Producto de evapotranspiración de 500 m y 8 días de la NASA (LP DAAC), algoritmo MOD16 (Penman-Monteith), en la grilla sinusoidal de MODIS.
 
-**Elección con datos reales de CMR (prueba del 4/10/2026, mosaico h12v12, enero de 2026):**
+**Elección con datos reales de CMR (prueba, mosaico h12v12, enero de 2026):**
 
 | Producto | Satélite | En CMR | OPeNDAP | Último archivo publicado |
 |---|---|---|---|---|
@@ -81,7 +81,7 @@ Dos observaciones por compuesto, con nombres fijos (los usan los respaldos ECOST
 
 - Satélite independiente (spec 009): `rotaterra/fuentes/et.py`, registrado como `Satelite("ET", pedir)` (principal). No importa ningún otro satélite.
 - Endpoint de prueba `POST /evapotranspiracion` (spec 010): la app lo llama y espera la respuesta (segundos).
-- Prueba real: workflow "Probar MODIS (evapotranspiración)" (`.github/workflows/probar-et.yml`, `probar_et.py`), lote de ejemplo de San Luis y enero de 2026. Además de los valores, imprime qué productos de ET encuentra CMR, con OPeNDAP o sin él, y busca por palabra clave si la NASA ya publicó la ET de VIIRS.
+- Prueba real: workflow "Probar MODIS (evapotranspiración)" (`.github/workflows/probar-et.yml`, `probar_et.py`), lote de ejemplo de San Luis, con un período automático que se cuenta desde el día en que corre. Además de los valores, imprime qué productos de ET encuentra CMR, con OPeNDAP o sin él, y busca por palabra clave si la NASA ya publicó la ET de VIIRS.
 
 ## Criterios de aceptación
 
@@ -91,7 +91,7 @@ Dos observaciones por compuesto, con nombres fijos (los usan los respaldos ECOST
 - [x] Los códigos de relleno y los compuestos sin dato quedan `descartada` con `valor: null` y el motivo (tests `test_relleno_se_descarta_y_dice_por_que`, `test_sin_dato_se_descarta`, `test_compuesto_sin_dato_en_ningun_producto_queda_descartado`).
 - [x] Si no hay ningún dato, el conector da error para que entren los respaldos (tests `test_sin_archivos_es_error_para_que_entren_los_respaldos` y `test_todo_relleno_es_error_para_que_entren_los_respaldos`).
 - [x] El conector no importa código de ningún otro satélite (`tests/test_nucleo.py` en verde).
-- [x] Tests sin internet en `tests/test_et.py`; prueba real "Probar MODIS (evapotranspiración)" verde en el PR. *(24 tests en `tests/test_et.py`, 68 en total en local; en el PR #35, `tests`, `tests-postgres` y "Probar MODIS (evapotranspiración)" en verde. La búsqueda por palabra clave en CMR confirmó que de VIIRS solo hay productividad (`VJ117A2`, `VNP17A2`), no evapotranspiración.)*
+- [x] Tests sin internet en `tests/test_et.py`; prueba real "Probar MODIS (evapotranspiración)" verde en el PR. *(24 tests en `tests/test_et.py`, 68 en total en local;, `tests`, `tests-postgres` y "Probar MODIS (evapotranspiración)" en verde. La búsqueda por palabra clave en CMR confirmó que de VIIRS solo hay productividad (`VJ117A2`, `VNP17A2`), no evapotranspiración.)*
 
 ## Fuera de alcance
 
