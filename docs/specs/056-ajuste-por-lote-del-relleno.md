@@ -1,6 +1,6 @@
 # Spec 056 · Ajuste por lote del satélite que rellena huecos
 
-**Estado:** aprobada por Hernán el 28/10/2026 ("Dale, hacelo") · **Etapa:** núcleo (consulta en el momento) · **Rama:** `NUCLEO-ajuste_por_lote` · **Depende de:** spec 052 (`NUCLEO-rellenar_huecos_por_detalle`)
+**Estado:** aprobada por Hernán ("Dale, hacelo") · **Etapa:** núcleo (consulta en el momento) · **Rama:** `NUCLEO-ajuste_por_lote` · **Depende de:** spec 052 (`NUCLEO-rellenar_huecos_por_detalle`)
 
 ## Problema
 
@@ -37,7 +37,7 @@ Pedir el período completo hace que Sentinel-3 tarde lo de un mes entero (~6 min
 
 ## Resultado de la prueba real
 
-28/10/2026, desde la máquina de trabajo, con todos los satélites de la rama de Render más las specs 052 y 056, lote de prueba de San Luis, `POST /consulta` de HLS.
+Desde la máquina de trabajo, con todos los satélites de la rama de Render más las specs 052 y 056, lote de prueba de San Luis, `POST /consulta` de HLS.
 
 **Enero de 2026**: Sentinel-3 rellenó 4 días (Sentinel-2 no tenía nada útil en los huecos):
 
