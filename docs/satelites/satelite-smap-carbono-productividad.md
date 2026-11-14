@@ -29,3 +29,49 @@ Cada archivo pesa ~140 MB. No se baja: se pide por OPeNDAP solo el valor de la c
 ## Depende de
 
 Solo del núcleo (rama `nucleo-api-y-contrato-comun`): no importa ningún otro satélite.
+
+## Prueba real del 14/11/2026
+
+Corrida el 14/11/2026 contra la fuente real, con datos de los últimos días (desde esta máquina de trabajo). Lote de prueba de San Luis.
+
+Comando: `python probar_smap_carbono.py "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300" "2026-09-30" "2026-11-12"`
+
+```
+Productividad SMAP L4 Carbono (celda de 9 km del lote) del 2026-09-30 al 2026-11-12 · 9 s
+
+Fecha           GPP    NEE  Calidad     Detalle
+2026-09-30     1.33   1.39  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 1.35 · latifoliadas 1.08 · cel
+2026-10-01     3.14   0.48  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 3.19 · latifoliadas 2.54 · cel
+2026-10-02     2.27   0.87  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 2.30 · latifoliadas 1.98 · cel
+2026-10-03     3.21   0.67  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 3.25 · latifoliadas 2.85 · cel
+2026-10-04     2.27   0.89  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 2.29 · latifoliadas 2.10 · cel
+2026-10-05     3.25   0.62  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 3.30 · latifoliadas 2.61 · cel
+2026-10-06     1.59   1.36  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 1.61 · latifoliadas 1.32 · cel
+2026-10-07     1.38   1.56  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 1.41 · latifoliadas 1.04 · cel
+2026-10-08     1.04   1.09  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 1.05 · latifoliadas 0.88 · cel
+2026-10-09     0.78   1.13  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 0.79 · latifoliadas 0.66 · cel
+2026-10-10     2.30   0.50  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 2.32 · latifoliadas 2.04 · cel
+2026-10-11     1.37   1.03  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 1.38 · latifoliadas 1.22 · cel
+2026-10-12     1.25   1.12  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 1.27 · latifoliadas 1.09 · cel
+2026-10-13     1.05   1.11  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 1.06 · latifoliadas 0.88 · cel
+2026-10-14     1.41   0.94  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 1.43 · latifoliadas 1.19 · cel
+2026-10-15     2.04   0.72  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 2.05 · latifoliadas 1.88 · cel
+2026-10-16     2.30   0.67  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 2.30 · latifoliadas 2.21 · cel
+2026-10-17     2.93   0.34  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 2.93 · latifoliadas 2.96 · cel
+2026-10-18     2.41   0.51  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 2.40 · latifoliadas 2.56 · cel
+2026-10-19     1.75   0.79  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 1.74 · latifoliadas 1.78 · cel
+2026-10-20     1.73   0.83  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 1.72 · latifoliadas 1.77 · cel
+2026-10-21     2.19   1.06  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 2.18 · latifoliadas 2.36 · cel
+2026-10-22     1.42   1.50  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 1.43 · latifoliadas 1.22 · cel
+2026-10-23     1.55   1.21  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 1.56 · latifoliadas 1.37 · cel
+2026-10-24     1.54   1.05  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 1.56 · latifoliadas 1.22 · cel
+2026-10-25     3.27   0.16  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 3.30 · latifoliadas 2.84 · cel
+2026-10-26     1.86   0.85  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 1.87 · latifoliadas 1.72 · cel
+2026-10-27     1.61   1.19  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 1.63 · latifoliadas 1.28 · cel
+2026-10-28     3.37   0.54  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 3.38 · latifoliadas 3.24 · cel
+2026-10-29     3.38   0.66  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 3.36 · latifoliadas 3.60 · cel
+2026-10-30     3.25   0.81  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 3.24 · latifoliadas 3.42 · cel
+2026-10-31     2.77   0.87  buena       SMAP L4 Carbono · productividad primaria bruta (carbono que fija la vegetación) · dato regional de la celda de 9 km, no del lote · GPP del modelo para cereales 2.74 · latifoliadas 3.09 · cel
+
+32 días · 32 con dato · GPP media 2.09 (mín 0.78, máx 3.38) g C/m²/día · suma 67 g C/m²
+```
