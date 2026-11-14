@@ -1,6 +1,6 @@
 # Spec 007 · NDVI de respaldo con MODIS
 
-**Estado:** aprobada por Hernán el 3 de octubre de 2026 (tarjeta "Solo NASA") · **Etapa:** pipeline satélite → API → app (sin interfaz) · **Requiere:** cuenta NASA Earthdata
+**Estado:** aprobada por Hernán (tarjeta "Solo NASA") · **Etapa:** pipeline satélite → API → app (sin interfaz) · **Requiere:** cuenta NASA Earthdata
 
 ## Objetivo
 
@@ -12,7 +12,7 @@ Que el lote siga teniendo NDVI de la NASA cuando HLS falla. MODIS es más grueso
 |---|---|---|---|---|
 | `MOD13Q1` v061 | Terra | 250 m, sinusoidal | compuesto de 16 días | NDVI, confiabilidad del píxel, día de adquisición, latitud y longitud de cada píxel |
 
-Se lee por **OPeNDAP de la NASA** solo la ventana de píxeles que cubre el lote. El gemelo de Aqua (`MYD13Q1`) daría un dato cada 8 días, pero la NASA no le ofrece OPeNDAP (verificado el 3 de octubre de 2026): queda afuera hasta que lo habilite.
+Se lee por **OPeNDAP de la NASA** solo la ventana de píxeles que cubre el lote. El gemelo de Aqua (`MYD13Q1`) daría un dato cada 8 días, pero la NASA no le ofrece OPeNDAP (verificado): queda afuera hasta que lo habilite.
 
 ## Entrada
 
@@ -48,7 +48,7 @@ Nunca se inventa un valor. NDVI fuera de -1 a 1 se descarta.
 ## Dónde entra
 
 - **Respaldo (spec 005):** si HLS falla en la actualización nocturna, se pide el mismo período a MODIS (`HLS:MODIS` en `actualizaciones`).
-- **Segundo respaldo (3/10/2026, opción "VIIRS y MODIS"):** el orden es HLS → Sentinel-2 → VIIRS → MODIS (`orden=3`; Sentinel-2 se sumó el 4/10/2026, spec 014). MODIS entra solo si Sentinel-2 y VIIRS tampoco traen datos, porque MODIS está en fin de misión. Si VIIRS no está unido a `main`, MODIS entra directo después de HLS.
+- **Segundo respaldo:** el orden es HLS → Sentinel-2 → VIIRS → MODIS (`orden=3`; Sentinel-2 se sumó, spec 014). MODIS entra solo si Sentinel-2 y VIIRS tampoco traen datos, porque MODIS está en fin de misión. Si VIIRS no está unido a `main`, MODIS entra directo después de HLS.
 - **`combinar=true`:** HLS gana sobre VIIRS y VIIRS sobre MODIS en la misma fecha; MODIS solo rellena.
 - NDMI no tiene respaldo: MODIS 13Q1 no trae la banda SWIR necesaria a 250 m.
 
