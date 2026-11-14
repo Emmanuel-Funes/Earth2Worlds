@@ -1,6 +1,6 @@
 # Spec 005 · Respaldos de la NASA
 
-**Estado:** aprobada por Hernán el 3 de octubre de 2026 (tarjeta "Solo NASA") · **Pedido por:** Hernán ("¿se podrían agregar backups a los satélites?" y "los respaldos tienen que ser también de la NASA")
+**Estado:** aprobada por Hernán (tarjeta "Solo NASA") · **Pedido por:** Hernán ("¿se podrían agregar backups a los satélites?" y "los respaldos tienen que ser también de la NASA")
 
 ## Objetivo
 
@@ -16,7 +16,7 @@ Que cada dato tenga un **respaldo de la NASA** que entra solo cuando la fuente p
 | Evapotranspiración | MODIS MOD16A2/MYD16A2 (500 m, 8 días) | 1.º ECOSTRESS (70 m, también da el estrés hídrico ESI); 2.º ET de referencia FAO-56 calculada con POWER (otra variable: `et0_mm_dia`) | `MODIS-evapotranspiracion` (spec 017), `ECOSTRESS-evapotranspiracion_estres` (spec 018) y `POWER-ET0_FAO56_respaldo` (spec 019) |
 | Suelo del lote | Cartas de suelo del INTA (GeoINTA) | Sin respaldo: es un dato fijo | `GeoINTA-suelos` (spec 020) |
 
-Se descartó Open-Meteo (PR #8, cerrado): no es de la NASA, y en la prueba real su humedad estaba en otra escala que SMAP (San Luis, 1 al 14 de enero de 2026: 0,30 a 0,33 contra 0,05 a 0,06 m³/m³).
+Se descartó Open-Meteo: no es de la NASA, y en la prueba real su humedad estaba en otra escala que SMAP (San Luis, 1 al 14 de enero de 2026: 0,30 a 0,33 contra 0,05 a 0,06 m³/m³).
 
 ## SMAP: dos caminos al mismo dato
 
@@ -42,7 +42,7 @@ Si AppEEARS queda `pendiente`, a la noche siguiente se **reusa el mismo pedido**
 
 En la actualización nocturna (spec 004), por lote y por fuente:
 - Si la principal termina en `error`, se pide **el mismo período** al respaldo.
-- Si una principal tiene **varios respaldos**, entran en orden (campo `orden` del `Satelite`, el menor primero) hasta que uno guarde datos. Si un respaldo falla o no trae nada, entra el siguiente. Ejemplo: HLS → Sentinel-2 → VIIRS → MODIS (VIIRS y MODIS: decisión de Hernán del 3/10/2026; Sentinel-2 se sumó el 4/10/2026, "sumar lo necesario para cubrir lo que hace falta", con los socios de la NASA habilitados).
+- Si una principal tiene **varios respaldos**, entran en orden (campo `orden` del `Satelite`, el menor primero) hasta que uno guarde datos. Si un respaldo falla o no trae nada, entra el siguiente. Ejemplo: HLS → Sentinel-2 → VIIRS → MODIS (VIIRS y MODIS: decisión de Hernán; Sentinel-2 se sumó, "sumar lo necesario para cubrir lo que hace falta", con los socios de la NASA habilitados).
 - Si la principal anduvo bien, el respaldo **no se consulta**.
 - El resultado queda en `actualizaciones` con el nombre `FUENTE:camino` (por ejemplo `SMAP:AppEEARS`), y `/lotes/{id}/estado` muestra su última fecha con dato.
 - Una principal caída **con** su respaldo guardado no marca la corrida como fallida.
