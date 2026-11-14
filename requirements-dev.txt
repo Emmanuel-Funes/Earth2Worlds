@@ -1,2 +1,3 @@
 -r requirements.txt
 pytest>=8
+openpyxl>=3.1  # semillas/fichas.py lee la planilla pública de INASE (.xlsx) al armar la base
