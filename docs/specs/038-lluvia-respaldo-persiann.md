@@ -60,7 +60,7 @@ PERSIANN se baja **un archivo por día** (a diferencia de CPC, que es un NetCDF 
 
 ## Prueba real
 
-Workflow `Probar PERSIANN (lluvia de respaldo)` (`.github/workflows/probar-persiann.yml`, `probar_persiann.py`). Por defecto: lote de prueba de San Luis (esquinas `-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300`, centro -33,7025; -65,2975) y del 1 al 14 de enero de 2026, el mismo período en que IMERG dio **32,0 mm** en total. Corre en cada PR que toque estos archivos y a mano con un clic.
+Workflow `Probar PERSIANN (lluvia de respaldo)` (`.github/workflows/probar-persiann.yml`, `probar_persiann.py`). Por defecto: lote de prueba de San Luis (esquinas `-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300`, centro -33,7025; -65,2975), con un período automático que se cuenta desde el día en que corre. Corre en cada PR que toque estos archivos y a mano con un clic.
 
 ## Resultado de la prueba real
 

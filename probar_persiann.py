@@ -14,9 +14,6 @@ from shapely.geometry import shape
 from rotaterra.fuentes import persiann
 from rotaterra.geo import poligono_desde_esquinas
 
-# IMERG en el lote de prueba, 1 al 14 de enero de 2026 (spec 006): 32,0 mm en total, 22,5 mm el 13/1.
-# PERSIANN-CDR en ese período, medido en la investigación 028: ~25,3 mm en total.
-IMERG_TOTAL, IMERG_13, PERSIANN_ESPERADO = 32.0, 22.5, 25.3
 
 esquinas, desde, hasta = sys.argv[1], date.fromisoformat(sys.argv[2]), date.fromisoformat(sys.argv[3])
 centro = shape(poligono_desde_esquinas(esquinas)).centroid
@@ -68,11 +65,6 @@ total = sum(o.valor for o in obs if o.valor is not None)
 print(f"\n{len(obs)} días · calidad {dict(Counter(o.calidad for o in obs))} · total {total:.1f} mm")
 print(f"Variable {obs[0].variable} en {obs[0].unidad}, fuente {obs[0].fuente}, resolución {obs[0].resolucion_m} m")
 
-if (desde, hasta) == (date(2026, 1, 1), date(2026, 1, 14)):
-    dia13 = next((o.valor for o in obs if o.fecha == date(2026, 1, 13)), None)
-    print(f"\nComparación en el mismo período: PERSIANN {total:.1f} mm contra IMERG {IMERG_TOTAL:.1f} mm "
-          f"(esperado PERSIANN ~{PERSIANN_ESPERADO:.1f} mm, investigación 028); "
-          f"13/1: PERSIANN {'sin dato' if dia13 is None else f'{dia13:.1f} mm'} contra IMERG {IMERG_13:.1f} mm")
 
 if len(obs) != (hasta - desde).days + 1:
     sys.exit("Error: no vino un valor por cada día pedido")
