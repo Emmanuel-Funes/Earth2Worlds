@@ -1,6 +1,6 @@
 # Spec 038 · Tercer respaldo de la lluvia con NOAA PERSIANN-CDR (estimación por satélite)
 
-**Estado:** aprobada por Hernán el 15/10/2026 ("Listo, sigamos con los que dijiste") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** nada (archivos públicos de NOAA NCEI, sin cuenta) · **Rama:** `PERSIANN-lluvia_respaldo` · **Depende de:** PR #24 (`NUCLEO-varios_respaldos_en_orden`)
+**Estado:** aprobada por Hernán ("Listo, sigamos con los que dijiste") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** nada (archivos públicos de NOAA NCEI, sin cuenta) · **Rama:** `PERSIANN-lluvia_respaldo` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`)
 
 ## Objetivo
 
@@ -60,11 +60,11 @@ PERSIANN se baja **un archivo por día** (a diferencia de CPC, que es un NetCDF 
 
 ## Prueba real
 
-Workflow `Probar PERSIANN (lluvia de respaldo)` (`.github/workflows/probar-persiann.yml`, `probar_persiann.py`). Por defecto: lote de prueba de San Luis (esquinas `-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300`, centro -33,7025; -65,2975) y del 1 al 14 de enero de 2026, el mismo período en que IMERG dio **32,0 mm** en total. Corre en cada PR que toque estos archivos y a mano con un clic.
+Workflow `Probar PERSIANN (lluvia de respaldo)` (`.github/workflows/probar-persiann.yml`, `probar_persiann.py`). Por defecto: lote de prueba de San Luis (esquinas `-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300`, centro -33,7025; -65,2975), con un período automático que se cuenta desde el día en que corre. Corre en cada PR que toque estos archivos y a mano con un clic.
 
 ## Resultado de la prueba real
 
-Workflow `Probar PERSIANN (lluvia de respaldo)` en el PR #54 (15/10/2026, en verde), lote de prueba (centro -33,7025; -65,2975), del 1 al 14 de enero de 2026. 14 días, todos con dato `buena`, **total 25,3 mm** (justo lo que estimó la investigación 028). Días con lluvia: 6/1 2,15 · 7/1 0,46 · 8/1 11,54 · 9/1 2,48 · 13/1 5,09 mm; el resto 0,00.
+Workflow `Probar PERSIANN (lluvia de respaldo)`, lote de prueba (centro -33,7025; -65,2975), del 1 al 14 de enero de 2026. 14 días, todos con dato `buena`, **total 25,3 mm** (justo lo que estimó la investigación 028). Días con lluvia: 6/1 2,15 · 7/1 0,46 · 8/1 11,54 · 9/1 2,48 · 13/1 5,09 mm; el resto 0,00.
 
 Comparación en el mismo período:
 
@@ -79,7 +79,7 @@ PERSIANN queda entre IMERG y CPC en el acumulado: ve bien el patrón de la quinc
 
 ## Criterios de aceptación
 
-- [x] Con el lote de prueba real (centro -33,7025; -65,2975), del 1 al 14 de enero de 2026, se obtiene un valor de PERSIANN por día, todos `buena`, con total **25,3 mm** (PR #54, workflow en verde), igual a lo estimado en la investigación 028.
+- [x] Con el lote de prueba real (centro -33,7025; -65,2975), del 1 al 14 de enero de 2026, se obtiene un valor de PERSIANN por día, todos `buena`, con total **25,3 mm**, igual a lo estimado en la investigación 028.
 - [x] La comparación con IMERG (32,0 mm), CPC (17,5 mm) y POWER (13,6 mm) en el mismo período queda anotada en "Resultado de la prueba real".
 - [x] Un día sin publicar queda `descartada` ("todavía no tiene"), un píxel sin dato queda `descartada` ("sin dato"), el 0,0 es un dato real `buena`, y un valor fuera de 0-500 mm/día queda `dudosa` sin corregir (tests en `tests/test_persiann.py`).
 - [x] Devuelve un valor por cada día pedido, con `variable: "lluvia_mm"`, `unidad: "mm/día"`, `fuente: "PERSIANN"`, `resolucion_m: 27000`.
