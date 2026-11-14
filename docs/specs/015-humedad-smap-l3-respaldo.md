@@ -40,7 +40,7 @@ Lote con su centro (`lat`, `lon`, EPSG:4326, el que guarda el núcleo) y un per�
 Una observación por día del período, aunque la NASA no tenga dato ese día.
 
 ```json
-{"lote_id": "lote-7", "fecha": "2026-01-09", "variable": "humedad_superficial", "valor": 0.118,
+{"lote_id": "lote-7", "fecha": "2026-11-14", "variable": "humedad_superficial", "valor": 0.118,
  "unidad": "m³/m³", "fuente": "SMAP", "resolucion_m": 9000, "calidad": "buena",
  "nota": "Respaldo de SMAP L4 · observación satelital SMAP L3 (SPL3SMP_E), celda de 9 km: contexto regional, no dato del lote · solo superficie 0-5 cm (el L3 no trae zona de raíces) · pasada AM 0,118 (recomendada) · PM sin pasada"}
 ```
@@ -70,7 +70,7 @@ Supuestos (se anotan en la `nota`): bit 0 de `retrieval_qual_flag` como criterio
 
 ## Comparación con el L4 (referencia)
 
-SMAP L4 0-5 cm en el lote de prueba (spec 003/005): 0,049 el 1/1/2026 … 0,098 el 8/1, 0,120 el 9/1, 0,127 el 14/1. El L3 tiene que seguir la misma tendencia en los días con pasada (se anotan los números de la prueba real).
+SMAP L4 0-5 cm en el lote de prueba (spec 003/005): 0,049 el 14/11/2026 … 0,098 el 8/1, 0,120 el 9/1, 0,127 el 14/1. El L3 tiene que seguir la misma tendencia en los días con pasada (se anotan los números de la prueba real).
 
 ## Verificado en la prueba real
 
