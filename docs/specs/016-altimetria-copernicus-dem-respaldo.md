@@ -79,7 +79,7 @@ Una observación por variable, con:
 
 ## Criterios de aceptación
 
-- [x] Con el lote de prueba real (25,7 ha en -33,70; -65,30) se obtienen las 7 variables de Copernicus DEM, sin credenciales (GitHub Actions, 4/10/2026, mosaico `S34_00_W066_00`, en 3 segundos: altura media 489,4 m, de 487,1 a 493,4 m, pendiente media 2,09 %, 289 de 289 píxeles con dato, todas `buena`).
+- [x] Con el lote de prueba real (25,7 ha en -33,70; -65,30) se obtienen las 7 variables de Copernicus DEM, sin credenciales (GitHub Actions, mosaico `S34_00_W066_00`, en 3 segundos: altura media 489,4 m, de 487,1 a 493,4 m, pendiente media 2,09 %, 289 de 289 píxeles con dato, todas `buena`).
 - [x] Las superficies de los tres ambientes suman la superficie del lote (8,36 + 10,60 + 6,76 = 25,72 ha).
 - [x] La fecha de la observación sale del XML del mosaico, no se inventa: `2013-10-30` (toma de TanDEM-X del 17/01/2011 al 30/10/2013). Un XML sin fecha hace fallar al conector (test `test_sin_fecha_en_el_xml_no_se_inventa`).
 - [x] Comparación con NASADEM en el mismo lote:
