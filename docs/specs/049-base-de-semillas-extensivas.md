@@ -73,7 +73,7 @@ El CSV que genera el botón "Exportar a CSV" del catálogo público de INASE, gu
 
 ## Ampliación
 
-- La fuente maestra pasa a ser `semillas/datos/raw/inase/catalogo_inase_2026-10-28.csv`, descargado de la consulta pública de INASE ("Exportar a CSV" sin filtros). Se construye con `--fecha-corte 2026-10-28`. El archivo del 23/10 queda como respaldo.
+- La fuente maestra pasa a ser `semillas/datos/raw/inase/catalogo_inase_2026-10-28.csv`, descargado de la consulta pública de INASE ("Exportar a CSV" sin filtros). Se construye con `--fecha-corte 2026-11-14`. El archivo del 23/10 queda como respaldo.
 - Los registros sin inscripción RNC (solo RNPC) se conservan con `estado_registral = SOLO_RNPC…` y `extensivo = REVISAR`. La condición genética "LINEA" se informa como "Línea (parental de híbridos)".
 - Criterio de Hernán: solo cultivos cuya cosecha se vende. Quedan fuera las pasturas (grupo FO) y los forrajes que se consumen en el campo: vicias, moha, mijo perla, colza forrajera, tricepiro, trigopiro y poroto de campo. La alfalfa queda porque el motor la evalúa y el fardo y la semilla se venden.
 - Se suman como complementarios el amaranto, la mostaza y el tártago.
