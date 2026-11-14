@@ -54,7 +54,7 @@ Mostrar **en qué parte del lote** hiela. VIIRS (spec 030) da todas las noches u
 
 ## Prueba real
 
-Workflow `Probar ECOSTRESS (heladas por zona)` y `probar_ecostress_heladas.py`. Por defecto usa el lote de prueba de San Luis, del 1/8 al 27/10/2026.
+Workflow `Probar ECOSTRESS (heladas por zona)` y `probar_ecostress_heladas.py`. Por defecto usa el lote de prueba de San Luis, con un período automático que se cuenta desde el día en que corre.
 
 ## Resultado de la prueba real
 
