@@ -1,0 +1,31 @@
+name: Probar suelo desnudo (MODIS)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/suelo_desnudo.py"
+      - "probar_suelo_desnudo.py"
+      - ".github/workflows/probar-suelo-desnudo.yml"
+  workflow_dispatch:
+    inputs:
+      esquinas:
+        description: "Esquinas del lote como 'lat, lon; lat, lon; lat, lon; lat, lon' (copiadas de Google Maps)"
+        default: "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Pedir 4 años de NDVI de MODIS y ver en qué meses el lote queda desnudo
+        env:
+          EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+          EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
+          # en un PR no hay inputs: lote de ejemplo de San Luis
+          ESQUINAS: ${{ inputs.esquinas || '-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300' }}
+        run: python probar_suelo_desnudo.py "$ESQUINAS"
