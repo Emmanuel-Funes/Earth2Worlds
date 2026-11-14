@@ -1,0 +1,47 @@
+name: Probar SEPA INTA y GOES (agua, heladas, Q de trigo)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/sepa_inta.py"
+      - "probar_sepa_inta.py"
+      - ".github/workflows/probar_sepa_inta_completo.yml"
+  workflow_dispatch:
+    inputs:
+      esquinas:
+        description: "Esquinas del lote como 'lat, lon; lat, lon; lat, lon; lat, lon' (copiadas de Google Maps)"
+        default: "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"
+      desde:
+        description: "Desde (AAAA-MM-DD). Vacío: los últimos 35 días (SEPA) y 7 días (GOES)"
+        default: ""
+      hasta:
+        description: "Hasta (AAAA-MM-DD). Vacío: hoy"
+        default: ""
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - que: sepa
+            exigir: agua_disponible_2m,agua_suelo_porcentaje,variacion_agua_disponible_clase,cociente_fototermal_trigo
+          - que: goes
+            exigir: temp_superficie_nocturna,temp_superficie_diurna
+    name: probar (${{ matrix.que }})
+    env:
+      # en un PR no hay inputs: se usa el lote de San Luis (-33.700, -65.300)
+      ESQUINAS: ${{ inputs.esquinas || '-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Datos del lote (${{ matrix.que }})
+        run: python -u probar_sepa_inta.py ${{ matrix.que }} "$ESQUINAS" ${{ inputs.desde }} ${{ inputs.hasta }} --exigir ${{ matrix.exigir }}
+      - name: Historial del balance hídrico (enero de 2025, para ver que hay datos viejos)
+        if: ${{ matrix.que == 'sepa' }}
+        run: python -u probar_sepa_inta.py sepa "$ESQUINAS" 2025-01-01 2025-01-31 --exigir agua_disponible_2m,confort_hidrico_inta,cociente_fototermal_trigo_10d
