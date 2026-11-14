@@ -1,0 +1,35 @@
+name: Probar POWER (clima de la campaña)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/power_campana.py"
+      - "probar_power_campana.py"
+      - ".github/workflows/probar-power-campana.yml"
+  workflow_dispatch:
+    inputs:
+      lat:
+        description: "Latitud del centro del lote (ej. -33.7025)"
+        default: "-33.7025"
+      lon:
+        description: "Longitud del centro del lote (ej. -65.2975)"
+        default: "-65.2975"
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Pedir el clima de la campaña a POWER y a MERRA-2
+        env:
+          EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+          EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
+          # en un PR no hay inputs: centro del lote de ejemplo (San Luis)
+          LAT: ${{ inputs.lat || '-33.7025' }}
+          LON: ${{ inputs.lon || '-65.2975' }}
+        run: python probar_power_campana.py "$LAT" "$LON"
