@@ -1,6 +1,6 @@
 # Spec 001 · Conector de clima NASA POWER
 
-**Estado:** implementada y verificada (PR #2) · **Etapa:** pipeline satélite → API → app (sin interfaz)
+**Estado:** implementada y verificada · **Etapa:** pipeline satélite → API → app (sin interfaz)
 
 ## Objetivo
 
