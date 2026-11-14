@@ -45,7 +45,7 @@ Calidad con los mismos umbrales que HLS y MODIS (60 % / 20 %). Nunca se inventa 
 
 ## Dónde entra
 
-Hernán eligió **VIIRS y MODIS**: si falla HLS entra VIIRS, y si VIIRS tampoco trae datos entra MODIS (HLS → VIIRS → MODIS). Para eso el núcleo acepta varios respaldos en orden (`orden=` en `Satelite`, rama `NUCLEO-varios_respaldos_en_orden`). El 4/10/2026 se sumó Sentinel-2 (ESA) como primer respaldo (spec 014), así que el orden quedó HLS → Sentinel-2 → VIIRS → MODIS: VIIRS se registra como `Satelite("HLS:VIIRS", ..., respaldo_de="HLS", orden=2)` y MODIS con `orden=3`.
+Hernán eligió **VIIRS y MODIS**: si falla HLS entra VIIRS, y si VIIRS tampoco trae datos entra MODIS (HLS → VIIRS → MODIS). Para eso el núcleo acepta varios respaldos en orden (`orden=` en `Satelite`, rama `NUCLEO-varios_respaldos_en_orden`). Después se sumó Sentinel-2 (ESA) como primer respaldo (spec 014), así que el orden quedó HLS → Sentinel-2 → VIIRS → MODIS: VIIRS se registra como `Satelite("HLS:VIIRS", ..., respaldo_de="HLS", orden=2)` y MODIS con `orden=3`.
 
 Detalles del conector (`rotaterra/fuentes/viirs.py`):
 - Los nombres exactos de las capas se leen de los metadatos del archivo (`.dmr`), buscando NDVI, *pixel reliability* y *day of the year* de 500 m, para no depender de cómo los escriba la NASA.
