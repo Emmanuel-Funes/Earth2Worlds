@@ -1,6 +1,6 @@
 # Spec 018 · Evapotranspiración y estrés hídrico de 70 m con ECOSTRESS
 
-**Estado:** aprobada por Hernán el 4/10/2026 ("Sumar lo necesario para cubrir lo que hace falta") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** cuenta NASA Earthdata · **Rama:** `ECOSTRESS-evapotranspiracion_estres`
+**Estado:** aprobada por Hernán ("Sumar lo necesario para cubrir lo que hace falta") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** cuenta NASA Earthdata · **Rama:** `ECOSTRESS-evapotranspiracion_estres`
 
 ## Objetivo
 
@@ -19,7 +19,7 @@ NASA, LP DAAC (Earthdata Cloud), ECOSTRESS en mosaicos (productos "T", grilla MG
 
 Además, las capas `cloud` (nube) y `water` (agua) del mismo gránulo se usan como máscara. Si un gránulo no las trae, se usan solo los píxeles con valor (la NASA ya deja en blanco los de nube).
 
-**Verificado en la prueba real (4/10/2026):**
+**Verificado en la prueba real:**
 - La versión vigente en CMR es la **003**: `ECO_L3T_JET` = `C4057232489-LPCLOUD`, `ECO_L4T_ESI` = `C4057232495-LPCLOUD`; gránulos `ECOv003_L3T_JET_…` y `ECOv003_L4T_ESI_…`.
 - El lote de prueba cae en el mosaico **20HKH**.
 - Capas de `ECO_L3T_JET`: `ETdaily`, `ETuncertainty`, `PTJPLSMinst`, `PTJPLSMdaily`, `PTJPLSMcanopy`, `PTJPLSMsoil`, `PTJPLSMinterception`, `STICJPLinst`, `STICJPLdaily`, `STICJPLcanopy`, `BESSJPLdaily`, `PMJPLdaily`, `cloud`, `water`.
@@ -86,7 +86,7 @@ Ejemplo real (lote de prueba, 19/2/2026):
 - [x] Pasada con nube sobre el lote → `descartada` con `valor: null`: test `test_nube_sobre_el_lote_queda_descartada` y 6 fechas reales (por ejemplo 25/12 y 23/2, 0 % válido).
 - [x] El enlace firmado de LP DAAC se resuelve antes de que GDAL lea: tests `test_enlace_firmado_*` y la prueba real leyó los archivos por el enlace firmado (22 observaciones de diciembre a febrero en 32 s, ninguna con error de lectura).
 - [x] ECOSTRESS no importa código de ningún otro satélite (`tests/test_nucleo.py` en verde).
-- [x] Tests sin internet (36 en `tests/test_ecostress.py`); prueba real "Probar ECOSTRESS (evapotranspiración y estrés)" verde en el PR #32, con un clic y en cada PR que toque el conector.
+- [x] Tests sin internet (36 en `tests/test_ecostress.py`); prueba real "Probar ECOSTRESS (evapotranspiración y estrés)" verde, con un clic y en cada PR que toque el conector.
 
 ## Fuera de alcance
 
