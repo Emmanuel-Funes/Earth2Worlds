@@ -1,6 +1,6 @@
 # Spec 035 · Respaldo de heladas con MODIS LST nocturna
 
-**Estado:** aprobada por Hernán el 15/10/2026 ("Listo, sigamos con los que dijiste") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** credenciales de Earthdata (`EARTHDATA_USERNAME` / `EARTHDATA_PASSWORD`, ya cargadas) · **Rama:** `MODIS-heladas_respaldo` · **Depende de:** PR #24 (`NUCLEO-varios_respaldos_en_orden`)
+**Estado:** aprobada por Hernán ("Listo, sigamos con los que dijiste") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** credenciales de Earthdata (`EARTHDATA_USERNAME` / `EARTHDATA_PASSWORD`, ya cargadas) · **Rama:** `MODIS-heladas_respaldo` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`)
 
 ## Objetivo
 
@@ -57,7 +57,7 @@ Workflow `Probar MODIS (heladas)` (`.github/workflows/probar-modis-heladas.yml`,
 
 ## Resultado de la prueba real
 
-Workflow `Probar MODIS (heladas)` en el PR #51 (15/10/2026, en verde), lote de prueba (centro -33,7025; -65,2975), 16 noches de septiembre de 2026. 11 noches con dato `buena` y 5 `descartada` por nubes (MODIS no ve a través de nubes, como VIIRS). Píxel de 1 km.
+Workflow `Probar MODIS (heladas)`, lote de prueba (centro -33,7025; -65,2975), 16 noches de septiembre de 2026. 11 noches con dato `buena` y 5 `descartada` por nubes (MODIS no ve a través de nubes, como VIIRS). Píxel de 1 km.
 
 - **Noche más fría: 22/9/2026, 0,1 °C de superficie** (la misma noche que VIIRS marcó como la más fría).
 - 0 noches con riesgo de helada según el umbral de ≤ 0 °C de superficie.
