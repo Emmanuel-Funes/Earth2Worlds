@@ -1,0 +1,48 @@
+name: Probar SMAP (humedad del suelo)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/smap.py"
+      - "probar_smap.py"
+      - ".github/workflows/probar-smap.yml"
+  workflow_dispatch:
+    inputs:
+      lat:
+        description: "Latitud del centro del lote (ej. -33.70)"
+        default: "-33.70"
+      lon:
+        description: "Longitud del centro del lote (ej. -65.30)"
+        default: "-65.30"
+      desde:
+        description: "Desde (AAAA-MM-DD). Vacío = automático: hace 17 días"
+        default: ""
+      hasta:
+        description: "Hasta (AAAA-MM-DD). Vacío = automático: hace 4 días"
+        default: ""
+      camino:
+        description: "directo (rápido, principal) o appeears (respaldo, puede tardar)"
+        type: choice
+        options: [directo, appeears]
+        default: directo
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Pedir humedad del suelo a SMAP
+        env:
+          EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+          EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
+          LAT: ${{ inputs.lat || '-33.70' }}
+          LON: ${{ inputs.lon || '-65.30' }}
+          DESDE: ${{ inputs.desde }}
+          HASTA: ${{ inputs.hasta }}
+          CAMINO: ${{ inputs.camino || 'directo' }}
+        run: DESDE="${DESDE:-$(date -u -d "-17 days" +%F)}"; HASTA="${HASTA:-$(date -u -d "-4 days" +%F)}"; python probar_smap.py "$LAT" "$LON" "$DESDE" "$HASTA" "$CAMINO"
