@@ -1,6 +1,6 @@
 # Spec 036 · Respaldo de humedad del suelo con FLDAS
 
-**Estado:** aprobada por Hernán el 15/10/2026 ("Listo, sigamos con los que dijiste") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** credenciales de Earthdata (ya cargadas) · **Rama:** `FLDAS-humedad_respaldo` · **Depende de:** PR #24 (`NUCLEO-varios_respaldos_en_orden`)
+**Estado:** aprobada por Hernán ("Listo, sigamos con los que dijiste") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** credenciales de Earthdata (ya cargadas) · **Rama:** `FLDAS-humedad_respaldo` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`)
 
 ## Objetivo
 
@@ -53,7 +53,7 @@ Workflow `Probar FLDAS (humedad)` (`.github/workflows/probar-fldas.yml`, `probar
 
 ## Resultado de la prueba real
 
-Workflow `Probar FLDAS (humedad)` en el PR #52 (15/10/2026, en verde), lote de prueba (centro -33,7025; -65,2975), últimos 4 meses de FLDAS (noviembre 2025 a febrero 2026). 8 observaciones, todas `dudosa` (dato regional y mensual de modelo):
+Workflow `Probar FLDAS (humedad)`, lote de prueba (centro -33,7025; -65,2975), últimos 4 meses de FLDAS (noviembre 2025 a febrero 2026). 8 observaciones, todas `dudosa` (dato regional y mensual de modelo):
 
 | Mes | Superficial (0-10 cm) | Zona de raíces (0-100 cm) |
 |---|---|---|
