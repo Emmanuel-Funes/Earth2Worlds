@@ -1,6 +1,6 @@
 # Spec 050 · NDVI diario de respaldo con Sentinel-3 (ESA)
 
-**Estado:** aprobada por Hernán el 27/10/2026 ("SI PORFAVOR, es increíble que no lo tengamos conectado siendo que pasa diariamente … Es urgente conectarlo") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** credenciales de Earthdata (`EARTHDATA_USERNAME` / `EARTHDATA_PASSWORD`, ya cargadas) · **Rama:** `SENTINEL3-NDVI_respaldo` · **Depende de:** PR #24 (`NUCLEO-varios_respaldos_en_orden`)
+**Estado:** aprobada por Hernán ("SI PORFAVOR, es increíble que no lo tengamos conectado siendo que pasa diariamente … Es urgente conectarlo") y verificada con datos reales · **Etapa:** pipeline satélite → API → app · **Requiere:** credenciales de Earthdata (`EARTHDATA_USERNAME` / `EARTHDATA_PASSWORD`, ya cargadas) · **Rama:** `SENTINEL3-NDVI_respaldo` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`)
 
 ## Objetivo
 
@@ -20,7 +20,7 @@ HLS → Sentinel-2 → **Sentinel-3** → VIIRS → MODIS
 | Banderas | `SYN_flags` (Synergy) y `CLOUD_flags` (nubes de OLCI) de `flags.nc` |
 | Ubicación | `geolocation.nc` (lat/lon de cada píxel) y `tiepoints_olci.nc` (puntos de enlace, uno cada 64 columnas) |
 
-**Verificado el 27/10/2026:** CMR devuelve para el lote de prueba entre 1 y 2 pasadas por día (3A ~13:30 UTC, 3B ~14:00 UTC); cada pasada es un `.zip` de 350 a 900 MB en `data.laadsdaac.earthdatacloud.nasa.gov`, con los NetCDF guardados **sin comprimir** adentro y lectura por rangos de bytes permitida (HTTP 206).
+**Verificado:** CMR devuelve para el lote de prueba entre 1 y 2 pasadas por día (3A ~13:30 UTC, 3B ~14:00 UTC); cada pasada es un `.zip` de 350 a 900 MB en `data.laadsdaac.earthdatacloud.nasa.gov`, con los NetCDF guardados **sin comprimir** adentro y lectura por rangos de bytes permitida (HTTP 206).
 
 Por qué SYN y no OLCI solo: el nivel 2 terrestre de OLCI de la ESA (OL_2_LFR) no lo redistribuye la NASA y no trae NDVI sino OGVI; SYN sí trae la reflectancia de superficie de las bandas de OLCI, que es lo que hace falta para un NDVI comparable con HLS.
 
@@ -63,15 +63,15 @@ La fecha es la del paso (hora UTC ~13:30-14:00, mañana en Argentina).
 
 ## Tiempo de respuesta
 
-Cada pasada lleva ~10-15 s (muchos pedidos chicos a la nube de la NASA); se leen 12 a la vez. Medido el 27/10/2026 desde la máquina de pruebas: 16 días en **176 s con 6 a la vez**, y **enero de 2026 completo (31 días) en 5 min 49 s con 12 a la vez**. Es más lento que VIIRS, pero solo corre cuando HLS y Sentinel-2 fallaron.
+Cada pasada lleva ~10-15 s (muchos pedidos chicos a la nube de la NASA); se leen 12 a la vez. Medido desde la máquina de pruebas: 16 días en **176 s con 6 a la vez**, y **enero de 2026 completo (31 días) en 5 min 49 s con 12 a la vez**. Es más lento que VIIRS, pero solo corre cuando HLS y Sentinel-2 fallaron.
 
 ## Prueba real
 
-Workflow `Probar Sentinel-3 (NDVI de respaldo)` (`.github/workflows/probar-sentinel3.yml`, `probar_sentinel3.py`). Por defecto: lote de prueba de San Luis, del 15 al 30 de septiembre de 2026. Como GitHub Actions no tiene minutos hasta el 1/11/2026, la prueba se corrió con el mismo script desde la máquina de trabajo (entorno con acceso a la NASA).
+Workflow `Probar Sentinel-3 (NDVI de respaldo)` (`.github/workflows/probar-sentinel3.yml`, `probar_sentinel3.py`). Por defecto: lote de prueba de San Luis, con un período automático que se cuenta desde el día en que corre. Como GitHub Actions no tiene minutos hasta, la prueba se corrió con el mismo script desde la máquina de trabajo (entorno con acceso a la NASA).
 
 ## Resultado de la prueba real
 
-**27/10/2026**, lote de prueba (esquinas -33,700/-65,300 a -33,705/-65,295, ~25 ha), del 15 al 30/9/2026, 176 s:
+Lote de prueba (esquinas -33,700/-65,300 a -33,705/-65,295, ~25 ha), del 15 al 30/9/2026, 176 s:
 
 - **16 de 16 días con pasada** (Sentinel-3A y 3B se alternan): **11 `buena`** y 5 `descartada` por nubes (18, 24, 28, 29 y 30/9). 2 a 5 píxeles de 300 m por día.
 - NDVI de **0,21 a 0,31** (fin del invierno seco en San Luis).
