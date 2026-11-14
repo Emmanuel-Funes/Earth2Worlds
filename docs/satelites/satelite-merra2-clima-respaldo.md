@@ -20,3 +20,17 @@ Conector MERRA-2: temperatura y radiación diarias, respaldo de NASA POWER (spec
 ## Depende de
 
 Solo del núcleo (rama `nucleo-api-y-contrato-comun`): no importa ningún otro satélite.
+
+## Prueba real del 14/11/2026
+
+Corrida el 14/11/2026 contra la fuente real, con datos de los últimos días (desde esta máquina de trabajo). Lote de prueba de San Luis.
+
+Comando: `python probar_merra2.py "-33.70" "-65.30" "2026-09-30" "2026-10-13"`
+
+```
+Respaldo MERRA-2 (temperatura y radiación) en (-33.7, -65.3) del 2026-09-30 al 2026-10-13 · 5 s
+
+Fecha         Máx °C  Mín °C   MJ/m²
+2026-09-30      21.8     8.5    14.1
+2026-10-01      19.9     8.3    23.7
+```
