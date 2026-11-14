@@ -75,4 +75,4 @@ Workflow `Probar MODIS (heladas)`, lote de prueba (centro -33,7025; -65,2975), 1
 - [x] Terra y Aqua se juntan y por noche gana el más limpio; un satélite sin colección no frena al otro (tests `test_obtener_heladas_junta_terra_y_aqua`, `test_mismo_dia_gana_la_noche_mas_limpia`, `test_un_satelite_sin_coleccion_no_frena_al_otro`).
 - [x] Se anuncia como respaldo de VIIRS_LST con orden 1 (test `test_se_anuncia_como_respaldo_de_viirs_lst`).
 - [x] No importa a ningún otro satélite y el núcleo no lo nombra (test `test_nucleo.py`).
-- [x] Prueba real sobre el lote de San Luis (PR #51, workflow en verde): la noche más fría es el **22/9**, la misma que marcó VIIRS. El valor difiere (MODIS 0,1 °C vs VIIRS −3,0 °C) porque son sensores distintos y LST no es temperatura del aire; ver "Resultado de la prueba real".
+- [x] Prueba real sobre el lote de San Luis: la noche más fría es el **22/9**, la misma que marcó VIIRS. El valor difiere (MODIS 0,1 °C vs VIIRS −3,0 °C) porque son sensores distintos y LST no es temperatura del aire; ver "Resultado de la prueba real".
