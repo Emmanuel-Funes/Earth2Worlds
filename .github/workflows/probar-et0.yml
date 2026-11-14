@@ -1,0 +1,35 @@
+name: Probar POWER (ET de referencia FAO-56)
+
+on:
+  pull_request:
+    paths:
+      - "rotaterra/fuentes/et0_fao56.py"
+      - "probar_et0.py"
+      - ".github/workflows/probar-et0.yml"
+  workflow_dispatch:
+    inputs:
+      esquinas:
+        description: "Esquinas del lote como 'lat, lon; lat, lon; lat, lon; lat, lon' (copiadas de Google Maps)"
+        default: "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"
+      desde:
+        description: "Desde (AAAA-MM-DD). Vacío = automático: hace 317 días"
+        default: ""
+      hasta:
+        description: "Hasta (AAAA-MM-DD). Vacío = automático: hace 304 días"
+        default: ""
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Calcular la ET de referencia con el clima de NASA POWER
+        env:
+          ESQUINAS: ${{ inputs.esquinas || '-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300' }}
+          DESDE: ${{ inputs.desde }}
+          HASTA: ${{ inputs.hasta }}
+        run: DESDE="${DESDE:-$(date -u -d "-317 days" +%F)}"; HASTA="${HASTA:-$(date -u -d "-304 days" +%F)}"; python probar_et0.py "$ESQUINAS" "$DESDE" "$HASTA"
