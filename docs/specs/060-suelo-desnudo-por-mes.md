@@ -1,6 +1,6 @@
 # Spec 060 · Meses de suelo desnudo del lote con MODIS
 
-**Estado:** construida y probada con datos reales (30/10/2026) · **Aprobada por:** Hernán, 30/10/2026 ("Vamos con la partes de satelites y obtencion de datos que es lo mio, avancemos", sobre los faltantes del desafío Field Shift) · **Rama:** `MODIS-suelo_desnudo_por_mes` · **Depende de:** PR #24 (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** Earthdata (ya cargado)
+**Estado:** construida y probada con datos reales · **Aprobada por:** Hernán, 30/10/2026 ("Vamos con la partes de satelites y obtencion de datos que es lo mio, avancemos", sobre los faltantes del desafío Field Shift) · **Rama:** `MODIS-suelo_desnudo_por_mes` · **Depende de:** (`NUCLEO-varios_respaldos_en_orden`) · **Requiere:** Earthdata (ya cargado)
 
 ## Objetivo
 
