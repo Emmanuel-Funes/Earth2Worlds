@@ -12,11 +12,11 @@ on:
         description: "Esquinas del lote como 'lat, lon; lat, lon; lat, lon; lat, lon' (copiadas de Google Maps)"
         default: "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"
       desde:
-        description: "Desde (AAAA-MM-DD)"
-        default: "2025-11-01"
+        description: "Desde (AAAA-MM-DD). Vacío = automático: hace 40 días"
+        default: ""
       hasta:
-        description: "Hasta (AAAA-MM-DD)"
-        default: "2026-04-30"
+        description: "Hasta (AAAA-MM-DD). Vacío = automático: hace 5 días"
+        default: ""
 
 jobs:
   probar:
@@ -31,8 +31,7 @@ jobs:
         env:
           EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
           EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
-          # en un PR no hay inputs: se usa el lote de ejemplo y un mes de verano
           ESQUINAS: ${{ inputs.esquinas || '-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300' }}
-          DESDE: ${{ inputs.desde || '2026-01-01' }}
-          HASTA: ${{ inputs.hasta || '2026-01-31' }}
-        run: python probar_hls.py "$ESQUINAS" "$DESDE" "$HASTA"
+          DESDE: ${{ inputs.desde }}
+          HASTA: ${{ inputs.hasta }}
+        run: DESDE="${DESDE:-$(date -u -d "-40 days" +%F)}"; HASTA="${HASTA:-$(date -u -d "-5 days" +%F)}"; python probar_hls.py "$ESQUINAS" "$DESDE" "$HASTA"

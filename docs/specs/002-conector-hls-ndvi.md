@@ -1,6 +1,6 @@
 # Spec 002 · Conector HLS: NDVI y NDMI del lote
 
-**Estado:** implementada y verificada (PR #3 y #5) · **Etapa:** pipeline satélite → API → app (sin interfaz) · **Requiere:** cuenta NASA Earthdata
+**Estado:** implementada y verificada · **Etapa:** pipeline satélite → API → app (sin interfaz) · **Requiere:** cuenta NASA Earthdata
 
 ## Objetivo
 
@@ -60,7 +60,7 @@ Nunca se inventa un valor ni se interpola entre fechas en este conector.
 
 ## Credenciales
 
-Usuario y contraseña de Earthdata se leen de las variables de entorno `EARTHDATA_USERNAME` y `EARTHDATA_PASSWORD` (en GitHub, como secretos). Nunca se escriben en el código ni en los logs. Con ellos se pide un token de Earthdata (`earthdata.cliente_autorizado`, el mismo del núcleo). Con ese token se pide cada archivo a LP DAAC, que responde con un enlace firmado de CloudFront; GDAL lee ese enlace directo, sin credenciales. Desde el 3 de octubre de 2026 GDAL no logra seguir esa redirección por su cuenta ("not recognized as being in a supported file format"), aunque la NASA entrega el GeoTIFF bien (verificado: HTTP 206, `image/tiff`).
+Usuario y contraseña de Earthdata se leen de las variables de entorno `EARTHDATA_USERNAME` y `EARTHDATA_PASSWORD` (en GitHub, como secretos). Nunca se escriben en el código ni en los logs. Con ellos se pide un token de Earthdata (`earthdata.cliente_autorizado`, el mismo del núcleo). Con ese token se pide cada archivo a LP DAAC, que responde con un enlace firmado de CloudFront; GDAL lee ese enlace directo, sin credenciales. Desde GDAL no logra seguir esa redirección por su cuenta ("not recognized as being in a supported file format"), aunque la NASA entrega el GeoTIFF bien (verificado: HTTP 206, `image/tiff`).
 
 ## API
 

@@ -131,7 +131,7 @@ def configurar_credenciales(cliente: httpx.Client | None = None) -> httpx.Client
 def enlace_firmado(cliente: httpx.Client, url: str) -> str:
     """LP DAAC redirige cada archivo a un enlace firmado de CloudFront que vale un rato y no pide credenciales.
 
-    GDAL dejó de poder seguir esa redirección el 3/10/2026 (devolvía "not recognized as being in a supported
+    GDAL dejó de poder seguir esa redirección (devolvía "not recognized as being in a supported
     file format"), así que la resolvemos acá con el token y GDAL lee el enlace firmado directo.
     """
     respuesta = cliente.get(url, headers={"Range": "bytes=0-0"}, follow_redirects=False)
