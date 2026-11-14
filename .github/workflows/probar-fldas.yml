@@ -12,11 +12,11 @@ on:
         description: "Esquinas del lote como 'lat, lon; lat, lon; lat, lon; lat, lon' (copiadas de Google Maps)"
         default: "-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300"
       desde:
-        description: "Desde (AAAA-MM-DD)"
-        default: "2025-11-01"
+        description: "Desde (AAAA-MM-DD). Vacío = automático: hace 378 días"
+        default: ""
       hasta:
-        description: "Hasta (AAAA-MM-DD)"
-        default: "2026-02-28"
+        description: "Hasta (AAAA-MM-DD). Vacío = automático: hace 259 días"
+        default: ""
 
 jobs:
   probar:
@@ -33,6 +33,6 @@ jobs:
           EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
           EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
           ESQUINAS: ${{ inputs.esquinas || '-33.700, -65.300; -33.700, -65.295; -33.705, -65.295; -33.705, -65.300' }}
-          DESDE: ${{ inputs.desde || '2025-11-01' }}
-          HASTA: ${{ inputs.hasta || '2026-02-28' }}
-        run: python probar_fldas.py "$ESQUINAS" "$DESDE" "$HASTA"
+          DESDE: ${{ inputs.desde }}
+          HASTA: ${{ inputs.hasta }}
+        run: DESDE="${DESDE:-$(date -u -d "-378 days" +%F)}"; HASTA="${HASTA:-$(date -u -d "-259 days" +%F)}"; python probar_fldas.py "$ESQUINAS" "$DESDE" "$HASTA"
