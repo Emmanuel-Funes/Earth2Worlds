@@ -68,7 +68,7 @@ Una fecha tapada (dato real del 26/1/2026):
 - Satélite independiente (spec 009): `rotaterra/fuentes/sentinel2.py`, solo usa el núcleo. Se registra como `Satelite("HLS:SENTINEL2", ..., respaldo_de="HLS", orden=1)`: si HLS falla en la actualización nocturna, entra primero Sentinel-2; si también falla o no trae nada, VIIRS (orden 2) y después MODIS (orden 3). Depende del núcleo de la rama `NUCLEO-varios_respaldos_en_orden`.
 - En `combinar=true`, `SENTINEL2` tiene prioridad 2 (respaldo), por debajo de HLS y por encima de VIIRS y MODIS (ya está en `base.PRIORIDAD`).
 - Endpoint de prueba: `POST /ndvi/sentinel2` (mismo pedido que `/ndvi` de HLS). Responde 422 si el pedido es inválido y 502 si Earth Search o las escenas no responden.
-- Prueba real con un clic: GitHub → Actions → **"Probar Sentinel-2 (NDVI y NDMI de respaldo)"** (`probar_sentinel2.py`), lote de ejemplo y enero de 2026. También corre en cada PR que toque el conector.
+- Prueba real con un clic: GitHub → Actions → **"Probar Sentinel-2 (NDVI y NDMI de respaldo)"** (`probar_sentinel2.py`), lote de ejemplo, con un período automático que se cuenta desde el día en que corre. También corre en cada PR que toque el conector.
 
 ## Criterios de aceptación
 
