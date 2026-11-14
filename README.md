@@ -15,7 +15,7 @@ consulta con respaldos y la API con clave. **Cada satélite vive en su propia ra
 aprueba su PR. Ningún satélite depende de otro (lo verifica `tests/test_nucleo.py`).
 
 | Rama | Qué aporta | Archivo |
-|---|---|---|
+| --- | --- | --- |
 | `nucleo-api-y-contrato-comun` | Núcleo: contrato, API con clave, consulta con respaldos | `rotaterra/` |
 | `satelite-nasa-power-clima-diario` | NASA POWER - clima diario del lote (temperatura, lluvia, radiación) | `rotaterra/fuentes/power.py` |
 | `satelite-nasa-power-lluvia-respaldo` | NASA POWER - lluvia diaria como respaldo de IMERG | `rotaterra/fuentes/power_lluvia.py` |
