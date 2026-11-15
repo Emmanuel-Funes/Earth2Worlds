@@ -143,91 +143,101 @@ CONTROLADORES JAVASCRIPT:
             color: #100b07 !important;
         }
 
-        /* 1. FONDOS CÁLIDOS DE ALTO CONFORT (MENOS BRILLANTE) PARA PÁGINAS, TARJETAS, MODALES Y PANELES */
+        /* 1. FONDOS CÁLIDOS DE ALTO CONFORT PARA PÁGINAS, TARJETAS, MODALES Y PANELES */
+        html,
         body {
             background-color: #f5f1ea !important;
             color: #100b07 !important;
         }
 
-        .bg-slate-950,
-        .bg-slate-900,
-        .bg-[#120e0a],
-        .bg-[#1c1510] {
-            background-color: #faf7f2 !important;
+        /* Overlays translúcidos cálidos y suaves para modales (sin oscurecer la pantalla completa) */
+        .fixed.inset-0.bg-stone-900\/35,
+        .fixed.inset-0.bg-stone-900\/60,
+        .fixed.inset-0.bg-slate-950\/80,
+        .fixed.inset-0.bg-slate-950\/85,
+        .bg-stone-900\/35,
+        .bg-stone-900\/60 {
+            background-color: rgba(36, 24, 16, 0.35) !important;
         }
 
+        /* Tarjetas, contenedores principales y las 6 tarjetas de telemetría */
+        .bg-slate-950:not(.fixed),
+        .bg-slate-900:not(.fixed),
         .bg-slate-950\/95,
         .bg-slate-950\/90,
-        .bg-slate-900\/90,
-        .bg-slate-950\/80,
+        .bg-slate-950\/85:not(.fixed),
+        .bg-slate-950\/80:not(.fixed),
         .bg-slate-950\/70,
         .bg-slate-950\/60,
         .bg-slate-950\/50,
         .bg-slate-950\/40,
-        .bg-slate-900\/80 {
-            background-color: rgba(250, 247, 242, 0.98) !important;
+        .bg-slate-900\/95,
+        .bg-slate-900\/90,
+        .bg-slate-900\/85,
+        .bg-slate-900\/80,
+        .bg-slate-900\/70,
+        .bg-slate-900\/60,
+        .bg-slate-900\/50 {
+            background-color: #faf7f2 !important;
         }
 
+        /* Elementos secundarios, inputs, badges y sub-bloques */
         .bg-slate-800,
-        .bg-stone-900,
+        .bg-slate-800\/60,
+        .bg-slate-800\/80,
+        .bg-slate-700,
+        .bg-stone-900:not(.fixed),
         .bg-stone-950,
-        .bg-stone-950\/80,
+        .bg-stone-950\/80:not(.fixed),
         .bg-stone-950\/90,
         .bg-stone-900\/90 {
             background-color: #f0ebe1 !important;
         }
 
-        .bg-slate-800\/60,
-        .bg-slate-800\/80 {
-            background-color: rgba(240, 235, 225, 0.95) !important;
+        /* Sub-cajas internas de telemetría (NDMI, SMAP y 4 cuadrantes de temperatura) */
+        article .bg-slate-950\/90,
+        article .bg-slate-950,
+        article .bg-slate-900,
+        article .bg-slate-800 {
+            background-color: #ffffff !important;
+            border-color: #dfd3c7 !important;
         }
 
         /* 2. MARCOS Y BORDES EN MARRÓN TIERRA */
         .border-slate-800,
         .border-slate-700,
         .border-stone-800,
-        .border-stone-700 {
-            border-color: #8c6547 !important;
-        }
-
+        .border-stone-700,
         .border-slate-800\/80,
         .border-slate-700\/80,
         .border-stone-800\/90,
         .border-stone-800\/80 {
-            border-color: #bfa188 !important;
+            border-color: #8c6547 !important;
         }
 
         .hover\:border-slate-700:hover,
-        .hover\:border-emerald-500:hover {
+        .hover\:border-emerald-500:hover,
+        .hover\:border-emerald-500\/60:hover,
+        .hover\:border-sky-500\/60:hover,
+        .hover\:border-amber-500\/60:hover,
+        .hover\:border-blue-500\/60:hover,
+        .hover\:border-teal-500\/60:hover,
+        .hover\:border-cyan-500\/60:hover {
             border-color: #16a34a !important;
         }
 
         /* 3. TEXTOS LEGIBLES DE MÁXIMO CONTRASTE */
-        .bg-white h1,
-        .bg-white h2,
-        .bg-white h3,
-        .bg-white h4,
-        .bg-slate-900 h1,
-        .bg-slate-900 h2,
-        .bg-slate-900 h3,
-        .bg-slate-900 h4,
-        .bg-slate-950 h1,
-        .bg-slate-950 h2,
-        .bg-slate-950 h3,
-        .bg-slate-950 h4,
-        .bg-white strong,
-        .bg-slate-900 strong,
-        .bg-slate-950 strong,
-        h1,
-        h2,
-        h3,
-        h4 {
+        h1, h2, h3, h4, strong {
             color: #100b07 !important;
             font-weight: 700;
         }
 
         p {
             color: #160e08;
+        }
+
+        .text-white:not(button *):not(button):not(a.bg-emerald-600):not(.bg-emerald-600 *):not(.bg-emerald-700 *):not(.bg-amber-800 *):not(.bg-amber-900 *):not(.btn-lang-en):not(.bg-sky-500 *):not(.bg-rose-500 *) {
+            color: #100b07 !important;
         }
 
         .text-slate-100:not(button *):not(button):not(a.bg-emerald-600) {
@@ -239,19 +249,58 @@ CONTROLADORES JAVASCRIPT:
             font-weight: 500;
         }
 
-        .text-slate-300:not(button *):not(button) {
-            color: #20140c !important;
+        .text-slate-300:not(button *):not(button):not([id^="val"]) {
+            color: #3d281a !important;
             font-weight: 500;
         }
 
         .text-slate-400:not(button *):not(button) {
-            color: #352216 !important;
+            color: #5c4636 !important;
             font-weight: 500;
         }
 
         .text-slate-500 {
-            color: #4a3020 !important;
+            color: #735946 !important;
             font-weight: 500;
+        }
+
+        /* Valores métricos nítidos y vibrantes */
+        #valNdvi, .text-emerald-400 {
+            color: #15803d !important;
+        }
+        #valHumedad, .text-sky-400 {
+            color: #0284c7 !important;
+        }
+        #valLluvia, .text-blue-400 {
+            color: #1d4ed8 !important;
+        }
+        #valEstres, .text-teal-400 {
+            color: #0f766e !important;
+        }
+        #valTempMin, .text-sky-300 {
+            color: #0284c7 !important;
+        }
+        #valTempMax, .text-rose-300 {
+            color: #b91c1c !important;
+        }
+        #valTempMean, .text-amber-300 {
+            color: #b45309 !important;
+        }
+        #valTempAmp, .text-emerald-300 {
+            color: #15803d !important;
+        }
+        #valHeladas, .text-cyan-300 {
+            color: #0e7490 !important;
+        }
+
+        /* Hover de títulos en tarjetas */
+        .group:hover .group-hover\:text-emerald-300,
+        .group:hover .group-hover\:text-sky-300,
+        .group:hover .group-hover\:text-amber-300,
+        .group:hover .group-hover\:text-blue-300,
+        .group:hover .group-hover\:text-teal-300,
+        .group:hover .group-hover\:text-cyan-300 {
+            color: #15803d !important;
         }
 
         /* 4. HERRAMIENTAS Y BARRA LATERAL DEL CREADOR DE LOTES (LEAFLET-GEOMAN MÁS GRANDE) */
@@ -440,7 +489,7 @@ CONTROLADORES JAVASCRIPT:
     <!-- [SEC-00] SELECTOR DE TIPO DE USUARIO (AGRICULTOR VS. TÉCNICO VS. ADMIN) -->
     <!-- =================================================================== -->
     <div id="modalSelectorModo"
-        class="fixed inset-0 z-[99990] overflow-y-auto bg-stone-900/60 backdrop-blur-sm p-3 sm:p-6 flex justify-center items-start">
+        class="fixed inset-0 z-[99990] overflow-y-auto bg-stone-900/35 backdrop-blur-sm p-3 sm:p-6 flex justify-center items-start">
         <div
             class="w-full max-w-4xl bg-white border-2 border-[#8c6547] rounded-3xl shadow-2xl p-5 sm:p-8 space-y-5 my-6 sm:my-10 relative overflow-visible">
             
@@ -553,7 +602,7 @@ CONTROLADORES JAVASCRIPT:
     <!-- [SEC-00.1] MODAL DE ACCESO ADMINISTRADOR                           -->
     <!-- =================================================================== -->
     <div id="modalLoginAdmin"
-        class="fixed inset-0 z-[99990] hidden items-center justify-center bg-stone-900/60 backdrop-blur-sm p-4">
+        class="fixed inset-0 z-[99990] hidden items-center justify-center bg-stone-900/35 backdrop-blur-sm p-4">
         <div class="w-full max-w-md bg-white border-2 border-[#8c6547] rounded-3xl shadow-2xl p-6 sm:p-8 space-y-6 text-[#241810]">
             <div class="flex items-center justify-between border-b border-[#dfd2c6] pb-4">
                 <div class="flex items-center gap-2">
@@ -1923,7 +1972,7 @@ CONTROLADORES JAVASCRIPT:
 
     <!-- [SEC-09.7] #modalGraficoTelemetria: Series Temporales y Comparativa Interanual (Chart.js) -->
     <div id="modalGraficoTelemetria" data-modal="modalGraficoHistorico"
-        class="fixed inset-0 bg-stone-900/60 backdrop-blur-md hidden items-center justify-center p-2 sm:p-4 z-[99990] select-none">
+        class="fixed inset-0 bg-stone-900/35 backdrop-blur-md hidden items-center justify-center p-2 sm:p-4 z-[99990] select-none">
         <div
             class="bg-white border-2 border-[#8c6547] rounded-2xl sm:rounded-3xl p-4 sm:p-6 w-full max-w-4xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
             <!-- Cabecera -->
@@ -4560,12 +4609,12 @@ CONTROLADORES JAVASCRIPT:
             const toast = document.createElement("div");
             const colores =
                 tipo === "error"
-                    ? "border-rose-500/80 bg-rose-950/95 text-rose-200 border-2"
+                    ? "border-rose-500 bg-white text-rose-900 border-2"
                     : tipo === "success"
-                        ? "border-emerald-500/80 bg-emerald-950/95 text-emerald-200 border-2"
+                        ? "border-emerald-600 bg-white text-emerald-900 border-2"
                         : tipo === "warning"
-                            ? "border-amber-500 bg-amber-950/95 text-amber-200 border-2 font-semibold"
-                            : "border-sky-500/80 bg-slate-900/95 text-sky-200 border";
+                            ? "border-amber-600 bg-white text-amber-950 border-2 font-semibold"
+                            : "border-[#8c6547] bg-white text-[#22160f] border-2";
 
             const icono =
                 tipo === "error"
@@ -4576,7 +4625,7 @@ CONTROLADORES JAVASCRIPT:
                             ? "⚠️ "
                             : "ℹ️ ";
 
-            toast.className = `pointer-events-auto rounded-xl ${colores} px-4 py-3 text-xs font-medium shadow-2xl backdrop-blur-md transition flex items-center gap-2.5 z-[999999]`;
+            toast.className = `pointer-events-auto rounded-xl ${colores} px-4 py-3 text-xs font-semibold shadow-2xl backdrop-blur-md transition flex items-center gap-2.5 z-[999999]`;
             toast.innerHTML = `<span class="text-base">${icono}</span><span>${mensaje}</span>`;
             container.appendChild(toast);
 
