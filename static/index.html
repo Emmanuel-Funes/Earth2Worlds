@@ -306,21 +306,21 @@ CONTROLADORES JAVASCRIPT:
         /* 4. HERRAMIENTAS Y BARRA LATERAL DEL CREADOR DE LOTES (LEAFLET-GEOMAN CON TEXTO CLARO) */
         .leaflet-pm-toolbar .leaflet-buttons-control-button {
             width: auto !important;
-            min-width: 155px !important;
+            min-width: 135px !important;
             height: 38px !important;
             line-height: 38px !important;
-            font-size: 11px !important;
             display: flex !important;
+            flex-direction: row !important;
             align-items: center !important;
             justify-content: flex-start !important;
             padding: 0 10px !important;
-            gap: 6px !important;
             border-radius: 12px !important;
             margin-bottom: 5px !important;
             background-color: #ffffff !important;
             border: 2px solid #8c6547 !important;
             box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
             color: #241810 !important;
+            text-decoration: none !important;
         }
         .leaflet-buttons-control-button a,
         .leaflet-bar a {
@@ -335,46 +335,30 @@ CONTROLADORES JAVASCRIPT:
             color: #16a34a !important;
         }
 
-        .leaflet-pm-icon-polygon::after {
-            content: " Polígono / Polygon";
-            font-size: 11px;
-            font-weight: 700;
-            color: #241810;
-            white-space: nowrap;
-            margin-left: 8px;
-        }
-        .leaflet-pm-icon-rectangle::after {
-            content: " Rectángulo / Rectangle";
-            font-size: 11px;
-            font-weight: 700;
-            color: #241810;
-            white-space: nowrap;
-            margin-left: 8px;
-        }
-        .leaflet-pm-icon-edit::after {
-            content: " Editar / Edit";
-            font-size: 11px;
-            font-weight: 700;
-            color: #241810;
-            white-space: nowrap;
-            margin-left: 8px;
-        }
-        .leaflet-pm-icon-delete::after {
-            content: " Borrar / Delete";
-            font-size: 11px;
-            font-weight: 700;
-            color: #241810;
-            white-space: nowrap;
-            margin-left: 8px;
+        .leaflet-pm-toolbar .leaflet-pm-icon {
+            width: 20px !important;
+            height: 20px !important;
+            min-width: 20px !important;
+            background-position: center !important;
+            background-size: contain !important;
+            margin-right: 8px !important;
+            display: inline-block !important;
         }
 
-        .leaflet-pm-toolbar .leaflet-pm-icon {
-            transform: scale(1.15) !important;
-            transform-origin: center center !important;
+        .pm-btn-label {
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            color: #241810 !important;
+            white-space: nowrap !important;
+            display: inline-block !important;
+        }
+
+        .leaflet-pm-toolbar .leaflet-buttons-control-button:hover .pm-btn-label {
+            color: #16a34a !important;
         }
 
         .leaflet-pm-actions-container {
-            left: 165px !important;
+            left: 145px !important;
             top: 2px !important;
         }
 
@@ -386,6 +370,13 @@ CONTROLADORES JAVASCRIPT:
             background-color: #faf7f2 !important;
             border: 1px solid #8c6547 !important;
             color: #100b07 !important;
+        }
+
+        .custom-coord-pin {
+            background: transparent !important;
+            border: none !important;
+            width: auto !important;
+            height: auto !important;
         }
 
         /* Modales siempre por encima de cualquier mapa Leaflet (z-index: 1000) */
@@ -808,10 +799,6 @@ CONTROLADORES JAVASCRIPT:
                             <span id="superficieBasicoHa"
                                 class="font-heading font-extrabold text-emerald-400 text-lg">0.00 ha</span>
                         </div>
-                        <button id="btnContinuarPaso2" type="button" disabled onclick="irAPasoBasico2()"
-                            class="px-5 py-3 rounded-xl bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-emerald-400 text-slate-950 font-heading font-bold text-sm shadow-lg shadow-emerald-500/20 transition flex items-center gap-2 cursor-pointer">
-                            <span data-i18n="btn_confirmar_paso1">Confirm Parcel and Continue &rarr;</span>
-                        </button>
                     </div>
                 </div>
 
@@ -820,9 +807,9 @@ CONTROLADORES JAVASCRIPT:
                     <!-- Buscador flotante de coordenadas Google -->
                     <div class="absolute top-3 left-16 sm:left-20 z-[1000] flex items-center gap-1.5 bg-white/95 backdrop-blur-md p-1.5 rounded-2xl border-2 border-[#8c6547] shadow-xl max-w-sm sm:max-w-md w-auto">
                         <span class="text-sm pl-1.5">📍</span>
-                        <input type="text" id="inputCoordGoogle" placeholder="Coordenadas Google (ej: -33.68, -65.42)" class="text-xs px-2.5 py-1.5 rounded-xl border border-stone-300 font-mono text-stone-900 focus:outline-none focus:border-emerald-600 w-44 sm:w-60" onkeydown="if(event.key==='Enter') irACoordenadasGoogle()" />
+                        <input type="text" id="inputCoordGoogle" placeholder="Google Coordinates (e.g. -33.68, -65.42)" data-i18n-ph="placeholder_coord_google" class="text-xs px-2.5 py-1.5 rounded-xl border border-stone-300 font-mono text-stone-900 focus:outline-none focus:border-emerald-600 w-44 sm:w-60" onkeydown="if(event.key==='Enter') irACoordenadasGoogle()" />
                         <button type="button" onclick="irACoordenadasGoogle()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-1 cursor-pointer shadow-xs">
-                            <span data-i18n="btn_ir_coord">Ir</span>
+                            <span data-i18n="btn_buscar_lugar">Search Place</span>
                         </button>
                     </div>
 
@@ -2375,6 +2362,32 @@ CONTROLADORES JAVASCRIPT:
             return true;
         }
 
+        function actualizarEtiquetasGeomanI18n() {
+            const isEn = (typeof idiomaActual !== 'undefined' ? idiomaActual : 'en') === 'en';
+            const textos = {
+                "leaflet-pm-icon-polygon": isEn ? "Polygon" : "Polígono",
+                "leaflet-pm-icon-rectangle": isEn ? "Rectangle" : "Rectángulo",
+                "leaflet-pm-icon-edit": isEn ? "Edit" : "Editar",
+                "leaflet-pm-icon-delete": isEn ? "Delete" : "Borrar"
+            };
+            document.querySelectorAll(".leaflet-pm-toolbar .leaflet-buttons-control-button").forEach(btn => {
+                for (const [cls, labelTxt] of Object.entries(textos)) {
+                    const icon = btn.querySelector("." + cls);
+                    if (icon) {
+                        let lbl = btn.querySelector(".pm-btn-label");
+                        if (!lbl) {
+                            lbl = document.createElement("span");
+                            lbl.className = "pm-btn-label";
+                            btn.appendChild(lbl);
+                        }
+                        lbl.textContent = labelTxt;
+                        break;
+                    }
+                }
+            });
+        }
+        window.actualizarEtiquetasGeomanI18n = actualizarEtiquetasGeomanI18n;
+
         function inicializarMapaBasico() {
             if (mapaBasico) {
                 mapaBasico.invalidateSize();
@@ -2453,6 +2466,7 @@ CONTROLADORES JAVASCRIPT:
                 cutPolygon: false,
                 removalMode: true,
             });
+            setTimeout(actualizarEtiquetasGeomanI18n, 60);
 
             mapaBasico.on("pm:create", (e) => {
                 const geo = e.layer.toGeoJSON();
@@ -2556,10 +2570,10 @@ CONTROLADORES JAVASCRIPT:
                 }
                 window._marcadorBusquedaCoord = L.marker([lat, lon], {
                     icon: L.divIcon({
-                        className: "custom-pin",
-                        html: `<div style="background:#16a34a; color:#fff; font-weight:bold; padding:4px 8px; border-radius:12px; border:2px solid #fff; box-shadow:0 3px 8px rgba(0,0,0,0.4); font-size:11px; white-space:nowrap;">📍 [${lat.toFixed(4)}, ${lon.toFixed(4)}]</div>`,
-                        iconSize: [120, 30],
-                        iconAnchor: [60, 15]
+                        className: "custom-coord-pin",
+                        html: `<div style="background:#16a34a; color:#fff; font-weight:bold; padding:4px 10px; border-radius:10px; border:2px solid #fff; box-shadow:0 3px 10px rgba(0,0,0,0.4); font-size:11px; white-space:nowrap; display:inline-block; transform:translate(-50%, -50%);">📍 [${lat.toFixed(4)}, ${lon.toFixed(4)}]</div>`,
+                        iconSize: null,
+                        iconAnchor: null
                     })
                 }).addTo(mapaBasico);
                 mostrarToast(`Mapa centrado en [${lat.toFixed(4)}, ${lon.toFixed(4)}]. Usa las herramientas de la izquierda para dibujar tu lote.`, "success");
@@ -3122,10 +3136,22 @@ CONTROLADORES JAVASCRIPT:
 
             const isEn = (typeof idiomaActual !== 'undefined' ? idiomaActual : 'en') === 'en';
             const campanasTxt = data.clima ? `${data.clima.campanas} ${isEn ? 'seasons' : 'campañas'} (${data.clima.desde} ${isEn ? 'to' : 'a'} ${data.clima.hasta})` : (isEn ? "34 seasons" : "34 campañas");
-            const sueloTxt = data.lote ? `${isEn ? 'Texture' : 'Textura'}: ${data.lote.textura_fuente || data.lote.textura || (isEn ? 'sandy loam' : 'franco arenoso')} · ${isEn ? 'Available water' : 'Agua útil'}: ${data.lote.agua_util_0_100cm_mm} mm` : "";
 
             const html = `
                 <div class="space-y-5">
+                    <!-- Ficha del Diagnóstico (arriba del Plan Trienal y agrandada) -->
+                    <div class="p-4 sm:p-5 rounded-2xl bg-white border-2 border-[#8c6547] text-sm sm:text-base text-[#241810] flex flex-wrap items-center justify-between gap-3 shadow-md">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl sm:text-3xl">🛰️</span>
+                            <span class="font-heading font-extrabold text-[#241810]">
+                                ${isEn ? 'Parcel evaluated with' : 'Lote analizado con'} <strong class="text-emerald-700">${campanasTxt}</strong> ${isEn ? 'of NASA POWER series' : 'de la serie histórica NASA POWER'}.
+                            </span>
+                        </div>
+                        <span class="px-3.5 py-1.5 rounded-xl bg-emerald-50 border-2 border-emerald-500 text-emerald-900 font-mono text-xs sm:text-sm font-bold shadow-2xs">
+                            ${isEn ? 'Last declared crop' : 'Última plantación declarada'}: <strong class="uppercase text-emerald-800">${escapeHtml(typeof traducirNombreCultivo === 'function' ? traducirNombreCultivo(cultivoPrevio) : cultivoPrevio)}</strong>
+                        </span>
+                    </div>
+
                     ${data.plan_rotacion && data.plan_rotacion.length > 0 ? `
                         <!-- Banner Plan Trienal de Rotación -->
                         <div class="p-4 sm:p-5 rounded-2xl bg-[#faf7f2] border-2 border-[#8c6547] shadow-sm space-y-3">
@@ -3149,7 +3175,7 @@ CONTROLADORES JAVASCRIPT:
                                 ${data.plan_rotacion.map((pr) => {
                                     const activo = Number(anioActivo) === pr.anio;
                                     return `
-                                    <div onclick="cambiarAnioRotacion(${pr.anio})" class="cursor-pointer select-none p-3.5 sm:p-4 rounded-2xl ${activo ? 'bg-emerald-50/50 border-2 border-emerald-600 ring-2 ring-emerald-500/20 shadow-md' : 'bg-white border-2 border-[#8c6547]/40 hover:border-emerald-600/60 hover:bg-[#faf7f2] shadow-xs'} transition-all flex flex-col justify-between space-y-2.5">
+                                    <div onclick="cambiarAnioRotacion(${pr.anio}); document.getElementById('grillaCultivosEvaluados')?.scrollIntoView({ behavior: 'smooth' });" class="cursor-pointer select-none p-3.5 sm:p-4 rounded-2xl ${activo ? 'bg-emerald-50/50 border-2 border-emerald-600 ring-2 ring-emerald-500/20 shadow-md' : 'bg-white border-2 border-[#8c6547]/40 hover:border-emerald-600/60 hover:bg-[#faf7f2] shadow-xs'} transition-all flex flex-col justify-between space-y-2.5">
                                         <div class="flex items-center justify-between">
                                             <span class="text-[10px] font-sans font-extrabold uppercase tracking-wider ${activo ? 'text-emerald-900' : 'text-[#785843]'}">${escapeHtml(pr.etiqueta || `Año ${pr.anio}`)}</span>
                                             <div class="flex items-center gap-1.5">
@@ -3198,17 +3224,6 @@ CONTROLADORES JAVASCRIPT:
                             </div>
                             <span class="text-3xl">🔴</span>
                         </div>
-                    </div>
-
-                    <!-- Ficha del Diagnóstico -->
-                    <div class="p-3.5 rounded-xl bg-white border-2 border-[#8c6547] text-xs text-[#382a21] flex flex-wrap items-center justify-between gap-3 shadow-xs">
-                        <div>
-                            <span>${isEn ? 'Parcel evaluated with' : 'Lote analizado con'} <strong>${campanasTxt}</strong> ${isEn ? 'of NASA POWER' : 'de NASA POWER'}.</span>
-                            <span class="text-[#785843] ml-1.5">${sueloTxt}</span>
-                        </div>
-                        <span class="px-2.5 py-0.5 rounded-lg bg-emerald-50 border border-emerald-400 text-emerald-800 font-mono text-[11px] font-bold">
-                            ${isEn ? 'Last declared crop' : 'Última plantación declarada'}: <strong>${escapeHtml(typeof traducirNombreCultivo === 'function' ? traducirNombreCultivo(cultivoPrevio) : cultivoPrevio)}</strong>
-                        </span>
                     </div>
 
                     <!-- Grilla de Cultivos Evaluados -->
@@ -3367,9 +3382,9 @@ CONTROLADORES JAVASCRIPT:
                                 </div>
                             </div>
                             <div style="text-align: right; font-size: 10px; color: #523725; font-family: monospace;">
-                                <strong>REPORTE AGROCLIMÁTICO SATELITAL</strong><br>
-                                Fecha: ${new Date().toLocaleDateString()}<br>
-                                Misión: NASA Earth Observation &bull; INTA
+                                <strong>${isEn ? 'SATELLITE AGROCLIMATIC REPORT' : 'REPORTE AGROCLIMÁTICO SATELITAL'}</strong><br>
+                                ${isEn ? 'Date' : 'Fecha'}: ${new Date().toLocaleDateString()}<br>
+                                ${isEn ? 'Mission' : 'Misión'}: NASA Earth Observation &bull; INTA
                             </div>
                         </div>
                     </div>
@@ -3377,7 +3392,7 @@ CONTROLADORES JAVASCRIPT:
                     ${window._mapaCapturaDataUrl ? `
                         <div style="margin-bottom: 12px; text-align: center; background: #ffffff; border: 1.5px solid #8c6547; border-radius: 10px; padding: 6px;">
                             <div style="font-size: 10px; font-weight: bold; color: #8c6547; text-transform: uppercase; margin-bottom: 4px; text-align: left;">
-                                🛰️ Delimitación Satelital del Lote (Resolución NASA)
+                                🛰️ ${isEn ? 'Parcel Satellite Delimitation (NASA Resolution)' : 'Delimitación Satelital del Lote (Resolución NASA)'}
                             </div>
                             <img src="${window._mapaCapturaDataUrl}" style="max-width: 100%; max-height: 190px; object-fit: contain; border-radius: 6px; border: 1px solid #dfd2c6;" alt="Captura Satelital Lote">
                         </div>
@@ -3386,20 +3401,20 @@ CONTROLADORES JAVASCRIPT:
                     <!-- Datos del Lote -->
                     <div style="background: #faf7f2; border: 1.5px solid #8c6547; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px;">
                         <h3 style="margin: 0 0 6px; font-size: 12px; font-weight: bold; color: #8c6547; text-transform: uppercase;">
-                            📍 Características Técnicas del Lote Analizado
+                            📍 ${isEn ? 'Technical Attributes of Evaluated Parcel' : 'Características Técnicas del Lote Analizado'}
                         </h3>
                         <table style="width: 100%; font-size: 10px; border-collapse: collapse;">
                             <tr>
-                                <td style="padding: 3px 0; color: #523725; width: 50%;"><strong>Centroide:</strong> ${escapeHtml(centroide)}</td>
-                                <td style="padding: 3px 0; color: #523725; width: 50%;"><strong>Superficie:</strong> ${escapeHtml(supHa)}</td>
+                                <td style="padding: 3px 0; color: #523725; width: 50%;"><strong>${isEn ? 'Coordinates' : 'Centroide'}:</strong> ${escapeHtml(centroide)}</td>
+                                <td style="padding: 3px 0; color: #523725; width: 50%;"><strong>${isEn ? 'Calculated Area' : 'Superficie'}:</strong> ${escapeHtml(supHa)}</td>
                             </tr>
                             <tr>
-                                <td style="padding: 3px 0; color: #523725;"><strong>Última Plantación Declarada:</strong> ${escapeHtml(cultPrev)}</td>
-                                <td style="padding: 3px 0; color: #523725;"><strong>Régimen:</strong> Secano (Semiárido)</td>
+                                <td style="padding: 3px 0; color: #523725;"><strong>${isEn ? 'Last Declared Crop' : 'Última Plantación Declarada'}:</strong> ${escapeHtml(typeof traducirNombreCultivo === 'function' ? traducirNombreCultivo(cultPrev) : cultPrev)}</td>
+                                <td style="padding: 3px 0; color: #523725;"><strong>${isEn ? 'Regime' : 'Régimen'}:</strong> ${isEn ? 'Rainfed (Semiarid)' : 'Secano (Semiárido)'}</td>
                             </tr>
                             <tr>
-                                <td style="padding: 3px 0; color: #523725;"><strong>Textura del Suelo:</strong> ${escapeHtml(texturaLimpia)}</td>
-                                <td style="padding: 3px 0; color: #523725;"><strong>Capacidad Agua Útil:</strong> ${recData.lote?.agua_util_0_100cm_mm || 120} mm</td>
+                                <td style="padding: 3px 0; color: #523725;"><strong>${isEn ? 'Soil Texture' : 'Textura del Suelo'}:</strong> ${escapeHtml(texturaLimpia)}</td>
+                                <td style="padding: 3px 0; color: #523725;"><strong>${isEn ? 'Available Water Capacity' : 'Capacidad Agua Útil'}:</strong> ${recData.lote?.agua_util_0_100cm_mm || 120} mm</td>
                             </tr>
                         </table>
                     </div>
@@ -3407,7 +3422,7 @@ CONTROLADORES JAVASCRIPT:
                     <!-- Plan Trienal de Rotación -->
                     <div style="margin-bottom: 16px;">
                         <h3 style="margin: 0 0 8px; font-size: 12px; font-weight: bold; color: #100b07; border-bottom: 1.5px solid #dfd2c6; padding-bottom: 4px;">
-                            🔄 Plan Trienal de Rotación de Cultivos (Reglas INTA y FAO-33)
+                            🔄 ${isEn ? '3-Year Triennial Crop Rotation Plan (INTA & FAO-33 Rules)' : 'Plan Trienal de Rotación de Cultivos (Reglas INTA y FAO-33)'}
                         </h3>
                         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
                 `;
@@ -3418,10 +3433,10 @@ CONTROLADORES JAVASCRIPT:
                         <div style="border: 1.5px solid #8c6547; border-radius: 8px; padding: 8px; background: #ffffff;">
                             <div style="font-size: 9px; font-weight: bold; color: #8c6547; text-transform: uppercase;">${escapeHtml(pr.etiqueta || `Año ${pr.anio}`)}</div>
                             <div style="font-size: 13px; font-weight: bold; color: #100b07; margin: 3px 0;">
-                                ${iconMap[pr.cultivo] || '🌱'} ${escapeHtml(pr.nombre)}
+                                ${iconMap[pr.cultivo] || '🌱'} ${escapeHtml(typeof traducirNombreCultivo === 'function' ? traducirNombreCultivo(pr.nombre) : pr.nombre)}
                             </div>
                             <div style="display: inline-block; background: #ecfdf5; border: 1px solid #86efac; color: #166534; font-size: 9px; font-weight: bold; border-radius: 5px; padding: 1.5px 5px; margin-bottom: 5px;">
-                                ${pr.porcentaje_coincidencia}% Coincidencia Óptima
+                                ${pr.porcentaje_coincidencia}% ${isEn ? 'Optimal Match' : 'Coincidencia Óptima'}
                             </div>
                             <p style="margin: 0; font-size: 9px; color: #2b1b11; line-height: 1.3;">${escapeHtml(pr.por_que_se_eligio)}</p>
                         </div>
@@ -3435,17 +3450,17 @@ CONTROLADORES JAVASCRIPT:
                     <!-- Métricas Satelitales a 5 Años -->
                     <div style="margin-bottom: 14px;">
                         <h3 style="margin: 0 0 8px; font-size: 12px; font-weight: bold; color: #100b07; border-bottom: 1.5px solid #dfd2c6; padding-bottom: 4px;">
-                            🛰️ Métricas Satelitales Multiespectrales (5 Años NASA Earth Observation)
+                            🛰️ ${isEn ? 'Multispectral Satellite Metrics (5-Year NASA Earth Observation)' : 'Métricas Satelitales Multiespectrales (5 Años NASA Earth Observation)'}
                         </h3>
                 `;
 
                 // Capturas de gráficos offscreen Chart.js
                 const metricasPDF = [
-                    { key: "ndvi", titulo: "Índice de Vigor Vegetal (NDVI)", sensor: "HLS Sentinel-2 / Landsat (30m)", vars: ["ndvi", "ndvi_hls", "ndvi_modis"], color: "#16a34a", unidad: "" },
-                    { key: "humedad", titulo: "Humedad Radicular del Suelo", sensor: "NASA SMAP L3/L4 (9km)", vars: ["humedad_superficial", "humedad_zona_raiz", "humedad_suelo_pct", "humedad_radicular"], color: "#0284c7", unidad: "m³/m³" },
-                    { key: "lluvia", titulo: "Precipitación Diaria y Acumulada", sensor: "NASA GPM IMERG (10km)", vars: ["lluvia_mm", "precipitacion_mm"], color: "#2563eb", unidad: "mm" },
-                    { key: "estres", titulo: "Demanda Evaporativa y Balance Hídrico", sensor: "ECOSTRESS / POWER (NASA)", vars: ["et0_mm_dia", "et_mm_dia", "evapotranspiracion_mm", "pet_mm_dia"], color: "#0d9488", unidad: "mm/día" },
-                    { key: "heladas", titulo: "Temperatura de Superficie y Piso Térmico", sensor: "VIIRS / POWER (NASA)", vars: ["temperatura", "temp_media", "temp_min", "temperatura_c", "temp_sup_min_c"], color: "#ea580c", unidad: "°C" }
+                    { key: "ndvi", titulo: isEn ? "Active Vegetation Index (NDVI)" : "Índice de Vigor Vegetal (NDVI)", sensor: "HLS Sentinel-2 / Landsat (30m)", vars: ["ndvi", "ndvi_hls", "ndvi_modis"], color: "#16a34a", unidad: "" },
+                    { key: "humedad", titulo: isEn ? "Sowing Root-Zone Moisture" : "Humedad Radicular del Suelo", sensor: "NASA SMAP L3/L4 (9km)", vars: ["humedad_superficial", "humedad_zona_raiz", "humedad_suelo_pct", "humedad_radicular"], color: "#0284c7", unidad: "m³/m³" },
+                    { key: "lluvia", titulo: isEn ? "Daily & Accumulated Precipitation" : "Precipitación Diaria y Acumulada", sensor: "NASA GPM IMERG (10km)", vars: ["lluvia_mm", "precipitacion_mm"], color: "#2563eb", unidad: "mm" },
+                    { key: "estres", titulo: isEn ? "Soil Evaporation & Water Demand" : "Demanda Evaporativa y Balance Hídrico", sensor: "ECOSTRESS / POWER (NASA)", vars: ["et0_mm_dia", "et_mm_dia", "evapotranspiracion_mm", "pet_mm_dia"], color: "#0d9488", unidad: "mm/día" },
+                    { key: "heladas", titulo: isEn ? "Soil Surface Temperature & Thermal Threshold" : "Temperatura de Superficie y Piso Térmico", sensor: "VIIRS / POWER (NASA)", vars: ["temperatura", "temp_media", "temp_min", "temperatura_c", "temp_sup_min_c"], color: "#ea580c", unidad: "°C" }
                 ];
 
                 const todasObs = window.observacionesTelemetria5Anios || [];
@@ -3453,6 +3468,9 @@ CONTROLADORES JAVASCRIPT:
                 for (const m of metricasPDF) {
                     const puntos = todasObs.filter(o => o && m.vars.includes(o.variable) && o.valor !== null && !isNaN(Number(o.valor)));
                     if (puntos.length === 0) continue;
+
+                    // Ordenar cronológicamente
+                    puntos.sort((a, b) => (a.fecha || "").localeCompare(b.fecha || ""));
 
                     const valores = puntos.map(p => Number(p.valor));
                     const minV = Math.min(...valores);
@@ -3468,15 +3486,15 @@ CONTROLADORES JAVASCRIPT:
                         data: {
                             labels: puntos.map(p => {
                                 const f = p.fecha || "";
-                                return f.length >= 10 ? f.slice(0, 10) : f;
+                                return f.length >= 7 ? f.slice(0, 7) : f;
                             }),
                             datasets: [{
-                                label: "Continuo 5 Años",
+                                label: isEn ? "Continuous 5-Year Series" : "Serie Continua 5 Años",
                                 data: valores,
                                 borderColor: m.color,
                                 borderWidth: 1.5,
-                                pointRadius: puntos.length <= 15 ? 3 : (puntos.length <= 60 ? 1.5 : 0.5),
-                                pointHoverRadius: 4,
+                                pointRadius: puntos.length <= 15 ? 2.5 : (puntos.length <= 60 ? 1 : 0),
+                                pointHoverRadius: 3,
                                 pointBackgroundColor: m.color,
                                 fill: false,
                                 tension: 0.15
@@ -3488,7 +3506,16 @@ CONTROLADORES JAVASCRIPT:
                             scales: {
                                 x: {
                                     display: true,
-                                    ticks: { font: { size: 7, family: "sans-serif" }, maxTicksLimit: 5, maxRotation: 0, color: "#523725" },
+                                    ticks: {
+                                        font: { size: 7, family: "sans-serif" },
+                                        maxTicksLimit: 6,
+                                        maxRotation: 0,
+                                        color: "#523725",
+                                        callback: function(val, index) {
+                                            const label = this.getLabelForValue(val);
+                                            return label ? label.slice(0, 4) : "";
+                                        }
+                                    },
                                     grid: { display: false }
                                 },
                                 y: {
@@ -3506,32 +3533,53 @@ CONTROLADORES JAVASCRIPT:
                     const iCanvas = document.createElement("canvas");
                     iCanvas.width = 305;
                     iCanvas.height = 140;
+                    
+                    const nombresMeses = isEn
+                        ? ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+                        : ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+
                     const aniosPuntos = {};
                     puntos.forEach(p => {
                         const y = p.fecha?.slice(0, 4);
-                        if (!aniosPuntos[y]) aniosPuntos[y] = [];
-                        aniosPuntos[y].push({ x: p.fecha?.slice(5, 10), y: Number(p.valor) });
+                        const mIdx = parseInt(p.fecha?.slice(5, 7), 10) - 1;
+                        if (!y || isNaN(mIdx) || mIdx < 0 || mIdx > 11) return;
+                        if (!aniosPuntos[y]) aniosPuntos[y] = Array.from({ length: 12 }, () => []);
+                        aniosPuntos[y][mIdx].push(Number(p.valor));
                     });
+
                     const paletaAnios = ["#16a34a", "#2563eb", "#ea580c", "#7c3aed", "#0d9488"];
-                    const datasetsInter = Object.keys(aniosPuntos).sort().map((y, idx) => ({
-                        label: `Año ${y}`,
-                        data: aniosPuntos[y],
-                        borderColor: paletaAnios[idx % paletaAnios.length],
-                        borderWidth: 1.5,
-                        pointRadius: aniosPuntos[y].length <= 15 ? 2.5 : 1,
-                        fill: false,
-                        tension: 0.15
-                    }));
+                    const datasetsInter = Object.keys(aniosPuntos).sort().map((y, idx) => {
+                        const serieMeses = aniosPuntos[y].map(arr => arr.length ? (arr.reduce((a, b) => a + b, 0) / arr.length) : null);
+                        return {
+                            label: isEn ? `Year ${y}` : `Año ${y}`,
+                            data: serieMeses,
+                            borderColor: paletaAnios[idx % paletaAnios.length],
+                            borderWidth: 1.5,
+                            pointRadius: 2,
+                            fill: false,
+                            tension: 0.25,
+                            spanGaps: true
+                        };
+                    });
 
                     const iChart = new Chart(iCanvas, {
                         type: "line",
-                        data: { datasets: datasetsInter },
+                        data: {
+                            labels: nombresMeses,
+                            datasets: datasetsInter
+                        },
                         options: {
                             animation: false,
                             responsive: false,
                             scales: {
-                                x: { ticks: { font: { size: 7, family: "sans-serif" }, maxTicksLimit: 6, color: "#523725" }, grid: { display: false } },
-                                y: { ticks: { font: { size: 8, family: "sans-serif" }, color: "#523725" }, grid: { color: "#ede6dc" } }
+                                x: {
+                                    ticks: { font: { size: 7, family: "sans-serif" }, color: "#523725" },
+                                    grid: { display: false }
+                                },
+                                y: {
+                                    ticks: { font: { size: 8, family: "sans-serif" }, color: "#523725" },
+                                    grid: { color: "#ede6dc" }
+                                }
                             },
                             plugins: {
                                 legend: { display: true, labels: { boxWidth: 8, font: { size: 8, family: "sans-serif" }, color: "#523725" } }
@@ -3549,16 +3597,16 @@ CONTROLADORES JAVASCRIPT:
                                     <span style="font-size: 8px; color: #523725; margin-left: 6px;">(${m.sensor})</span>
                                 </div>
                                 <div style="font-size: 9px; font-family: monospace; color: #8c6547;">
-                                    Mín: ${minV.toFixed(2)}${m.unidad} &bull; Máx: ${maxV.toFixed(2)}${m.unidad} &bull; Prom: ${promV.toFixed(2)}${m.unidad}
+                                    ${isEn ? 'Min' : 'Mín'}: ${minV.toFixed(2)}${m.unidad} &bull; ${isEn ? 'Max' : 'Máx'}: ${maxV.toFixed(2)}${m.unidad} &bull; ${isEn ? 'Avg' : 'Prom'}: ${promV.toFixed(2)}${m.unidad}
                                 </div>
                             </div>
                             <div style="display: flex; gap: 10px; justify-content: space-between;">
                                 <div style="width: 48%; text-align: center;">
-                                    <div style="font-size: 8px; font-weight: bold; color: #523725; margin-bottom: 2px;">Serie Continua (5 Años)</div>
+                                    <div style="font-size: 8px; font-weight: bold; color: #523725; margin-bottom: 2px;">${isEn ? 'Continuous 5-Year Series' : 'Serie Continua (5 Años)'}</div>
                                     <img src="${cImg}" style="width: 100%; height: auto; border: 1px solid #ede6dc; border-radius: 4px;">
                                 </div>
                                 <div style="width: 48%; text-align: center;">
-                                    <div style="font-size: 8px; font-weight: bold; color: #523725; margin-bottom: 2px;">Curvas Interanuales Superpuestas</div>
+                                    <div style="font-size: 8px; font-weight: bold; color: #523725; margin-bottom: 2px;">${isEn ? 'Overlaid Interannual Curves' : 'Curvas Interanuales Superpuestas'}</div>
                                     <img src="${iImg}" style="width: 100%; height: auto; border: 1px solid #ede6dc; border-radius: 4px;">
                                 </div>
                             </div>
@@ -3572,8 +3620,8 @@ CONTROLADORES JAVASCRIPT:
                     <!-- Pie de Página con Logo NASA Space Apps -->
                     <div style="border-top: 1.5px solid #8c6547; padding-top: 12px; margin-top: 16px; text-align: center; font-size: 10px; color: #523725;">
                         <img src="/static/img/logo_nasa_spaceapps.png" style="height: 35px; object-fit: contain; margin-bottom: 4px;" alt="NASA Space Apps Challenge"><br>
-                        <strong>RotaTerra &bull; Arquitectura Agroclimática + Telemetría Satelital NASA &amp; INTA</strong><br>
-                        Desarrollado para NASA Space Apps Challenge &bull; Reporte oficial generado automáticamente
+                        <strong>RotaTerra &bull; ${isEn ? 'Agroclimatic Architecture + NASA & INTA Satellite Telemetry' : 'Arquitectura Agroclimática + Telemetría Satelital NASA &amp; INTA'}</strong><br>
+                        ${isEn ? 'Developed for NASA Space Apps Challenge &bull; Official report generated automatically' : 'Desarrollado para NASA Space Apps Challenge &bull; Reporte oficial generado automáticamente'}
                     </div>
                 `;
 
@@ -3610,7 +3658,10 @@ CONTROLADORES JAVASCRIPT:
             }
             loteBasicoGeoJSON = null;
             document.getElementById("superficieBasicoHa").textContent = "0.00 ha";
-            document.getElementById("btnContinuarPaso2").disabled = true;
+            const btnPaso2 = document.getElementById("btnContinuarPaso2");
+            if (btnPaso2) btnPaso2.disabled = true;
+            const btnFlot = document.getElementById("btnFlotanteConfirmarMapa");
+            if (btnFlot) btnFlot.disabled = true;
             irAPasoBasico1();
         }
 

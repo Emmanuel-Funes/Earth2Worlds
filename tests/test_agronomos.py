@@ -236,9 +236,16 @@ def test_plan_rotacion_trienal():
     assert len(r["plan_rotacion"]) == 3
     assert "rotaciones" in r
     assert all(k in r["rotaciones"] for k in ("1", "2", "3"))
-    # Los 3 años deben tener cultivo recomendado asignado
+    # Los 3 años deben tener cultivo recomendado asignado y no repetir especie consecutiva
+    cultivos = [paso["cultivo"] for paso in r["plan_rotacion"]]
+    assert len(set(cultivos)) == 3, f"El plan trienal no debe repetir el mismo cultivo: {cultivos}"
     for paso in r["plan_rotacion"]:
         assert paso["anio"] in (1, 2, 3)
         assert paso["cultivo"] in motor.CULTIVOS
         assert paso["porcentaje_coincidencia"] > 0
+
+    # Si el usuario eligió 'otro', el plan trienal tampoco debe repetir 3 veces el mismo cultivo
+    r_otro = recomendar(pedido(historial=["otro"]), POWER)
+    cultivos_otro = [paso["cultivo"] for paso in r_otro["plan_rotacion"]]
+    assert len(set(cultivos_otro)) == 3, f"Con historial 'otro', el plan no debe repetir el cultivo: {cultivos_otro}"
 

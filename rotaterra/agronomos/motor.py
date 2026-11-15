@@ -398,10 +398,11 @@ def calcular_porcentaje_optimo(c: dict, filas: list[dict], suelo: dict, ph: dict
     pts_rotacion = 10.0
     nr = c.get("no_repetir")
     if nr and pedido.historial:
-        if any(h and h.lower() in ("otro", "otros", "ninguno") for h in pedido.historial):
+        real_hist = [h.strip().lower() for h in pedido.historial if h and h.strip().lower() not in ("otro", "otros", "ninguno")]
+        if not real_hist:
             pts_rotacion = 10.0
         else:
-            previas = [h.replace("maiz_tardio", "maiz") for h in pedido.historial[:nr["campanas_libres"]]]
+            previas = [h.replace("maiz_tardio", "maiz") for h in real_hist[:nr["campanas_libres"]]]
             if nr["especie"] in previas:
                 pts_rotacion = 0.0
             else:
@@ -596,20 +597,23 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
     # 6 bis) regla 1 en 3: no repetir la especie (criterio agronómico del equipo)
     nr = c.get("no_repetir")
     if nr:
-        if not pedido.historial:
-            res, dato = "sin_dato", "Falta el historial del lote (cultivos de las campañas anteriores)"
-            comp_nr = f"Tu campo: sin historial previo vs Óptimo: rotación biológica sin repetir {nr['especie']}"
-        elif any(h and h.lower() in ("otro", "otros", "ninguno") for h in pedido.historial):
-            res, dato = "ok", "Sin monocultivo previo: lote con rotación libre y favorable"
-            comp_nr = f"Tu campo: sin restricciones de especies previas vs Óptimo: rotación biológica sin repetir {nr['especie']}"
-        else:
-            previas = [h.replace("maiz_tardio", "maiz") for h in pedido.historial[:nr["campanas_libres"]]]
-            if nr["especie"] in previas:
-                res, dato = "no", f"Hubo {nr['especie'].replace('mani', 'maní').replace('maiz', 'maíz')} hace {previas.index(nr['especie']) + 1} campaña(s)"
-                comp_nr = f"Tu campo: cultivo previo '{pedido.historial[0]}' coincide con la misma especie vs Óptimo: al menos {nr['campanas_libres']} campañas libres"
+        real_hist = [h.strip().lower() for h in (pedido.historial or []) if h and h.strip().lower() not in ("otro", "otros", "ninguno")]
+        if not real_hist:
+            if any(h and h.lower() in ("otro", "otros", "ninguno") for h in (pedido.historial or [])):
+                res, dato = "ok", "Sin monocultivo previo: lote con rotación libre y favorable"
+                comp_nr = f"Tu campo: sin restricciones de especies previas vs Óptimo: rotación biológica sin repetir {nr['especie']}"
             else:
-                res, dato = "ok", "Últimas campañas: " + ", ".join(pedido.historial[:nr["campanas_libres"]])
-                comp_nr = f"Tu campo: cultivo previo '{pedido.historial[0]}' vs Óptimo: rotación cruzada favorable sin repetir especie"
+                res, dato = "sin_dato", "Falta el historial del lote (cultivos de las campañas anteriores)"
+                comp_nr = f"Tu campo: sin historial previo vs Óptimo: rotación biológica sin repetir {nr['especie']}"
+        else:
+            previas = [h.replace("maiz_tardio", "maiz") for h in real_hist[:nr["campanas_libres"]]]
+            esp = nr["especie"]
+            if esp in previas:
+                res, dato = "no", f"Hubo {esp.replace('mani', 'maní').replace('maiz', 'maíz')} hace {previas.index(esp) + 1} campaña(s)"
+                comp_nr = f"Tu campo: cultivo previo '{real_hist[0]}' coincide con la misma especie vs Óptimo: al menos {nr['campanas_libres']} campañas libres"
+            else:
+                res, dato = "ok", "Últimas campañas: " + ", ".join(real_hist[:nr["campanas_libres"]])
+                comp_nr = f"Tu campo: cultivo previo '{real_hist[0]}' vs Óptimo: rotación cruzada favorable sin repetir especie"
         reglas.append(_regla("no_repetir", "No repetir la especie", res, dato, nr["texto"], [nr["fuente"]], cat,
                              comparativa_optimo=comp_nr))
 
@@ -753,28 +757,42 @@ def recomendar(pedido: PedidoAgronomos, power: dict, cat: dict | None = None, ca
                     )
         return salida
 
-    def _mejor_cultivo(lista: list[dict]) -> dict:
-        recomendables = [c for c in lista if c["estado"] == "Recomendable"]
+    def _mejor_cultivo(lista: list[dict], excluir: set[str] | None = None) -> dict:
+        excluir = set(excluir or [])
+        excluir_norm = set()
+        for e in excluir:
+            if not e:
+                continue
+            excluir_norm.add(e)
+            if e in ("maiz", "maiz_tardio"):
+                excluir_norm.add("maiz")
+                excluir_norm.add("maiz_tardio")
+        candidatos = [c for c in lista if c.get("cultivo") not in excluir_norm]
+        if not candidatos:
+            candidatos = lista
+        recomendables = [c for c in candidatos if c["estado"] == "Recomendable"]
         if recomendables:
             return recomendables[0]
-        con_cuidado = [c for c in lista if c["estado"] == "Con cuidado"]
+        con_cuidado = [c for c in candidatos if c["estado"] == "Con cuidado"]
         if con_cuidado:
             return con_cuidado[0]
-        return lista[0] if lista else {}
+        return candidatos[0] if candidatos else {}
 
     # Campaña 1 (Año 1)
     salida_1 = _evaluar_para_pedido(pedido)
     top_1 = _mejor_cultivo(salida_1)
 
-    # Campaña 2 (Año 2): encadena el cultivo ganador del año 1 al historial
-    ped_2 = pedido.model_copy(update={"historial": [top_1.get("cultivo", "")] + (pedido.historial or [])})
+    # Campaña 2 (Año 2): encadena el cultivo ganador del año 1 al historial y excluye repetir especie
+    c1 = top_1.get("cultivo", "")
+    ped_2 = pedido.model_copy(update={"historial": ([c1] if c1 else []) + (pedido.historial or [])})
     salida_2 = _evaluar_para_pedido(ped_2)
-    top_2 = _mejor_cultivo(salida_2)
+    top_2 = _mejor_cultivo(salida_2, excluir={c1})
 
-    # Campaña 3 (Año 3): encadena año 2 y año 1
-    ped_3 = pedido.model_copy(update={"historial": [top_2.get("cultivo", ""), top_1.get("cultivo", "")] + (pedido.historial or [])})
+    # Campaña 3 (Año 3): encadena año 2 y año 1 y excluye repetir especies previas
+    c2 = top_2.get("cultivo", "")
+    ped_3 = pedido.model_copy(update={"historial": ([c2, c1] if c2 and c1 else [c2 or c1]) + (pedido.historial or [])})
     salida_3 = _evaluar_para_pedido(ped_3)
-    top_3 = _mejor_cultivo(salida_3)
+    top_3 = _mejor_cultivo(salida_3, excluir={c1, c2})
 
     plan_rotacion = [
         {

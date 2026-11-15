@@ -53,6 +53,8 @@ const DICCIONARIO_I18N = {
         btn_dibujar_poligono: "Draw Parcel Polygon",
         btn_limpiar_poligono: "Clear Polygon",
         btn_confirmar_paso1: "Confirm Parcel and Continue →",
+        btn_buscar_lugar: "Search Place",
+        placeholder_coord_google: "Google Coordinates (e.g. -33.68, -65.42)",
         alerta_poligono_requerido: "Please draw or select a parcel polygon on the map before continuing.",
 
         paso2_cabecera: "Step 2: Select Previous Harvested Crop",
@@ -70,7 +72,21 @@ const DICCIONARIO_I18N = {
         cultivo_barbecho: "Fallow (Unplanted)",
         cultivo_otro: "Other / None (all crops available)",
         btn_volver_paso1: "← Back to Map",
-        btn_confirmar_paso2: "Analyze 5-Year Telemetry & Rotations →",
+        btn_confirmar_paso2: "Analyze Historical Information for Recommendations",
+
+        pm_poligono: "Polygon",
+        pm_rectangulo: "Rectangle",
+        pm_editar: "Edit",
+        pm_borrar: "Delete",
+        pdf_titulo_reporte: "Agroclimatic & Crop Rotation Technical Report",
+        pdf_serie_continua: "Continuous Series (5 Years)",
+        pdf_comparativa_interanual: "Interannual Comparison (5 Years)",
+        pdf_min: "Min",
+        pdf_max: "Max",
+        pdf_prom: "Avg",
+        pdf_lote_evaluado: "Evaluated Parcel",
+        pdf_plan_trienal: "3-Year Triennial Crop Rotation Plan",
+        pdf_generado: "Generated on",
 
         paso3_cabecera: "Step 3: 5-Year NASA Satellite Information and Recommended Rotations",
         paso3_desc: "Multi-satellite query across 5 years of history. Click on each card to inspect continuous or interannual charts.",
@@ -234,6 +250,8 @@ const DICCIONARIO_I18N = {
         btn_dibujar_poligono: "Dibujar Polígono del Lote",
         btn_limpiar_poligono: "Limpiar Polígono",
         btn_confirmar_paso1: "Confirmar Parcela y Continuar →",
+        btn_buscar_lugar: "Buscar Lugar",
+        placeholder_coord_google: "Coordenadas Google (ej: -33.68, -65.42)",
         alerta_poligono_requerido: "Por favor dibuja o selecciona un polígono de parcela en el mapa antes de continuar.",
 
         paso2_cabecera: "Paso 2: Selecciona el Último Cultivo Cosechado",
@@ -251,7 +269,21 @@ const DICCIONARIO_I18N = {
         cultivo_barbecho: "Barbecho (Sin siembra)",
         cultivo_otro: "Otro / Ninguno (todos los cultivos disponibles)",
         btn_volver_paso1: "← Volver al Mapa",
-        btn_confirmar_paso2: "Analizar Telemetría 5 Años y Rotaciones →",
+        btn_confirmar_paso2: "Analizar Información histórica para recomendaciones",
+
+        pm_poligono: "Polígono",
+        pm_rectangulo: "Rectángulo",
+        pm_editar: "Editar",
+        pm_borrar: "Borrar",
+        pdf_titulo_reporte: "Informe Técnico Agroclimático y Rotación de Cultivos",
+        pdf_serie_continua: "Serie Continua (5 Años)",
+        pdf_comparativa_interanual: "Comparativa Interanual (5 Años)",
+        pdf_min: "Mín",
+        pdf_max: "Máx",
+        pdf_prom: "Prom",
+        pdf_lote_evaluado: "Lote Evaluado",
+        pdf_plan_trienal: "Plan Trienal de Rotación de Cultivos",
+        pdf_generado: "Generado el",
 
         paso3_cabecera: "Paso 3: Información Satelital de 5 Años y Recomendación de Rotaciones",
         paso3_desc: "Consulta multi-satelital de 5 años de historia. Haz clic en cada tarjeta para inspeccionar los gráficos continuos o interanuales.",
@@ -464,6 +496,11 @@ function cambiarIdioma(nuevoIdioma) {
     // 6. Si hay recomendaciones visibles, re-renderizar para traducir nombres y dictámenes
     if (window._ultimasRecomendacionesCache && typeof window.renderizarTarjetasRecomendaciones === "function") {
         window.renderizarTarjetasRecomendaciones(window._ultimasRecomendacionesCache);
+    }
+
+    // 7. Actualizar etiquetas de Geoman en los mapas según idioma
+    if (typeof window.actualizarEtiquetasGeomanI18n === "function") {
+        window.actualizarEtiquetasGeomanI18n();
     }
 }
 
