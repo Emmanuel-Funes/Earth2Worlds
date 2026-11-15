@@ -106,6 +106,12 @@ app.add_middleware(
 if STATIC_DIR.exists():
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
+USER_GUIDE_DIR = BASE_DIR / "docs" / "user-guide-farmer"
+if USER_GUIDE_DIR.exists():
+    app.mount("/user-guide-farmer", StaticFiles(directory=str(USER_GUIDE_DIR), html=True), name="user-guide-farmer")
+elif (STATIC_DIR / "user-guide-farmer").exists():
+    app.mount("/user-guide-farmer", StaticFiles(directory=str(STATIC_DIR / "user-guide-farmer"), html=True), name="user-guide-farmer")
+
 
 # ==============================================================================
 # HELPERS DE SERIALIZACIÓN Y VALIDACIÓN RBAC
@@ -1929,3 +1935,15 @@ def serve_guia_segmentacion():
 @app.get("/diagrama", include_in_schema=False)
 def serve_diagrama_db():
     return FileResponse(str(STATIC_DIR / "diagrama_db.html"))
+
+
+@app.get("/guia-farmer", include_in_schema=False)
+@app.get("/farmer-guide", include_in_schema=False)
+def serve_farmer_guide_alias():
+    guide_path = BASE_DIR / "docs" / "user-guide-farmer" / "farmer_guide.html"
+    if guide_path.exists():
+        return FileResponse(str(guide_path))
+    fallback = STATIC_DIR / "user-guide-farmer" / "farmer_guide.html"
+    if fallback.exists():
+        return FileResponse(str(fallback))
+    return FileResponse(str(STATIC_DIR / "index.html"))

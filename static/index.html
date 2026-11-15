@@ -377,6 +377,7 @@ CONTROLADORES JAVASCRIPT:
             border: none !important;
             width: auto !important;
             height: auto !important;
+            display: inline-flex !important;
         }
 
         /* Modales siempre por encima de cualquier mapa Leaflet (z-index: 1000) */
@@ -591,8 +592,14 @@ CONTROLADORES JAVASCRIPT:
                 </div>
             </div>
 
-            <!-- Accesos Inferiores: Técnico Agropecuario y Administrador juntos -->
+            <!-- Accesos Inferiores: Guía Farmer, Técnico Agropecuario y Administrador juntos -->
             <div class="pt-4 border-t border-[#dfd2c6] flex flex-wrap items-center justify-end gap-3">
+                <a href="user-guide-farmer/farmer_guide.html" target="_blank"
+                    class="px-4 py-2.5 rounded-xl text-xs font-mono font-semibold bg-white hover:bg-emerald-50 text-emerald-900 border-2 border-emerald-600/70 transition flex items-center gap-2 shadow-xs cursor-pointer no-underline"
+                    title="Open Farmer User Guide in a new tab">
+                    <span>📖</span>
+                    <span data-i18n="perfil_guia_farmer_btn">Farmer User Guide</span>
+                </a>
                 <button type="button" onclick="iniciarModoDesdeSelector('avanzado')"
                     class="px-4 py-2.5 rounded-xl text-xs font-mono font-semibold bg-white hover:bg-[#faf7f2] text-amber-900 border-2 border-amber-600/70 transition flex items-center gap-2 shadow-xs cursor-pointer">
                     <span>🛰️</span>
@@ -691,6 +698,13 @@ CONTROLADORES JAVASCRIPT:
                     <button type="button" onclick="cambiarIdioma('en')" class="btn-lang-en px-2 py-1 rounded-lg transition-all bg-[#16a34a] text-white font-bold shadow-sm">EN</button>
                     <button type="button" onclick="cambiarIdioma('es')" class="btn-lang-es px-2 py-1 rounded-lg transition-all text-[#523725] hover:text-[#100b07] font-semibold">ES</button>
                 </div>
+
+                <!-- Acceso Rápido a Guía Farmer -->
+                <a href="user-guide-farmer/farmer_guide.html" target="_blank"
+                    class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-semibold bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 transition no-underline"
+                    title="Open Farmer User Guide in a new tab">
+                    <span>📖</span> <span data-i18n="nav_guia_farmer">Farmer Guide</span>
+                </a>
 
                 <!-- Botón Selector de Modalidad -->
                 <button id="btnCambiarModoNav" type="button" onclick="mostrarSelectorModalidad()"
@@ -863,7 +877,7 @@ CONTROLADORES JAVASCRIPT:
                         </button>
                         <button id="btnAnalizarBasico" type="button" onclick="ejecutarAnalisisBasico()"
                             class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-heading font-bold text-sm shadow-lg shadow-emerald-500/25 transition flex items-center gap-2">
-                            <span data-i18n="btn_confirmar_paso2">Analyze 5-Year Telemetry & Rotations &rarr;</span>
+                            <span data-i18n="btn_confirmar_paso2">Analyze Historical Information for Recommendations &rarr;</span>
                         </button>
                     </div>
                 </div>
@@ -2380,7 +2394,8 @@ CONTROLADORES JAVASCRIPT:
                 "leaflet-pm-icon-polygon": isEn ? "Polygon" : "Polígono",
                 "leaflet-pm-icon-rectangle": isEn ? "Rectangle" : "Rectángulo",
                 "leaflet-pm-icon-edit": isEn ? "Edit" : "Editar",
-                "leaflet-pm-icon-delete": isEn ? "Delete" : "Borrar"
+                "leaflet-pm-icon-delete": isEn ? "Delete" : "Borrar",
+                "leaflet-pm-icon-rotate": isEn ? "Rotate" : "Rotar"
             };
             document.querySelectorAll(".leaflet-pm-toolbar .leaflet-buttons-control-button").forEach(btn => {
                 for (const [cls, labelTxt] of Object.entries(textos)) {
@@ -2477,8 +2492,11 @@ CONTROLADORES JAVASCRIPT:
                 dragMode: false,
                 cutPolygon: false,
                 removalMode: true,
+                rotateMode: false,
             });
             setTimeout(actualizarEtiquetasGeomanI18n, 60);
+            setTimeout(actualizarEtiquetasGeomanI18n, 200);
+            setTimeout(actualizarEtiquetasGeomanI18n, 600);
 
             mapaBasico.on("pm:create", (e) => {
                 const geo = e.layer.toGeoJSON();
@@ -2587,9 +2605,9 @@ CONTROLADORES JAVASCRIPT:
                 window._marcadorBusquedaCoord = L.marker([lat, lon], {
                     icon: L.divIcon({
                         className: "custom-coord-pin",
-                        html: `<div style="background:#16a34a; color:#fff; font-weight:bold; padding:4px 10px; border-radius:10px; border:2px solid #fff; box-shadow:0 3px 10px rgba(0,0,0,0.4); font-size:11px; white-space:nowrap; display:inline-block; transform:translate(-50%, -50%);">📍 [${lat.toFixed(4)}, ${lon.toFixed(4)}]</div>`,
-                        iconSize: null,
-                        iconAnchor: null
+                        html: `<div style="background:#16a34a; color:#ffffff; font-weight:700; padding:4px 8px; border-radius:8px; border:1.5px solid #ffffff; box-shadow:0 2px 8px rgba(0,0,0,0.35); font-size:11px; line-height:1.2; white-space:nowrap; display:inline-flex; align-items:center; gap:4px; transform:translate(-50%, -100%);">📍 <span>[${lat.toFixed(4)}, ${lon.toFixed(4)}]</span></div>`,
+                        iconSize: [0, 0],
+                        iconAnchor: [0, 0]
                     })
                 }).addTo(mapaBasico);
                 mostrarToast(isEn ? `Map centered at [${lat.toFixed(4)}, ${lon.toFixed(4)}]. Use the tools on the left to draw your parcel.` : `Mapa centrado en [${lat.toFixed(4)}, ${lon.toFixed(4)}]. Usa las herramientas de la izquierda para dibujar tu lote.`, "success");
@@ -3199,6 +3217,10 @@ CONTROLADORES JAVASCRIPT:
             if (window._ultimasRecomendacionesCache) {
                 renderizarRecomendacionAgronomica(window._ultimasRecomendacionesCache.data, window._ultimasRecomendacionesCache.cultivoPrevio);
             }
+            setTimeout(() => {
+                const el = document.getElementById("grillaCultivosEvaluados");
+                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 60);
         }
 
         function renderizarRecomendacionAgronomica(data, cultivoPrevio) {

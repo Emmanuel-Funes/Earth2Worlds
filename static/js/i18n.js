@@ -42,6 +42,8 @@ const DICCIONARIO_I18N = {
         perfil_tecnico_item4: "Ephemeral session without dirtying the database",
         perfil_tecnico_btn: "Enter as Agricultural Specialist →",
         perfil_tecnico_btn_mini: "Agricultural Specialist Access",
+        perfil_guia_farmer_btn: "Farmer User Guide",
+        nav_guia_farmer: "Farmer Guide",
 
         // --- 3-STEP WIZARD (FARMER MODE) ---
         step1_titulo: "Create Parcel",
@@ -54,6 +56,7 @@ const DICCIONARIO_I18N = {
         btn_limpiar_poligono: "Clear Polygon",
         btn_confirmar_paso1: "Confirm Parcel and Continue →",
         btn_buscar_lugar: "Search Place",
+        btn_ir_coord: "Search Place",
         placeholder_coord_google: "Google Coordinates (e.g. -33.68, -65.42)",
         alerta_poligono_requerido: "Please draw or select a parcel polygon on the map before continuing.",
 
@@ -286,6 +289,8 @@ const DICCIONARIO_I18N = {
         perfil_tecnico_item4: "Sesión efímera sin ensuciar la base de datos",
         perfil_tecnico_btn: "Ingresar como Técnico Agropecuario →",
         perfil_tecnico_btn_mini: "Acceso Técnico Agropecuario",
+        perfil_guia_farmer_btn: "Guía de Uso Agricultor",
+        nav_guia_farmer: "Guía Agricultor",
 
         // --- 3-STEP WIZARD (FARMER MODE) ---
         step1_titulo: "Crear Parcela",
@@ -298,6 +303,7 @@ const DICCIONARIO_I18N = {
         btn_limpiar_poligono: "Limpiar Polígono",
         btn_confirmar_paso1: "Confirmar Parcela y Continuar →",
         btn_buscar_lugar: "Buscar Lugar",
+        btn_ir_coord: "Buscar Lugar",
         placeholder_coord_google: "Coordenadas Google (ej: -33.68, -65.42)",
         alerta_poligono_requerido: "Por favor dibuja o selecciona un polígono de parcela en el mapa antes de continuar.",
 
@@ -712,8 +718,11 @@ function traducirComparativaOptimo(texto) {
 
     res = res.replace(/humedad de siembra estimada/g, "estimated sowing moisture");
     res = res.replace(/de agua útil/g, "available water");
+    res = res.replace(/agua útil/g, "available water");
     res = res.replace(/oferta media/g, "average water supply");
     res = res.replace(/de demanda/g, "of crop demand");
+    res = res.replace(/campañas/g, "seasons");
+    res = res.replace(/campaña/g, "season");
 
     res = res.replace(/sin pH medido/g, "no measured pH");
     res = res.replace(/sin análisis de conductividad/g, "no conductivity test");
