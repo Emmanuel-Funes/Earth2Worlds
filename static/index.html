@@ -495,20 +495,10 @@ CONTROLADORES JAVASCRIPT:
                                 Designed for agile and direct assessment. Draw a single parcel in Argentina, declare the previous crop, and evaluate 5 years of historical NASA telemetry with crop rotation recommendations.
                             </p>
                         </div>
-                        <ul class="text-xs font-mono text-[#382a21] space-y-1.5 pt-2 border-t border-[#dfd2c6]">
-                            <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span>
-                                <span data-i18n="perfil_agricultor_item1">Parcel polygon delimiter in Argentina (Leaflet + Geoman)</span></li>
-                            <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span>
-                                <span data-i18n="perfil_agricultor_item2">Quick selection of previous crop (Corn, Soybean, Sunflower, etc.)</span></li>
-                            <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span>
-                                <span data-i18n="perfil_agricultor_item3">5 years of NASA telemetry (NDVI, SMAP, IMERG)</span></li>
-                            <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span>
-                                <span data-i18n="perfil_agricultor_item4">RotaTerra crop rotation recommendations</span></li>
-                        </ul>
                     </div>
                     <div class="pt-6">
                         <button type="button" onclick="event.stopPropagation(); iniciarModoDesdeSelector('basico')"
-                            class="w-full py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-heading font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
+                            class="w-full py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-heading font-bold text-sm shadow-md transition flex items-center justify-center gap-2 cursor-pointer">
                             <span data-i18n="perfil_agricultor_btn">Enter as Farmer &rarr;</span>
                         </button>
                     </div>
@@ -539,20 +529,10 @@ CONTROLADORES JAVASCRIPT:
                                 Full access to territorial control center: multi-resolution GIS viewer, satellite layer drawer, NASA Satellite Dock, 6 interactive telemetry cards, and temporal series charts (Chart.js).
                             </p>
                         </div>
-                        <ul class="text-xs font-mono text-[#382a21] space-y-1.5 pt-2 border-t border-[#dfd2c6]">
-                            <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span>
-                                <span data-i18n="perfil_tecnico_item1">GIS viewer with WMS layers and NASA Satellite Dock</span></li>
-                            <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span>
-                                <span data-i18n="perfil_tecnico_item2">All 6 live interactive telemetry cards</span></li>
-                            <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span>
-                                <span data-i18n="perfil_tecnico_item3">Temporal series chart generator (Chart.js)</span></li>
-                            <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span>
-                                <span data-i18n="perfil_tecnico_item4">Ephemeral session without dirtying the database</span></li>
-                        </ul>
                     </div>
                     <div class="pt-6">
                         <button type="button" onclick="event.stopPropagation(); iniciarModoDesdeSelector('avanzado')"
-                            class="w-full py-3.5 px-5 rounded-xl bg-amber-800 hover:bg-amber-900 text-white font-heading font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
+                            class="w-full py-3.5 px-5 rounded-xl bg-amber-800 hover:bg-amber-900 text-white font-heading font-bold text-sm shadow-md transition flex items-center justify-center gap-2 cursor-pointer">
                             <span data-i18n="perfil_tecnico_btn">Enter as Agricultural Specialist &rarr;</span>
                         </button>
                     </div>
@@ -560,12 +540,9 @@ CONTROLADORES JAVASCRIPT:
             </div>
 
             <!-- Acceso Administrador -->
-            <div class="pt-4 border-t border-[#dfd2c6] flex flex-col sm:flex-row items-center justify-between gap-4">
-                <span class="text-xs text-[#5c4636] font-mono">
-                    ¿Tienes credenciales del sistema o eres Administrador?
-                </span>
+            <div class="pt-4 border-t border-[#dfd2c6] flex justify-end">
                 <button type="button" onclick="abrirModalLoginAdmin()"
-                    class="px-4 py-2 rounded-xl text-xs font-mono font-semibold bg-white hover:bg-[#faf7f2] text-[#785843] border-2 border-[#8c6547] transition flex items-center gap-2 shadow-xs">
+                    class="px-4 py-2 rounded-xl text-xs font-mono font-semibold bg-white hover:bg-[#faf7f2] text-[#785843] border-2 border-[#8c6547] transition flex items-center gap-2 shadow-xs cursor-pointer">
                     <span>🔒 Acceso Administrador</span>
                 </button>
             </div>
@@ -3014,43 +2991,32 @@ CONTROLADORES JAVASCRIPT:
                                 </span>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-                                ${data.plan_rotacion.map((pr) => `
-                                    <div onclick="cambiarAnioRotacion(${pr.anio})" class="cursor-pointer select-none p-3.5 rounded-xl bg-white border-2 ${Number(anioActivo) === pr.anio ? 'border-emerald-600 ring-2 ring-emerald-500/20 shadow-md' : 'border-[#8c6547]/50 hover:border-[#8c6547] shadow-xs'} transition flex flex-col justify-between space-y-2">
+                                ${data.plan_rotacion.map((pr) => {
+                                    const activo = Number(anioActivo) === pr.anio;
+                                    return `
+                                    <div onclick="cambiarAnioRotacion(${pr.anio})" class="cursor-pointer select-none p-3.5 sm:p-4 rounded-2xl ${activo ? 'bg-emerald-50/50 border-2 border-emerald-600 ring-2 ring-emerald-500/20 shadow-md' : 'bg-white border-2 border-[#8c6547]/40 hover:border-emerald-600/60 hover:bg-[#faf7f2] shadow-xs'} transition-all flex flex-col justify-between space-y-2.5">
                                         <div class="flex items-center justify-between">
-                                            <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-[#785843]">${escapeHtml(pr.etiqueta || `Año ${pr.anio}`)}</span>
-                                            <span class="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-300">${pr.porcentaje_coincidencia}%</span>
+                                            <span class="text-[10px] font-sans font-extrabold uppercase tracking-wider ${activo ? 'text-emerald-900' : 'text-[#785843]'}">${escapeHtml(pr.etiqueta || `Año ${pr.anio}`)}</span>
+                                            <div class="flex items-center gap-1.5">
+                                                ${activo ? `<span class="text-[10px] font-sans font-bold px-2 py-0.5 rounded-md bg-emerald-600 text-white shadow-2xs">✓ ${isEn ? 'Selected' : 'Campaña Activa'}</span>` : ''}
+                                                <span class="text-xs font-sans font-bold text-emerald-800 bg-white px-2 py-0.5 rounded-lg border border-emerald-300 shadow-2xs">${pr.porcentaje_coincidencia}%</span>
+                                            </div>
                                         </div>
-                                        <div class="flex items-center gap-2">
+                                        <div class="flex items-center gap-2.5">
                                             <span class="text-2xl">${iconMap[pr.cultivo] || '🌱'}</span>
                                             <div>
                                                 <strong class="font-heading text-base font-extrabold text-[#241810] block">${escapeHtml(typeof traducirNombreCultivo === 'function' ? traducirNombreCultivo(pr.nombre) : pr.nombre)}</strong>
-                                                <span class="text-[10px] font-mono text-[#5c4636] font-semibold">${pr.estado}</span>
+                                                <span class="text-[10px] font-sans text-[#5c4636] font-semibold">${pr.estado}</span>
                                             </div>
                                         </div>
-                                        <p class="text-[10px] text-[#382a21] leading-tight font-sans border-t border-[#dfd2c6] pt-1.5">${escapeHtml(pr.por_que_se_eligio)}</p>
-                                        <div class="text-[9px] font-mono text-emerald-700 font-bold">👉 ${isEn ? 'Click to inspect this year' : 'Clic para ver detalles de este año'}</div>
+                                        <p class="text-[10px] text-[#382a21] leading-relaxed font-sans border-t border-[#dfd2c6]/80 pt-1.5">${escapeHtml(pr.por_que_se_eligio)}</p>
+                                        <div class="text-[10px] font-sans ${activo ? 'text-emerald-800 font-bold' : 'text-stone-500 font-medium'} flex items-center gap-1 pt-0.5">
+                                            ${activo ? '🔍 ' + (isEn ? 'Showing technical rules below' : 'Mostrando reglas técnicas abajo') : '👉 ' + (isEn ? 'Click to inspect this year' : 'Clic para ver detalles de este año')}
+                                        </div>
                                     </div>
-                                `).join('')}
+                                    `;
+                                }).join('')}
                             </div>
-                        </div>
-
-                        <!-- Selector de Años de la Rotación (Tabs) -->
-                        <div class="flex items-center justify-between flex-wrap gap-2 border-b-2 border-[#dfd2c6] pb-3">
-                            <div class="flex items-center gap-2">
-                                <span class="text-xs font-bold uppercase tracking-wider text-[#785843] mr-1">${isEn ? 'Select Year:' : 'Elegir Campaña:'}</span>
-                                <button type="button" onclick="cambiarAnioRotacion(1)" class="tab-rot-btn px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition ${Number(anioActivo) === 1 ? 'bg-[#16a34a] text-white shadow-sm' : 'bg-white text-[#523725] border-2 border-[#8c6547] hover:bg-[#faf7f2]'}">
-                                    🌾 ${isEn ? 'Year 1 (Next)' : 'Año 1 (Próxima)'}
-                                </button>
-                                <button type="button" onclick="cambiarAnioRotacion(2)" class="tab-rot-btn px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition ${Number(anioActivo) === 2 ? 'bg-[#16a34a] text-white shadow-sm' : 'bg-white text-[#523725] border-2 border-[#8c6547] hover:bg-[#faf7f2]'}">
-                                    🔄 ${isEn ? 'Year 2 (Subsequent)' : 'Año 2 (Siguiente)'}
-                                </button>
-                                <button type="button" onclick="cambiarAnioRotacion(3)" class="tab-rot-btn px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition ${Number(anioActivo) === 3 ? 'bg-[#16a34a] text-white shadow-sm' : 'bg-white text-[#523725] border-2 border-[#8c6547] hover:bg-[#faf7f2]'}">
-                                    📈 ${isEn ? 'Year 3 (Third)' : 'Año 3 (Tercera)'}
-                                </button>
-                            </div>
-                            <span class="text-[11px] font-mono text-[#785843]">
-                                ${isEn ? 'Showing technical rules for' : 'Mostrando reglas técnicas para:'} <strong>${isEn ? 'Year' : 'Año'} ${anioActivo}</strong>
-                            </span>
                         </div>
                     ` : ''}
 
@@ -3169,21 +3135,21 @@ CONTROLADORES JAVASCRIPT:
 
                                     <!-- Reglas Técnicas con Comparativa Directa Tu Campo vs Óptimo del Cultivo (SIN fuentes) -->
                                     ${c.reglas && c.reglas.length > 0 ? `
-                                        <details class="details-reglas-cultivo text-[11px] font-mono text-[#785843] pt-2 border-t border-[#dfd2c6]" ontoggle="sincronizarDetallesReglasCultivo(this)">
-                                            <summary class="cursor-pointer hover:text-[#241810] py-1 font-semibold text-[#5c4636] select-none flex items-center justify-between">
+                                        <details class="details-reglas-cultivo text-xs font-sans text-[#5c4636] pt-2 border-t border-[#dfd2c6]" ontoggle="sincronizarDetallesReglasCultivo(this)">
+                                            <summary class="cursor-pointer hover:text-[#241810] py-1 font-sans font-semibold text-xs text-[#5c4636] select-none flex items-center justify-between">
                                                 <span>${isEn ? `View ${c.reglas.length} technical rules ▾` : `Ver ${c.reglas.length} reglas técnicas ▾`}</span>
-                                                <span class="text-[10px] text-[#8c532b] font-bold">${isEn ? 'Your field vs Optimal' : 'Tu campo vs Óptimo'}</span>
+                                                <span class="text-[11px] font-sans text-[#8c532b] font-bold">${isEn ? 'Your field vs Optimal' : 'Tu campo vs Óptimo'}</span>
                                             </summary>
                                             <ul class="space-y-2 mt-2 text-[#241810] font-sans">
                                                 ${c.reglas.map(r => `
-                                                    <li class="p-2.5 rounded-xl bg-[#faf6f0] border border-[#c4a994] space-y-1.5 shadow-xs">
+                                                    <li class="p-2.5 rounded-xl bg-[#faf6f0] border border-[#c4a994] space-y-1.5 shadow-xs font-sans">
                                                         <div class="flex items-center justify-between">
-                                                            <strong class="text-[#241810] text-xs font-bold">${escapeHtml(r.regla)}</strong>
+                                                            <strong class="text-[#241810] text-xs font-sans font-bold">${escapeHtml(r.regla)}</strong>
                                                             <span>${r.resultado === 'ok' ? '✅' : (r.resultado === 'aviso' ? '⚠️' : (r.resultado === 'no' ? '❌' : 'ℹ️'))}</span>
                                                         </div>
-                                                        <div class="p-2 rounded-lg bg-white border border-[#b8977e] text-xs shadow-2xs">
-                                                            <span class="text-[9px] font-bold uppercase tracking-wider text-[#8c532b] block mb-0.5">${isEn ? 'Your field vs Crop optimal requirement:' : 'Tu campo vs Óptimo del cultivo:'}</span>
-                                                            <span class="text-[#241810] font-semibold text-[11px]">${escapeHtml(r.comparativa_optimo || r.dato_del_lote || r.dato)}</span>
+                                                        <div class="p-2.5 rounded-lg bg-white border border-[#b8977e] text-xs font-sans shadow-2xs">
+                                                            <span class="text-[10px] font-sans font-bold uppercase tracking-wider text-[#8c532b] block mb-1">${isEn ? 'Your field vs Crop optimal requirement:' : 'Tu campo vs Óptimo del cultivo:'}</span>
+                                                            <span class="text-[#241810] font-sans font-medium text-xs leading-relaxed block">${escapeHtml(r.comparativa_optimo || r.dato_del_lote || r.dato)}</span>
                                                         </div>
                                                     </li>
                                                 `).join('')}
@@ -3221,22 +3187,24 @@ CONTROLADORES JAVASCRIPT:
                 // Contenedor temporal aislado para renderizado fiel en PDF
                 const pdfContainer = document.createElement("div");
                 pdfContainer.id = "tempPdfContainer";
-                pdfContainer.style.width = "780px";
-                pdfContainer.style.padding = "24px";
+                pdfContainer.style.width = "680px";
+                pdfContainer.style.maxWidth = "680px";
+                pdfContainer.style.padding = "20px";
+                pdfContainer.style.margin = "0 auto";
                 pdfContainer.style.background = "#ffffff";
                 pdfContainer.style.color = "#100b07";
                 pdfContainer.style.fontFamily = "sans-serif";
-                pdfContainer.style.fontSize = "12px";
+                pdfContainer.style.fontSize = "11px";
                 pdfContainer.style.boxSizing = "border-box";
 
                 let contenidoHtml = `
-                    <div style="border-bottom: 2.5px solid #8c6547; padding-bottom: 14px; margin-bottom: 16px;">
+                    <div style="border-bottom: 2px solid #8c6547; padding-bottom: 12px; margin-bottom: 14px;">
                         <div style="display: flex; align-items: center; justify-content: space-between;">
-                            <div style="display: flex; align-items: center; gap: 14px;">
-                                <img src="/static/img/logo_rotaterra.jpg" style="width: 58px; height: 58px; object-fit: contain; border-radius: 12px; border: 2px solid #8c6547;" alt="RotaTerra">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <img src="/static/img/logo_rotaterra.jpg" style="width: 52px; height: 52px; object-fit: contain; border-radius: 10px; border: 2px solid #8c6547;" alt="RotaTerra">
                                 <div>
-                                    <h1 style="margin: 0; font-size: 26px; font-weight: 800; color: #100b07;">RotaTerra</h1>
-                                    <p style="margin: 3px 0 0; font-size: 13px; font-weight: 700; color: #16a34a;">¡Cuida tu tierra, potencia tu futuro con RotaTerra!</p>
+                                    <h1 style="margin: 0; font-size: 24px; font-weight: 800; color: #100b07;">RotaTerra</h1>
+                                    <p style="margin: 2px 0 0; font-size: 12px; font-weight: 700; color: #16a34a;">¡Cuida tu tierra, potencia tu futuro con RotaTerra!</p>
                                 </div>
                             </div>
                             <div style="text-align: right; font-size: 10px; color: #523725; font-family: monospace;">
@@ -3248,46 +3216,46 @@ CONTROLADORES JAVASCRIPT:
                     </div>
 
                     <!-- Datos del Lote -->
-                    <div style="background: #faf7f2; border: 1.5px solid #8c6547; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px;">
-                        <h3 style="margin: 0 0 8px; font-size: 13px; font-weight: bold; color: #8c6547; text-transform: uppercase;">
+                    <div style="background: #faf7f2; border: 1.5px solid #8c6547; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px;">
+                        <h3 style="margin: 0 0 6px; font-size: 12px; font-weight: bold; color: #8c6547; text-transform: uppercase;">
                             📍 Características Técnicas del Lote Analizado
                         </h3>
-                        <table style="width: 100%; font-size: 11px; border-collapse: collapse;">
+                        <table style="width: 100%; font-size: 10px; border-collapse: collapse;">
                             <tr>
-                                <td style="padding: 4px 0; color: #523725; width: 50%;"><strong>Centroide:</strong> ${escapeHtml(centroide)}</td>
-                                <td style="padding: 4px 0; color: #523725; width: 50%;"><strong>Superficie:</strong> ${escapeHtml(supHa)}</td>
+                                <td style="padding: 3px 0; color: #523725; width: 50%;"><strong>Centroide:</strong> ${escapeHtml(centroide)}</td>
+                                <td style="padding: 3px 0; color: #523725; width: 50%;"><strong>Superficie:</strong> ${escapeHtml(supHa)}</td>
                             </tr>
                             <tr>
-                                <td style="padding: 4px 0; color: #523725;"><strong>Última Plantación Declarada:</strong> ${escapeHtml(cultPrev)}</td>
-                                <td style="padding: 4px 0; color: #523725;"><strong>Régimen:</strong> Secano (Semiárido)</td>
+                                <td style="padding: 3px 0; color: #523725;"><strong>Última Plantación Declarada:</strong> ${escapeHtml(cultPrev)}</td>
+                                <td style="padding: 3px 0; color: #523725;"><strong>Régimen:</strong> Secano (Semiárido)</td>
                             </tr>
                             <tr>
-                                <td style="padding: 4px 0; color: #523725;"><strong>Textura del Suelo:</strong> ${escapeHtml(recData.lote?.textura_fuente || recData.lote?.textura || 'Franco arenoso')}</td>
-                                <td style="padding: 4px 0; color: #523725;"><strong>Capacidad Agua Útil:</strong> ${recData.lote?.agua_util_0_100cm_mm || 120} mm</td>
+                                <td style="padding: 3px 0; color: #523725;"><strong>Textura del Suelo:</strong> ${escapeHtml(recData.lote?.textura_fuente || recData.lote?.textura || 'Franco arenoso')}</td>
+                                <td style="padding: 3px 0; color: #523725;"><strong>Capacidad Agua Útil:</strong> ${recData.lote?.agua_util_0_100cm_mm || 120} mm</td>
                             </tr>
                         </table>
                     </div>
 
                     <!-- Plan Trienal de Rotación -->
-                    <div style="margin-bottom: 18px;">
-                        <h3 style="margin: 0 0 8px; font-size: 13px; font-weight: bold; color: #100b07; border-bottom: 1.5px solid #dfd2c6; padding-bottom: 4px;">
+                    <div style="margin-bottom: 16px;">
+                        <h3 style="margin: 0 0 8px; font-size: 12px; font-weight: bold; color: #100b07; border-bottom: 1.5px solid #dfd2c6; padding-bottom: 4px;">
                             🔄 Plan Trienal de Rotación de Cultivos (Reglas INTA y FAO-33)
                         </h3>
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
                 `;
 
                 plan.forEach((pr) => {
                     const iconMap = { "maiz": "🌽", "soja": "🌱", "girasol": "🌻", "sorgo": "🌾", "mani": "🥜" };
                     contenidoHtml += `
-                        <div style="border: 1.5px solid #8c6547; border-radius: 10px; padding: 10px; background: #ffffff;">
-                            <div style="font-size: 10px; font-weight: bold; color: #8c6547; text-transform: uppercase;">${escapeHtml(pr.etiqueta || `Año ${pr.anio}`)}</div>
-                            <div style="font-size: 14px; font-weight: bold; color: #100b07; margin: 4px 0;">
+                        <div style="border: 1.5px solid #8c6547; border-radius: 8px; padding: 8px; background: #ffffff;">
+                            <div style="font-size: 9px; font-weight: bold; color: #8c6547; text-transform: uppercase;">${escapeHtml(pr.etiqueta || `Año ${pr.anio}`)}</div>
+                            <div style="font-size: 13px; font-weight: bold; color: #100b07; margin: 3px 0;">
                                 ${iconMap[pr.cultivo] || '🌱'} ${escapeHtml(pr.nombre)}
                             </div>
-                            <div style="display: inline-block; background: #ecfdf5; border: 1px solid #86efac; color: #166534; font-size: 10px; font-weight: bold; border-radius: 6px; padding: 2px 6px; margin-bottom: 6px;">
+                            <div style="display: inline-block; background: #ecfdf5; border: 1px solid #86efac; color: #166534; font-size: 9px; font-weight: bold; border-radius: 5px; padding: 1.5px 5px; margin-bottom: 5px;">
                                 ${pr.porcentaje_coincidencia}% Coincidencia Óptima
                             </div>
-                            <p style="margin: 0; font-size: 10px; color: #2b1b11; line-height: 1.35;">${escapeHtml(pr.por_que_se_eligio)}</p>
+                            <p style="margin: 0; font-size: 9px; color: #2b1b11; line-height: 1.3;">${escapeHtml(pr.por_que_se_eligio)}</p>
                         </div>
                     `;
                 });
@@ -3297,8 +3265,8 @@ CONTROLADORES JAVASCRIPT:
                     </div>
 
                     <!-- Métricas Satelitales a 5 Años -->
-                    <div style="margin-bottom: 16px;">
-                        <h3 style="margin: 0 0 8px; font-size: 13px; font-weight: bold; color: #100b07; border-bottom: 1.5px solid #dfd2c6; padding-bottom: 4px;">
+                    <div style="margin-bottom: 14px;">
+                        <h3 style="margin: 0 0 8px; font-size: 12px; font-weight: bold; color: #100b07; border-bottom: 1.5px solid #dfd2c6; padding-bottom: 4px;">
                             🛰️ Métricas Satelitales Multiespectrales (5 Años NASA Earth Observation)
                         </h3>
                 `;
@@ -3325,28 +3293,40 @@ CONTROLADORES JAVASCRIPT:
 
                     // Gráfico continuo
                     const cCanvas = document.createElement("canvas");
-                    cCanvas.width = 340;
+                    cCanvas.width = 305;
                     cCanvas.height = 140;
                     const cChart = new Chart(cCanvas, {
                         type: "line",
                         data: {
-                            labels: puntos.map(p => p.fecha?.slice(0, 10)),
+                            labels: puntos.map(p => {
+                                const f = p.fecha || "";
+                                return f.length >= 10 ? f.slice(0, 10) : f;
+                            }),
                             datasets: [{
                                 label: "Continuo 5 Años",
                                 data: valores,
                                 borderColor: m.color,
                                 borderWidth: 1.5,
-                                pointRadius: 0,
+                                pointRadius: puntos.length <= 15 ? 3 : (puntos.length <= 60 ? 1.5 : 0.5),
+                                pointHoverRadius: 4,
+                                pointBackgroundColor: m.color,
                                 fill: false,
-                                tension: 0.1
+                                tension: 0.15
                             }]
                         },
                         options: {
                             animation: false,
                             responsive: false,
                             scales: {
-                                x: { display: false },
-                                y: { ticks: { font: { size: 8 } } }
+                                x: {
+                                    display: true,
+                                    ticks: { font: { size: 7, family: "sans-serif" }, maxTicksLimit: 5, maxRotation: 0, color: "#523725" },
+                                    grid: { display: false }
+                                },
+                                y: {
+                                    ticks: { font: { size: 8, family: "sans-serif" }, color: "#523725" },
+                                    grid: { color: "#ede6dc" }
+                                }
                             },
                             plugins: { legend: { display: false } }
                         }
@@ -3356,7 +3336,7 @@ CONTROLADORES JAVASCRIPT:
 
                     // Gráfico interanual
                     const iCanvas = document.createElement("canvas");
-                    iCanvas.width = 340;
+                    iCanvas.width = 305;
                     iCanvas.height = 140;
                     const aniosPuntos = {};
                     puntos.forEach(p => {
@@ -3370,9 +3350,9 @@ CONTROLADORES JAVASCRIPT:
                         data: aniosPuntos[y],
                         borderColor: paletaAnios[idx % paletaAnios.length],
                         borderWidth: 1.5,
-                        pointRadius: 0,
+                        pointRadius: aniosPuntos[y].length <= 15 ? 2.5 : 1,
                         fill: false,
-                        tension: 0.1
+                        tension: 0.15
                     }));
 
                     const iChart = new Chart(iCanvas, {
@@ -3382,11 +3362,11 @@ CONTROLADORES JAVASCRIPT:
                             animation: false,
                             responsive: false,
                             scales: {
-                                x: { ticks: { font: { size: 7 }, maxTicksLimit: 6 } },
-                                y: { ticks: { font: { size: 8 } } }
+                                x: { ticks: { font: { size: 7, family: "sans-serif" }, maxTicksLimit: 6, color: "#523725" }, grid: { display: false } },
+                                y: { ticks: { font: { size: 8, family: "sans-serif" }, color: "#523725" }, grid: { color: "#ede6dc" } }
                             },
                             plugins: {
-                                legend: { display: true, labels: { boxWidth: 8, font: { size: 8 } } }
+                                legend: { display: true, labels: { boxWidth: 8, font: { size: 8, family: "sans-serif" }, color: "#523725" } }
                             }
                         }
                     });
@@ -3397,20 +3377,20 @@ CONTROLADORES JAVASCRIPT:
                         <div style="background: #ffffff; border: 1px solid #dfd2c6; border-radius: 8px; padding: 10px; margin-bottom: 12px; page-break-inside: avoid;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                                 <div>
-                                    <strong style="font-size: 12px; color: #100b07;">${m.titulo}</strong>
-                                    <span style="font-size: 9px; color: #523725; margin-left: 6px;">(${m.sensor})</span>
+                                    <strong style="font-size: 11px; color: #100b07;">${m.titulo}</strong>
+                                    <span style="font-size: 8px; color: #523725; margin-left: 6px;">(${m.sensor})</span>
                                 </div>
-                                <div style="font-size: 10px; font-family: monospace; color: #8c6547;">
+                                <div style="font-size: 9px; font-family: monospace; color: #8c6547;">
                                     Mín: ${minV.toFixed(2)}${m.unidad} &bull; Máx: ${maxV.toFixed(2)}${m.unidad} &bull; Prom: ${promV.toFixed(2)}${m.unidad}
                                 </div>
                             </div>
                             <div style="display: flex; gap: 10px; justify-content: space-between;">
                                 <div style="width: 48%; text-align: center;">
-                                    <div style="font-size: 9px; font-weight: bold; color: #523725; margin-bottom: 2px;">Serie Continua (5 Años)</div>
+                                    <div style="font-size: 8px; font-weight: bold; color: #523725; margin-bottom: 2px;">Serie Continua (5 Años)</div>
                                     <img src="${cImg}" style="width: 100%; height: auto; border: 1px solid #ede6dc; border-radius: 4px;">
                                 </div>
                                 <div style="width: 48%; text-align: center;">
-                                    <div style="font-size: 9px; font-weight: bold; color: #523725; margin-bottom: 2px;">Curvas Interanuales Superpuestas</div>
+                                    <div style="font-size: 8px; font-weight: bold; color: #523725; margin-bottom: 2px;">Curvas Interanuales Superpuestas</div>
                                     <img src="${iImg}" style="width: 100%; height: auto; border: 1px solid #ede6dc; border-radius: 4px;">
                                 </div>
                             </div>
@@ -3433,10 +3413,10 @@ CONTROLADORES JAVASCRIPT:
                 document.body.appendChild(pdfContainer);
 
                 const opt = {
-                    margin: 8,
+                    margin: [8, 8, 8, 8],
                     filename: 'RotaTerra_Reporte_Lote.pdf',
                     image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true },
+                    html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
                     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
 
