@@ -698,6 +698,27 @@ def catalogo_ph(cat: dict) -> dict:
     return rec
 
 
+TRADUCCION_CULTIVOS_BACKEND = {
+    "soja": "Soybean",
+    "soja_primera": "Early Soybean",
+    "soja_segunda": "Late / Second-crop Soybean",
+    "maiz": "Early Corn",
+    "maiz_tardio": "Late Corn",
+    "girasol": "Sunflower",
+    "mani": "Peanut",
+    "trigo": "Wheat",
+    "cebada": "Barley",
+    "sorgo": "Grain Sorghum",
+    "alfalfa": "Alfalfa / Pasture",
+}
+
+
+def _traducir_cultivo_en(clave: str, nombre_es: str) -> str:
+    if not clave:
+        return nombre_es
+    return TRADUCCION_CULTIVOS_BACKEND.get(clave.lower(), nombre_es)
+
+
 def recomendar(pedido: PedidoAgronomos, power: dict, cat: dict | None = None, cat_rot: dict | None = None) -> dict:
     cat = cat or cargar_catalogo()
     cat_rot = cat_rot or cargar_catalogo_rotacion()
@@ -725,16 +746,24 @@ def recomendar(pedido: PedidoAgronomos, power: dict, cat: dict | None = None, ca
 
         # Asignar ranking comparativo y explicación de por qué se eligió una opción sobre la otra
         top_opcion = salida[0] if salida else None
+        top_nom_en = _traducir_cultivo_en(top_opcion.get("cultivo", ""), top_opcion["nombre"]) if top_opcion else ""
         for idx, c_item in enumerate(salida):
             c_item["posicion_ranking"] = idx + 1
             pct = c_item.get("porcentaje_coincidencia", 50)
             est = c_item["estado"]
             nom = c_item["nombre"]
+            nom_en = _traducir_cultivo_en(c_item.get("cultivo", ""), nom)
+            c_item["nombre_en"] = nom_en
             if idx == 0:
                 c_item["por_que_se_eligio"] = (
                     f"1ª OPCIÓN RECOMENDADA ({pct}% de coincidencia óptima): Es la mejor alternativa agronómica para tu campo. "
                     f"Supera a todas las demás opciones por su excelente oferta hídrica, alta probabilidad de maduración sin heladas "
                     f"y total armonía con el suelo y la rotación de la campaña."
+                )
+                c_item["por_que_se_eligio_en"] = (
+                    f"1st RECOMMENDED CHOICE ({pct}% optimal match): Best agronomic alternative for your field. "
+                    f"Outperforms all other options with excellent water supply, high frost-free maturity probability, "
+                    f"and complete harmony with soil conditions and season rotation."
                 )
             else:
                 if est == "Recomendable":
@@ -743,17 +772,32 @@ def recomendar(pedido: PedidoAgronomos, power: dict, cat: dict | None = None, ca
                         f"se ubica por detrás de {top_opcion['nombre']} ({top_opcion.get('porcentaje_coincidencia', 0)}%) porque "
                         f"su margen hídrico o acumulación de grados día resulta ligeramente más ajustado frente a los óptimos biológicos."
                     )
+                    c_item["por_que_se_eligio_en"] = (
+                        f"Choice #{idx + 1} ({pct}% optimal match): Fully viable and recommended crop, but ranks behind "
+                        f"{top_nom_en} ({top_opcion.get('porcentaje_coincidencia', 0)}%) due to tighter water margins "
+                        f"or growing degree-day accumulation relative to biological optima."
+                    )
                 elif est == "Con cuidado":
                     det_aviso = ", ".join(c_item["avisos"][:2]) if c_item["avisos"] else "precaución climática"
+                    det_aviso_en = "Soil temperature for sowing" if "Temperatura del suelo" in det_aviso else "climatic precaution"
                     c_item["por_que_se_eligio"] = (
                         f"Opción {idx + 1}ª con reservas ({pct}% de coincidencia): Queda postergado frente a {top_opcion['nombre']} "
                         f"debido a advertencias técnicas en tu campo ({det_aviso}); requiere monitoreo de humedad o manejo específico."
                     )
+                    c_item["por_que_se_eligio_en"] = (
+                        f"Choice #{idx + 1} with caution ({pct}% match): Ranked behind {top_nom_en} due to "
+                        f"technical warnings on your field ({det_aviso_en}); requires moisture monitoring or specific field management."
+                    )
                 else:
                     det_no = ", ".join(c_item["no_pasa"][:2]) if c_item["no_pasa"] else "parámetros excluyentes"
+                    det_no_en = "Do not repeat species" if "No repetir la especie" in det_no else "excluding parameters"
                     c_item["por_que_se_eligio"] = (
                         f"Descartado ({pct}% de coincidencia): No es conveniente para esta campaña frente a las opciones recomendadas "
                         f"porque no supera reglas críticas para tu campo ({det_no})."
+                    )
+                    c_item["por_que_se_eligio_en"] = (
+                        f"Not recommended ({pct}% match): Not advised for this season compared to recommended choices "
+                        f"because it does not pass critical rules for your field ({det_no_en})."
                     )
         return salida
 
@@ -794,36 +838,55 @@ def recomendar(pedido: PedidoAgronomos, power: dict, cat: dict | None = None, ca
     salida_3 = _evaluar_para_pedido(ped_3)
     top_3 = _mejor_cultivo(salida_3, excluir={c1, c2})
 
+    t1_nom = top_1.get("nombre", "")
+    t1_en = _traducir_cultivo_en(top_1.get("cultivo", ""), t1_nom)
+    t2_nom = top_2.get("nombre", "")
+    t2_en = _traducir_cultivo_en(top_2.get("cultivo", ""), t2_nom)
+    t3_nom = top_3.get("nombre", "")
+    t3_en = _traducir_cultivo_en(top_3.get("cultivo", ""), t3_nom)
+
     plan_rotacion = [
         {
             "anio": 1,
             "etiqueta": "Año 1 (Próxima Campaña)",
+            "etiqueta_en": "Year 1 (Next Season)",
             "cultivo": top_1.get("cultivo"),
-            "nombre": top_1.get("nombre"),
+            "nombre": t1_nom,
+            "nombre_en": t1_en,
             "estado": top_1.get("estado"),
             "porcentaje_coincidencia": top_1.get("porcentaje_coincidencia", 85),
             "por_que_se_eligio": top_1.get("por_que_se_eligio", ""),
-            "regla_cumplida": "Pasa todas las reglas agroclimáticas iniciales."
+            "por_que_se_eligio_en": top_1.get("por_que_se_eligio_en", ""),
+            "regla_cumplida": "Pasa todas las reglas agroclimáticas iniciales.",
+            "regla_cumplida_en": "Passes all initial agroclimatic rules."
         },
         {
             "anio": 2,
             "etiqueta": "Año 2 (Siguiente Campaña)",
+            "etiqueta_en": "Year 2 (Subsequent Season)",
             "cultivo": top_2.get("cultivo"),
-            "nombre": top_2.get("nombre"),
+            "nombre": t2_nom,
+            "nombre_en": t2_en,
             "estado": top_2.get("estado"),
             "porcentaje_coincidencia": top_2.get("porcentaje_coincidencia", 80),
-            "por_que_se_eligio": f"Sucesión agronómica recomendada tras {top_1.get('nombre')}: respeta el intervalo sanitario del INTA y mantiene la cobertura del suelo.",
-            "regla_cumplida": f"Rotación biológica sin repetir especie sensible (INTA)."
+            "por_que_se_eligio": f"Sucesión agronómica recomendada tras {t1_nom}: respeta el intervalo sanitario del INTA y mantiene la cobertura del suelo.",
+            "por_que_se_eligio_en": f"Recommended agronomic succession after {t1_en}: complies with INTA sanitary interval and preserves soil cover.",
+            "regla_cumplida": "Rotación biológica sin repetir especie sensible (INTA).",
+            "regla_cumplida_en": "Biological rotation without repeating sensitive species (INTA)."
         },
         {
             "anio": 3,
             "etiqueta": "Año 3 (Tercera Campaña)",
+            "etiqueta_en": "Year 3 (Third Season)",
             "cultivo": top_3.get("cultivo"),
-            "nombre": top_3.get("nombre"),
+            "nombre": t3_nom,
+            "nombre_en": t3_en,
             "estado": top_3.get("estado"),
             "porcentaje_coincidencia": top_3.get("porcentaje_coincidencia", 80),
-            "por_que_se_eligio": f"Rotación trienal equilibrada tras {top_2.get('nombre')} y {top_1.get('nombre')}: diversifica familias botánicas y optimiza el balance de nutrientes.",
-            "regla_cumplida": "Cierre de ciclo trienal con alternancia de gramíneas y leguminosas."
+            "por_que_se_eligio": f"Rotación trienal equilibrada tras {t2_nom} y {t1_nom}: diversifica familias botánicas y optimiza el balance de nutrientes.",
+            "por_que_se_eligio_en": f"Balanced 3-year rotation after {t2_en} and {t1_en}: diversifies botanical families and optimizes nutrient balance.",
+            "regla_cumplida": "Cierre de ciclo trienal con alternancia de gramíneas y leguminosas.",
+            "regla_cumplida_en": "Triennial cycle closure with grass and legume alternation."
         }
     ]
 

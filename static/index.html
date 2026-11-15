@@ -878,19 +878,19 @@ CONTROLADORES JAVASCRIPT:
                     class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                     <div class="space-y-1">
                         <div class="flex items-center gap-2">
-                            <span
+                            <span data-i18n="badge_lote_evaluado"
                                 class="px-2.5 py-0.5 rounded-full text-[11px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold">
-                                LOTE EVALUADO
+                                EVALUATED PARCEL
                             </span>
                             <span id="badgeCultivoPrevioResumen"
                                 class="px-2.5 py-0.5 rounded-full text-[11px] font-mono bg-sky-500/20 text-sky-300 border border-sky-500/40">
-                                Previo: -
+                                Previous: -
                             </span>
                         </div>
-                        <h2 data-i18n="paso3_cabecera" class="font-heading text-2xl font-bold text-white">Información Satelital de 5 Años y Recomendación</h2>
+                        <h2 data-i18n="paso3_cabecera" class="font-heading text-2xl font-bold text-white">5-Year NASA Satellite Information and Recommended Rotations</h2>
                         <p class="text-xs text-slate-400">
-                            Superficie: <strong id="resumenSuperficieHa" class="text-emerald-400">0.00 ha</strong>
-                            &bull; Centroide: <span id="resumenCentroide" class="font-mono text-slate-300">-</span>
+                            <span data-i18n="resumen_superficie_label">Area:</span> <strong id="resumenSuperficieHa" class="text-emerald-400">0.00 ha</strong>
+                            &bull; <span data-i18n="resumen_centroide_label">Centroid:</span> <span id="resumenCentroide" class="font-mono text-slate-300">-</span>
                         </p>
                     </div>
                     <div class="flex items-center gap-2.5 flex-wrap">
@@ -1070,7 +1070,7 @@ CONTROLADORES JAVASCRIPT:
                                 <div class="flex items-baseline gap-2 mt-1">
                                     <span id="basicoEtValor"
                                         class="font-heading font-extrabold text-2xl text-teal-700">-</span>
-                                    <span class="text-xs text-[#5c4636] font-mono font-bold">mm/día (POWER / ECOSTRESS)</span>
+                                    <span id="basicoEtUnidad" class="text-xs text-[#5c4636] font-mono font-bold">mm/day (POWER / ECOSTRESS)</span>
                                 </div>
                             </div>
                             <p id="basicoEtNota" class="text-xs text-[#785843] pt-2 border-t border-[#dfd2c6]">
@@ -1090,7 +1090,7 @@ CONTROLADORES JAVASCRIPT:
                                 <div class="flex items-baseline gap-2 mt-1">
                                     <span id="basicoRelieveValor"
                                         class="font-heading font-extrabold text-2xl text-purple-700">-</span>
-                                    <span class="text-xs text-[#5c4636] font-mono font-bold">m a.s.l. (NASADEM)</span>
+                                    <span id="basicoRelieveUnidad" class="text-xs text-[#5c4636] font-mono font-bold">m a.s.l. (NASADEM)</span>
                                 </div>
                             </div>
                             <div class="pt-2 border-t border-[#dfd2c6] space-y-2">
@@ -2007,6 +2007,18 @@ CONTROLADORES JAVASCRIPT:
                     </div>
                 </div>
                 <div class="flex items-center gap-2 shrink-0">
+                    <!-- Flechas de navegación rápida entre gráficos (sin cerrar modal) -->
+                    <div class="flex items-center gap-1 bg-[#faf6f0] p-1 rounded-xl border border-[#8c6547]">
+                        <button type="button" onclick="navegarGraficoModal(-1)" data-i18n-title="btn_grafico_prev" title="Previous Chart (←)"
+                            class="w-8 h-8 rounded-lg bg-white hover:bg-emerald-50 text-[#523725] hover:text-emerald-800 border border-[#c8b3a2] flex items-center justify-center transition font-bold text-sm cursor-pointer shadow-xs">
+                            ◀
+                        </button>
+                        <button type="button" onclick="navegarGraficoModal(1)" data-i18n-title="btn_grafico_next" title="Next Chart (→)"
+                            class="w-8 h-8 rounded-lg bg-white hover:bg-emerald-50 text-[#523725] hover:text-emerald-800 border border-[#c8b3a2] flex items-center justify-center transition font-bold text-sm cursor-pointer shadow-xs">
+                            ▶
+                        </button>
+                    </div>
+
                     <div
                         class="hidden sm:flex flex-col items-end px-3 py-1 bg-[#faf6f0] rounded-xl border border-[#8c6547]">
                         <span data-i18n="modal_grafico_ultimo_valor" class="text-[9px] uppercase tracking-wider text-[#523725] font-bold">LAST VALUE</span>
@@ -2521,13 +2533,15 @@ CONTROLADORES JAVASCRIPT:
                 }
                 loteBasicoCentroide = { lat: cLat, lon: cLon };
                 const ha = (areaM2 / 10000).toFixed(2);
+                const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
+                const labelCent = isEn ? 'Centroid:' : 'Centroide:';
                 document.getElementById("superficieBasicoHa").textContent = `${ha} ha`;
-                document.getElementById("badgeCoordenadasBasico").textContent = `Centroide: [${cLat.toFixed(4)}, ${cLon.toFixed(4)}] · ${ha} ha`;
+                document.getElementById("badgeCoordenadasBasico").textContent = `${labelCent} [${cLat.toFixed(4)}, ${cLon.toFixed(4)}] · ${ha} ha`;
                 const btnPaso2 = document.getElementById("btnContinuarPaso2");
                 if (btnPaso2) btnPaso2.disabled = false;
                 const btnFlot = document.getElementById("btnFlotanteConfirmarMapa");
                 if (btnFlot) btnFlot.disabled = false;
-                mostrarToast(`Polígono delimitado en territorio argentino: ${ha} ha`, "success");
+                mostrarToast(isEn ? `Parcel delimited in Argentine territory: ${ha} ha` : `Polígono delimitado en territorio argentino: ${ha} ha`, "success");
             });
 
             mapaBasico.on("pm:remove", () => {
@@ -2536,8 +2550,9 @@ CONTROLADORES JAVASCRIPT:
                 loteBasicoLayer = null;
                 loteBasicoGeoJSON = null;
                 loteBasicoCentroide = null;
+                const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
                 document.getElementById("superficieBasicoHa").textContent = "0.00 ha";
-                document.getElementById("badgeCoordenadasBasico").textContent = "Haz clic en el mapa para iniciar el polígono";
+                document.getElementById("badgeCoordenadasBasico").textContent = isEn ? "Click on the map to start drawing the parcel polygon" : "Haz clic en el mapa para iniciar el polígono";
                 const btnPaso2 = document.getElementById("btnContinuarPaso2");
                 if (btnPaso2) btnPaso2.disabled = true;
                 const btnFlot = document.getElementById("btnFlotanteConfirmarMapa");
@@ -2621,13 +2636,19 @@ CONTROLADORES JAVASCRIPT:
 
             actualizarEstilosPasos(3);
 
-            document.getElementById("badgeCultivoPrevioResumen").textContent = `Previo: ${cultivo}`;
-            document.getElementById("textoCultivoPrevioRec").textContent = cultivo;
+            const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
+            const labelPrev = isEn ? "Previous: " : "Previo: ";
+            const cultNombre = typeof traducirNombreCultivo === 'function' ? traducirNombreCultivo(cultivo) : cultivo;
+            document.getElementById("badgeCultivoPrevioResumen").textContent = `${labelPrev}${cultNombre}`;
+            document.getElementById("textoCultivoPrevioRec").textContent = cultNombre;
 
             const haTxt = document.getElementById("superficieBasicoHa").textContent;
-            const centTxt = document.getElementById("badgeCoordenadasBasico").textContent;
             document.getElementById("resumenSuperficieHa").textContent = haTxt;
-            document.getElementById("resumenCentroide").textContent = centTxt;
+            if (loteBasicoCentroide && loteBasicoCentroide.lat) {
+                document.getElementById("resumenCentroide").textContent = `[${loteBasicoCentroide.lat.toFixed(4)}, ${loteBasicoCentroide.lon.toFixed(4)}]`;
+            } else {
+                document.getElementById("resumenCentroide").textContent = "-";
+            }
         }
 
         function actualizarEstilosPasos(pasoActivo) {
@@ -2681,6 +2702,7 @@ CONTROLADORES JAVASCRIPT:
         }
 
         function actualizarTarjetaNdvi(obs) {
+            const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
             const validas = (obs || []).filter(item => item.variable && item.variable.toLowerCase().includes("ndvi") && item.valor !== null && item.calidad !== "descartada");
             validas.sort((a, b) => (b.fecha || "").localeCompare(a.fecha || ""));
             const o = validas[0];
@@ -2688,14 +2710,17 @@ CONTROLADORES JAVASCRIPT:
             const nEl = document.getElementById("basicoNdviNota");
             if (o) {
                 if (vEl) vEl.textContent = Number(o.valor).toFixed(3);
-                if (nEl) nEl.textContent = `${o.fuente} · Pasada: ${o.fecha || 'Reciente'} (${o.calidad || 'buena'})`;
+                const pasadaLbl = isEn ? "Overpass" : "Pasada";
+                const calLbl = o.calidad === "buena" ? (isEn ? "good" : "buena") : (o.calidad || (isEn ? "good" : "buena"));
+                if (nEl) nEl.textContent = `${o.fuente} · ${pasadaLbl}: ${o.fecha || (isEn ? 'Recent' : 'Reciente')} (${calLbl})`;
             } else {
                 if (vEl) vEl.textContent = "-";
-                if (nEl) nEl.textContent = "Sin observaciones válidas en la pasada analizada";
+                if (nEl) nEl.textContent = isEn ? "No valid observations in analyzed overpass" : "Sin observaciones válidas en la pasada analizada";
             }
         }
 
         function actualizarTarjetaSmap(obs) {
+            const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
             const validas = (obs || []).filter(item => item.variable && item.variable.toLowerCase().includes("humedad") && item.valor !== null && item.calidad !== "descartada");
             validas.sort((a, b) => (b.fecha || "").localeCompare(a.fecha || ""));
             const o = validas[0];
@@ -2703,14 +2728,16 @@ CONTROLADORES JAVASCRIPT:
             const nEl = document.getElementById("basicoSmapNota");
             if (o) {
                 if (vEl) vEl.textContent = Number(o.valor).toFixed(3);
-                if (nEl) nEl.textContent = `${o.fuente} · Celda 9km EASE · ${o.fecha || 'Reciente'}`;
+                const celdaLbl = isEn ? "9km EASE Cell" : "Celda 9km EASE";
+                if (nEl) nEl.textContent = `${o.fuente} · ${celdaLbl} · ${o.fecha || (isEn ? 'Recent' : 'Reciente')}`;
             } else {
                 if (vEl) vEl.textContent = "-";
-                if (nEl) nEl.textContent = "Sin datos de humedad en la fecha analizada";
+                if (nEl) nEl.textContent = isEn ? "No soil moisture data for the analyzed date" : "Sin datos de humedad en la fecha analizada";
             }
         }
 
         function actualizarTarjetaLluvia(obs) {
+            const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
             const lluvias = (obs || []).filter(item => (item.variable === "lluvia_mm" || item.variable === "precipitacion_mm") && item.valor !== null && item.calidad !== "descartada");
             const vEl = document.getElementById("basicoLluviaValor");
             const nEl = document.getElementById("basicoLluviaNota");
@@ -2722,14 +2749,16 @@ CONTROLADORES JAVASCRIPT:
                 const fInicio = primero.fecha ? primero.fecha.split("-").reverse().join("/") : "";
                 const fFin = ult.fecha ? ult.fecha.split("-").reverse().join("/") : "";
                 if (vEl) vEl.textContent = totalMm.toFixed(1);
-                if (nEl) nEl.textContent = `Periodo: ${fInicio} - ${fFin} (${ult.fuente})`;
+                const periodoLbl = isEn ? "Period" : "Periodo";
+                if (nEl) nEl.textContent = `${periodoLbl}: ${fInicio} - ${fFin} (${ult.fuente})`;
             } else {
                 if (vEl) vEl.textContent = "-";
-                if (nEl) nEl.textContent = "Sin precipitación registrada en la ventana";
+                if (nEl) nEl.textContent = isEn ? "No precipitation recorded in window" : "Sin precipitación registrada en la ventana";
             }
         }
 
         function actualizarTarjetaTemperatura(obs) {
+            const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
             const maximas = (obs || []).filter(item => (item.variable === "temp_max" || item.variable === "temp_max_c") && item.valor !== null && item.calidad !== "descartada");
             maximas.sort((a, b) => (b.fecha || "").localeCompare(a.fecha || ""));
             const oMax = maximas[0];
@@ -2740,14 +2769,20 @@ CONTROLADORES JAVASCRIPT:
                 const maxVal = Number(oMax.valor).toFixed(1);
                 const minVal = oMin ? Number(oMin.valor).toFixed(1) : "-";
                 if (vEl) vEl.textContent = maxVal;
-                if (nEl) nEl.textContent = `Máx ${maxVal}°C / Mín ${minVal}°C · ${oMax.fuente} (${oMax.fecha || 'Reciente'})`;
+                const maxLbl = isEn ? "Max" : "Máx";
+                const minLbl = isEn ? "Min" : "Mín";
+                if (nEl) nEl.textContent = `${maxLbl} ${maxVal}°C / ${minLbl} ${minVal}°C · ${oMax.fuente} (${oMax.fecha || (isEn ? 'Recent' : 'Reciente')})`;
             } else {
                 if (vEl) vEl.textContent = "-";
-                if (nEl) nEl.textContent = "Sin registros de temperatura en la fecha";
+                if (nEl) nEl.textContent = isEn ? "No temperature records for date" : "Sin registros de temperatura en la fecha";
             }
         }
 
         function actualizarTarjetaEt(obs) {
+            const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
+            const uEl = document.getElementById("basicoEtUnidad");
+            if (uEl) uEl.textContent = isEn ? "mm/day (POWER / ECOSTRESS)" : "mm/día (POWER / ECOSTRESS)";
+
             const etPuras = (obs || []).filter(item => (item.variable === "et0_mm_dia" || item.variable === "et_mm_dia" || item.variable === "evapotranspiracion_mm" || item.variable === "pet_mm_dia") && item.valor !== null && item.calidad !== "descartada");
             const vEl = document.getElementById("basicoEtValor");
             const nEl = document.getElementById("basicoEtNota");
@@ -2755,7 +2790,7 @@ CONTROLADORES JAVASCRIPT:
                 etPuras.sort((a, b) => (b.fecha || "").localeCompare(a.fecha || ""));
                 const o = etPuras[0];
                 if (vEl) vEl.textContent = Number(o.valor).toFixed(1);
-                if (nEl) nEl.textContent = `${o.fuente} · ET₀ FAO-56 · ${o.fecha || 'Reciente'}`;
+                if (nEl) nEl.textContent = `${o.fuente} · ET₀ FAO-56 · ${o.fecha || (isEn ? 'Recent' : 'Reciente')}`;
                 return;
             }
             const radList = (obs || []).filter(item => item.variable === "radiacion" && item.valor !== null && item.calidad !== "descartada");
@@ -2764,14 +2799,19 @@ CONTROLADORES JAVASCRIPT:
                 const o = radList[0];
                 const etEstimada = Math.min(6.5, Math.max(1.8, Number(o.valor) * 0.12));
                 if (vEl) vEl.textContent = etEstimada.toFixed(1);
-                if (nEl) nEl.textContent = `NASA POWER · Balance de Radiación · ${o.fecha || 'Reciente'}`;
+                const radLbl = isEn ? "Radiation Balance" : "Balance de Radiación";
+                if (nEl) nEl.textContent = `NASA POWER · ${radLbl} · ${o.fecha || (isEn ? 'Recent' : 'Reciente')}`;
                 return;
             }
             if (vEl) vEl.textContent = "-";
-            if (nEl) nEl.textContent = "Sin cálculo de balance para el período";
+            if (nEl) nEl.textContent = isEn ? "No balance calculated for period" : "Sin cálculo de balance para el período";
         }
 
         function actualizarTarjetaRelieve(obs) {
+            const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
+            const uEl = document.getElementById("basicoRelieveUnidad");
+            if (uEl) uEl.textContent = isEn ? "m a.s.l. (NASADEM)" : "m s.n.m. (NASADEM)";
+
             const oRel = (obs || []).find(item => (item.variable.includes("altura") || item.variable.includes("cota") || item.variable.includes("relieve")) && item.valor !== null && item.calidad !== "descartada");
             const oPend = (obs || []).find(item => item.variable.includes("pendiente") && item.valor !== null && item.calidad !== "descartada");
             const vEl = document.getElementById("basicoRelieveValor");
@@ -2816,18 +2856,31 @@ CONTROLADORES JAVASCRIPT:
                         fEl.style.transform = "none";
                     }
                 }
-                if (oEl) oEl.textContent = rumbo ? `${rumbo}${angulo !== null ? ' (' + angulo + '°)' : ''}` : "Plano";
-                if (nEl) nEl.textContent = "NASADEM · Topografía satelital (30m)";
+                const rumboTraducido = typeof traducirRumbo === 'function' ? traducirRumbo(rumbo) : (rumbo || (isEn ? "Flat" : "Plano"));
+                if (oEl) oEl.textContent = rumbo ? `${rumboTraducido}${angulo !== null ? ' (' + angulo + '°)' : ''}` : (isEn ? "Flat" : "Plano");
+                if (nEl) nEl.textContent = `NASADEM · ${isEn ? "Satellite topography (30m)" : "Topografía satelital (30m)"}`;
             } else {
                 if (pEl) pEl.textContent = "-";
-                if (oEl) oEl.textContent = "Sin pendiente";
+                if (oEl) oEl.textContent = isEn ? "No slope" : "Sin pendiente";
                 if (fEl) fEl.textContent = "🧭";
-                if (nEl) nEl.textContent = oRel ? "NASADEM · Altimetría procesada" : "Altimetría no disponible para el cuadrante";
+                if (nEl) nEl.textContent = oRel ? `NASADEM · ${isEn ? "Processed altimetry" : "Altimetría procesada"}` : (isEn ? "Altimetry not available for quadrant" : "Altimetría no disponible para el cuadrante");
             }
         }
 
+        window.actualizarTraduccionesTarjetasTelemetria = function() {
+            if (window._ultimasObservacionesTarjetas) {
+                actualizarTarjetaNdvi(window._ultimasObservacionesTarjetas);
+                actualizarTarjetaSmap(window._ultimasObservacionesTarjetas);
+                actualizarTarjetaLluvia(window._ultimasObservacionesTarjetas);
+                actualizarTarjetaTemperatura(window._ultimasObservacionesTarjetas);
+                actualizarTarjetaEt(window._ultimasObservacionesTarjetas);
+                actualizarTarjetaRelieve(window._ultimasObservacionesTarjetas);
+            }
+        };
+
         function actualizarTarjetasBasico(data) {
             const obs = (data && data.observaciones) ? data.observaciones : [];
+            window._ultimasObservacionesTarjetas = obs;
             actualizarTarjetaNdvi(obs);
             actualizarTarjetaSmap(obs);
             actualizarTarjetaLluvia(obs);
@@ -3177,7 +3230,7 @@ CONTROLADORES JAVASCRIPT:
                                     return `
                                     <div onclick="cambiarAnioRotacion(${pr.anio}); document.getElementById('grillaCultivosEvaluados')?.scrollIntoView({ behavior: 'smooth' });" class="cursor-pointer select-none p-3.5 sm:p-4 rounded-2xl ${activo ? 'bg-emerald-50/50 border-2 border-emerald-600 ring-2 ring-emerald-500/20 shadow-md' : 'bg-white border-2 border-[#8c6547]/40 hover:border-emerald-600/60 hover:bg-[#faf7f2] shadow-xs'} transition-all flex flex-col justify-between space-y-2.5">
                                         <div class="flex items-center justify-between">
-                                            <span class="text-[10px] font-sans font-extrabold uppercase tracking-wider ${activo ? 'text-emerald-900' : 'text-[#785843]'}">${escapeHtml(pr.etiqueta || `Año ${pr.anio}`)}</span>
+                                            <span class="text-[10px] font-sans font-extrabold uppercase tracking-wider ${activo ? 'text-emerald-900' : 'text-[#785843]'}">${escapeHtml(typeof traducirEtiquetaAnio === 'function' ? traducirEtiquetaAnio(pr.anio, pr.etiqueta) : (isEn ? (pr.etiqueta_en || 'YEAR ' + pr.anio) : (pr.etiqueta || `Año ${pr.anio}`)))}</span>
                                             <div class="flex items-center gap-1.5">
                                                 ${activo ? `<span class="text-[10px] font-sans font-bold px-2 py-0.5 rounded-md bg-emerald-600 text-white shadow-2xs">✓ ${isEn ? 'Selected' : 'Campaña Activa'}</span>` : ''}
                                                 <span class="text-xs font-sans font-bold text-emerald-800 bg-white px-2 py-0.5 rounded-lg border border-emerald-300 shadow-2xs">${pr.porcentaje_coincidencia}% ${isEn ? 'Recommendation Index' : 'Índice de recomendación'}</span>
@@ -3186,11 +3239,11 @@ CONTROLADORES JAVASCRIPT:
                                         <div class="flex items-center gap-2.5">
                                             <span class="text-2xl">${iconMap[pr.cultivo] || '🌱'}</span>
                                             <div>
-                                                <strong class="font-heading text-base font-extrabold text-[#241810] block">${escapeHtml(typeof traducirNombreCultivo === 'function' ? traducirNombreCultivo(pr.nombre) : pr.nombre)}</strong>
-                                                <span class="text-[10px] font-sans text-[#5c4636] font-semibold">${pr.estado}</span>
+                                                <strong class="font-heading text-base font-extrabold text-[#241810] block">${escapeHtml(typeof traducirNombreCultivo === 'function' ? traducirNombreCultivo(pr.nombre) : (isEn ? (pr.nombre_en || pr.nombre) : pr.nombre))}</strong>
+                                                <span class="text-[10px] font-sans text-[#5c4636] font-semibold">${typeof traducirEstadoCultivo === 'function' ? traducirEstadoCultivo(pr.estado) : pr.estado}</span>
                                             </div>
                                         </div>
-                                        <p class="text-[10px] text-[#382a21] leading-relaxed font-sans border-t border-[#dfd2c6]/80 pt-1.5">${escapeHtml(pr.por_que_se_eligio)}</p>
+                                        <p class="text-[10px] text-[#382a21] leading-relaxed font-sans border-t border-[#dfd2c6]/80 pt-1.5">${escapeHtml(isEn ? (pr.por_que_se_eligio_en || (typeof traducirExplicacionSeleccion === 'function' ? traducirExplicacionSeleccion(pr.por_que_se_eligio) : pr.por_que_se_eligio)) : pr.por_que_se_eligio)}</p>
                                         <div onclick="event.stopPropagation(); cambiarAnioRotacion(${pr.anio}); document.getElementById('grillaCultivosEvaluados')?.scrollIntoView({ behavior: 'smooth' });" class="cursor-pointer text-xs font-sans font-bold ${activo ? 'text-emerald-800' : 'text-[#8c532b] hover:text-[#523725]'} flex items-center gap-1.5 pt-1">
                                             ${activo ? '🔍 ' + (isEn ? 'Showing agronomic criteria below' : 'Mostrando criterios agronómicos abajo') : '👉 ' + (isEn ? 'Click to inspect criteria for this year' : 'Clic para ver criterios agronómicos de este año')}
                                         </div>
@@ -3299,7 +3352,7 @@ CONTROLADORES JAVASCRIPT:
                                             <span class="text-[10px] uppercase font-bold text-[#8c532b] flex items-center gap-1">
                                                 <span>⚖️</span> ${isEn ? 'Comparative Selection Criterion vs other options:' : 'Criterio Comparativo frente a otras opciones:'}
                                             </span>
-                                            <p class="text-[11px] text-[#241810] leading-relaxed font-sans font-medium">${escapeHtml(c.por_que_se_eligio || '')}</p>
+                                            <p class="text-[11px] text-[#241810] leading-relaxed font-sans font-medium">${escapeHtml(isEn ? (c.por_que_se_eligio_en || (typeof traducirExplicacionSeleccion === 'function' ? traducirExplicacionSeleccion(c.por_que_se_eligio) : c.por_que_se_eligio)) : (c.por_que_se_eligio || ''))}</p>
                                         </div>
                                     </div>
 

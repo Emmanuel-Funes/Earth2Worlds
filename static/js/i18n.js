@@ -127,6 +127,33 @@ const DICCIONARIO_I18N = {
         badge_descargando_5y: "⏳ Downloading 5 years...",
         badge_ver_grafico_5y: "📈 View Chart (5y)",
 
+        badge_lote_evaluado: "EVALUATED PARCEL",
+        resumen_superficie_label: "Area:",
+        resumen_centroide_label: "Centroid:",
+        badge_previo_label: "Previous:",
+        badge_mapa_inicio_dibujo: "Click on the map to start drawing the parcel polygon",
+        card1_pasada_label: "Overpass:",
+        card1_calidad_buena: "good",
+        card2_celda_label: "9km EASE Cell",
+        card3_periodo_label: "Period:",
+        card4_max_label: "Max",
+        card4_min_label: "Min",
+        card5_balance_label: "Radiation Balance",
+        card5_unidad: "mm/day (POWER / ECOSTRESS)",
+        card6_topografia_label: "Satellite topography (30m)",
+        card6_unidad: "m a.s.l. (NASADEM)",
+        rumbo_este: "East",
+        rumbo_oeste: "West",
+        rumbo_norte: "North",
+        rumbo_sur: "South",
+        rumbo_noreste: "Northeast",
+        rumbo_noroeste: "Northwest",
+        rumbo_sureste: "Southeast",
+        rumbo_suroeste: "Southwest",
+        rumbo_plano: "Flat",
+        btn_grafico_prev: "Previous Chart (←)",
+        btn_grafico_next: "Next Chart (→)",
+
         // --- CROP ROTATION RECOMMENDATION ENGINE ---
         rotacion_seccion_titulo: "Agronomic Crop Recommendations for Next Season",
         rotacion_seccion_subtitulo: "Evaluated by RotaTerra Agronomic Engine with 5-year NASA agroclimatic telemetry, thermal thresholds, and soil moisture.",
@@ -324,6 +351,33 @@ const DICCIONARIO_I18N = {
         badge_descargando_5y: "⏳ Descargando 5 años...",
         badge_ver_grafico_5y: "📈 Ver Gráfico (5a)",
 
+        badge_lote_evaluado: "LOTE EVALUADO",
+        resumen_superficie_label: "Superficie:",
+        resumen_centroide_label: "Centroide:",
+        badge_previo_label: "Previo:",
+        badge_mapa_inicio_dibujo: "Haz clic en el mapa para iniciar el polígono",
+        card1_pasada_label: "Pasada:",
+        card1_calidad_buena: "buena",
+        card2_celda_label: "Celda 9km EASE",
+        card3_periodo_label: "Periodo:",
+        card4_max_label: "Máx",
+        card4_min_label: "Mín",
+        card5_balance_label: "Balance de Radiación",
+        card5_unidad: "mm/día (POWER / ECOSTRESS)",
+        card6_topografia_label: "Topografía satelital (30m)",
+        card6_unidad: "m s.n.m. (NASADEM)",
+        rumbo_este: "Este",
+        rumbo_oeste: "Oeste",
+        rumbo_norte: "Norte",
+        rumbo_sur: "Sur",
+        rumbo_noreste: "Noreste",
+        rumbo_noroeste: "Noroeste",
+        rumbo_sureste: "Sureste",
+        rumbo_suroeste: "Suroeste",
+        rumbo_plano: "Plano",
+        btn_grafico_prev: "Gráfico anterior (←)",
+        btn_grafico_next: "Siguiente gráfico (→)",
+
         // --- CROP ROTATION RECOMMENDATION ENGINE ---
         rotacion_seccion_titulo: "Recomendaciones Agronómicas para la Próxima Campaña",
         rotacion_seccion_subtitulo: "Evaluadas por el Motor Agronómico RotaTerra con 5 años de telemetría agroclimática NASA, umbrales térmicos y humedad edáfica.",
@@ -421,15 +475,25 @@ function t(clave, fallback = "") {
  */
 const TRADUCCION_CULTIVOS = {
     "soja": { en: "Soybean", es: "Soja" },
+    "soja de primera": { en: "Early Soybean", es: "Soja de primera" },
+    "soja de segunda": { en: "Late Soybean", es: "Soja de segunda" },
     "maíz": { en: "Corn (Maize)", es: "Maíz" },
     "maiz": { en: "Corn (Maize)", es: "Maíz" },
+    "maíz de primera": { en: "Early Corn", es: "Maíz de primera" },
+    "maiz de primera": { en: "Early Corn", es: "Maíz de primera" },
+    "maíz tardío": { en: "Late Corn", es: "Maíz tardío" },
+    "maiz tardio": { en: "Late Corn", es: "Maíz tardío" },
     "girasol": { en: "Sunflower", es: "Girasol" },
     "maní": { en: "Peanut", es: "Maní" },
     "mani": { en: "Peanut", es: "Maní" },
     "trigo": { en: "Wheat", es: "Trigo" },
     "cebada": { en: "Barley", es: "Cebada" },
     "sorgo": { en: "Sorghum", es: "Sorgo" },
-    "alfalfa": { en: "Alfalfa / Pasture", es: "Alfalfa / Pastura" }
+    "sorgo granifero": { en: "Grain Sorghum", es: "Sorgo granífero" },
+    "sorgo granífero": { en: "Grain Sorghum", es: "Sorgo granífero" },
+    "alfalfa": { en: "Alfalfa / Pasture", es: "Alfalfa / Pastura" },
+    "barbecho": { en: "Fallow", es: "Barbecho" },
+    "otro": { en: "Other", es: "Otro" }
 };
 
 function traducirNombreCultivo(nombre) {
@@ -439,6 +503,108 @@ function traducirNombreCultivo(nombre) {
         return TRADUCCION_CULTIVOS[clean][idiomaActual];
     }
     return nombre;
+}
+
+function traducirEstadoCultivo(estado) {
+    if (!estado) return "";
+    const s = String(estado).trim().toLowerCase();
+    if (s.includes("recomenda") || s.includes("optimal") || s.includes("optimo")) {
+        return idiomaActual === "en" ? "Recommended" : "Recomendable";
+    }
+    if (s.includes("cuidado") || s.includes("caution") || s.includes("reserva")) {
+        return idiomaActual === "en" ? "With caution" : "Con cuidado";
+    }
+    if (s.includes("desaconseja") || s.includes("not recommended") || s.includes("descartad")) {
+        return idiomaActual === "en" ? "Not recommended" : "No recomendable";
+    }
+    return estado;
+}
+
+function traducirEtiquetaAnio(anio, etiqueta) {
+    if (idiomaActual === "en") {
+        const str = String(etiqueta || "").toLowerCase();
+        if (anio === 1 || str.includes("1") || str.includes("próxima") || str.includes("proxima")) {
+            return "YEAR 1 (NEXT SEASON)";
+        }
+        if (anio === 2 || str.includes("2") || str.includes("siguiente")) {
+            return "YEAR 2 (SUBSEQUENT SEASON)";
+        }
+        if (anio === 3 || str.includes("3") || str.includes("tercera")) {
+            return "YEAR 3 (THIRD SEASON)";
+        }
+        return `YEAR ${anio}`;
+    }
+    return etiqueta || `AÑO ${anio}`;
+}
+
+function traducirExplicacionSeleccion(texto) {
+    if (!texto) return "";
+    if (idiomaActual !== "en") return texto;
+
+    // Pattern 1: 1ª OPCIÓN RECOMENDADA
+    let m = texto.match(/1ª OPCIÓN RECOMENDADA \((\d+)% de coincidencia óptima\):/i);
+    if (m) {
+        return `1st RECOMMENDED CHOICE (${m[1]}% optimal match): Best agronomic alternative for your field. Outperforms all other options with excellent water supply, high frost-free maturity probability, and complete harmony with soil conditions and season rotation.`;
+    }
+
+    // Pattern 2: Opción Nª (X% de coincidencia óptima)
+    m = texto.match(/Opción (\d+)ª \((\d+)% de coincidencia óptima\): Cultivo completamente viable y recomendable, pero se ubica por detrás de (.+?) \((\d+)%\)/i);
+    if (m) {
+        const topEn = traducirNombreCultivo(m[3]);
+        return `Choice #${m[1]} (${m[2]}% optimal match): Fully viable and recommended crop, but ranks behind ${topEn} (${m[4]}%) due to tighter water margins or growing degree-day accumulation relative to biological optima.`;
+    }
+
+    // Pattern 3: Opción Nª con reservas (X% de coincidencia)
+    m = texto.match(/Opción (\d+)ª con reservas \((\d+)% de coincidencia\): Queda postergado frente a (.+?) debido a advertencias técnicas en tu campo \((.+?)\)/i);
+    if (m) {
+        const topEn = traducirNombreCultivo(m[3]);
+        let advEn = m[4];
+        if (advEn.toLowerCase().includes("temperatura del suelo")) advEn = "Soil temperature for sowing";
+        else if (advEn.toLowerCase().includes("precaución")) advEn = "climatic precaution";
+        return `Choice #${m[1]} with caution (${m[2]}% match): Ranked behind ${topEn} due to technical warnings on your field (${advEn}); requires moisture monitoring or specific field management.`;
+    }
+
+    // Pattern 4: Descartado (X% de coincidencia)
+    m = texto.match(/Descartado \((\d+)% de coincidencia\): No es conveniente para esta campaña frente a las opciones recomendadas porque no supera reglas críticas para tu campo \((.+?)\)/i);
+    if (m) {
+        let critEn = m[2];
+        if (critEn.toLowerCase().includes("no repetir")) critEn = "Do not repeat species";
+        return `Not recommended (${m[1]}% match): Not advised for this season compared to recommended choices because it does not pass critical rules for your field (${critEn}).`;
+    }
+
+    // Pattern 5: Sucesión agronómica recomendada tras
+    m = texto.match(/Sucesión agronómica recomendada tras (.+?): respeta el intervalo sanitario del INTA y mantiene la cobertura del suelo/i);
+    if (m) {
+        const cultEn = traducirNombreCultivo(m[1]);
+        return `Recommended agronomic succession after ${cultEn}: complies with INTA sanitary interval and preserves soil cover.`;
+    }
+
+    // Pattern 6: Rotación trienal equilibrada tras
+    m = texto.match(/Rotación trienal equilibrada tras (.+?) y (.+?): diversifica familias botánicas y optimiza el balance de nutrientes/i);
+    if (m) {
+        const c1En = traducirNombreCultivo(m[1]);
+        const c2En = traducirNombreCultivo(m[2]);
+        return `Balanced 3-year rotation after ${c1En} and ${c2En}: diversifies botanical families and optimizes nutrient balance.`;
+    }
+
+    return texto;
+}
+
+function traducirRumbo(rumbo) {
+    if (!rumbo) return "";
+    const clean = String(rumbo).trim().toLowerCase();
+    const map = {
+        "este": t("rumbo_este", "East"),
+        "oeste": t("rumbo_oeste", "West"),
+        "norte": t("rumbo_norte", "North"),
+        "sur": t("rumbo_sur", "South"),
+        "noreste": t("rumbo_noreste", "Northeast"),
+        "noroeste": t("rumbo_noroeste", "Northwest"),
+        "sureste": t("rumbo_sureste", "Southeast"),
+        "suroeste": t("rumbo_suroeste", "Southwest"),
+        "plano": t("rumbo_plano", "Flat")
+    };
+    return map[clean] || rumbo;
 }
 
 /**
@@ -502,6 +668,24 @@ function cambiarIdioma(nuevoIdioma) {
     if (typeof window.actualizarEtiquetasGeomanI18n === "function") {
         window.actualizarEtiquetasGeomanI18n();
     }
+
+    // 8. Actualizar navModoLabel si existe
+    const navModoLabel = document.getElementById("navModoLabel");
+    if (navModoLabel) {
+        const modoActual = window.modoUsuarioActivo || "basico";
+        if (modoActual === "basico") {
+            navModoLabel.textContent = nuevoIdioma === "en" ? "Farmer" : "Agricultor";
+        } else if (modoActual === "avanzado") {
+            navModoLabel.textContent = nuevoIdioma === "en" ? "Agricultural Specialist" : "Técnico Agropecuario";
+        } else {
+            navModoLabel.textContent = "Admin";
+        }
+    }
+
+    // 9. Actualizar unidades y notas de tarjetas de telemetría si están en pantalla
+    if (typeof window.actualizarTraduccionesTarjetasTelemetria === "function") {
+        window.actualizarTraduccionesTarjetasTelemetria();
+    }
 }
 
 /**
@@ -559,5 +743,9 @@ document.addEventListener("DOMContentLoaded", () => {
 window.t = t;
 window.cambiarIdioma = cambiarIdioma;
 window.traducirNombreCultivo = traducirNombreCultivo;
+window.traducirEstadoCultivo = traducirEstadoCultivo;
+window.traducirEtiquetaAnio = traducirEtiquetaAnio;
+window.traducirExplicacionSeleccion = traducirExplicacionSeleccion;
+window.traducirRumbo = traducirRumbo;
 window.obtenerNombresMesesI18n = obtenerNombresMesesI18n;
 window.DICCIONARIO_I18N = DICCIONARIO_I18N;

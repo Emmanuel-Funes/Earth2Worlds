@@ -2332,6 +2332,34 @@ function cerrarModalGrafico() {
     }
 }
 
+function navegarGraficoModal(direccion) {
+    const lista = ["ndvi", "smap", "lluvia", "heladas", "estres"];
+    let curr = (metricaActivaGrafico || "ndvi").toLowerCase();
+    if (curr === "humedad") curr = "smap";
+    if (curr === "temperatura" || curr === "temp_min_c") curr = "heladas";
+    if (curr === "et0_mm_dia" || curr === "evapotranspiracion") curr = "estres";
+    let idx = lista.indexOf(curr);
+    if (idx === -1) idx = 0;
+    let nextIdx = (idx + direccion + lista.length) % lista.length;
+    abrirModalGrafico(lista[nextIdx]);
+}
+window.navegarGraficoModal = navegarGraficoModal;
+
+// Navegación con teclado flechas izq/der cuando el modal está abierto
+window.addEventListener("keydown", (e) => {
+    const modal = document.getElementById("modalGraficoTelemetria") || document.getElementById("modalGraficoHistorico");
+    if (!modal || modal.classList.contains("hidden") || modal.style.display === "none") return;
+    if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        navegarGraficoModal(-1);
+    } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        navegarGraficoModal(1);
+    } else if (e.key === "Escape") {
+        cerrarModalGrafico();
+    }
+});
+
 let presetInteranualActivo = "2y";
 
 function cambiarPresetInteranual(preset) {
