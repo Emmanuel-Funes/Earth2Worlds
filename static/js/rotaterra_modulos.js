@@ -2648,7 +2648,7 @@ function renderizarGraficoTelemetria() {
         const aniosCampana = todosAnios.slice(-cantAnios);
 
         // Agrupar en 36 dekads anuales estándar (3 por mes: días 1 a 10, 11 a 20, 21 a fin)
-        const mesesNombres = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+        const mesesNombres = typeof window.obtenerNombresMesesI18n === "function" ? window.obtenerNombresMesesI18n() : ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         const dekadsLabels = [];
         for (let m = 0; m < 12; m++) {
             dekadsLabels.push(`${mesesNombres[m]} 01`);
@@ -2693,6 +2693,8 @@ function renderizarGraficoTelemetria() {
             setText("modalGraficoUltimoValor", `${Number(ultP.valor).toFixed(2)}${unidadSufijo}`);
         }
 
+        const textoCampana = typeof window.t === "function" ? window.t("modal_grafico_campana", "Campaign") : "Campaign";
+
         // Construir datasets continuos para cada campaña seleccionada
         const datasets = aniosCampana.map((anio, idx) => {
             const color = paletaAnios[idx % paletaAnios.length];
@@ -2707,7 +2709,7 @@ function renderizarGraficoTelemetria() {
             });
 
             return {
-                label: `Campaña ${anio}`,
+                label: `${textoCampana} ${anio}`,
                 data: data,
                 borderColor: color,
                 backgroundColor: color + "26",

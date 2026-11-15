@@ -69,6 +69,7 @@ CONTROLADORES JAVASCRIPT:
     <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@2.17.0/dist/leaflet-geoman.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/static/js/san_luis_geo.js"></script>
+    <script src="/static/js/i18n.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -441,21 +442,28 @@ CONTROLADORES JAVASCRIPT:
         class="fixed inset-0 z-[99990] overflow-y-auto bg-stone-900/60 backdrop-blur-sm p-3 sm:p-6 flex justify-center items-start">
         <div
             class="w-full max-w-4xl bg-white border-2 border-[#8c6547] rounded-3xl shadow-2xl p-5 sm:p-8 space-y-5 my-6 sm:my-10 relative overflow-visible">
+            
+            <!-- Selector de Idioma (Modal de Acceso) -->
+            <div class="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center bg-[#fdfbf7] border border-[#8c6547]/40 rounded-xl p-0.5 shadow-sm text-xs z-20">
+                <button type="button" onclick="cambiarIdioma('en')" class="btn-lang-en px-2.5 py-1 rounded-lg transition-all bg-[#16a34a] text-white font-bold shadow-sm">EN</button>
+                <button type="button" onclick="cambiarIdioma('es')" class="btn-lang-es px-2.5 py-1 rounded-lg transition-all text-[#523725] hover:text-[#100b07] font-semibold">ES</button>
+            </div>
+
             <div class="text-center space-y-2.5 px-2">
                 <div
                     class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-400 text-emerald-800 text-xs font-mono font-bold max-w-full">
-                    <span>🌍 RotaTerra</span> &bull; <span>Plataforma Agroclimática</span>
+                    <span data-i18n="modal_selector_badge">🌍 RotaTerra &bull; Agroclimatic Platform</span>
                 </div>
-                <p class="text-xs sm:text-sm font-bold uppercase tracking-widest text-[#785843]">
-                    Elige tu Modalidad de Acceso
+                <p data-i18n="modal_selector_subtitulo" class="text-xs sm:text-sm font-bold uppercase tracking-widest text-[#785843]">
+                    Choose your Access Mode
                 </p>
                 <h2
+                    data-i18n="modal_selector_titulo"
                     class="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#241810] tracking-tight block w-full py-1 leading-normal overflow-visible">
-                    ¡Cuida tu tierra, potencia tu futuro con RotaTerra!
+                    Care for your land, empower your future with RotaTerra!
                 </h2>
-                <p class="text-xs sm:text-sm text-[#5c4636] max-w-2xl mx-auto leading-relaxed">
-                    Selecciona cómo deseas explorar la plataforma. Las sesiones de prueba no requieren registro ni
-                    guardan datos permanentes en el sistema.
+                <p data-i18n="modal_selector_desc" class="text-xs sm:text-sm text-[#5c4636] max-w-2xl mx-auto leading-relaxed">
+                    Select how you want to explore the platform. Test sessions do not require registration or store permanent data in the system.
                 </p>
             </div>
 
@@ -470,36 +478,36 @@ CONTROLADORES JAVASCRIPT:
                                 🌱
                             </span>
                             <span
+                                data-i18n="perfil_agricultor_badge"
                                 class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-400 uppercase">
-                                Agricultor
+                                Farmer
                             </span>
                         </div>
                         <div>
                             <h3
+                                data-i18n="perfil_agricultor_titulo"
                                 class="font-heading text-2xl font-bold text-[#241810] group-hover:text-emerald-700 transition">
-                                Agricultor
+                                Farmer
                             </h3>
-                            <p class="text-xs sm:text-sm text-[#5c4636] mt-2 leading-relaxed">
-                                Diseñado para evaluación ágil y directa. Dibuja un único lote en el territorio
-                                argentino, declara la última plantación y evalúa la telemetría histórica de 5 años con
-                                recomendación de rotación de cultivos.
+                            <p data-i18n="perfil_agricultor_desc" class="text-xs sm:text-sm text-[#5c4636] mt-2 leading-relaxed">
+                                Designed for agile and direct assessment. Draw a single parcel in Argentina, declare the previous crop, and evaluate 5 years of historical NASA telemetry with crop rotation recommendations.
                             </p>
                         </div>
                         <ul class="text-xs font-mono text-[#382a21] space-y-1.5 pt-2 border-t border-[#dfd2c6]">
                             <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span>
-                                Delimitador de polígono en Argentina (Leaflet + Geoman)</li>
+                                <span data-i18n="perfil_agricultor_item1">Parcel polygon delimiter in Argentina (Leaflet + Geoman)</span></li>
                             <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span>
-                                Selección rápida de cultivo previo (Maíz, Soja, Girasol, etc.)</li>
+                                <span data-i18n="perfil_agricultor_item2">Quick selection of previous crop (Corn, Soybean, Sunflower, etc.)</span></li>
                             <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span>
-                                5 años de telemetría NASA (NDVI, SMAP, IMERG)</li>
+                                <span data-i18n="perfil_agricultor_item3">5 years of NASA telemetry (NDVI, SMAP, IMERG)</span></li>
                             <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span>
-                                Recomendación de rotación de cultivos Rotaterra</li>
+                                <span data-i18n="perfil_agricultor_item4">RotaTerra crop rotation recommendations</span></li>
                         </ul>
                     </div>
                     <div class="pt-6">
                         <button type="button" onclick="event.stopPropagation(); iniciarModoDesdeSelector('basico')"
                             class="w-full py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-heading font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
-                            <span>Ingresar como Agricultor</span> &rarr;
+                            <span data-i18n="perfil_agricultor_btn">Enter as Farmer &rarr;</span>
                         </button>
                     </div>
                 </div>
@@ -514,34 +522,40 @@ CONTROLADORES JAVASCRIPT:
                                 🛰️
                             </span>
                             <span
+                                data-i18n="perfil_tecnico_badge"
                                 class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-amber-100 text-amber-900 border border-amber-400 uppercase">
-                                Técnico Agropecuario
+                                Agricultural Specialist
                             </span>
                         </div>
                         <div>
                             <h3
+                                data-i18n="perfil_tecnico_titulo"
                                 class="font-heading text-2xl font-bold text-[#241810] group-hover:text-emerald-700 transition">
-                                Técnico Agropecuario
+                                Agricultural Specialist
                             </h3>
-                            <p class="text-xs sm:text-sm text-[#5c4636] mt-2 leading-relaxed">
-                                Acceso total al centro de control territorial: visor GIS multirresolución, panel lateral
-                                de capas satelitales, Dock Satelital, las 6 tarjetas de telemetría interactivas y
-                                generación de gráficas de series temporales (Chart.js).
+                            <p data-i18n="perfil_tecnico_desc" class="text-xs sm:text-sm text-[#5c4636] mt-2 leading-relaxed">
+                                Full access to territorial control center: multi-resolution GIS viewer, satellite layer drawer, NASA Satellite Dock, 6 interactive telemetry cards, and temporal series charts (Chart.js).
                             </p>
                         </div>
                         <ul class="text-xs font-mono text-[#382a21] space-y-1.5 pt-2 border-t border-[#dfd2c6]">
                             <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span>
-                                Visor GIS con capas WMS y Dock Satelital NASA</li>
+                                <span data-i18n="perfil_tecnico_item1">GIS viewer with WMS layers and NASA Satellite Dock</span></li>
                             <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span>
-                                Las 6 tarjetas métricas interactivas en vivo</li>
+                                <span data-i18n="perfil_tecnico_item2">All 6 live interactive telemetry cards</span></li>
                             <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span>
-                                Generador de gráficos de series temporales Chart.js</li>
+                                <span data-i18n="perfil_tecnico_item3">Temporal series chart generator (Chart.js)</span></li>
                             <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">&#10003;</span>
-                                Sesión efímera sin ensuciar la base de datos</li>
+                                <span data-i18n="perfil_tecnico_item4">Ephemeral session without dirtying the database</span></li>
                         </ul>
                     </div>
                     <div class="pt-6">
                         <button type="button" onclick="event.stopPropagation(); iniciarModoDesdeSelector('avanzado')"
+                            class="w-full py-3.5 px-5 rounded-xl bg-amber-800 hover:bg-amber-900 text-white font-heading font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
+                            <span data-i18n="perfil_tecnico_btn">Enter as Agricultural Specialist &rarr;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
                             class="w-full py-3.5 px-5 rounded-xl bg-[#785843] hover:bg-[#5f4534] text-white font-heading font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
                             <span>Ingresar como Técnico Agropecuario</span> &rarr;
                         </button>
@@ -634,21 +648,28 @@ CONTROLADORES JAVASCRIPT:
                         <span
                             class="font-heading text-lg sm:text-xl font-bold tracking-tight text-white">RotaTerra</span>
                         <span
+                            data-i18n="nav_telemetria_activa"
                             class="hidden sm:inline-block text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-                            🛰️ Telemetría Activa
+                            🛰️ Active Telemetry
                         </span>
                     </div>
-                    <p class="text-xs text-slate-400 hidden sm:block">Plataforma Agroclimática y Rotación de Cultivos
+                    <p data-i18n="nav_subtitulo" class="text-xs text-slate-400 hidden sm:block">Agroclimatic Platform & Crop Rotation
                     </p>
                 </div>
             </div>
 
             <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Selector de Idioma (Navbar) -->
+                <div class="flex items-center bg-[#faf7f2] border border-[#8c6547]/50 rounded-xl p-0.5 shadow-sm text-xs">
+                    <button type="button" onclick="cambiarIdioma('en')" class="btn-lang-en px-2 py-1 rounded-lg transition-all bg-[#16a34a] text-white font-bold shadow-sm">EN</button>
+                    <button type="button" onclick="cambiarIdioma('es')" class="btn-lang-es px-2 py-1 rounded-lg transition-all text-[#523725] hover:text-[#100b07] font-semibold">ES</button>
+                </div>
+
                 <!-- Botón Selector de Modalidad -->
                 <button id="btnCambiarModoNav" type="button" onclick="mostrarSelectorModalidad()"
                     class="px-3 py-1.5 rounded-xl text-xs font-mono font-semibold bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 transition flex items-center gap-1.5"
-                    title="Cambiar tipo de usuario o reiniciar sesión">
-                    <span>⇄</span> <span>Modo: <strong id="navModoLabel" class="uppercase">Agricultor</strong></span>
+                    title="Switch user type or restart session">
+                    <span>⇄</span> <span><span data-i18n="nav_modo_label">Mode</span>: <strong id="navModoLabel" class="uppercase">Farmer</strong></span>
                 </button>
 
                 <!-- Accesos rápidos de arquitectura (exclusivos Admin) -->
@@ -678,8 +699,9 @@ CONTROLADORES JAVASCRIPT:
                 </div>
 
                 <button type="button" onclick="logout()"
+                    data-i18n="nav_salir"
                     class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 transition">
-                    Salir
+                    Sign Out
                 </button>
             </div>
         </div>
@@ -698,21 +720,21 @@ CONTROLADORES JAVASCRIPT:
                         class="flex items-center gap-2 sm:gap-3 text-emerald-400 font-semibold text-xs sm:text-sm">
                         <span
                             class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center font-bold text-xs sm:text-sm">1</span>
-                        <span>Crear Lote (Global)</span>
+                        <span data-i18n="step1_titulo">Create Parcel (Global)</span>
                     </div>
                     <div class="flex-1 h-0.5 mx-2 sm:mx-4 bg-slate-800"></div>
                     <div id="stepIndicador2"
                         class="flex items-center gap-2 sm:gap-3 text-slate-500 font-semibold text-xs sm:text-sm">
                         <span
                             class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs sm:text-sm">2</span>
-                        <span>Última Plantación</span>
+                        <span data-i18n="step2_titulo">Previous Planting</span>
                     </div>
                     <div class="flex-1 h-0.5 mx-2 sm:mx-4 bg-slate-800"></div>
                     <div id="stepIndicador3"
                         class="flex items-center gap-2 sm:gap-3 text-slate-500 font-semibold text-xs sm:text-sm">
                         <span
                             class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs sm:text-sm">3</span>
-                        <span>Telemetría y Recomendación</span>
+                        <span data-i18n="step3_titulo">Telemetry & Recommendation</span>
                     </div>
                 </div>
             </div>
@@ -743,25 +765,21 @@ CONTROLADORES JAVASCRIPT:
                     <div>
                         <div class="flex items-center gap-2">
                             <span
-                                class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">PASO
-                                1</span>
-                            <span class="text-xs text-slate-400 font-mono">Cobertura Argentina EPSG:4326</span>
+                                class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">STEP 1</span>
+                            <span class="text-xs text-slate-400 font-mono">Argentina EPSG:4326</span>
                         </div>
-                        <h2 class="font-heading text-xl font-bold text-white mt-1">Dibuja tu Lote en el Territorio
-                            Argentino</h2>
-                        <p class="text-xs text-slate-400 mt-0.5">Usa el ícono de polígono o rectángulo en el mapa para
-                            trazar el perímetro del lote dentro de Argentina.</p>
+                        <h2 data-i18n="paso1_cabecera" class="font-heading text-xl font-bold text-white mt-1">Delimit your Parcel in Argentina</h2>
+                        <p data-i18n="paso1_instrucciones" class="text-xs text-slate-400 mt-0.5">Use the polygon or rectangle tool on the map to outline the parcel boundary.</p>
                     </div>
                     <div class="flex items-center gap-3">
                         <div class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-right">
-                            <span class="text-[10px] font-mono text-slate-400 uppercase block">Superficie
-                                Calculada</span>
+                            <span class="text-[10px] font-mono text-slate-400 uppercase block">Calculated Area</span>
                             <span id="superficieBasicoHa"
                                 class="font-heading font-extrabold text-emerald-400 text-lg">0.00 ha</span>
                         </div>
                         <button id="btnContinuarPaso2" type="button" disabled onclick="irAPasoBasico2()"
                             class="px-5 py-3 rounded-xl bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-emerald-400 text-slate-950 font-heading font-bold text-sm shadow-lg shadow-emerald-500/20 transition flex items-center gap-2">
-                            <span>Siguiente: Última Plantación</span> &rarr;
+                            <span data-i18n="btn_confirmar_paso1">Next: Previous Planting &rarr;</span>
                         </button>
                     </div>
                 </div>
@@ -771,7 +789,7 @@ CONTROLADORES JAVASCRIPT:
                     <div id="mapaBasicoSlot" class="w-full h-full"></div>
                     <div id="badgeCoordenadasBasico"
                         class="absolute bottom-3 left-3 z-[1000] px-3 py-1.5 rounded-xl bg-slate-900/90 backdrop-blur-md border border-slate-800 text-[11px] font-mono text-slate-300 shadow-lg">
-                        Haz clic en el mapa para iniciar el polígono
+                        Click on the map to start drawing the parcel polygon
                     </div>
                 </div>
             </div>
@@ -783,43 +801,42 @@ CONTROLADORES JAVASCRIPT:
                     <div class="border-b border-slate-800 pb-4">
                         <div class="flex items-center gap-2">
                             <span
-                                class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">PASO
-                                2</span>
-                            <span class="text-xs text-slate-400 font-mono">Historial Agronómico del Lote</span>
+                                class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">STEP 2</span>
+                            <span class="text-xs text-slate-400 font-mono">Agronomic Crop History</span>
                         </div>
-                        <h2 class="font-heading text-2xl font-bold text-white mt-1">¿Cuál es la última plantación de
-                            este lote?</h2>
-                        <p class="text-xs text-slate-400 mt-1">
-                            Selecciona el cultivo previo sembrado en la parcela para la recomendación agronómica y
-                            balance del lote.
+                        <h2 data-i18n="paso2_cabecera" class="font-heading text-2xl font-bold text-white mt-1">What was the last planted crop in this field?</h2>
+                        <p data-i18n="paso2_instrucciones" class="text-xs text-slate-400 mt-1">
+                            Select the previous crop harvested in the parcel to calculate the optimal agroclimatic rotation and nutrient balance.
                         </p>
                     </div>
 
                     <div class="space-y-4">
                         <div>
                             <label for="selectCultivoPrevio"
+                                data-i18n="label_cultivo_previo"
                                 class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
-                                Último Cultivo / Plantación Previa *
+                                Previous Harvested Crop *
                             </label>
                             <select id="selectCultivoPrevio"
                                 class="w-full rounded-xl bg-slate-950 border border-slate-800 px-3.5 py-3 text-sm text-slate-100 focus:outline-none focus:border-emerald-500 font-medium">
-                                <option value="Maíz">Maíz</option>
-                                <option value="Soja">Soja</option>
-                                <option value="Girasol">Girasol</option>
-                                <option value="Sorgo">Sorgo</option>
-                                <option value="Maní">Maní</option>
+                                <option value="Maíz" data-i18n="cultivo_maiz">Corn / Maize</option>
+                                <option value="Soja" data-i18n="cultivo_soja">Soybean</option>
+                                <option value="Girasol" data-i18n="cultivo_girasol">Sunflower</option>
+                                <option value="Sorgo" data-i18n="cultivo_sorgo">Sorghum</option>
+                                <option value="Maní" data-i18n="cultivo_mani">Peanut</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="pt-4 border-t border-slate-800 flex items-center justify-between gap-4">
                         <button type="button" onclick="irAPasoBasico1()"
+                            data-i18n="btn_volver_paso1"
                             class="px-4 py-2.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
-                            &larr; Volver a Ajustar Mapa
+                            &larr; Back to Map
                         </button>
                         <button id="btnAnalizarBasico" type="button" onclick="ejecutarAnalisisBasico()"
                             class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-heading font-bold text-sm shadow-lg shadow-emerald-500/25 transition flex items-center gap-2">
-                            <span>Analizar Satélites NASA y Evaluar Rotación</span> &rarr;
+                            <span data-i18n="btn_confirmar_paso2">Analyze 5-Year Telemetry & Rotations &rarr;</span>
                         </button>
                     </div>
                 </div>
@@ -918,12 +935,12 @@ CONTROLADORES JAVASCRIPT:
                             class="cursor-wait group bg-white border-2 border-[#8c6547] hover:border-emerald-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-xs font-mono text-emerald-800 font-bold flex items-center gap-1">🌱 VEGETACIÓN</span>
-                                    <span id="badgeGraficoNdvi"
-                                        class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-300 font-bold opacity-90 cursor-wait">⏳ Descargando 5 años...</span>
+                                    <span class="text-xs font-mono text-emerald-800 font-bold flex items-center gap-1">🌱 VEGETATION</span>
+                                    <span id="badgeGraficoNdvi" data-i18n="badge_descargando_5y"
+                                        class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-300 font-bold opacity-90 cursor-wait">⏳ Downloading 5 years...</span>
                                 </div>
-                                <h4 class="font-heading font-bold text-[#241810] text-base mt-2 group-hover:text-emerald-700 transition">
-                                    Índice de Vigor (NDVI)</h4>
+                                <h4 data-i18n="card1_titulo" class="font-heading font-bold text-[#241810] text-base mt-2 group-hover:text-emerald-700 transition">
+                                    NDVI Vegetation Vigor</h4>
                                 <div class="flex items-baseline gap-2 mt-1">
                                     <span id="basicoNdviValor"
                                         class="font-heading font-extrabold text-2xl text-emerald-700">-</span>
@@ -931,7 +948,7 @@ CONTROLADORES JAVASCRIPT:
                                 </div>
                             </div>
                             <p id="basicoNdviNota" class="text-xs text-[#785843] pt-2 border-t border-[#dfd2c6]">
-                                Consultando archivo histórico...</p>
+                                Querying historical archive...</p>
                         </div>
 
                         <!-- Tarjeta 2: Humedad de Suelo (SMAP) -->
@@ -939,12 +956,12 @@ CONTROLADORES JAVASCRIPT:
                             class="cursor-wait group bg-white border-2 border-[#8c6547] hover:border-sky-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-xs font-mono text-sky-800 font-bold flex items-center gap-1">💧 SUELO RADICULAR</span>
-                                    <span id="badgeGraficoSmap"
-                                        class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-300 font-bold opacity-90 cursor-wait">⏳ Descargando 5 años...</span>
+                                    <span class="text-xs font-mono text-sky-800 font-bold flex items-center gap-1">💧 ROOT-ZONE SOIL</span>
+                                    <span id="badgeGraficoSmap" data-i18n="badge_descargando_5y"
+                                        class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-300 font-bold opacity-90 cursor-wait">⏳ Downloading 5 years...</span>
                                 </div>
-                                <h4 class="font-heading font-bold text-[#241810] text-base mt-2 group-hover:text-sky-700 transition">
-                                    Humedad Radicular</h4>
+                                <h4 data-i18n="card2_titulo" class="font-heading font-bold text-[#241810] text-base mt-2 group-hover:text-sky-700 transition">
+                                    Root-Zone Soil Moisture</h4>
                                 <div class="flex items-baseline gap-2 mt-1">
                                     <span id="basicoSmapValor"
                                         class="font-heading font-extrabold text-2xl text-sky-700">-</span>
@@ -952,7 +969,7 @@ CONTROLADORES JAVASCRIPT:
                                 </div>
                             </div>
                             <p id="basicoSmapNota" class="text-xs text-[#785843] pt-2 border-t border-[#dfd2c6]">
-                                Consultando radiómetro de microondas...</p>
+                                Querying microwave radiometer...</p>
                         </div>
 
                         <!-- Tarjeta 3: Lluvias Acumuladas (IMERG) -->
@@ -960,12 +977,12 @@ CONTROLADORES JAVASCRIPT:
                             class="cursor-wait group bg-white border-2 border-[#8c6547] hover:border-blue-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-xs font-mono text-blue-800 font-bold flex items-center gap-1">🌧️ PRECIPITACIONES</span>
-                                    <span id="badgeGraficoLluvia"
-                                        class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-300 font-bold opacity-90 cursor-wait">⏳ Descargando 5 años...</span>
+                                    <span class="text-xs font-mono text-blue-800 font-bold flex items-center gap-1">🌧️ PRECIPITATION</span>
+                                    <span id="badgeGraficoLluvia" data-i18n="badge_descargando_5y"
+                                        class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-300 font-bold opacity-90 cursor-wait">⏳ Downloading 5 years...</span>
                                 </div>
-                                <h4 class="font-heading font-bold text-[#241810] text-base mt-2 group-hover:text-blue-700 transition">
-                                    Régimen de Lluvia</h4>
+                                <h4 data-i18n="card5_titulo" class="font-heading font-bold text-[#241810] text-base mt-2 group-hover:text-blue-700 transition">
+                                    Daily & Accumulated Rainfall</h4>
                                 <div class="flex items-baseline gap-2 mt-1">
                                     <span id="basicoLluviaValor"
                                         class="font-heading font-extrabold text-2xl text-blue-700">-</span>
@@ -973,7 +990,7 @@ CONTROLADORES JAVASCRIPT:
                                 </div>
                             </div>
                             <p id="basicoLluviaNota" class="text-xs text-[#785843] pt-2 border-t border-[#dfd2c6]">
-                                Consultando constelación GPM...</p>
+                                Querying GPM constellation...</p>
                         </div>
 
                         <!-- Tarjeta 4: Temperatura y Heladas (VIIRS / POWER) -->
@@ -981,12 +998,12 @@ CONTROLADORES JAVASCRIPT:
                             class="cursor-wait group bg-white border-2 border-[#8c6547] hover:border-cyan-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-xs font-mono text-cyan-800 font-bold flex items-center gap-1">❄️ TEMPERATURA / HELADAS</span>
-                                    <span id="badgeGraficoTemp"
-                                        class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-300 font-bold opacity-90 cursor-wait">⏳ Descargando 5 años...</span>
+                                    <span class="text-xs font-mono text-cyan-800 font-bold flex items-center gap-1">❄️ TEMPERATURE / FROST</span>
+                                    <span id="badgeGraficoTemp" data-i18n="badge_descargando_5y"
+                                        class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-300 font-bold opacity-90 cursor-wait">⏳ Downloading 5 years...</span>
                                 </div>
-                                <h4 class="font-heading font-bold text-[#241810] text-base mt-2 group-hover:text-cyan-700 transition">
-                                    Temperatura de Superficie</h4>
+                                <h4 data-i18n="card3_titulo" class="font-heading font-bold text-[#241810] text-base mt-2 group-hover:text-cyan-700 transition">
+                                    Surface Temperature & Frost</h4>
                                 <div class="flex items-baseline gap-2 mt-1">
                                     <span id="basicoTempValor"
                                         class="font-heading font-extrabold text-2xl text-cyan-700">-</span>
@@ -994,7 +1011,7 @@ CONTROLADORES JAVASCRIPT:
                                 </div>
                             </div>
                             <p id="basicoTempNota" class="text-xs text-[#785843] pt-2 border-t border-[#dfd2c6]">
-                                Analizando sensor térmico...</p>
+                                Querying thermal infrared sensors...</p>
                         </div>
 
                         <!-- Tarjeta 5: Balance Hídrico (POWER / ECOSTRESS) -->
@@ -1002,20 +1019,20 @@ CONTROLADORES JAVASCRIPT:
                             class="cursor-wait group bg-white border-2 border-[#8c6547] hover:border-teal-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-xs font-mono text-teal-800 font-bold flex items-center gap-1">🌿 DEMANDA Y ESTRÉS HÍDRICO</span>
-                                    <span id="badgeGraficoEt"
-                                        class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-300 font-bold opacity-90 cursor-wait">⏳ Descargando 5 años...</span>
+                                    <span class="text-xs font-mono text-teal-800 font-bold flex items-center gap-1">🌿 EVAPOTRANSPIRATION</span>
+                                    <span id="badgeGraficoEt" data-i18n="badge_descargando_5y"
+                                        class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-300 font-bold opacity-90 cursor-wait">⏳ Downloading 5 years...</span>
                                 </div>
-                                <h4 class="font-heading font-bold text-[#241810] text-base mt-2 group-hover:text-teal-700 transition">
-                                    Evapotranspiración / Balance</h4>
+                                <h4 data-i18n="card6_titulo" class="font-heading font-bold text-[#241810] text-base mt-2 group-hover:text-teal-700 transition">
+                                    Evapotranspiration & Water Stress</h4>
                                 <div class="flex items-baseline gap-2 mt-1">
                                     <span id="basicoEtValor"
                                         class="font-heading font-extrabold text-2xl text-teal-700">-</span>
-                                    <span class="text-xs text-[#5c4636] font-mono font-bold">mm/día (ECOSTRESS / POWER)</span>
+                                    <span class="text-xs text-[#5c4636] font-mono font-bold">mm/day (ECOSTRESS / POWER)</span>
                                 </div>
                             </div>
                             <p id="basicoEtNota" class="text-xs text-[#785843] pt-2 border-t border-[#dfd2c6]">
-                                Calculando balance agrometeorológico...</p>
+                                Calculating agrometeorological balance...</p>
                         </div>
 
                         <!-- Tarjeta 6: Relieve y Altimetría (NASADEM) - Topografía con flecha direccional sin gráfico -->
@@ -1023,15 +1040,15 @@ CONTROLADORES JAVASCRIPT:
                             class="bg-white border-2 border-[#8c6547] rounded-2xl p-5 space-y-3 shadow-md select-none flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-xs font-mono text-purple-800 font-bold flex items-center gap-1">⛰️ TOPOGRAFÍA</span>
+                                    <span class="text-xs font-mono text-purple-800 font-bold flex items-center gap-1">⛰️ TOPOGRAPHY</span>
                                     <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-50 text-purple-800 border border-purple-300 font-bold">NASA 30m</span>
                                 </div>
-                                <h4 class="font-heading font-bold text-[#241810] text-base mt-2">
-                                    Relieve y Altimetría</h4>
+                                <h4 data-i18n="card4_titulo" class="font-heading font-bold text-[#241810] text-base mt-2">
+                                    Topography & Drainage Slope</h4>
                                 <div class="flex items-baseline gap-2 mt-1">
                                     <span id="basicoRelieveValor"
                                         class="font-heading font-extrabold text-2xl text-purple-700">-</span>
-                                    <span class="text-xs text-[#5c4636] font-mono font-bold">m s. n. m. (NASADEM)</span>
+                                    <span class="text-xs text-[#5c4636] font-mono font-bold">m a.s.l. (NASADEM)</span>
                                 </div>
                             </div>
                             <div class="pt-2 border-t border-[#dfd2c6] space-y-2">
@@ -1041,11 +1058,18 @@ CONTROLADORES JAVASCRIPT:
                                     </div>
                                     <div class="min-w-0 flex-1 text-xs">
                                         <div class="font-bold text-[#241810] flex items-center justify-between">
-                                            <span>Pendiente:</span>
+                                            <span data-i18n="card4_pendiente_label">Slope:</span>
                                             <span id="basicoPendienteValor" class="font-mono text-purple-900 font-extrabold text-sm">-</span>
                                         </div>
                                         <div class="text-[11px] text-[#5c4636] truncate flex items-center justify-between">
-                                            <span>Caída / Escurrimiento:</span>
+                                            <span data-i18n="card4_orientacion_label">Drainage runoff:</span>
+                                            <span id="basicoOrientacionTexto" class="font-mono text-purple-900 font-bold truncate ml-1">-</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                                             <span id="basicoOrientacionTexto" class="font-semibold text-[#3b2a1f]">-</span>
                                         </div>
                                     </div>
@@ -1950,7 +1974,7 @@ CONTROLADORES JAVASCRIPT:
                 <div class="flex items-center gap-2 shrink-0">
                     <div
                         class="hidden sm:flex flex-col items-end px-3 py-1 bg-[#faf6f0] rounded-xl border border-[#8c6547]">
-                        <span class="text-[9px] uppercase tracking-wider text-[#523725] font-bold">Último Valor</span>
+                        <span data-i18n="modal_grafico_ultimo_valor" class="text-[9px] uppercase tracking-wider text-[#523725] font-bold">LAST VALUE</span>
                         <span id="modalGraficoUltimoValor"
                             class="text-sm font-mono font-bold text-emerald-800">--</span>
                     </div>
@@ -1965,63 +1989,69 @@ CONTROLADORES JAVASCRIPT:
                     <!-- Presets Modo Continuo -->
                     <div id="presetsGraficoContinuo" class="flex flex-wrap items-center gap-1 bg-[#faf6f0] p-1 rounded-2xl border border-[#8c6547]">
                         <button type="button" onclick="cambiarPresetRangoGrafico('1m')" id="btnGraficoRango1m"
-                            class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">1
-                            Mes</button>
+                            data-i18n="modal_grafico_btn_1m"
+                            class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">1 Month</button>
                         <button type="button" onclick="cambiarPresetRangoGrafico('3m')" id="btnGraficoRango3m"
-                            class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">3
-                            Meses</button>
+                            data-i18n="modal_grafico_btn_3m"
+                            class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">3 Months</button>
                         <button type="button" onclick="cambiarPresetRangoGrafico('1y')" id="btnGraficoRango1y"
-                            class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">1
-                            Año</button>
+                            data-i18n="modal_grafico_btn_1y"
+                            class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">1 Year</button>
                         <button type="button" onclick="cambiarPresetRangoGrafico('3y')" id="btnGraficoRango3y"
-                            class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">3
-                            Años</button>
+                            data-i18n="modal_grafico_btn_3y"
+                            class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">3 Years</button>
                         <button type="button" onclick="cambiarPresetRangoGrafico('5y')" id="btnGraficoRango5y"
-                            class="px-2.5 py-1 rounded-xl font-bold bg-emerald-600 text-white shadow-md cursor-pointer">5
-                            Años</button>
+                            data-i18n="modal_grafico_btn_5y"
+                            class="px-2.5 py-1 rounded-xl font-bold bg-emerald-600 text-white shadow-md cursor-pointer">5 Years</button>
                         <button type="button" onclick="cambiarPresetRangoGrafico('custom')" id="btnGraficoRangoCustom"
-                            class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">Personalizado</button>
+                            data-i18n="modal_grafico_btn_custom"
+                            class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">Custom</button>
                     </div>
 
                     <!-- Presets Modo Interanual (2, 3, 4 y 5 años) -->
                     <div id="presetsGraficoInteranual" class="hidden flex flex-wrap items-center gap-1 bg-[#faf6f0] p-1 rounded-2xl border border-[#8c6547]">
-                        <span class="text-[10px] text-[#523725] font-bold uppercase px-1.5">Campañas:</span>
+                        <span data-i18n="modal_grafico_campana" class="text-[10px] text-[#523725] font-bold uppercase px-1.5">Campaigns:</span>
                         <button type="button" onclick="cambiarPresetInteranual('2y')" id="btnInteranual2y"
-                            class="px-2.5 py-1 rounded-xl font-bold bg-emerald-600 text-white shadow-md cursor-pointer transition">2 Años</button>
+                            data-i18n="modal_grafico_btn_2y"
+                            class="px-2.5 py-1 rounded-xl font-bold bg-emerald-600 text-white shadow-md cursor-pointer transition">2 Years</button>
                         <button type="button" onclick="cambiarPresetInteranual('3y')" id="btnInteranual3y"
-                            class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">3 Años</button>
+                            data-i18n="modal_grafico_btn_3y"
+                            class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">3 Years</button>
                         <button type="button" onclick="cambiarPresetInteranual('4y')" id="btnInteranual4y"
-                            class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">4 Años</button>
+                            data-i18n="modal_grafico_btn_4y"
+                            class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">4 Years</button>
                         <button type="button" onclick="cambiarPresetInteranual('5y')" id="btnInteranual5y"
-                            class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">5 Años</button>
+                            data-i18n="modal_grafico_btn_5y"
+                            class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">5 Years</button>
                     </div>
 
                     <!-- Selector Continuo vs Interanual -->
                     <div id="wrapperSelectorModoGrafico"
                         class="flex items-center gap-1 bg-[#faf6f0] p-1 rounded-2xl border border-[#8c6547] shrink-0">
-                        <span class="text-[10px] text-[#523725] font-bold uppercase px-1.5">Modo:</span>
+                        <span data-i18n="modal_grafico_modo_label" class="text-[10px] text-[#523725] font-bold uppercase px-1.5">Mode:</span>
                         <button type="button" onclick="cambiarModoVisualizacionGrafico('continuo')"
                             id="btnModoGraficoContinuo"
-                            class="px-2.5 py-1 rounded-xl font-bold bg-emerald-600 text-white cursor-pointer transition">📈
-                            Continuo</button>
+                            data-i18n="modal_grafico_modo_continuo"
+                            class="px-2.5 py-1 rounded-xl font-bold bg-emerald-600 text-white cursor-pointer transition">📈 Continuous</button>
                         <button type="button" onclick="cambiarModoVisualizacionGrafico('comparativo')"
                             id="btnModoGraficoComparativo"
-                            class="px-2.5 py-1 rounded-xl font-medium text-[#523725] hover:text-[#100b07] cursor-pointer transition">🔄
-                            Interanual</button>
+                            data-i18n="modal_grafico_modo_interanual"
+                            class="px-2.5 py-1 rounded-xl font-medium text-[#523725] hover:text-[#100b07] cursor-pointer transition">🔄 Interannual</button>
                     </div>
                 </div>
 
                 <!-- Panel Rango Personalizado -->
                 <div id="panelRangoPersonalizadoGrafico"
                     class="hidden flex flex-wrap items-center gap-2 bg-[#f4ede4] p-2 rounded-xl border border-[#8c6547] text-xs">
-                    <label class="text-[#3d281a] text-[11px] font-semibold">Desde: <input type="date"
+                    <label class="text-[#3d281a] text-[11px] font-semibold"><span data-i18n="modal_grafico_desde">From:</span> <input type="date"
                             id="inputGraficoFechaDesde"
                             class="bg-white text-[#100b07] border border-[#8c6547] rounded px-2 py-1 font-mono"></label>
-                    <label class="text-[#3d281a] text-[11px] font-semibold">Hasta: <input type="date"
+                    <label class="text-[#3d281a] text-[11px] font-semibold"><span data-i18n="modal_grafico_hasta">To:</span> <input type="date"
                             id="inputGraficoFechaHasta"
                             class="bg-white text-[#100b07] border border-[#8c6547] rounded px-2 py-1 font-mono"></label>
                     <button type="button" onclick="aplicarRangoPersonalizadoGrafico()"
-                        class="px-3 py-1 bg-emerald-600 text-white font-bold rounded-lg cursor-pointer hover:bg-emerald-700 transition">Consultar</button>
+                        data-i18n="modal_grafico_aplicar"
+                        class="px-3 py-1 bg-emerald-600 text-white font-bold rounded-lg cursor-pointer hover:bg-emerald-700 transition">Apply</button>
                 </div>
 
                 <!-- Banner Interanual -->
@@ -2880,6 +2910,13 @@ CONTROLADORES JAVASCRIPT:
         }
 
         function renderizarRecomendacionAgronomica(data, cultivoPrevio) {
+            window._ultimasRecomendacionesCache = { data, cultivoPrevio };
+            window.renderizarTarjetasRecomendaciones = function() {
+                if (window._ultimasRecomendacionesCache) {
+                    renderizarRecomendacionAgronomica(window._ultimasRecomendacionesCache.data, window._ultimasRecomendacionesCache.cultivoPrevio);
+                }
+            };
+
             const cont = document.getElementById("contenidoRecomendacionCultivo");
             if (!cont) return;
 
@@ -2896,8 +2933,9 @@ CONTROLADORES JAVASCRIPT:
             const cui = data.resumen?.["Con cuidado"] || [];
             const noRec = data.resumen?.["No recomendable"] || [];
 
-            const campanasTxt = data.clima ? `${data.clima.campanas} campañas (${data.clima.desde} a ${data.clima.hasta})` : "34 campañas";
-            const sueloTxt = data.lote ? `Textura: ${data.lote.textura_fuente || data.lote.textura || 'franco arenoso'} · Agua útil: ${data.lote.agua_util_0_100cm_mm} mm` : "";
+            const isEn = (typeof idiomaActual !== 'undefined' ? idiomaActual : 'en') === 'en';
+            const campanasTxt = data.clima ? `${data.clima.campanas} ${isEn ? 'seasons' : 'campañas'} (${data.clima.desde} ${isEn ? 'to' : 'a'} ${data.clima.hasta})` : (isEn ? "34 seasons" : "34 campañas");
+            const sueloTxt = data.lote ? `${isEn ? 'Texture' : 'Textura'}: ${data.lote.textura_fuente || data.lote.textura || (isEn ? 'sandy loam' : 'franco arenoso')} · ${isEn ? 'Available water' : 'Agua útil'}: ${data.lote.agua_util_0_100cm_mm} mm` : "";
 
             const html = `
                 <div class="space-y-5">
@@ -2905,22 +2943,22 @@ CONTROLADORES JAVASCRIPT:
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div class="p-4 rounded-xl bg-emerald-50 border-2 border-emerald-400 text-emerald-950 flex items-center justify-between shadow-xs">
                             <div>
-                                <span class="text-[11px] font-mono text-emerald-800 font-bold uppercase tracking-wider">Recomendables</span>
-                                <h4 class="font-heading font-extrabold text-2xl text-emerald-900 mt-0.5">${rec.length} Cultivos</h4>
+                                <span class="text-[11px] font-mono text-emerald-800 font-bold uppercase tracking-wider">${isEn ? 'Recommended' : 'Recomendables'}</span>
+                                <h4 class="font-heading font-extrabold text-2xl text-emerald-900 mt-0.5">${rec.length} ${isEn ? 'Crops' : 'Cultivos'}</h4>
                             </div>
                             <span class="text-3xl">🟢</span>
                         </div>
                         <div class="p-4 rounded-xl bg-amber-50 border-2 border-amber-400 text-amber-950 flex items-center justify-between shadow-xs">
                             <div>
-                                <span class="text-[11px] font-mono text-amber-800 font-bold uppercase tracking-wider">Con Cuidado</span>
-                                <h4 class="font-heading font-extrabold text-2xl text-amber-900 mt-0.5">${cui.length} Cultivos</h4>
+                                <span class="text-[11px] font-mono text-amber-800 font-bold uppercase tracking-wider">${isEn ? 'With Caution' : 'Con Cuidado'}</span>
+                                <h4 class="font-heading font-extrabold text-2xl text-amber-900 mt-0.5">${cui.length} ${isEn ? 'Crops' : 'Cultivos'}</h4>
                             </div>
                             <span class="text-3xl">🟡</span>
                         </div>
                         <div class="p-4 rounded-xl bg-rose-50 border-2 border-rose-400 text-rose-950 flex items-center justify-between shadow-xs">
                             <div>
-                                <span class="text-[11px] font-mono text-rose-800 font-bold uppercase tracking-wider">No Recomendables</span>
-                                <h4 class="font-heading font-extrabold text-2xl text-rose-900 mt-0.5">${noRec.length} Cultivo${noRec.length === 1 ? '' : 's'}</h4>
+                                <span class="text-[11px] font-mono text-rose-800 font-bold uppercase tracking-wider">${isEn ? 'Not Recommended' : 'No Recomendables'}</span>
+                                <h4 class="font-heading font-extrabold text-2xl text-rose-900 mt-0.5">${noRec.length} ${isEn ? (noRec.length === 1 ? 'Crop' : 'Crops') : (noRec.length === 1 ? 'Cultivo' : 'Cultivos')}</h4>
                             </div>
                             <span class="text-3xl">🔴</span>
                         </div>
@@ -2929,11 +2967,11 @@ CONTROLADORES JAVASCRIPT:
                     <!-- Ficha del Diagnóstico -->
                     <div class="p-3.5 rounded-xl bg-white border-2 border-[#8c6547] text-xs text-[#382a21] flex flex-wrap items-center justify-between gap-3 shadow-xs">
                         <div>
-                            <span>Lote analizado con <strong>${campanasTxt}</strong> de NASA POWER.</span>
+                            <span>${isEn ? 'Parcel evaluated with' : 'Lote analizado con'} <strong>${campanasTxt}</strong> ${isEn ? 'of NASA POWER' : 'de NASA POWER'}.</span>
                             <span class="text-[#785843] ml-1.5">${sueloTxt}</span>
                         </div>
                         <span class="px-2.5 py-0.5 rounded-lg bg-emerald-50 border border-emerald-400 text-emerald-800 font-mono text-[11px] font-bold">
-                            Última plantación declarada: <strong>${escapeHtml(cultivoPrevio)}</strong>
+                            ${isEn ? 'Last declared crop' : 'Última plantación declarada'}: <strong>${escapeHtml(typeof traducirNombreCultivo === 'function' ? traducirNombreCultivo(cultivoPrevio) : cultivoPrevio)}</strong>
                         </span>
                     </div>
 
@@ -2954,13 +2992,21 @@ CONTROLADORES JAVASCRIPT:
                 const pct = c.porcentaje_coincidencia || (esRec ? 88 : (esCui ? 65 : 35));
                 const pctColor = esRec ? "text-emerald-700" : (esCui ? "text-amber-700" : "text-rose-700");
                 const barColor = esRec ? "bg-emerald-600" : (esCui ? "bg-amber-500" : "bg-rose-500");
-                const medalla = c.posicion_ranking === 1 ? '🥇 1ª Opción' : (c.posicion_ranking === 2 ? '🥈 2ª Opción' : (c.posicion_ranking === 3 ? '🥉 3ª Opción' : `${c.posicion_ranking}ª Opción`));
+                const medalla = c.posicion_ranking === 1
+                    ? ('🥇 ' + (isEn ? '1st Choice' : '1ª Opción'))
+                    : (c.posicion_ranking === 2
+                        ? ('🥈 ' + (isEn ? '2nd Choice' : '2ª Opción'))
+                        : (c.posicion_ranking === 3
+                            ? ('🥉 ' + (isEn ? '3rd Choice' : '3ª Opción'))
+                            : `${c.posicion_ranking}ª ${isEn ? 'Choice' : 'Opción'}`));
 
                 const iconoEstado = esRec ? "✓" : (esCui ? "⚠️" : "✕");
+                const nombreTraducido = typeof traducirNombreCultivo === 'function' ? traducirNombreCultivo(c.nombre) : c.nombre;
+                const estadoTraducido = esRec ? (isEn ? 'Recommended' : 'Recomendable') : (esCui ? (isEn ? 'With caution' : 'Con cuidado') : (isEn ? 'Not recommended' : 'No recomendable'));
 
                 const siembraStr = c.siembra_sugerida_desde
-                    ? `Siembra recomendada: desde el ${c.siembra_sugerida_desde}`
-                    : (c.fecha_siembra ? `Siembra típica: ${c.fecha_siembra}` : "");
+                    ? `${isEn ? 'Recommended sowing: from' : 'Siembra recomendada: desde el'} ${c.siembra_sugerida_desde}`
+                    : (c.fecha_siembra ? `${isEn ? 'Typical sowing' : 'Siembra típica'}: ${c.fecha_siembra}` : "");
 
                 return `
                                 <div class="rounded-2xl border-2 ${borderCol} bg-white p-5 flex flex-col justify-between space-y-4 shadow-md hover:shadow-lg transition">
@@ -2975,7 +3021,7 @@ CONTROLADORES JAVASCRIPT:
                                             </div>
                                             <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-white border border-[#c8b3a2] shadow-xs">
                                                 <span class="text-base font-heading font-extrabold ${pctColor}">${pct}%</span>
-                                                <span class="text-[9px] uppercase font-bold text-[#785843] tracking-wider">Óptimo</span>
+                                                <span class="text-[9px] uppercase font-bold text-[#785843] tracking-wider">${isEn ? 'Optimal' : 'Óptimo'}</span>
                                             </div>
                                         </div>
 
@@ -2989,9 +3035,9 @@ CONTROLADORES JAVASCRIPT:
                                         <!-- Nombre del Cultivo y Estado -->
                                         <div>
                                             <div class="flex items-center justify-between gap-2">
-                                                <h4 class="font-heading font-extrabold text-[#22160f] text-lg">${escapeHtml(c.nombre)}</h4>
+                                                <h4 class="font-heading font-extrabold text-[#22160f] text-lg">${escapeHtml(nombreTraducido)}</h4>
                                                 <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold border ${badgeStyle} flex-shrink-0">
-                                                    ${iconoEstado} ${escapeHtml(c.estado)}
+                                                    ${iconoEstado} ${escapeHtml(estadoTraducido)}
                                                 </span>
                                             </div>
                                             ${siembraStr ? `<span class="text-[11px] font-mono text-[#785843] block mt-0.5 font-medium">${siembraStr}</span>` : ''}
@@ -3000,7 +3046,7 @@ CONTROLADORES JAVASCRIPT:
                                         <!-- Criterio Comparativo: Por qué se eligió o descartó frente a los demás -->
                                         <div class="p-3 rounded-xl bg-[#fbf7f2] border border-[#b8977e] text-xs space-y-1 shadow-2xs">
                                             <span class="text-[10px] uppercase font-bold text-[#8c532b] flex items-center gap-1">
-                                                <span>⚖️</span> Criterio Comparativo frente a otras opciones:
+                                                <span>⚖️</span> ${isEn ? 'Comparative Selection Criterion vs other options:' : 'Criterio Comparativo frente a otras opciones:'}
                                             </span>
                                             <p class="text-[11px] text-[#241810] leading-relaxed font-sans font-medium">${escapeHtml(c.por_que_se_eligio || '')}</p>
                                         </div>
@@ -3008,6 +3054,30 @@ CONTROLADORES JAVASCRIPT:
 
                                     <!-- Reglas Técnicas con Comparativa Directa Tu Campo vs Óptimo del Cultivo (SIN fuentes) -->
                                     ${c.reglas && c.reglas.length > 0 ? `
+                                        <details class="details-reglas-cultivo text-[11px] font-mono text-[#785843] pt-2 border-t border-[#dfd2c6]" ontoggle="sincronizarDetallesReglasCultivo(this)">
+                                            <summary class="cursor-pointer hover:text-[#241810] py-1 font-semibold text-[#5c4636] select-none flex items-center justify-between">
+                                                <span>${isEn ? `View ${c.reglas.length} technical rules ▾` : `Ver ${c.reglas.length} reglas técnicas ▾`}</span>
+                                                <span class="text-[10px] text-[#8c532b] font-bold">${isEn ? 'Your field vs Optimal' : 'Tu campo vs Óptimo'}</span>
+                                            </summary>
+                                            <ul class="space-y-2 mt-2 text-[#241810] font-sans">
+                                                ${c.reglas.map(r => `
+                                                    <li class="p-2.5 rounded-xl bg-[#faf6f0] border border-[#c4a994] space-y-1.5 shadow-xs">
+                                                        <div class="flex items-center justify-between">
+                                                            <strong class="text-[#241810] text-xs font-bold">${escapeHtml(r.regla)}</strong>
+                                                            <span>${r.resultado === 'ok' ? '✅' : (r.resultado === 'aviso' ? '⚠️' : (r.resultado === 'no' ? '❌' : 'ℹ️'))}</span>
+                                                        </div>
+                                                        <div class="p-2 rounded-lg bg-white border border-[#b8977e] text-xs shadow-2xs">
+                                                            <span class="text-[9px] font-bold uppercase tracking-wider text-[#8c532b] block mb-0.5">${isEn ? 'Your field vs Crop optimal requirement:' : 'Tu campo vs Óptimo del cultivo:'}</span>
+                                                            <span class="text-[#241810] font-semibold text-[11px]">${escapeHtml(r.comparativa_optimo || r.dato_del_lote || r.dato)}</span>
+                                                        </div>
+                                                    </li>
+                                                `).join('')}
+                                            </ul>
+                                        </details>
+                                    ` : ''}
+                                </div>
+                            `;
+            }).join('')}
                                         <details class="details-reglas-cultivo text-[11px] font-mono text-[#785843] pt-2 border-t border-[#dfd2c6]" ontoggle="sincronizarDetallesReglasCultivo(this)">
                                             <summary class="cursor-pointer hover:text-[#241810] py-1 font-semibold text-[#5c4636] select-none flex items-center justify-between">
                                                 <span>Ver ${c.reglas.length} reglas técnicas ▾</span>

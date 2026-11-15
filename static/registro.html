@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/static/js/i18n.js"></script>
     <script>
         tailwind.config = {
             darkMode: "class",
@@ -82,19 +83,25 @@
 
     <!-- Header -->
     <header class="border-b border-[#8c6547] bg-[#faf7f2]/90 backdrop-blur-md">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
             <a href="/" class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-sky-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 font-heading font-extrabold text-slate-950 text-lg">
                     RT
                 </div>
                 <div>
                     <span class="font-heading text-xl font-bold tracking-tight text-[#100b07]">RotaTerra</span>
-                    <span class="block text-xs text-[#523725]">Alta de Titulares y Productores</span>
+                    <span class="block text-xs text-[#523725]" data-i18n="nav_subtitulo">Agroclimatic Platform & Crop Rotation</span>
                 </div>
             </a>
-            <a href="/login" class="text-sm font-semibold text-emerald-700 hover:text-emerald-800 transition">
-                Ya tengo cuenta &rarr;
-            </a>
+            <div class="flex items-center gap-3">
+                <div class="flex items-center bg-[#fdfbf7] border border-[#8c6547]/40 rounded-xl p-0.5 shadow-sm text-xs">
+                    <button type="button" onclick="cambiarIdioma('en')" class="btn-lang-en px-2.5 py-1 rounded-lg transition-all bg-[#16a34a] text-white font-bold shadow-sm">EN</button>
+                    <button type="button" onclick="cambiarIdioma('es')" class="btn-lang-es px-2.5 py-1 rounded-lg transition-all text-[#523725] hover:text-[#100b07] font-semibold">ES</button>
+                </div>
+                <a href="/login" class="text-sm font-semibold text-emerald-700 hover:text-emerald-800 transition" data-i18n="auth_ya_tienes_cuenta">
+                    Already have an account? Sign in &rarr;
+                </a>
+            </div>
         </div>
     </header>
 
