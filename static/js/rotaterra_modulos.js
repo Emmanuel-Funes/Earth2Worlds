@@ -2096,110 +2096,485 @@ async function ejecutarEvaluacionCultivoModal() {
 }
 
 /* ===========================================================================
- * [JS-12] MODAL DE GRÁFICOS DE SERIES TEMPORALES CHART.JS ([SEC-09.7])
+ * [JS-12] MODAL DE VISUALIZACIÓN GRÁFICA INTERACTIVA CHART.JS ([SEC-09.7])
+ * Tarjetas clickeables + Presets temporales + Modo Continuo vs Interanual + KPIs
  * =========================================================================== */
 
-async function abrirModalGraficoHistorico(variable, titulo) {
-    variableActivaGrafico = variable || "ndvi";
-    tituloActivoGrafico = titulo || `Serie Histórica (${variableActivaGrafico})`;
+let chartTelemetriaInstance = null;
+let metricaActivaGrafico = "ndvi";
+let presetRangoActivo = "5y";
+let modoGraficoActivo = "continuo"; // 'continuo' | 'comparativo'
+let puntosGraficoCache = [];
 
-    setText("tituloModalGraficoHistorico", tituloActivoGrafico);
-    abrirModal("modalGraficoHistorico");
-    await cambiarRangoGraficoHistorico(365);
+const METRICAS_CONFIG = {
+    ndvi: {
+        titulo: "Índice de Vigor Vegetal (NDVI)",
+        subtitulo: "Biomasa verde fotosintéticamente activa • Umbral 0.2 a 0.85",
+        sensor: "HLS Sentinel-2 / MODIS (30m)",
+        icono: "🌱",
+        variables: ["ndvi", "ndvi_hls", "ndvi_modis"],
+        color: "#16a34a",
+        bgColor: "rgba(22, 163, 74, 0.2)",
+        unidad: "",
+        tipoChart: "line",
+    },
+    smap: {
+        titulo: "Humedad Radicular del Suelo",
+        subtitulo: "Humedad en estrato radicular (0 a 100 cm)",
+        sensor: "NASA SMAP L3 (Radiómetro 9km)",
+        icono: "💧",
+        variables: ["humedad_suelo_pct", "humedad_suelo_m3m3", "humedad_radicular"],
+        color: "#0284c7",
+        bgColor: "rgba(2, 132, 199, 0.2)",
+        unidad: "m³/m³",
+        tipoChart: "line",
+    },
+    humedad: {
+        titulo: "Humedad Radicular del Suelo",
+        subtitulo: "Humedad en estrato radicular (0 a 100 cm)",
+        sensor: "NASA SMAP L3 (Radiómetro 9km)",
+        icono: "💧",
+        variables: ["humedad_suelo_pct", "humedad_suelo_m3m3", "humedad_radicular"],
+        color: "#0284c7",
+        bgColor: "rgba(2, 132, 199, 0.2)",
+        unidad: "m³/m³",
+        tipoChart: "line",
+    },
+    lluvia: {
+        titulo: "Precipitación Diaria y Acumulada",
+        subtitulo: "Lluvias diarias satelitales y régimen hídrico de la parcela",
+        sensor: "NASA GPM IMERG (10km)",
+        icono: "🌧️",
+        variables: ["lluvia_mm", "precipitacion_mm"],
+        color: "#2563eb",
+        bgColor: "rgba(37, 99, 235, 0.55)",
+        unidad: "mm",
+        tipoChart: "bar",
+    },
+    lluvia_mm: {
+        titulo: "Precipitación Diaria y Acumulada",
+        subtitulo: "Lluvias diarias satelitales y régimen hídrico de la parcela",
+        sensor: "NASA GPM IMERG (10km)",
+        icono: "🌧️",
+        variables: ["lluvia_mm", "precipitacion_mm"],
+        color: "#2563eb",
+        bgColor: "rgba(37, 99, 235, 0.55)",
+        unidad: "mm",
+        tipoChart: "bar",
+    },
+    estres: {
+        titulo: "Demanda Evaporativa y Estrés Hídrico",
+        subtitulo: "Evapotranspiración de referencia ET₀ y consumo hídrico del cultivo",
+        sensor: "ECOSTRESS / FAO-56 (70m)",
+        icono: "🌿",
+        variables: ["et0_mm_dia", "evapotranspiracion_mm", "estres_hidrico"],
+        color: "#0d9488",
+        bgColor: "rgba(13, 148, 136, 0.2)",
+        unidad: "mm/día",
+        tipoChart: "line",
+    },
+    et0_mm_dia: {
+        titulo: "Demanda Evaporativa y Estrés Hídrico",
+        subtitulo: "Evapotranspiración de referencia ET₀",
+        sensor: "ECOSTRESS / FAO-56 (70m)",
+        icono: "🌿",
+        variables: ["et0_mm_dia", "evapotranspiracion_mm", "estres_hidrico"],
+        color: "#0d9488",
+        bgColor: "rgba(13, 148, 136, 0.2)",
+        unidad: "mm/día",
+        tipoChart: "line",
+    },
+    heladas: {
+        titulo: "Piso Térmico y Alerta de Heladas",
+        subtitulo: "Monitoreo térmico nocturno • Umbrales agrometeorológicos de daño",
+        sensor: "VIIRS / GOES / POWER",
+        icono: "❄️",
+        variables: ["temp_min_c", "temperatura_c", "temp_superficie_c", "tsoil1_c"],
+        color: "#0891b2",
+        bgColor: "rgba(8, 145, 178, 0.2)",
+        unidad: "°C",
+        tipoChart: "line",
+    },
+    temp_min_c: {
+        titulo: "Piso Térmico y Alerta de Heladas",
+        subtitulo: "Monitoreo térmico nocturno",
+        sensor: "VIIRS / GOES / POWER",
+        icono: "❄️",
+        variables: ["temp_min_c", "temperatura_c", "temp_superficie_c", "tsoil1_c"],
+        color: "#0891b2",
+        bgColor: "rgba(8, 145, 178, 0.2)",
+        unidad: "°C",
+        tipoChart: "line",
+    },
+    altimetria: {
+        titulo: "Cota Altimétrica y Perfil Topográfico",
+        subtitulo: "Elevación sobre el nivel del mar y pendiente del terreno",
+        sensor: "NASADEM / SRTM (30m)",
+        icono: "⛰️",
+        variables: ["elevacion_m", "altitud_msnm", "altimetria"],
+        color: "#7c3aed",
+        bgColor: "rgba(124, 58, 237, 0.2)",
+        unidad: "m",
+        tipoChart: "line",
+    },
+    elevacion_m: {
+        titulo: "Cota Altimétrica y Perfil Topográfico",
+        subtitulo: "Elevación sobre el nivel del mar",
+        sensor: "NASADEM / SRTM (30m)",
+        icono: "⛰️",
+        variables: ["elevacion_m", "altitud_msnm", "altimetria"],
+        color: "#7c3aed",
+        bgColor: "rgba(124, 58, 237, 0.2)",
+        unidad: "m",
+        tipoChart: "line",
+    },
+};
+
+async function abrirModalGrafico(metricaKey, tituloCustom) {
+    metricaActivaGrafico = (metricaKey || "ndvi").toLowerCase();
+    const cfg = METRICAS_CONFIG[metricaActivaGrafico] || METRICAS_CONFIG.ndvi;
+
+    setText("modalGraficoTitulo", tituloCustom || cfg.titulo);
+    setText("modalGraficoSubtitulo", cfg.subtitulo);
+    setText("modalGraficoIconoBadge", cfg.icono);
+    setText("modalGraficoSensorBadge", cfg.sensor);
+    setText("modalGraficoUltimoValor", "--");
+
+    // Abrir modal
+    const modal = document.getElementById("modalGraficoTelemetria") || document.getElementById("modalGraficoHistorico");
+    if (modal) {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        modal.style.display = "flex";
+    }
+
+    // Por defecto inicializar en 5 Años para ver la serie completa
+    presetRangoActivo = "5y";
+    actualizarBotonesPresetGrafico("5y");
+    await cargarYRenderizarGraficoTelemetria();
 }
 
-async function cambiarRangoGraficoHistorico(dias) {
-    if (!campoActivoId) return;
-    const baseHasta = new Date();
-    const baseDesde = new Date(baseHasta.getTime() - Number(dias) * 86400000);
-    const hastaStr = baseHasta.toISOString().slice(0, 10);
-    const desdeStr = baseDesde.toISOString().slice(0, 10);
+function cerrarModalGrafico() {
+    const modal = document.getElementById("modalGraficoTelemetria") || document.getElementById("modalGraficoHistorico");
+    if (modal) {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+        modal.style.display = "none";
+    }
+    if (chartTelemetriaInstance) {
+        chartTelemetriaInstance.destroy();
+        chartTelemetriaInstance = null;
+    }
+}
 
-    setText("subtituloModalGraficoHistorico", `Ventana analizada: ${desdeStr} a ${hastaStr} • Campo ID #${campoActivoId}`);
+function cambiarPresetRangoGrafico(preset) {
+    presetRangoActivo = preset;
+    actualizarBotonesPresetGrafico(preset);
 
-    let puntos = [];
-    try {
-        const res = await authFetch(
-            `/api/campos/${campoActivoId}/historial?variable=${encodeURIComponent(variableActivaGrafico)}&desde=${desdeStr}&hasta=${hastaStr}`
-        );
-        if (res.ok) {
-            const data = await res.json();
-            puntos = Array.isArray(data.observaciones) ? data.observaciones : [];
+    const panelCustom = document.getElementById("panelRangoPersonalizadoGrafico");
+    if (preset === "custom") {
+        if (panelCustom) panelCustom.classList.remove("hidden");
+        const inpDesde = document.getElementById("inputGraficoFechaDesde");
+        const inpHasta = document.getElementById("inputGraficoFechaHasta");
+        const hoy = new Date();
+        if (inpHasta && !inpHasta.value) inpHasta.value = hoy.toISOString().slice(0, 10);
+        if (inpDesde && !inpDesde.value) {
+            const anioPasado = new Date(hoy.getTime() - 365 * 86400000);
+            inpDesde.value = anioPasado.toISOString().slice(0, 10);
         }
-    } catch (_e) {
-        puntos = [];
-    }
-
-    // Si aún hay pocos puntos en el historial local para ese rango, complementar con las observaciones en memoria
-    if (puntos.length < 2 && ultimasObservacionesCampo.length > 0) {
-        puntos = ultimasObservacionesCampo.filter(
-            (o) => o.variable === variableActivaGrafico && o.valor !== null && o.calidad !== "descartada"
-        );
-    }
-
-    const valores = puntos.map((p) => Number(p.valor));
-    const etiquetas = puntos.map((p) => p.fecha);
-
-    if (valores.length > 0) {
-        const minV = Math.min(...valores);
-        const maxV = Math.max(...valores);
-        const avgV = valores.reduce((a, b) => a + b, 0) / valores.length;
-        setText("kpiHistTotal", String(valores.length));
-        setText("kpiHistMin", minV.toFixed(2));
-        setText("kpiHistMax", maxV.toFixed(2));
-        setText("kpiHistAvg", avgV.toFixed(2));
     } else {
-        setText("kpiHistTotal", "0");
-        setText("kpiHistMin", "--");
-        setText("kpiHistMax", "--");
-        setText("kpiHistAvg", "--");
+        if (panelCustom) panelCustom.classList.add("hidden");
+        cargarYRenderizarGraficoTelemetria();
+    }
+}
+
+function actualizarBotonesPresetGrafico(preset) {
+    const presets = ["1m", "3m", "1y", "3y", "5y", "custom"];
+    presets.forEach((p) => {
+        const btn = document.getElementById(`btnGraficoRango${p.charAt(0).toUpperCase() + p.slice(1)}`);
+        if (!btn) return;
+        if (p === preset) {
+            btn.className = "px-2.5 py-1 rounded-xl font-bold bg-emerald-600 text-white shadow-md cursor-pointer transition";
+        } else {
+            btn.className = "px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition";
+        }
+    });
+}
+
+function cambiarModoVisualizacionGrafico(modo) {
+    modoGraficoActivo = modo;
+    const btnCont = document.getElementById("btnModoGraficoContinuo");
+    const btnComp = document.getElementById("btnModoGraficoComparativo");
+    const banner = document.getElementById("bannerModoComparativo");
+
+    if (modo === "continuo") {
+        if (btnCont) btnCont.className = "px-2.5 py-1 rounded-xl font-bold bg-emerald-600 text-white cursor-pointer transition";
+        if (btnComp) btnComp.className = "px-2.5 py-1 rounded-xl font-medium text-[#523725] hover:text-[#100b07] cursor-pointer transition";
+        if (banner) banner.classList.add("hidden");
+    } else {
+        if (btnComp) btnComp.className = "px-2.5 py-1 rounded-xl font-bold bg-emerald-600 text-white cursor-pointer transition";
+        if (btnCont) btnCont.className = "px-2.5 py-1 rounded-xl font-medium text-[#523725] hover:text-[#100b07] cursor-pointer transition";
+        if (banner) banner.classList.remove("hidden");
     }
 
-    const canvas = document.getElementById("canvasGraficoHistorico");
+    renderizarGraficoTelemetria();
+}
+
+function aplicarRangoPersonalizadoGrafico() {
+    cargarYRenderizarGraficoTelemetria();
+}
+
+async function cargarYRenderizarGraficoTelemetria() {
+    const loading = document.getElementById("graficoLoading");
+    const vacio = document.getElementById("graficoVacio");
+    if (loading) loading.classList.remove("hidden");
+    if (vacio) vacio.classList.add("hidden");
+
+    let dias = 1825;
+    if (presetRangoActivo === "1m") dias = 30;
+    else if (presetRangoActivo === "3m") dias = 90;
+    else if (presetRangoActivo === "1y") dias = 365;
+    else if (presetRangoActivo === "3y") dias = 1095;
+    else if (presetRangoActivo === "5y") dias = 1825;
+
+    const baseHasta = new Date();
+    let desdeStr = "";
+    let hastaStr = baseHasta.toISOString().slice(0, 10);
+
+    if (presetRangoActivo === "custom") {
+        const inpDesde = document.getElementById("inputGraficoFechaDesde");
+        const inpHasta = document.getElementById("inputGraficoFechaHasta");
+        desdeStr = inpDesde?.value || new Date(baseHasta.getTime() - dias * 86400000).toISOString().slice(0, 10);
+        hastaStr = inpHasta?.value || hastaStr;
+    } else {
+        const baseDesde = new Date(baseHasta.getTime() - dias * 86400000);
+        desdeStr = baseDesde.toISOString().slice(0, 10);
+    }
+
+    const cfg = METRICAS_CONFIG[metricaActivaGrafico] || METRICAS_CONFIG.ndvi;
+    let puntos = [];
+
+    // 1. Intentar con historial de campo registrado (Modo Avanzado)
+    if (campoActivoId) {
+        try {
+            const res = await authFetch(
+                `/api/campos/${campoActivoId}/historial?variable=${encodeURIComponent(cfg.variables[0])}&desde=${desdeStr}&hasta=${hastaStr}`
+            );
+            if (res.ok) {
+                const data = await res.json();
+                puntos = Array.isArray(data.observaciones) ? data.observaciones : [];
+            }
+        } catch (_e) {
+            puntos = [];
+        }
+    }
+
+    // 2. Si no hay suficientes puntos de API, consultar observaciones en memoria (Modo Agricultor o Avanzado)
+    const poolMemoria = [
+        ...(Array.isArray(window.observacionesTelemetria5Anios) ? window.observacionesTelemetria5Anios : []),
+        ...(Array.isArray(window.ultimasObservacionesCampo) ? window.ultimasObservacionesCampo : []),
+        ...(Array.isArray(ultimasObservacionesCampo) ? ultimasObservacionesCampo : []),
+    ];
+
+    if (puntos.length < 2 && poolMemoria.length > 0) {
+        puntos = poolMemoria.filter((o) => {
+            if (!o || o.valor === null || o.calidad === "descartada") return false;
+            const coincideVar = cfg.variables.includes(o.variable);
+            if (!coincideVar) return false;
+            if (o.fecha) {
+                if (desdeStr && o.fecha < desdeStr) return false;
+                if (hastaStr && o.fecha > hastaStr) return false;
+            }
+            return true;
+        });
+    }
+
+    puntosGraficoCache = puntos;
+    if (loading) loading.classList.add("hidden");
+    renderizarGraficoTelemetria();
+}
+
+function renderizarGraficoTelemetria() {
+    const cfg = METRICAS_CONFIG[metricaActivaGrafico] || METRICAS_CONFIG.ndvi;
+    const canvas = document.getElementById("canvasGraficoTelemetria") || document.getElementById("canvasGraficoHistorico");
+    const vacio = document.getElementById("graficoVacio");
+
+    // Filtrar y ordenar puntos válidos
+    const puntos = puntosGraficoCache
+        .filter((o) => o && o.valor !== null && !isNaN(Number(o.valor)))
+        .sort((a, b) => (a.fecha > b.fecha ? 1 : -1));
+
+    if (puntos.length === 0) {
+        if (vacio) vacio.classList.remove("hidden");
+        setText("kpiGraficoTotalObs", "0");
+        setText("kpiGraficoMin", "--");
+        setText("kpiGraficoMax", "--");
+        setText("kpiGraficoProm", "--");
+        setText("modalGraficoUltimoValor", "--");
+        if (chartTelemetriaInstance) {
+            chartTelemetriaInstance.destroy();
+            chartTelemetriaInstance = null;
+        }
+        return;
+    }
+
+    if (vacio) vacio.classList.add("hidden");
+
+    // Calcular KPIs
+    const valoresNum = puntos.map((p) => Number(p.valor));
+    const minV = Math.min(...valoresNum);
+    const maxV = Math.max(...valoresNum);
+    const avgV = valoresNum.reduce((acc, v) => acc + v, 0) / valoresNum.length;
+    const ultPunto = puntos[puntos.length - 1];
+
+    const unidadSufijo = cfg.unidad ? ` ${cfg.unidad}` : "";
+    setText("kpiGraficoTotalObs", String(valoresNum.length));
+    setText("kpiGraficoMin", `${minV.toFixed(2)}${unidadSufijo}`);
+    setText("kpiGraficoMax", `${maxV.toFixed(2)}${unidadSufijo}`);
+    setText("kpiGraficoProm", `${avgV.toFixed(2)}${unidadSufijo}`);
+    setText("modalGraficoUltimoValor", `${Number(ultPunto.valor).toFixed(2)}${unidadSufijo}`);
+
     if (!canvas || typeof Chart === "undefined") return;
 
-    if (chartHistoricoInstance) {
-        chartHistoricoInstance.destroy();
-        chartHistoricoInstance = null;
+    if (chartTelemetriaInstance) {
+        chartTelemetriaInstance.destroy();
+        chartTelemetriaInstance = null;
     }
 
-    chartHistoricoInstance = new Chart(canvas, {
-        type: variableActivaGrafico === "lluvia_mm" ? "bar" : "line",
-        data: {
-            labels: etiquetas,
+    let chartData = {};
+    let chartOptions = {};
+
+    if (modoGraficoActivo === "continuo") {
+        // MODO CONTINUO
+        chartData = {
+            labels: puntos.map((p) => p.fecha),
             datasets: [
                 {
-                    label: tituloActivoGrafico,
-                    data: valores,
-                    borderColor: "#10b981",
-                    backgroundColor: variableActivaGrafico === "lluvia_mm" ? "rgba(59, 130, 246, 0.55)" : "rgba(16, 185, 129, 0.18)",
+                    label: cfg.titulo,
+                    data: valoresNum,
+                    borderColor: cfg.color,
+                    backgroundColor: cfg.bgColor,
                     borderWidth: 2.5,
-                    pointRadius: 3,
-                    fill: true,
+                    pointRadius: puntos.length > 90 ? 1.5 : 3.5,
+                    pointHoverRadius: 6,
+                    fill: cfg.tipoChart === "line",
                     tension: 0.3,
                 },
             ],
+        };
+    } else {
+        // MODO COMPARATIVO INTERANUAL
+        const paletaAnios = ["#16a34a", "#0284c7", "#d97706", "#9333ea", "#06b6d4", "#e11d48", "#84cc16"];
+        const porAnio = {};
+        const diasDelAnioSet = new Set();
+
+        puntos.forEach((p) => {
+            if (!p.fecha || p.fecha.length < 10) return;
+            const anio = p.fecha.slice(0, 4);
+            const mmdd = p.fecha.slice(5, 10); // MM-DD
+            if (!porAnio[anio]) porAnio[anio] = {};
+            porAnio[anio][mmdd] = Number(p.valor);
+            diasDelAnioSet.add(mmdd);
+        });
+
+        const diasOrdenados = Array.from(diasDelAnioSet).sort();
+        const datasets = Object.keys(porAnio)
+            .sort()
+            .map((anio, idx) => {
+                const color = paletaAnios[idx % paletaAnios.length];
+                const data = diasOrdenados.map((d) => (porAnio[anio][d] !== undefined ? porAnio[anio][d] : null));
+                return {
+                    label: `Campaña ${anio}`,
+                    data: data,
+                    borderColor: color,
+                    backgroundColor: color + "33",
+                    borderWidth: 2.2,
+                    spanGaps: true,
+                    tension: 0.3,
+                    pointRadius: 2.5,
+                    fill: false,
+                };
+            });
+
+        chartData = {
+            labels: diasOrdenados.map((d) => {
+                const [m, dia] = d.split("-");
+                return `${dia}/${m}`;
+            }),
+            datasets: datasets,
+        };
+    }
+
+    chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+            mode: "index",
+            intersect: false,
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    labels: { color: "#e2e8f0", font: { family: "Fira Code", size: 11 } },
+        plugins: {
+            legend: {
+                display: true,
+                labels: {
+                    color: "#100b07",
+                    font: { family: "Inter", size: 11, weight: "bold" },
+                    usePointStyle: true,
                 },
             },
-            scales: {
-                x: {
-                    ticks: { color: "#94a3b8", font: { family: "Fira Code", size: 10 } },
-                    grid: { color: "rgba(148, 163, 184, 0.1)" },
-                },
-                y: {
-                    ticks: { color: "#94a3b8", font: { family: "Fira Code", size: 10 } },
-                    grid: { color: "rgba(148, 163, 184, 0.12)" },
+            tooltip: {
+                backgroundColor: "rgba(250, 247, 242, 0.95)",
+                titleColor: "#100b07",
+                bodyColor: "#160e08",
+                borderColor: "#8c6547",
+                borderWidth: 1,
+                padding: 10,
+                callbacks: {
+                    label: function (context) {
+                        const val = context.parsed.y;
+                        return ` ${context.dataset.label}: ${val !== null ? val.toFixed(2) : "--"}${unidadSufijo}`;
+                    },
                 },
             },
         },
+        scales: {
+            x: {
+                ticks: {
+                    color: "#523725",
+                    font: { family: "Fira Code", size: 10 },
+                    maxTicksLimit: 12,
+                },
+                grid: { color: "rgba(140, 101, 71, 0.12)" },
+            },
+            y: {
+                ticks: {
+                    color: "#523725",
+                    font: { family: "Fira Code", size: 10 },
+                },
+                grid: { color: "rgba(140, 101, 71, 0.15)" },
+            },
+        },
+    };
+
+    chartTelemetriaInstance = new Chart(canvas, {
+        type: modoGraficoActivo === "comparativo" ? "line" : cfg.tipoChart || "line",
+        data: chartData,
+        options: chartOptions,
     });
+}
+
+// Compatibilidad con código previo
+async function abrirModalGraficoHistorico(variable, titulo) {
+    await abrirModalGrafico(variable, titulo);
+}
+
+async function cambiarRangoGraficoHistorico(dias) {
+    if (dias <= 30) presetRangoActivo = "1m";
+    else if (dias <= 90) presetRangoActivo = "3m";
+    else if (dias <= 365) presetRangoActivo = "1y";
+    else if (dias <= 1095) presetRangoActivo = "3y";
+    else presetRangoActivo = "5y";
+    actualizarBotonesPresetGrafico(presetRangoActivo);
+    await cargarYRenderizarGraficoTelemetria();
 }
 
 window.inicializarSlotMapaPrincipal = inicializarSlotMapaPrincipal;
@@ -2228,6 +2603,12 @@ window.aplicarPresetRangoFechas = aplicarPresetRangoFechas;
 window.onCambiarCapasSatelitalesAdmin = onCambiarCapasSatelitalesAdmin;
 window.abrirModalEvaluacionCultivo = abrirModalEvaluacionCultivo;
 window.ejecutarEvaluacionCultivoModal = ejecutarEvaluacionCultivoModal;
+window.abrirModalGrafico = abrirModalGrafico;
+window.cerrarModalGrafico = cerrarModalGrafico;
+window.cambiarPresetRangoGrafico = cambiarPresetRangoGrafico;
+window.cambiarModoVisualizacionGrafico = cambiarModoVisualizacionGrafico;
+window.aplicarRangoPersonalizadoGrafico = aplicarRangoPersonalizadoGrafico;
+window.renderizarGraficoTelemetria = renderizarGraficoTelemetria;
 window.abrirModalGraficoHistorico = abrirModalGraficoHistorico;
 window.cambiarRangoGraficoHistorico = cambiarRangoGraficoHistorico;
 window.obtenerPoligonoModalPendiente = () => e2wModalPendingGeojson;

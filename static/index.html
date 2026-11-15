@@ -56,7 +56,7 @@ CONTROLADORES JAVASCRIPT:
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Earth2Worlds | Plataforma de Gestión Territorial y Telemetría Satelital</title>
+    <title>RotaTerra | Plataforma de Gestión Territorial y Telemetría Satelital</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
@@ -133,16 +133,20 @@ CONTROLADORES JAVASCRIPT:
         }
 
         html, body {
-            background-color: #fbfbfa !important;
-            color: #22160f !important;
+            background-color: #f5f1ea !important;
+            color: #100b07 !important;
         }
 
-        /* 1. FONDOS BLANCOS PARA PÁGINAS, TARJETAS, MODALES Y PANELES */
+        /* 1. FONDOS CÁLIDOS DE ALTO CONFORT (MENOS BRILLANTE) PARA PÁGINAS, TARJETAS, MODALES Y PANELES */
+        body {
+            background-color: #f5f1ea !important;
+            color: #100b07 !important;
+        }
         .bg-slate-950,
         .bg-slate-900,
         .bg-[#120e0a],
         .bg-[#1c1510] {
-            background-color: #ffffff !important;
+            background-color: #faf7f2 !important;
         }
         .bg-slate-950\/95,
         .bg-slate-950\/90,
@@ -153,7 +157,7 @@ CONTROLADORES JAVASCRIPT:
         .bg-slate-950\/50,
         .bg-slate-950\/40,
         .bg-slate-900\/80 {
-            background-color: rgba(255, 255, 255, 0.98) !important;
+            background-color: rgba(250, 247, 242, 0.98) !important;
         }
         .bg-slate-800,
         .bg-stone-900,
@@ -161,11 +165,11 @@ CONTROLADORES JAVASCRIPT:
         .bg-stone-950\/80,
         .bg-stone-950\/90,
         .bg-stone-900\/90 {
-            background-color: #f8f5f0 !important;
+            background-color: #f0ebe1 !important;
         }
         .bg-slate-800\/60,
         .bg-slate-800\/80 {
-            background-color: rgba(248, 245, 240, 0.95) !important;
+            background-color: rgba(240, 235, 225, 0.95) !important;
         }
 
         /* 2. MARCOS Y BORDES EN MARRÓN TIERRA */
@@ -192,30 +196,65 @@ CONTROLADORES JAVASCRIPT:
         .bg-slate-950 h1, .bg-slate-950 h2, .bg-slate-950 h3, .bg-slate-950 h4,
         .bg-white strong, .bg-slate-900 strong, .bg-slate-950 strong,
         h1, h2, h3, h4 {
-            color: #140d07 !important;
+            color: #100b07 !important;
             font-weight: 700;
         }
         p {
-            color: #24160e;
+            color: #160e08;
         }
         .text-slate-100:not(button *):not(button):not(a.bg-emerald-600) {
-            color: #140d07 !important;
+            color: #100b07 !important;
         }
         .text-slate-200:not(button *):not(button) {
-            color: #1a110b !important;
+            color: #160e08 !important;
             font-weight: 500;
         }
         .text-slate-300:not(button *):not(button) {
-            color: #2b1b11 !important;
+            color: #20140c !important;
             font-weight: 500;
         }
         .text-slate-400:not(button *):not(button) {
-            color: #3d281a !important;
+            color: #352216 !important;
             font-weight: 500;
         }
         .text-slate-500 {
-            color: #523725 !important;
+            color: #4a3020 !important;
             font-weight: 500;
+        }
+
+        /* 4. HERRAMIENTAS Y BARRA LATERAL DEL CREADOR DE LOTES (LEAFLET-GEOMAN MÁS GRANDE) */
+        .leaflet-pm-toolbar .leaflet-buttons-control-button,
+        .leaflet-buttons-control-button a,
+        .leaflet-bar a {
+            width: 44px !important;
+            height: 44px !important;
+            line-height: 44px !important;
+            font-size: 19px !important;
+            background-color: #faf7f2 !important;
+            border-color: #8c6547 !important;
+            color: #20140c !important;
+        }
+        .leaflet-pm-toolbar .leaflet-buttons-control-button:hover,
+        .leaflet-bar a:hover {
+            background-color: #ede6dc !important;
+            color: #16a34a !important;
+        }
+        .leaflet-pm-toolbar .leaflet-pm-icon {
+            transform: scale(1.35) !important;
+            transform-origin: center center !important;
+        }
+        .leaflet-pm-actions-container {
+            left: 50px !important;
+            top: 2px !important;
+        }
+        .leaflet-pm-action {
+            height: 38px !important;
+            line-height: 38px !important;
+            font-size: 13px !important;
+            padding: 0 12px !important;
+            background-color: #faf7f2 !important;
+            border: 1px solid #8c6547 !important;
+            color: #100b07 !important;
         }
 
         /* Modales siempre por encima de cualquier mapa Leaflet (z-index: 1000) */
@@ -227,7 +266,8 @@ CONTROLADORES JAVASCRIPT:
         #modalAsignarCampos,
         #modalOperador,
         #modalEditarCampo,
-        #modalGraficoHistorico {
+        #modalGraficoHistorico,
+        #modalGraficoTelemetria {
             z-index: 99990 !important;
         }
 
@@ -351,11 +391,14 @@ CONTROLADORES JAVASCRIPT:
         <div class="w-full max-w-4xl bg-white border-2 border-[#8c6547] rounded-3xl shadow-2xl p-5 sm:p-8 space-y-5 my-6 sm:my-10 relative overflow-visible">
             <div class="text-center space-y-2.5 px-2">
                 <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-400 text-emerald-800 text-xs font-mono font-bold max-w-full">
-                    <span>🌍 Earth2Worlds</span> &bull; <span>Plataforma Agroclimática</span>
+                    <span>🌍 RotaTerra</span> &bull; <span>Plataforma Agroclimática</span>
                 </div>
                 <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#241810] tracking-tight block w-full py-1 leading-normal overflow-visible">
                     Elige tu Modalidad de Acceso
                 </h2>
+                <p class="text-sm sm:text-base font-bold text-emerald-800 tracking-wide mt-1">
+                    ¡Cuida tu tierra, potencia tu futuro con RotaTerra!
+                </p>
                 <p class="text-xs sm:text-sm text-[#5c4636] max-w-2xl mx-auto leading-relaxed">
                     Selecciona cómo deseas explorar la plataforma. Las sesiones de prueba no requieren registro ni guardan datos permanentes en el sistema.
                 </p>
@@ -526,22 +569,22 @@ CONTROLADORES JAVASCRIPT:
     </div>
 
     <!-- =================================================================== -->
-    <!-- [SEC-02] NAVBAR SUPERIOR CON IDENTIDAD EARTH2WORLDS                 -->
+    <!-- [SEC-02] NAVBAR SUPERIOR CON IDENTIDAD ROTATERRA                    -->
     <!-- =================================================================== -->
     <nav class="sticky top-0 z-30 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-sky-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 font-heading font-extrabold text-slate-950 text-lg">
-                    E2W
+                    RT
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <span class="font-heading text-lg sm:text-xl font-bold tracking-tight text-white">Earth2Worlds</span>
+                        <span class="font-heading text-lg sm:text-xl font-bold tracking-tight text-white">RotaTerra</span>
                         <span class="hidden sm:inline-block text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
                             🛰️ Telemetría Activa
                         </span>
                     </div>
-                    <p class="text-xs text-slate-400 hidden sm:block">Gestión RBAC Territorial y Telemetría Multi-Satelital</p>
+                    <p class="text-xs text-slate-400 hidden sm:block">Plataforma Agroclimática y Rotación de Cultivos</p>
                 </div>
             </div>
 
@@ -804,87 +847,99 @@ CONTROLADORES JAVASCRIPT:
 
                     <div id="grillaTarjetasBasico" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                         <!-- Tarjeta 1: Vigor Vegetal (NDVI) -->
-                        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-3">
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs font-mono text-emerald-400">VEGETACIÓN</span>
-                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">HLS / MODIS</span>
+                        <div onclick="abrirModalGrafico('ndvi')" class="cursor-pointer group bg-slate-900/80 border border-slate-800 hover:border-emerald-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-mono text-emerald-700 font-bold flex items-center gap-1">🌱 VEGETACIÓN</span>
+                                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold group-hover:bg-emerald-600 group-hover:text-white transition">📈 Ver Gráfico</span>
+                                </div>
+                                <h4 class="font-heading font-bold text-white text-base mt-2 group-hover:text-emerald-700 transition">Índice de Vigor (NDVI)</h4>
+                                <div class="flex items-baseline gap-2 mt-1">
+                                    <span id="basicoNdviValor" class="font-heading font-extrabold text-2xl text-emerald-700">-</span>
+                                    <span class="text-xs text-slate-500 font-mono">HLS Sentinel-2 (30m)</span>
+                                </div>
                             </div>
-                            <h4 class="font-heading font-bold text-white text-base">Índice de Vigor (NDVI)</h4>
-                            <div class="flex items-baseline gap-2">
-                                <span id="basicoNdviValor" class="font-heading font-extrabold text-2xl text-emerald-400">-</span>
-                                <span class="text-xs text-slate-400">adimensional</span>
-                            </div>
-                            <p id="basicoNdviNota" class="text-xs text-slate-400">Consultando archivo histórico...</p>
+                            <p id="basicoNdviNota" class="text-xs text-slate-400 pt-2 border-t border-[#dfd2c6]">Consultando archivo histórico...</p>
                         </div>
 
                         <!-- Tarjeta 2: Humedad de Suelo (SMAP) -->
-                        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-3">
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs font-mono text-sky-400">SUELO</span>
-                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">SMAP L3</span>
+                        <div onclick="abrirModalGrafico('smap')" class="cursor-pointer group bg-slate-900/80 border border-slate-800 hover:border-sky-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-mono text-sky-700 font-bold flex items-center gap-1">💧 SUELO RADICULAR</span>
+                                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-sky-300 font-bold group-hover:bg-sky-600 group-hover:text-white transition">📈 Ver Gráfico</span>
+                                </div>
+                                <h4 class="font-heading font-bold text-white text-base mt-2 group-hover:text-sky-700 transition">Humedad Radicular</h4>
+                                <div class="flex items-baseline gap-2 mt-1">
+                                    <span id="basicoSmapValor" class="font-heading font-extrabold text-2xl text-sky-700">-</span>
+                                    <span class="text-xs text-slate-500 font-mono">m³/m³ (SMAP L3)</span>
+                                </div>
                             </div>
-                            <h4 class="font-heading font-bold text-white text-base">Humedad Radicular</h4>
-                            <div class="flex items-baseline gap-2">
-                                <span id="basicoSmapValor" class="font-heading font-extrabold text-2xl text-sky-400">-</span>
-                                <span class="text-xs text-slate-400">m³/m³</span>
-                            </div>
-                            <p id="basicoSmapNota" class="text-xs text-slate-400">Consultando radiómetro de microondas...</p>
+                            <p id="basicoSmapNota" class="text-xs text-slate-400 pt-2 border-t border-[#dfd2c6]">Consultando radiómetro de microondas...</p>
                         </div>
 
                         <!-- Tarjeta 3: Lluvias Acumuladas (IMERG) -->
-                        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-3">
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs font-mono text-blue-400">PRECIPITACIONES</span>
-                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">GPM IMERG</span>
+                        <div onclick="abrirModalGrafico('lluvia')" class="cursor-pointer group bg-slate-900/80 border border-slate-800 hover:border-blue-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-mono text-blue-700 font-bold flex items-center gap-1">🌧️ PRECIPITACIONES</span>
+                                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-50 text-blue-800 border border-blue-300 font-bold group-hover:bg-blue-600 group-hover:text-white transition">📈 Ver Gráfico</span>
+                                </div>
+                                <h4 class="font-heading font-bold text-white text-base mt-2 group-hover:text-blue-700 transition">Régimen de Lluvia</h4>
+                                <div class="flex items-baseline gap-2 mt-1">
+                                    <span id="basicoLluviaValor" class="font-heading font-extrabold text-2xl text-blue-700">-</span>
+                                    <span class="text-xs text-slate-500 font-mono">mm (GPM IMERG)</span>
+                                </div>
                             </div>
-                            <h4 class="font-heading font-bold text-white text-base">Régimen de Lluvia</h4>
-                            <div class="flex items-baseline gap-2">
-                                <span id="basicoLluviaValor" class="font-heading font-extrabold text-2xl text-blue-400">-</span>
-                                <span class="text-xs text-slate-400">mm</span>
-                            </div>
-                            <p id="basicoLluviaNota" class="text-xs text-slate-400">Consultando constelación GPM...</p>
+                            <p id="basicoLluviaNota" class="text-xs text-slate-400 pt-2 border-t border-[#dfd2c6]">Consultando constelación GPM...</p>
                         </div>
 
                         <!-- Tarjeta 4: Temperatura y Heladas (VIIRS / MODIS) -->
-                        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-3">
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs font-mono text-amber-400">TEMPERATURA</span>
-                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">VIIRS LST</span>
+                        <div onclick="abrirModalGrafico('heladas')" class="cursor-pointer group bg-slate-900/80 border border-slate-800 hover:border-cyan-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-mono text-cyan-700 font-bold flex items-center gap-1">❄️ TEMPERATURA / HELADAS</span>
+                                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-50 text-cyan-800 border border-cyan-300 font-bold group-hover:bg-cyan-600 group-hover:text-white transition">📈 Ver Gráfico</span>
+                                </div>
+                                <h4 class="font-heading font-bold text-white text-base mt-2 group-hover:text-cyan-700 transition">Temperatura de Superficie</h4>
+                                <div class="flex items-baseline gap-2 mt-1">
+                                    <span id="basicoTempValor" class="font-heading font-extrabold text-2xl text-cyan-700">-</span>
+                                    <span class="text-xs text-slate-500 font-mono">°C (VIIRS LST)</span>
+                                </div>
                             </div>
-                            <h4 class="font-heading font-bold text-white text-base">Temperatura de Superficie</h4>
-                            <div class="flex items-baseline gap-2">
-                                <span id="basicoTempValor" class="font-heading font-extrabold text-2xl text-amber-400">-</span>
-                                <span class="text-xs text-slate-400">°C</span>
-                            </div>
-                            <p id="basicoTempNota" class="text-xs text-slate-400">Analizando sensor infrarrojo térmico...</p>
+                            <p id="basicoTempNota" class="text-xs text-slate-400 pt-2 border-t border-[#dfd2c6]">Analizando sensor infrarrojo térmico...</p>
                         </div>
 
                         <!-- Tarjeta 5: Balance Hídrico (POWER / ECOSTRESS) -->
-                        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-3">
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs font-mono text-cyan-400">BALANCE HÍDRICO</span>
-                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">POWER / ET</span>
+                        <div onclick="abrirModalGrafico('estres')" class="cursor-pointer group bg-slate-900/80 border border-slate-800 hover:border-teal-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-mono text-teal-700 font-bold flex items-center gap-1">🌿 ESTRÉS HÍDRICO</span>
+                                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-teal-50 text-teal-800 border border-teal-300 font-bold group-hover:bg-teal-600 group-hover:text-white transition">📈 Ver Gráfico</span>
+                                </div>
+                                <h4 class="font-heading font-bold text-white text-base mt-2 group-hover:text-teal-700 transition">Evapotranspiración / Balance</h4>
+                                <div class="flex items-baseline gap-2 mt-1">
+                                    <span id="basicoEtValor" class="font-heading font-extrabold text-2xl text-teal-700">-</span>
+                                    <span class="text-xs text-slate-500 font-mono">mm/día (ECOSTRESS / ET₀)</span>
+                                </div>
                             </div>
-                            <h4 class="font-heading font-bold text-white text-base">Evapotranspiración / Balance</h4>
-                            <div class="flex items-baseline gap-2">
-                                <span id="basicoEtValor" class="font-heading font-extrabold text-2xl text-cyan-400">-</span>
-                                <span class="text-xs text-slate-400">mm/día</span>
-                            </div>
-                            <p id="basicoEtNota" class="text-xs text-slate-400">Calculando balance agrometeorológico...</p>
+                            <p id="basicoEtNota" class="text-xs text-slate-400 pt-2 border-t border-[#dfd2c6]">Calculando balance agrometeorológico...</p>
                         </div>
 
                         <!-- Tarjeta 6: Relieve y Altimetría (NASADEM) -->
-                        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-3">
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs font-mono text-purple-400">TOPOGRAFÍA</span>
-                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">NASADEM</span>
+                        <div onclick="abrirModalGrafico('altimetria')" class="cursor-pointer group bg-slate-900/80 border border-slate-800 hover:border-purple-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-mono text-purple-700 font-bold flex items-center gap-1">⛰️ TOPOGRAFÍA</span>
+                                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-50 text-purple-800 border border-purple-300 font-bold group-hover:bg-purple-600 group-hover:text-white transition">📈 Ver Gráfico</span>
+                                </div>
+                                <h4 class="font-heading font-bold text-white text-base mt-2 group-hover:text-purple-700 transition">Altimetría</h4>
+                                <div class="flex items-baseline gap-2 mt-1">
+                                    <span id="basicoRelieveValor" class="font-heading font-extrabold text-2xl text-purple-700">-</span>
+                                    <span class="text-xs text-slate-500 font-mono">m (NASADEM)</span>
+                                </div>
                             </div>
-                            <h4 class="font-heading font-bold text-white text-base">Altimetría</h4>
-                            <div class="flex items-baseline gap-2">
-                                <span id="basicoRelieveValor" class="font-heading font-extrabold text-2xl text-purple-400">-</span>
-                                <span class="text-xs text-slate-400">m</span>
-                            </div>
-                            <p id="basicoRelieveNota" class="text-xs text-slate-400">Consultando modelo digital de elevación...</p>
+                            <p id="basicoRelieveNota" class="text-xs text-slate-400 pt-2 border-t border-[#dfd2c6]">Consultando modelo digital de elevación...</p>
                         </div>
                     </div>
                 </div>
@@ -1860,61 +1915,94 @@ CONTROLADORES JAVASCRIPT:
         </div>
     </div>
 
-    <!-- [SEC-09.7] #modalGraficoHistorico: Series Temporales y Comparativa Interanual (Chart.js) -->
-    <div id="modalGraficoHistorico" class="fixed inset-0 z-40 hidden items-center justify-center bg-slate-950/85 backdrop-blur-sm p-4">
-        <div class="w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 space-y-5 max-h-[92vh] overflow-y-auto">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-800 pb-4">
-                <div>
-                    <span class="text-xs font-mono text-sky-400">[SEC-09.7] SERIES TEMPORALES Y COMPARATIVA INTERANUAL</span>
-                    <h3 id="tituloModalGraficoHistorico" class="font-heading text-xl font-bold text-white">
-                        Evolución Histórica de Telemetría Satelital
-                    </h3>
-                    <p id="subtituloModalGraficoHistorico" class="text-xs text-slate-400 font-mono mt-0.5">
-                        Datos persistidos en earth2worlds.db y archivos satelitales NASA
-                    </p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <div class="flex items-center gap-1 bg-slate-950 border border-slate-800 rounded-xl p-1">
-                        <button type="button" onclick="cambiarRangoGraficoHistorico(30)" class="px-2.5 py-1 rounded-lg text-xs font-mono text-slate-300 hover:bg-slate-800">1m</button>
-                        <button type="button" onclick="cambiarRangoGraficoHistorico(90)" class="px-2.5 py-1 rounded-lg text-xs font-mono text-slate-300 hover:bg-slate-800">3m</button>
-                        <button type="button" onclick="cambiarRangoGraficoHistorico(365)" class="px-2.5 py-1 rounded-lg text-xs font-mono bg-sky-500 text-slate-950 font-bold">1a</button>
-                        <button type="button" onclick="cambiarRangoGraficoHistorico(1095)" class="px-2.5 py-1 rounded-lg text-xs font-mono text-slate-300 hover:bg-slate-800">3a</button>
+    <!-- [SEC-09.7] #modalGraficoTelemetria: Series Temporales y Comparativa Interanual (Chart.js) -->
+    <div id="modalGraficoTelemetria" data-modal="modalGraficoHistorico" class="fixed inset-0 bg-stone-900/60 backdrop-blur-md hidden items-center justify-center p-2 sm:p-4 z-[99990] select-none">
+        <div class="bg-white border-2 border-[#8c6547] rounded-2xl sm:rounded-3xl p-4 sm:p-6 w-full max-w-4xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
+            <!-- Cabecera -->
+            <div class="flex items-center justify-between pb-3 border-b border-[#dfd2c6] gap-3 shrink-0">
+                <div class="flex items-center gap-3 min-w-0">
+                    <div id="modalGraficoIconoBadge" class="w-11 h-11 rounded-2xl flex items-center justify-center text-2xl shrink-0 shadow-sm border border-[#8c6547] bg-[#faf6f0]">🌱</div>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h3 id="modalGraficoTitulo" class="text-base sm:text-lg font-heading font-bold text-[#100b07] tracking-wide truncate">Título Métrica</h3>
+                            <span id="modalGraficoSensorBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border border-emerald-400/40 bg-emerald-50 text-emerald-800 shrink-0">Sensor / Fuente</span>
+                        </div>
+                        <p id="modalGraficoSubtitulo" class="text-xs text-[#523725] truncate mt-0.5">Subtítulo explicativo</p>
                     </div>
-                    <button type="button" onclick="cerrarModal('modalGraficoHistorico')" class="text-slate-400 hover:text-white text-sm font-mono ml-2">
-                        ESC &#10005;
-                    </button>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                    <div class="hidden sm:flex flex-col items-end px-3 py-1 bg-[#faf6f0] rounded-xl border border-[#8c6547]">
+                        <span class="text-[9px] uppercase tracking-wider text-[#523725] font-bold">Último Valor</span>
+                        <span id="modalGraficoUltimoValor" class="text-sm font-mono font-bold text-emerald-800">--</span>
+                    </div>
+                    <button type="button" onclick="cerrarModalGrafico()" class="w-9 h-9 rounded-xl bg-[#f4ede4] hover:bg-[#eadecc] text-[#553e2e] hover:text-[#100b07] flex items-center justify-center transition font-bold cursor-pointer text-sm">✕</button>
                 </div>
             </div>
 
-            <!-- Barra de 4 KPIs estadísticos de la serie -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div class="rounded-xl bg-slate-950 border border-slate-800 p-3">
-                    <span class="text-[10px] font-mono uppercase text-slate-400">Observaciones</span>
-                    <p id="kpiHistTotal" class="font-heading text-lg font-bold text-white mt-0.5">0</p>
+            <!-- Barra de Controles: Presets y Modos -->
+            <div class="py-2.5 border-b border-[#dfd2c6] space-y-2 shrink-0">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs">
+                    <!-- Presets -->
+                    <div class="flex flex-wrap items-center gap-1 bg-[#faf6f0] p-1 rounded-2xl border border-[#8c6547]">
+                        <button type="button" onclick="cambiarPresetRangoGrafico('1m')" id="btnGraficoRango1m" class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">1 Mes</button>
+                        <button type="button" onclick="cambiarPresetRangoGrafico('3m')" id="btnGraficoRango3m" class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">3 Meses</button>
+                        <button type="button" onclick="cambiarPresetRangoGrafico('1y')" id="btnGraficoRango1y" class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">1 Año</button>
+                        <button type="button" onclick="cambiarPresetRangoGrafico('3y')" id="btnGraficoRango3y" class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">3 Años</button>
+                        <button type="button" onclick="cambiarPresetRangoGrafico('5y')" id="btnGraficoRango5y" class="px-2.5 py-1 rounded-xl font-bold bg-emerald-600 text-white shadow-md cursor-pointer">5 Años</button>
+                        <button type="button" onclick="cambiarPresetRangoGrafico('custom')" id="btnGraficoRangoCustom" class="px-2.5 py-1 rounded-xl text-[#523725] font-semibold cursor-pointer hover:bg-[#eee6db] transition">Personalizado</button>
+                    </div>
+
+                    <!-- Selector Continuo vs Interanual -->
+                    <div id="wrapperSelectorModoGrafico" class="flex items-center gap-1 bg-[#faf6f0] p-1 rounded-2xl border border-[#8c6547] shrink-0">
+                        <span class="text-[10px] text-[#523725] font-bold uppercase px-1.5">Modo:</span>
+                        <button type="button" onclick="cambiarModoVisualizacionGrafico('continuo')" id="btnModoGraficoContinuo" class="px-2.5 py-1 rounded-xl font-bold bg-emerald-600 text-white cursor-pointer transition">📈 Continuo</button>
+                        <button type="button" onclick="cambiarModoVisualizacionGrafico('comparativo')" id="btnModoGraficoComparativo" class="px-2.5 py-1 rounded-xl font-medium text-[#523725] hover:text-[#100b07] cursor-pointer transition">🔄 Interanual</button>
+                    </div>
                 </div>
-                <div class="rounded-xl bg-slate-950 border border-slate-800 p-3">
-                    <span class="text-[10px] font-mono uppercase text-slate-400">Mínimo Período</span>
-                    <p id="kpiHistMin" class="font-heading text-lg font-bold text-sky-400 mt-0.5">--</p>
+
+                <!-- Panel Rango Personalizado -->
+                <div id="panelRangoPersonalizadoGrafico" class="hidden flex flex-wrap items-center gap-2 bg-[#f4ede4] p-2 rounded-xl border border-[#8c6547] text-xs">
+                    <label class="text-[#3d281a] text-[11px] font-semibold">Desde: <input type="date" id="inputGraficoFechaDesde" class="bg-white text-[#100b07] border border-[#8c6547] rounded px-2 py-1 font-mono"></label>
+                    <label class="text-[#3d281a] text-[11px] font-semibold">Hasta: <input type="date" id="inputGraficoFechaHasta" class="bg-white text-[#100b07] border border-[#8c6547] rounded px-2 py-1 font-mono"></label>
+                    <button type="button" onclick="aplicarRangoPersonalizadoGrafico()" class="px-3 py-1 bg-emerald-600 text-white font-bold rounded-lg cursor-pointer hover:bg-emerald-700 transition">Consultar</button>
                 </div>
-                <div class="rounded-xl bg-slate-950 border border-slate-800 p-3">
-                    <span class="text-[10px] font-mono uppercase text-slate-400">Máximo Período</span>
-                    <p id="kpiHistMax" class="font-heading text-lg font-bold text-amber-400 mt-0.5">--</p>
-                </div>
-                <div class="rounded-xl bg-slate-950 border border-slate-800 p-3">
-                    <span class="text-[10px] font-mono uppercase text-slate-400">Promedio</span>
-                    <p id="kpiHistAvg" class="font-heading text-lg font-bold text-emerald-400 mt-0.5">--</p>
+
+                <!-- Banner Interanual -->
+                <div id="bannerModoComparativo" class="hidden p-2 bg-emerald-50 border border-emerald-400 rounded-xl text-[11px] text-emerald-900 flex items-center gap-2">
+                    <span>🔄</span>
+                    <span><strong>Modo Comparativa Interanual:</strong> Curvas superpuestas de cada campaña anual (Enero a Diciembre). Haz clic en las etiquetas de la leyenda para aislar años específicos.</span>
                 </div>
             </div>
 
-            <!-- Lienzo Chart.js -->
-            <div class="rounded-2xl bg-slate-950/90 border border-slate-800 p-4 h-80 relative">
-                <canvas id="canvasGraficoHistorico"></canvas>
+            <!-- Canvas con Contenedor Proporcional -->
+            <div class="relative w-full h-[280px] sm:h-[340px] max-h-[42vh] p-1 flex items-center justify-center my-auto shrink-0">
+                <div id="graficoLoading" class="hidden absolute inset-0 bg-white/85 backdrop-blur-xs z-10 flex flex-col items-center justify-center gap-2 rounded-2xl">
+                    <div class="animate-spin text-3xl">🛰️</div>
+                    <span class="text-xs font-semibold text-emerald-800 font-mono">Cargando serie temporal de la constelación NASA...</span>
+                </div>
+                <div id="graficoVacio" class="hidden absolute inset-0 flex flex-col items-center justify-center gap-1 text-center bg-white/90 rounded-2xl z-10">
+                    <div class="text-3xl">📡</div>
+                    <p class="text-xs font-bold text-[#100b07]">Sin observaciones disponibles en este rango</p>
+                </div>
+                <canvas id="canvasGraficoTelemetria" class="w-full h-full"></canvas>
+                <canvas id="canvasGraficoHistorico" class="hidden"></canvas>
+            </div>
+
+            <!-- Barra Inferior de KPIs -->
+            <div class="pt-3 border-t border-[#dfd2c6] flex flex-wrap items-center justify-between gap-2 text-xs font-mono shrink-0">
+                <div class="flex items-center gap-3 text-[#523725]">
+                    <span>Obs: <strong id="kpiGraficoTotalObs" class="text-[#100b07]">0</strong></span> •
+                    <span>Mín: <strong id="kpiGraficoMin" class="text-sky-800 font-bold">--</strong></span> •
+                    <span>Máx: <strong id="kpiGraficoMax" class="text-emerald-800 font-bold">--</strong></span> •
+                    <span>Prom: <strong id="kpiGraficoProm" class="text-amber-800 font-bold">--</strong></span>
+                </div>
+                <span class="px-2 py-0.5 rounded bg-[#faf6f0] text-[#523725] border border-[#8c6547] text-[10px]">Chart.js Engine &bull; RotaTerra</span>
             </div>
         </div>
     </div>
 
-    <footer class="border-t border-slate-900 py-5 mt-12 text-center text-xs text-slate-500 font-mono">
-        Earth2Worlds &bull; Arquitectura RBAC + Telemetría Satelital NASA &amp; INTA
+    <footer class="border-t border-[#dfd2c6] py-5 mt-12 text-center text-xs text-[#523725] font-mono">
+        RotaTerra &bull; Arquitectura Agroclimática + Telemetría Satelital NASA &amp; INTA
     </footer>
 
     <!-- =================================================================== -->
@@ -2552,6 +2640,10 @@ CONTROLADORES JAVASCRIPT:
 
             await Promise.all(promesas);
 
+            // Almacenar observaciones iniciales en memoria para el visor de gráficos interactivos
+            window.observacionesTelemetria5Anios = [...todasLasObs];
+            window.ultimasObservacionesCampo = [...todasLasObs];
+
             // 2. Consulta inmediata del Motor de Recomendación para Agrónomos (Spec 064)
             const cLat = loteBasicoCentroide?.lat || -33.7;
             const cLon = loteBasicoCentroide?.lon || -65.42;
@@ -2582,6 +2674,17 @@ CONTROLADORES JAVASCRIPT:
                     }),
                 });
                 if (resHist.ok) {
+                    const dataHist = await resHist.json();
+                    if (Array.isArray(dataHist.observaciones) && dataHist.observaciones.length > 0) {
+                        window.observacionesTelemetria5Anios = dataHist.observaciones;
+                        window.ultimasObservacionesCampo = dataHist.observaciones;
+                        const modalGraf = document.getElementById("modalGraficoTelemetria");
+                        if (modalGraf && !modalGraf.classList.contains("hidden")) {
+                            if (typeof window.cargarYRenderizarGraficoTelemetria === "function") {
+                                window.cargarYRenderizarGraficoTelemetria();
+                            }
+                        }
+                    }
                     if (estadoLabel) {
                         estadoLabel.innerHTML = `<span class="text-emerald-900 font-mono font-bold text-xs">&#10003; Descarga histórica de 5 años completada con éxito</span>`;
                     }
@@ -3993,6 +4096,7 @@ CONTROLADORES JAVASCRIPT:
                     "modalOperador",
                     "modalEditarCampo",
                     "modalGraficoHistorico",
+                    "modalGraficoTelemetria",
                 ].forEach(cerrarModal);
             }
         });

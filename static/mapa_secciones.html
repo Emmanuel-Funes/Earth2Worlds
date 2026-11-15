@@ -98,12 +98,12 @@
             <div class="flex items-center gap-3">
                 <div
                     class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-emerald-500 flex items-center justify-center font-heading font-extrabold text-slate-950 text-base shadow-lg">
-                    E2W
+                    RT
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
                         <h1 class="font-heading text-lg font-bold text-white">
-                            Mapa Visual de Secciones — Earth2Worlds
+                            Mapa Visual de Secciones — RotaTerra
                         </h1>
                         <span
                             class="px-2 py-0.5 rounded text-[11px] font-mono bg-purple-500/20 text-purple-300 border border-purple-500/40">
@@ -128,7 +128,7 @@
                 </a>
                 <a href="/"
                     class="px-3.5 py-1.5 rounded-xl text-xs font-heading font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition">
-                    &larr; Volver a Earth2Worlds
+                    &larr; Volver a RotaTerra
                 </a>
             </div>
         </div>
@@ -546,11 +546,10 @@
 
             <div onclick="seleccionarSeccion('SEC-09.7')" data-sec="SEC-09.7"
                 class="section-frame md:col-span-2 bg-slate-900/85 p-5 space-y-2">
-                <span class="section-badge">[SEC-09.7] #modalGraficoHistorico</span>
+                <span class="section-badge">[SEC-09.7] #modalGraficoTelemetria</span>
                 <h4 class="font-heading font-bold text-white">Series Temporales y Comparativa Interanual (Chart.js)</h4>
                 <p class="text-xs text-slate-400">Se abre al hacer clic en cualquiera de las 6 tarjetas métricas de
-                    <code>[SEC-05.6]</code>. Consulta <code>GET /api/campos/{id}/historial</code> y grafica la curva con
-                    4 KPIs (Total Obs, Mínimo, Máximo y Promedio).</p>
+                    <code>[SEC-05.6]</code> o Modo Agricultor. Permite cambiar presets (1m, 3m, 1a, 3a, 5a, custom) y alternar entre modo Continuo e Interanual con 4 KPIs en vivo.</p>
             </div>
         </div>
 
@@ -768,7 +767,7 @@
             },
             "SEC-09.7": {
                 titulo: "Modal de Gráficos de Series Temporales y Comparativa Interanual (Chart.js)",
-                dom: "#modalGraficoHistorico, #canvasGraficoHistorico",
+                dom: "#modalGraficoTelemetria, #canvasGraficoTelemetria, #modalGraficoHistorico",
                 archivo: "static/index.html",
             },
             "JS-01": { titulo: "Estado Global y Arranque SPA", dom: "inicializarAplicacion()", archivo: "static/index.html" },
