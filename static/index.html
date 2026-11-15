@@ -3078,30 +3078,6 @@ CONTROLADORES JAVASCRIPT:
                                 </div>
                             `;
             }).join('')}
-                                        <details class="details-reglas-cultivo text-[11px] font-mono text-[#785843] pt-2 border-t border-[#dfd2c6]" ontoggle="sincronizarDetallesReglasCultivo(this)">
-                                            <summary class="cursor-pointer hover:text-[#241810] py-1 font-semibold text-[#5c4636] select-none flex items-center justify-between">
-                                                <span>Ver ${c.reglas.length} reglas técnicas ▾</span>
-                                                <span class="text-[10px] text-[#8c532b] font-bold">Tu campo vs Óptimo</span>
-                                            </summary>
-                                            <ul class="space-y-2 mt-2 text-[#241810] font-sans">
-                                                ${c.reglas.map(r => `
-                                                    <li class="p-2.5 rounded-xl bg-[#faf6f0] border border-[#c4a994] space-y-1.5 shadow-xs">
-                                                        <div class="flex items-center justify-between">
-                                                            <strong class="text-[#241810] text-xs font-bold">${escapeHtml(r.regla)}</strong>
-                                                            <span>${r.resultado === 'ok' ? '✅' : (r.resultado === 'aviso' ? '⚠️' : (r.resultado === 'no' ? '❌' : 'ℹ️'))}</span>
-                                                        </div>
-                                                        <div class="p-2 rounded-lg bg-white border border-[#b8977e] text-xs shadow-2xs">
-                                                            <span class="text-[9px] font-bold uppercase tracking-wider text-[#8c532b] block mb-0.5">Tu campo vs Óptimo del cultivo:</span>
-                                                            <span class="text-[#241810] font-semibold text-[11px]">${escapeHtml(r.comparativa_optimo || r.dato_del_lote || r.dato)}</span>
-                                                        </div>
-                                                    </li>
-                                                `).join('')}
-                                            </ul>
-                                        </details>
-                                    ` : ''}
-                                </div>
-                            `;
-            }).join('')}
                     </div>
                 </div>
             `;
