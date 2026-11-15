@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earth2Worlds / RotaTerra • Especificación Técnica de Arquitectura</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        code, pre { font-family: 'JetBrains Mono', monospace; }
+        .tab-btn.active {
+            background-color: #16a34a;
+            color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(22, 163, 74, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-[#faf7f2] text-[#241810] min-h-screen antialiased selection:bg-emerald-500 selection:text-white">
+
+    <!-- Header Principal -->
+    <header class="bg-white border-b-2 border-[#8c6547]/30 sticky top-0 z-50 shadow-sm backdrop-blur-md bg-white/95">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl">🌍</span>
+                <div>
+                    <h1 class="font-extrabold text-xl sm:text-2xl text-[#100b07] tracking-tight">Earth2Worlds / RotaTerra</h1>
+                    <p class="text-xs text-[#785843] font-medium">Especificación Técnica de Arquitectura, Tecnologías Cloud, Pipeline Satelital y Algoritmos Agronómicos</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <a href="/static/index.html" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-sm transition flex items-center gap-1.5">
+                    <span>🚀</span> Ir a la Aplicación
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navegación por Pestañas Interactivas -->
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 pt-6">
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none border-b border-[#dfd2c6]">
+            <button onclick="cambiarPestana('stack')" id="tab-stack" class="tab-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-[#5c4636] hover:bg-[#ede3da] transition whitespace-nowrap">
+                💻 1. Stack Tecnológico
+            </button>
+            <button onclick="cambiarPestana('nube')" id="tab-nube" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-[#5c4636] hover:bg-[#ede3da] transition whitespace-nowrap">
+                ☁️ 2. Infraestructura CI/CD
+            </button>
+            <button onclick="cambiarPestana('satelites')" id="tab-satelites" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-[#5c4636] hover:bg-[#ede3da] transition whitespace-nowrap">
+                🛰️ 3. Bases de Datos & NASA
+            </button>
+            <button onclick="cambiarPestana('rotaterra')" id="tab-rotaterra" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-[#5c4636] hover:bg-[#ede3da] transition whitespace-nowrap">
+                🔄 4. Motor de Rotaciones
+            </button>
+            <button onclick="cambiarPestana('earthdata')" id="tab-earthdata" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-[#5c4636] hover:bg-[#ede3da] transition whitespace-nowrap">
+                🔒 5. Autenticación Earthdata
+            </button>
+            <button onclick="cambiarPestana('i18n')" id="tab-i18n" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-[#5c4636] hover:bg-[#ede3da] transition whitespace-nowrap">
+                🌐 6. Internacionalización & Metrología
+            </button>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+
+        <!-- SECCIÓN 1: STACK TECNOLÓGICO -->
+        <section id="sec-stack" class="space-y-6">
+            <div class="bg-white border-2 border-[#8c6547] rounded-3xl p-6 sm:p-8 shadow-sm space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="w-12 h-12 rounded-2xl bg-emerald-100 border border-emerald-400 flex items-center justify-center text-2xl">⚡</span>
+                    <div>
+                        <h2 class="font-extrabold text-2xl text-[#100b07]">Stack Tecnológico de Alto Rendimiento</h2>
+                        <p class="text-xs sm:text-sm text-[#785843]">Arquitectura desacoplada SPA con backend asíncrono en FastAPI y frontend de baja huella de memoria.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4">
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <span class="text-xs font-mono font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md">BACKEND</span>
+                        <h3 class="font-bold text-lg text-[#100b07]">FastAPI + Python 3.14</h3>
+                        <p class="text-xs text-[#5c4636] leading-relaxed">Framework asíncrono con validación estricta Pydantic v2, serialización de alto rendimiento y documentación automática OpenAPI.</p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <span class="text-xs font-mono font-bold text-sky-800 bg-sky-100 px-2 py-0.5 rounded-md">GEOESPACIAL</span>
+                        <h3 class="font-bold text-lg text-[#100b07]">Leaflet 1.9.4 + Geoman</h3>
+                        <p class="text-xs text-[#5c4636] leading-relaxed">Visor cartográfico interactivo para trazado vectorial de parcelas agrícolas con cálculo geométrico de superficie y centroide.</p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <span class="text-xs font-mono font-bold text-purple-800 bg-purple-100 px-2 py-0.5 rounded-md">SERIES TEMPORALES</span>
+                        <h3 class="font-bold text-lg text-[#100b07]">Chart.js 4.4</h3>
+                        <p class="text-xs text-[#5c4636] leading-relaxed">Motor de visualización gráfica para series temporales de 5 años: modos Continuo e Interanual con 4 KPIs calculados en vivo.</p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <span class="text-xs font-mono font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-md">SEGURIDAD</span>
+                        <h3 class="font-bold text-lg text-[#100b07]">JWT (HS256) + Bcrypt</h3>
+                        <p class="text-xs text-[#5c4636] leading-relaxed">Matriz de control de acceso RBAC (Admin, Propietario, Operador) y soporte para sesiones efímeras de invitado sin ensuciar la base de datos.</p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <span class="text-xs font-mono font-bold text-teal-800 bg-teal-100 px-2 py-0.5 rounded-md">PERSISTENCIA</span>
+                        <h3 class="font-bold text-lg text-[#100b07]">SQLAlchemy 2.0 ORM</h3>
+                        <p class="text-xs text-[#5c4636] leading-relaxed">Capa de persistencia agnóstica configurada para desarrollo en SQLite 3 (earth2worlds.db) y producción en PostgreSQL.</p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <span class="text-xs font-mono font-bold text-rose-800 bg-rose-100 px-2 py-0.5 rounded-md">REPORTING</span>
+                        <h3 class="font-bold text-lg text-[#100b07]">html2pdf.js + jsPDF</h3>
+                        <p class="text-xs text-[#5c4636] leading-relaxed">Generación de informes técnicos agronómicos en PDF en tiempo real con renderizado de curvas satelitales y atributos del lote.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: INFRAESTRUCTURA CI/CD -->
+        <section id="sec-nube" class="hidden space-y-6">
+            <div class="bg-white border-2 border-[#8c6547] rounded-3xl p-6 sm:p-8 shadow-sm space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="w-12 h-12 rounded-2xl bg-sky-100 border border-sky-400 flex items-center justify-center text-2xl">☁️</span>
+                    <div>
+                        <h2 class="font-extrabold text-2xl text-[#100b07]">Infraestructura de Despliegue Continuo (CI/CD)</h2>
+                        <p class="text-xs sm:text-sm text-[#785843]">Estrategia de ramas unificadas en GitHub y hosting cloud en Render.com.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4 text-xs sm:text-sm text-[#382a21] leading-relaxed">
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <h3 class="font-bold text-base text-[#100b07]">Rama Oficial de Despliegue: <code class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-300">main</code></h3>
+                        <p>La rama <code>main</code> contiene el código consolidado y validado mediante suite de tests automatizados (pytest), sincronizada de forma espejo con <code>rotaterra-completo</code> y <code>RENDER-earth2worlds-todo-junto</code>.</p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <h3 class="font-bold text-base text-[#100b07]">Parámetros del Web Service en Render.com</h3>
+                        <ul class="list-disc pl-5 space-y-1.5 text-xs text-[#5c4636]">
+                            <li><strong>Entorno de Ejecución:</strong> Python 3 sobre contenedor Linux.</li>
+                            <li><strong>Build Command:</strong> <code>pip install -r requirements.txt</code></li>
+                            <li><strong>Start Command:</strong> <code>uvicorn app.main:app --host 0.0.0.0 --port $PORT</code></li>
+                            <li><strong>Enlace de Red:</strong> Uvicorn escucha en la interfaz 0.0.0.0 utilizando la variable <code>$PORT</code> provista por el router de Render.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: BASES DE DATOS Y NASA -->
+        <section id="sec-satelites" class="hidden space-y-6">
+            <div class="bg-white border-2 border-[#8c6547] rounded-3xl p-6 sm:p-8 shadow-sm space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="w-12 h-12 rounded-2xl bg-amber-100 border border-amber-400 flex items-center justify-center text-2xl">🛰️</span>
+                    <div>
+                        <h2 class="font-extrabold text-2xl text-[#100b07]">Bases de Datos Edáficas y Constelación Satelital NASA</h2>
+                        <p class="text-xs sm:text-sm text-[#785843]">Integración de 34 años de registros agroclimáticos y cartografía de suelos del INTA.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <h3 class="font-bold text-sm text-[#100b07]">🌦️ NASA POWER (34 Años, 1991–2025)</h3>
+                        <p class="text-xs text-[#5c4636]">Serie agroclimática continua de radiación solar incidente (MJ/m²/día), temperaturas extremas superficiales (°C) y evapotranspiración de referencia Penman-Monteith (ET₀ en mm/día).</p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <h3 class="font-bold text-sm text-[#100b07]">🌧️ NASA GPM IMERG (10 km)</h3>
+                        <p class="text-xs text-[#5c4636]">Algoritmo calibrado por microondas y radar satelital que entrega precipitación acumulada diaria y por campaña agrícola (lluvia_mm).</p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <h3 class="font-bold text-sm text-[#100b07]">🌱 NASA HLS (Sentinel-2 / Landsat, 30 m)</h3>
+                        <p class="text-xs text-[#5c4636]">Observación multiespectral de 30 metros de resolución espacial para cuantificación del índice NDVI y vigor fotosintético actual.</p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <h3 class="font-bold text-sm text-[#100b07]">💧 NASA SMAP (9 km / 36 km EASE-Grid)</h3>
+                        <p class="text-xs text-[#5c4636]">Radiometría pasiva en banda L para estimación de humedad volumétrica del suelo en la zona radicular (0–100 cm) en m³/m³.</p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <h3 class="font-bold text-sm text-[#100b07]">⛰️ NASADEM SRTM (30 m)</h3>
+                        <p class="text-xs text-[#5c4636]">Modelo digital de elevación que entrega cota altimétrica sobre el nivel del mar, pendiente de escurrimiento (%) y rumbo azimutal de drenaje.</p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <h3 class="font-bold text-sm text-[#100b07]">🗺️ GeoINTA & Catálogo HWSD</h3>
+                        <p class="text-xs text-[#5c4636]">Cartas de suelo de la República Argentina para determinación de texturas edáficas, capacidad de agua útil en 1 metro y rangos agronómicos de pH.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: MOTOR DE ROTACIONES -->
+        <section id="sec-rotaterra" class="hidden space-y-6">
+            <div class="bg-white border-2 border-[#8c6547] rounded-3xl p-6 sm:p-8 shadow-sm space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="w-12 h-12 rounded-2xl bg-emerald-100 border border-emerald-400 flex items-center justify-center text-2xl">🔄</span>
+                    <div>
+                        <h2 class="font-extrabold text-2xl text-[#100b07]">Algoritmo del Motor de Rotaciones RotaTerra (Plan Trienal)</h2>
+                        <p class="text-xs sm:text-sm text-[#785843]">Evaluación multicriterio ponderada de sucesión agroclimática y balance biológico de nutrientes.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4 text-xs sm:text-sm text-[#382a21] leading-relaxed">
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <h3 class="font-bold text-base text-[#100b07]">1. Evaluación de Restricciones Duras y Blandas</h3>
+                        <p>El motor analiza 10 reglas agroclimáticas fundamentales: temperatura de suelo para siembra, acumulación de grados día (°Cd), riesgo de heladas tardías, balance hídrico acumulado, agua útil en siembra, profundidad efectiva del perfil edáfico, tolerancia a salinidad, textura y pH.</p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <h3 class="font-bold text-base text-[#100b07]">2. Encadenamiento Trienal Anti-Monocultivo</h3>
+                        <ul class="list-disc pl-5 space-y-1.5 text-xs text-[#5c4636]">
+                            <li><strong>Año 1 (Próxima Campaña):</strong> Determina el cultivo óptimo según el cultivo cosechado recientemente y la telemetría histórica del lote.</li>
+                            <li><strong>Año 2 (Siguiente Campaña):</strong> Encadena el ganador del Año 1 al historial del lote y excluye su especie para respetar el intervalo sanitario del INTA.</li>
+                            <li><strong>Año 3 (Tercera Campaña):</strong> Encadena Año 2 y Año 1 cerrando el ciclo trienal mediante alternancia biológica equilibrada de gramíneas y leguminosas.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: AUTENTICACIÓN EARTHDATA -->
+        <section id="sec-earthdata" class="hidden space-y-6">
+            <div class="bg-white border-2 border-emerald-600 rounded-3xl p-6 sm:p-8 shadow-sm space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="w-12 h-12 rounded-2xl bg-emerald-100 border border-emerald-400 flex items-center justify-center text-2xl">🔒</span>
+                    <div>
+                        <h2 class="font-extrabold text-2xl text-[#100b07]">Infraestructura de Autenticación y Acceso Seguro a NASA Earthdata</h2>
+                        <p class="text-xs sm:text-sm text-emerald-800 font-semibold">Mecanismo de autorización de los conectores satelitales en entornos cloud y producción.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4 text-xs sm:text-sm text-[#382a21] leading-relaxed">
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <h3 class="font-bold text-base text-[#100b07]">Diferenciación de Capas por Nivel de Autorización</h3>
+                        <p>Las APIs de <strong>NASA POWER</strong> (clima diario) y <strong>NASADEM</strong> (elevación SRTM) operan sobre servidores públicos que no requieren cabeceras de autorización HTTP. En contraste, las misiones <strong>NASA HLS (Sentinel-2)</strong> y <strong>NASA SMAP (Humedad radicular)</strong> requieren autenticación HTTP Basic contra los centros de distribución <em>LP DAAC</em> y <em>NSIDC</em>.</p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <h3 class="font-bold text-base text-[#100b07]">Inyección Segura de Credenciales en Entornos Cloud</h3>
+                        <p>Los conectores en <code>rotaterra/fuentes/hls.py</code> y <code>rotaterra/fuentes/smap.py</code> leen las credenciales criptográficas mediante variables de entorno:</p>
+                        <div class="p-3 bg-white rounded-xl border border-[#dfd2c6] font-mono text-xs space-y-1">
+                            <div><strong class="text-emerald-800">EARTHDATA_USERNAME</strong>: Identificador de usuario registrado en NASA Earthdata Login.</div>
+                            <div><strong class="text-emerald-800">EARTHDATA_PASSWORD</strong>: Token / Contraseña de acceso autorizada.</div>
+                        </div>
+                        <p class="text-xs text-[#5c4636]">Este desacoplamiento previene la exposición de secretos en el control de versiones (Git) y permite configurar las credenciales de manera aislada en el panel de variables de entorno del proveedor de infraestructura cloud.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: INTERNACIONALIZACIÓN Y METROLOGÍA -->
+        <section id="sec-i18n" class="hidden space-y-6">
+            <div class="bg-white border-2 border-[#8c6547] rounded-3xl p-6 sm:p-8 shadow-sm space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="w-12 h-12 rounded-2xl bg-sky-100 border border-sky-400 flex items-center justify-center text-2xl">🌐</span>
+                    <div>
+                        <h2 class="font-extrabold text-2xl text-[#100b07]">Sistema de Internacionalización (i18n) y Normalización de Unidades</h2>
+                        <p class="text-xs sm:text-sm text-[#785843]">Arquitectura bilingüe reactiva y estandarización de magnitudes agroclimáticas.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4 text-xs sm:text-sm text-[#382a21] leading-relaxed">
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <h3 class="font-bold text-base text-[#100b07]">Motor Reactivo Bilingüe en JavaScript</h3>
+                        <p>El módulo <code>static/js/i18n.js</code> mantiene diccionarios estructurados para inglés y español, aplicando traducción inmediata sin recarga de página sobre etiquetas del DOM (<code>data-i18n</code>), placeholders, títulos de reglas agronómicas y comparativas directas de campo vs requerimiento óptimo.</p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-[#faf7f2] border border-[#dfd2c6] space-y-2">
+                        <h3 class="font-bold text-base text-[#100b07]">Matriz de Normalización de Unidades Agroclimáticas</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                            <div class="p-3 bg-white rounded-xl border border-[#dfd2c6]">
+                                <strong class="text-[#100b07] block text-xs">Temperatura & Grados Día</strong>
+                                <span class="text-xs text-[#5c4636]">Grados Celsius (°C) para extremos térmicos diarios y Grados Día (°Cd) para acumulación fenológica de ciclo.</span>
+                            </div>
+                            <div class="p-3 bg-white rounded-xl border border-[#dfd2c6]">
+                                <strong class="text-[#100b07] block text-xs">Humedad de Suelo</strong>
+                                <span class="text-xs text-[#5c4636]">Retención volumétrica de agua en m³/m³ (0-100 cm) y porcentaje de agua útil disponible (%).</span>
+                            </div>
+                            <div class="p-3 bg-white rounded-xl border border-[#dfd2c6]">
+                                <strong class="text-[#100b07] block text-xs">Precipitación & Evapotranspiración</strong>
+                                <span class="text-xs text-[#5c4636]">Milímetros acumulados (mm) para lluvia y milímetros por día (mm/day / mm/día) para evapotranspiración Penman-Monteith (ET₀).</span>
+                            </div>
+                            <div class="p-3 bg-white rounded-xl border border-[#dfd2c6]">
+                                <strong class="text-[#100b07] block text-xs">Topografía & Relieve</strong>
+                                <span class="text-xs text-[#5c4636]">Cota en metros sobre el nivel del mar (m a.s.l. / m s.n.m.), pendiente (%) y rumbo direccional azimutal.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Script de Pestañas Interactivas -->
+    <script>
+        function cambiarPestana(id) {
+            const tabs = ['stack', 'nube', 'satelites', 'rotaterra', 'earthdata', 'i18n'];
+            tabs.forEach(t => {
+                const sec = document.getElementById('sec-' + t);
+                const btn = document.getElementById('tab-' + t);
+                if (t === id) {
+                    if (sec) sec.classList.remove('hidden');
+                    if (btn) btn.classList.add('active');
+                } else {
+                    if (sec) sec.classList.add('hidden');
+                    if (btn) btn.classList.remove('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -88,6 +88,16 @@ const DICCIONARIO_I18N = {
         pdf_plan_trienal: "3-Year Triennial Crop Rotation Plan",
         pdf_generado: "Generated on",
 
+        alerta_frontera_titulo: "Parcel outside national boundary",
+        alerta_frontera_desc: "The selected parcel is located outside the Argentine Republic territory. Only parcels within the country boundaries are supported.",
+        btn_cerrar: "✕ Close",
+        badge_lote_evaluado: "EVALUATED PARCEL",
+        btn_pdf_esperando_title: "Waiting for 5-year satellite data download...",
+        slot_rec_titulo: "Agronomic Crop Rotation Recommendation",
+        slot_rec_ventana: "🛰️ Satellite Window: 5 Years NASA",
+        slot_rec_procesando: "Processing historical observations from the NASA constellation (NDVI HLS/MODIS, root-zone moisture SMAP, precipitation regime IMERG, and frost risk VIIRS) cross-referenced with declared previous crop...",
+        estado_conectando_nasa: "Connecting to NASA Earthdata...",
+
         paso3_cabecera: "Step 3: 5-Year NASA Satellite Information and Recommended Rotations",
         paso3_desc: "Multi-satellite query across 5 years of history. Click on each card to inspect continuous or interannual charts.",
         banner_espera_analisis: "Evaluating 5 years of NASA satellite telemetry (HLS, SMAP, IMERG, POWER, ET) and computing optimal rotations...",
@@ -126,6 +136,16 @@ const DICCIONARIO_I18N = {
 
         badge_descargando_5y: "⏳ Downloading 5 years...",
         badge_ver_grafico_5y: "📈 View Chart (5y)",
+
+        btn_acceso_admin: "🔒 Admin Access",
+        modal_admin_titulo: "Administrator Access",
+        grafico_sin_observaciones: "No observations available in this range",
+        kpi_obs_label: "Obs",
+        kpi_min_label: "Min",
+        kpi_max_label: "Max",
+        kpi_prom_label: "Avg",
+        slot_rec_estado_motor: "Rotation Engine Status:",
+        slot_rec_desc_motor: "Slot integrated for the RotaTerra agronomic rotation engine. Evaluates soil sustainability, monoculture reduction, available water capacity, and 5-season cumulative water balance.",
 
         badge_lote_evaluado: "EVALUATED PARCEL",
         resumen_superficie_label: "Area:",
@@ -312,6 +332,16 @@ const DICCIONARIO_I18N = {
         pdf_plan_trienal: "Plan Trienal de Rotación de Cultivos",
         pdf_generado: "Generado el",
 
+        alerta_frontera_titulo: "Lote fuera del límite nacional",
+        alerta_frontera_desc: "El lote seleccionado se encuentra fuera del territorio de la República Argentina. Solo se admiten parcelas dentro de las fronteras del país.",
+        btn_cerrar: "✕ Cerrar",
+        badge_lote_evaluado: "LOTE EVALUADO",
+        btn_pdf_esperando_title: "Aguardando descarga de 5 años de datos satelitales...",
+        slot_rec_titulo: "Recomendación Agronómica de Rotación de Cultivos",
+        slot_rec_ventana: "🛰️ Ventana Satelital: 5 Años NASA",
+        slot_rec_procesando: "Procesando observaciones históricas de la constelación de la NASA (NDVI HLS/MODIS, humedad radicular SMAP, régimen hídrico IMERG y riesgo de heladas VIIRS) cruzadas con el cultivo previo declarado...",
+        estado_conectando_nasa: "Conectando con NASA Earthdata...",
+
         paso3_cabecera: "Paso 3: Información Satelital de 5 Años y Recomendación de Rotaciones",
         paso3_desc: "Consulta multi-satelital de 5 años de historia. Haz clic en cada tarjeta para inspeccionar los gráficos continuos o interanuales.",
         banner_espera_analisis: "Evaluando 5 años de telemetría satelital NASA (HLS, SMAP, IMERG, POWER, ET) y calculando rotaciones óptimas...",
@@ -350,6 +380,16 @@ const DICCIONARIO_I18N = {
 
         badge_descargando_5y: "⏳ Descargando 5 años...",
         badge_ver_grafico_5y: "📈 Ver Gráfico (5a)",
+
+        btn_acceso_admin: "🔒 Acceso Administrador",
+        modal_admin_titulo: "Acceso Administrador",
+        grafico_sin_observaciones: "Sin observaciones disponibles en este rango",
+        kpi_obs_label: "Obs",
+        kpi_min_label: "Mín",
+        kpi_max_label: "Máx",
+        kpi_prom_label: "Prom",
+        slot_rec_estado_motor: "Estado del Motor de Rotación:",
+        slot_rec_desc_motor: "Slot reservado e integrado para el nuevo motor agronómico de Rotaterra. Evalúa la sustentabilidad del suelo, reducción de monocultivo, disponibilidad de agua útil y balance hídrico acumulado de las últimas 5 campañas.",
 
         badge_lote_evaluado: "LOTE EVALUADO",
         resumen_superficie_label: "Superficie:",
@@ -560,6 +600,7 @@ function traducirExplicacionSeleccion(texto) {
         const topEn = traducirNombreCultivo(m[3]);
         let advEn = m[4];
         if (advEn.toLowerCase().includes("temperatura del suelo")) advEn = "Soil temperature for sowing";
+        else if (advEn.toLowerCase().includes("humedad")) advEn = "Soil moisture at sowing";
         else if (advEn.toLowerCase().includes("precaución")) advEn = "climatic precaution";
         return `Choice #${m[1]} with caution (${m[2]}% match): Ranked behind ${topEn} due to technical warnings on your field (${advEn}); requires moisture monitoring or specific field management.`;
     }
@@ -569,6 +610,8 @@ function traducirExplicacionSeleccion(texto) {
     if (m) {
         let critEn = m[2];
         if (critEn.toLowerCase().includes("no repetir")) critEn = "Do not repeat species";
+        else if (critEn.toLowerCase().includes("temperatura")) critEn = "Soil temperature for sowing";
+        else if (critEn.toLowerCase().includes("agua")) critEn = "Cycle water demand";
         return `Not recommended (${m[1]}% match): Not advised for this season compared to recommended choices because it does not pass critical rules for your field (${critEn}).`;
     }
 
@@ -644,25 +687,31 @@ function traducirComparativaOptimo(texto) {
     res = res.replace(/vs Óptimo:/g, "vs Optimal:");
     res = res.replace(/vs Óptimo ciclo:/g, "vs Optimal cycle:");
     res = res.replace(/vs Óptimo requerimiento:/g, "vs Optimal requirement:");
+    res = res.replace(/· Óptimo:/g, "· Optimal:");
 
+    // Specific multi-word patterns before single-word replacements
+    res = res.replace(/madura antes de helada en (\d+)\/(\d+) campañas/g, "matures before frost in $1/$2 seasons");
     res = res.replace(/suelo con (\d+) °C en (\d+)\/(\d+) campañas/g, "soil at $1 °C in $2/$3 seasons");
+    res = res.replace(/humedad de siembra estimada en (\d+)\/(\d+) campañas/g, "estimated sowing moisture in $1/$2 seasons");
+    res = res.replace(/oferta media (\d+) mm/g, "average water supply $1 mm");
     res = res.replace(/en (\d+)\/(\d+) campañas/g, "in $1/$2 seasons");
     res = res.replace(/en (\d+) de cada (\d+) campañas/g, "in $1 out of $2 seasons");
     res = res.replace(/no alcanza (\d+) °C a fin de enero/g, "does not reach $1 °C by late January");
+
     res = res.replace(/Mínimo de siembra:/g, "Minimum sowing temp:");
     res = res.replace(/Mínimo requerido:/g, "Minimum required:");
     res = res.replace(/Mínimo:/g, "Minimum:");
     res = res.replace(/Recomendado:/g, "Recommended:");
+    res = res.replace(/Tolerancia:/g, "Tolerance:");
 
-    res = res.replace(/madura antes de helada en (\d+)\/(\d+) campañas/g, "matures before frost in $1/$2 seasons");
+    res = res.replace(/([\d.]+)\s+a\s+([\d.]+)\s*°Cd/g, "$1 to $2 °Cd");
+    res = res.replace(/(\d+)\s*%\s+a\s+(\d+)\s*%/g, "$1% to $2%");
     res = res.replace(/madura hacia el/g, "matures around");
     res = res.replace(/sin serie térmica/g, "no thermal series available");
     res = res.replace(/sin serie de clima/g, "no climate series available");
 
-    res = res.replace(/humedad de siembra estimada en (\d+)\/(\d+) campañas/g, "estimated sowing moisture in $1/$2 seasons");
     res = res.replace(/humedad de siembra estimada/g, "estimated sowing moisture");
     res = res.replace(/de agua útil/g, "available water");
-    res = res.replace(/oferta media (\d+) mm/g, "average water supply $1 mm");
     res = res.replace(/oferta media/g, "average water supply");
     res = res.replace(/de demanda/g, "of crop demand");
 
@@ -671,6 +720,8 @@ function traducirComparativaOptimo(texto) {
     res = res.replace(/Falta la profundidad/g, "Missing profile depth");
     res = res.replace(/profundidad del suelo/g, "soil depth");
     res = res.replace(/Tope por cultivo/g, "Crop threshold");
+    res = res.replace(/Suelo libre de sales/g, "Salt-free soil");
+    res = res.replace(/rotación cruzada favorable sin repetir especie/g, "favorable cross-rotation without repeating species");
 
     res = res.replace(/cultivo previo/g, "previous crop");
     res = res.replace(/no repetir la misma especie/g, "do not repeat the same species");
@@ -733,6 +784,15 @@ function cambiarIdioma(nuevoIdioma) {
     // 6. Si hay recomendaciones visibles, re-renderizar para traducir nombres y dictámenes
     if (window._ultimasRecomendacionesCache && typeof window.renderizarTarjetasRecomendaciones === "function") {
         window.renderizarTarjetasRecomendaciones(window._ultimasRecomendacionesCache);
+    }
+
+    // 6b. Actualizar badge de cultivo previo si existe
+    const badgeCultPrev = document.getElementById("badgeCultivoPrevioResumen");
+    if (badgeCultPrev && window._ultimasRecomendacionesCache) {
+        const cult = window._ultimasRecomendacionesCache.cultivoPrevio || "";
+        const labelPrev = nuevoIdioma === "en" ? "Previous: " : "Previo: ";
+        const cultNombre = typeof traducirNombreCultivo === "function" ? traducirNombreCultivo(cult) : cult;
+        badgeCultPrev.textContent = `${labelPrev}${cultNombre}`;
     }
 
     // 7. Actualizar etiquetas de Geoman en los mapas según idioma

@@ -6,3 +6,5 @@ __pycache__/
 *.db
 !earth2worlds.db
 .env
+.~lock.*
+

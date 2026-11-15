@@ -600,7 +600,7 @@ CONTROLADORES JAVASCRIPT:
                 </button>
                 <button type="button" onclick="abrirModalLoginAdmin()"
                     class="px-4 py-2.5 rounded-xl text-xs font-mono font-semibold bg-white hover:bg-[#faf7f2] text-[#785843] border-2 border-[#8c6547] transition flex items-center gap-2 shadow-xs cursor-pointer">
-                    <span>🔒 Acceso Administrador</span>
+                    <span data-i18n="btn_acceso_admin">🔒 Admin Access</span>
                 </button>
             </div>
         </div>
@@ -615,7 +615,7 @@ CONTROLADORES JAVASCRIPT:
             <div class="flex items-center justify-between border-b border-[#dfd2c6] pb-4">
                 <div class="flex items-center gap-2">
                     <span class="text-lg">🔒</span>
-                    <h3 class="font-heading text-xl font-bold text-[#241810]">Acceso Administrador</h3>
+                    <h3 data-i18n="modal_admin_titulo" class="font-heading text-xl font-bold text-[#241810]">Administrator Access</h3>
                 </div>
                 <button type="button" onclick="cerrarModal('modalLoginAdmin')"
                     class="text-[#785843] hover:text-[#241810] text-sm font-mono font-bold">
@@ -774,16 +774,14 @@ CONTROLADORES JAVASCRIPT:
                     <div class="flex items-center gap-3">
                         <span class="text-2xl flex-shrink-0">⚠️</span>
                         <div>
-                            <p class="font-bold text-amber-100 text-sm">Lote fuera del límite nacional</p>
-                            <p class="text-xs text-amber-300 font-normal mt-0.5">El lote seleccionado se encuentra fuera
-                                del territorio de la República Argentina. Solo se admiten parcelas dentro de las
-                                fronteras del país.</p>
+                            <p data-i18n="alerta_frontera_titulo" class="font-bold text-amber-100 text-sm">Parcel outside national boundary</p>
+                            <p data-i18n="alerta_frontera_desc" class="text-xs text-amber-300 font-normal mt-0.5">The selected parcel is located outside the Argentine Republic territory. Only parcels within the country boundaries are supported.</p>
                         </div>
                     </div>
                     <button type="button"
                         onclick="document.getElementById('alertaFronteraArgentina').classList.add('hidden')"
                         class="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/40 text-amber-100 font-mono text-xs flex-shrink-0 transition">
-                        ✕ Cerrar
+                        <span data-i18n="btn_cerrar">✕ Close</span>
                     </button>
                 </div>
 
@@ -895,9 +893,10 @@ CONTROLADORES JAVASCRIPT:
                     </div>
                     <div class="flex items-center gap-2.5 flex-wrap">
                         <button type="button" onclick="exportarReportePDF()" id="btnExportarPDF" disabled
-                            title="Aguardando descarga de 5 años de datos satelitales..."
+                            data-i18n-title="btn_pdf_esperando_title"
+                            title="Waiting for 5-year satellite data download..."
                             class="px-4 py-2.5 rounded-xl text-xs font-mono font-bold bg-stone-200 text-stone-500 border border-stone-300 shadow-none transition flex items-center gap-2 cursor-wait opacity-60">
-                            <span data-i18n="btn_pdf_esperando">⏳ Aguardando datos (5a)...</span>
+                            <span data-i18n="btn_pdf_esperando">⏳ Waiting for data (5y)...</span>
                         </button>
                     </div>
                 </div>
@@ -908,10 +907,10 @@ CONTROLADORES JAVASCRIPT:
                         <span class="w-11 h-11 rounded-2xl bg-sky-100 border-2 border-sky-400 flex items-center justify-center text-2xl flex-shrink-0 shadow-xs">🛰️</span>
                         <div>
                             <h3 data-i18n="banner_34_anios_titulo" class="font-heading font-extrabold text-base sm:text-lg text-[#241810]">
-                                34 años de datos de la NASA a tu servicio
+                                34 Years of NASA Data at Your Service
                             </h3>
                             <p data-i18n="banner_34_anios_desc" class="text-xs text-[#5c4636] mt-0.5 font-medium">
-                                Serie histórica NASA POWER (1991 a 2025) con balance hídrico, radiación, temperaturas y registro agroclimático de alta precisión.
+                                NASA POWER historical series (1991 to 2025) with water balance, solar radiation, temperatures, and high-precision agroclimatic records.
                             </p>
                         </div>
                     </div>
@@ -932,32 +931,28 @@ CONTROLADORES JAVASCRIPT:
                                 <span
                                     class="text-xs font-mono text-emerald-800 font-bold uppercase tracking-wider block">[SLOT-RECOMENDACION-CULTIVOS]
                                     ROTATERRA ENGINE</span>
-                                <h3 class="font-heading text-xl sm:text-2xl font-extrabold text-[#140d07]">Recomendación
-                                    Agronómica de Rotación de Cultivos</h3>
+                                <h3 data-i18n="slot_rec_titulo" class="font-heading text-xl sm:text-2xl font-extrabold text-[#140d07]">
+                                    Agronomic Crop Rotation Recommendation
+                                </h3>
                             </div>
                         </div>
-                        <span
+                        <span data-i18n="slot_rec_ventana"
                             class="px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-emerald-50 text-emerald-900 border border-emerald-400 self-start sm:self-auto shadow-xs">
-                            🛰️ Ventana Satelital: 5 Años NASA
+                            🛰️ Satellite Window: 5 Years NASA
                         </span>
                     </div>
 
                     <div id="contenidoRecomendacionCultivo" class="space-y-4">
-                        <p class="text-sm text-[#2b1b11] leading-relaxed font-semibold">
-                            Procesando observaciones históricas de la constelación de la NASA (NDVI HLS/MODIS, humedad
-                            radicular SMAP, régimen hídrico IMERG y riesgo de heladas VIIRS) cruzadas con el cultivo
-                            previo declarado (<strong id="textoCultivoPrevioRec"
+                        <p data-i18n="slot_rec_procesando" class="text-sm text-[#2b1b11] leading-relaxed font-semibold">
+                            Processing historical observations from the NASA constellation (NDVI HLS/MODIS, root-zone moisture SMAP, precipitation regime IMERG, and frost risk VIIRS) cross-referenced with declared previous crop (<strong id="textoCultivoPrevioRec"
                                 class="text-emerald-800 font-bold">-</strong>)...
                         </p>
                         <div
                             class="p-4 rounded-xl bg-[#faf6f0] border-2 border-[#8c6547] flex items-start gap-3 shadow-xs">
                             <span class="text-emerald-700 text-xl flex-shrink-0">💡</span>
                             <div class="text-xs text-[#2b1b11] leading-relaxed font-medium">
-                                <strong class="text-[#140d07] font-bold block mb-0.5 text-sm">Estado del Motor de
-                                    Rotación:</strong>
-                                Slot reservado e integrado para el nuevo motor agronómico de Rotaterra. Evalúa la
-                                sustentabilidad del suelo, reducción de monocultivo, disponibilidad de agua útil y
-                                balance hídrico acumulado de las últimas 5 campañas.
+                                <strong data-i18n="slot_rec_estado_motor" class="text-[#140d07] font-bold block mb-0.5 text-sm">Rotation Engine Status:</strong>
+                                <span data-i18n="slot_rec_desc_motor">Slot integrated for the RotaTerra agronomic rotation engine. Evaluates soil sustainability, monoculture reduction, available water capacity, and 5-season cumulative water balance.</span>
                             </div>
                         </div>
                     </div>
@@ -966,9 +961,8 @@ CONTROLADORES JAVASCRIPT:
                 <!-- Grilla de las 6 Tarjetas de Información Satelital -->
                 <div class="space-y-4">
                     <div class="flex items-center justify-between">
-                        <h3 data-i18n="sec_satelital_titulo" class="font-heading text-lg font-bold text-white">Información Satelital actual</h3>
-                        <span id="estadoConsultaBasico" class="text-xs font-mono text-slate-400">Conectando con NASA
-                            Earthdata...</span>
+                        <h3 data-i18n="sec_satelital_titulo" class="font-heading text-lg font-bold text-white">Current Satellite Information</h3>
+                        <span id="estadoConsultaBasico" data-i18n="estado_conectando_nasa" class="text-xs font-mono text-slate-400">Connecting to NASA Earthdata...</span>
                     </div>
 
                     <div id="grillaTarjetasBasico" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -979,10 +973,10 @@ CONTROLADORES JAVASCRIPT:
                                 <div class="flex items-center justify-between">
                                     <span class="text-xs font-mono text-emerald-800 font-bold flex items-center gap-1">🌱 VEGETATION</span>
                                     <span id="badgeGraficoNdvi" data-i18n="badge_descargando_5y"
-                                        class="text-xs font-sans px-3 py-1 rounded-xl bg-sky-50 text-sky-800 border-2 border-sky-400 font-bold shadow-xs cursor-wait">⏳ Descargando 5 años...</span>
+                                        class="text-xs font-sans px-3 py-1 rounded-xl bg-sky-50 text-sky-800 border-2 border-sky-400 font-bold shadow-xs cursor-wait">⏳ Downloading 5 years...</span>
                                 </div>
                                 <h4 data-i18n="card1_titulo" class="font-heading font-extrabold text-[#241810] text-base mt-2 group-hover:text-emerald-700 transition">
-                                    Vegetación Activa</h4>
+                                    Active Vegetation</h4>
                                 <div class="flex items-baseline gap-2 mt-1">
                                     <span id="basicoNdviValor"
                                         class="font-heading font-extrabold text-2xl text-emerald-700">-</span>
@@ -1000,10 +994,10 @@ CONTROLADORES JAVASCRIPT:
                                 <div class="flex items-center justify-between">
                                     <span class="text-xs font-mono text-sky-800 font-bold flex items-center gap-1">💧 ROOT-ZONE SOIL</span>
                                     <span id="badgeGraficoSmap" data-i18n="badge_descargando_5y"
-                                        class="text-xs font-sans px-3 py-1 rounded-xl bg-sky-50 text-sky-800 border-2 border-sky-400 font-bold shadow-xs cursor-wait">⏳ Descargando 5 años...</span>
+                                        class="text-xs font-sans px-3 py-1 rounded-xl bg-sky-50 text-sky-800 border-2 border-sky-400 font-bold shadow-xs cursor-wait">⏳ Downloading 5 years...</span>
                                 </div>
                                 <h4 data-i18n="card2_titulo" class="font-heading font-extrabold text-[#241810] text-base mt-2 group-hover:text-sky-700 transition">
-                                    Humedad para Siembra</h4>
+                                    Sowing Moisture</h4>
                                 <div class="flex items-baseline gap-2 mt-1">
                                     <span id="basicoSmapValor"
                                         class="font-heading font-extrabold text-2xl text-sky-700">-</span>
@@ -1021,10 +1015,10 @@ CONTROLADORES JAVASCRIPT:
                                 <div class="flex items-center justify-between">
                                     <span class="text-xs font-mono text-blue-800 font-bold flex items-center gap-1">🌧️ PRECIPITATION</span>
                                     <span id="badgeGraficoLluvia" data-i18n="badge_descargando_5y"
-                                        class="text-xs font-sans px-3 py-1 rounded-xl bg-sky-50 text-sky-800 border-2 border-sky-400 font-bold shadow-xs cursor-wait">⏳ Descargando 5 años...</span>
+                                        class="text-xs font-sans px-3 py-1 rounded-xl bg-sky-50 text-sky-800 border-2 border-sky-400 font-bold shadow-xs cursor-wait">⏳ Downloading 5 years...</span>
                                 </div>
                                 <h4 data-i18n="card5_titulo" class="font-heading font-extrabold text-[#241810] text-base mt-2 group-hover:text-blue-700 transition">
-                                    Precipitación acumulada</h4>
+                                    Accumulated Precipitation</h4>
                                 <div class="flex items-baseline gap-2 mt-1">
                                     <span id="basicoLluviaValor"
                                         class="font-heading font-extrabold text-2xl text-blue-700">-</span>
@@ -1042,10 +1036,10 @@ CONTROLADORES JAVASCRIPT:
                                 <div class="flex items-center justify-between">
                                     <span class="text-xs font-mono text-cyan-800 font-bold flex items-center gap-1">❄️ TEMPERATURE / FROST</span>
                                     <span id="badgeGraficoTemp" data-i18n="badge_descargando_5y"
-                                        class="text-xs font-sans px-3 py-1 rounded-xl bg-sky-50 text-sky-800 border-2 border-sky-400 font-bold shadow-xs cursor-wait">⏳ Descargando 5 años...</span>
+                                        class="text-xs font-sans px-3 py-1 rounded-xl bg-sky-50 text-sky-800 border-2 border-sky-400 font-bold shadow-xs cursor-wait">⏳ Downloading 5 years...</span>
                                 </div>
                                 <h4 data-i18n="card3_titulo" class="font-heading font-extrabold text-[#241810] text-base mt-2 group-hover:text-cyan-700 transition">
-                                    Temperatura de Suelo</h4>
+                                    Soil Temperature</h4>
                                 <div class="flex items-baseline gap-2 mt-1">
                                     <span id="basicoTempValor"
                                         class="font-heading font-extrabold text-2xl text-cyan-700">-</span>
@@ -1063,10 +1057,10 @@ CONTROLADORES JAVASCRIPT:
                                 <div class="flex items-center justify-between">
                                     <span class="text-xs font-mono text-teal-800 font-bold flex items-center gap-1">🌿 EVAPORATION</span>
                                     <span id="badgeGraficoEt" data-i18n="badge_descargando_5y"
-                                        class="text-xs font-sans px-3 py-1 rounded-xl bg-sky-50 text-sky-800 border-2 border-sky-400 font-bold shadow-xs cursor-wait">⏳ Descargando 5 años...</span>
+                                        class="text-xs font-sans px-3 py-1 rounded-xl bg-sky-50 text-sky-800 border-2 border-sky-400 font-bold shadow-xs cursor-wait">⏳ Downloading 5 years...</span>
                                 </div>
                                 <h4 data-i18n="card6_titulo" class="font-heading font-extrabold text-[#241810] text-base mt-2 group-hover:text-teal-700 transition">
-                                    Evaporación del Suelo</h4>
+                                    Soil Evaporation</h4>
                                 <div class="flex items-baseline gap-2 mt-1">
                                     <span id="basicoEtValor"
                                         class="font-heading font-extrabold text-2xl text-teal-700">-</span>
@@ -2122,7 +2116,7 @@ CONTROLADORES JAVASCRIPT:
                 <div id="graficoVacio"
                     class="hidden absolute inset-0 flex flex-col items-center justify-center gap-1 text-center bg-white/90 rounded-2xl z-10">
                     <div class="text-3xl">📡</div>
-                    <p class="text-xs font-bold text-[#100b07]">Sin observaciones disponibles en este rango</p>
+                    <p data-i18n="grafico_sin_observaciones" class="text-xs font-bold text-[#100b07]">No observations available in this range</p>
                 </div>
                 <canvas id="canvasGraficoTelemetria" class="w-full h-full"></canvas>
                 <canvas id="canvasGraficoHistorico" class="hidden"></canvas>
@@ -2132,10 +2126,10 @@ CONTROLADORES JAVASCRIPT:
             <div
                 class="pt-3 border-t border-[#dfd2c6] flex flex-wrap items-center justify-between gap-2 text-xs font-mono shrink-0">
                 <div class="flex items-center gap-3 text-[#523725]">
-                    <span>Obs: <strong id="kpiGraficoTotalObs" class="text-[#100b07]">0</strong></span> •
-                    <span>Mín: <strong id="kpiGraficoMin" class="text-sky-800 font-bold">--</strong></span> •
-                    <span>Máx: <strong id="kpiGraficoMax" class="text-emerald-800 font-bold">--</strong></span> •
-                    <span>Prom: <strong id="kpiGraficoProm" class="text-amber-800 font-bold">--</strong></span>
+                    <span><span data-i18n="kpi_obs_label">Obs</span>: <strong id="kpiGraficoTotalObs" class="text-[#100b07]">0</strong></span> •
+                    <span><span data-i18n="kpi_min_label">Min</span>: <strong id="kpiGraficoMin" class="text-sky-800 font-bold">--</strong></span> •
+                    <span><span data-i18n="kpi_max_label">Max</span>: <strong id="kpiGraficoMax" class="text-emerald-800 font-bold">--</strong></span> •
+                    <span><span data-i18n="kpi_prom_label">Avg</span>: <strong id="kpiGraficoProm" class="text-amber-800 font-bold">--</strong></span>
                 </div>
                 <span
                     class="px-2 py-0.5 rounded bg-[#faf6f0] text-[#523725] border border-[#8c6547] text-[10px]">Chart.js
@@ -2200,14 +2194,19 @@ CONTROLADORES JAVASCRIPT:
         }
 
         async function iniciarModoDesdeSelector(modo) {
+            const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
             try {
-                mostrarToast(`Iniciando ${modo === 'basico' ? 'Modo Agricultor' : 'Modo Técnico Agropecuario'}...`, "info");
+                mostrarToast(isEn ? `Starting ${modo === 'basico' ? 'Farmer Mode' : 'Specialist Mode'}...` : `Iniciando ${modo === 'basico' ? 'Modo Agricultor' : 'Modo Técnico Agropecuario'}...`, "info");
                 const data = await iniciarSesionInvitado(modo);
                 currentUser = data ? data.usuario : null;
                 setModo(modo);
 
                 const navModoLabel = document.getElementById("navModoLabel");
-                if (navModoLabel) navModoLabel.textContent = modo === "basico" ? "Agricultor" : "Técnico Agropecuario";
+                if (navModoLabel) {
+                    if (modo === "basico") navModoLabel.textContent = isEn ? "Farmer" : "Agricultor";
+                    else if (modo === "avanzado") navModoLabel.textContent = isEn ? "Specialist" : "Técnico Agropecuario";
+                    else navModoLabel.textContent = "Admin";
+                }
             } catch (err) {
                 console.warn("[Selector] Fallback a sesión local:", err);
                 currentUser = {
@@ -2325,8 +2324,9 @@ CONTROLADORES JAVASCRIPT:
                 badge.textContent = "";
                 badge.classList.add("hidden");
             }
-            if (nameDisplay) nameDisplay.textContent = "Agricultor";
-            if (locDisplay) locDisplay.textContent = "Prueba Rápida · Argentina";
+            const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
+            if (nameDisplay) nameDisplay.textContent = isEn ? "Farmer" : "Agricultor";
+            if (locDisplay) locDisplay.textContent = isEn ? "Quick Assessment · Argentina" : "Prueba Rápida · Argentina";
         }
 
         /* ===================================================================
@@ -2483,19 +2483,20 @@ CONTROLADORES JAVASCRIPT:
             mapaBasico.on("pm:create", (e) => {
                 const geo = e.layer.toGeoJSON();
                 const alerta = document.getElementById("alertaFronteraArgentina");
+                const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
                 if (!estaDentroDeArgentina(geo.geometry)) {
                     mapaBasico.removeLayer(e.layer);
                     if (alerta) {
                         alerta.classList.remove("hidden");
                         alerta.scrollIntoView({ behavior: "smooth", block: "nearest" });
                     }
-                    mostrarToast("El lote seleccionado está fuera del territorio de la República Argentina. Solo se admiten parcelas dentro del país.", "warning");
+                    mostrarToast(isEn ? "The selected parcel is outside Argentine territory. Only parcels within the country are supported." : "El lote seleccionado está fuera del territorio de la República Argentina. Solo se admiten parcelas dentro del país.", "warning");
                     if (loteBasicoLayer === e.layer) {
                         loteBasicoLayer = null;
                         loteBasicoGeoJSON = null;
                     }
                     document.getElementById("superficieBasicoHa").textContent = "0.00 ha";
-                    document.getElementById("badgeCoordenadasBasico").textContent = "Haz clic en el mapa para iniciar el polígono";
+                    document.getElementById("badgeCoordenadasBasico").textContent = isEn ? "Click on the map to start drawing the parcel polygon" : "Haz clic en el mapa para iniciar el polígono";
                     const btnPaso2 = document.getElementById("btnContinuarPaso2");
                     if (btnPaso2) btnPaso2.disabled = true;
                     const btnFlot = document.getElementById("btnFlotanteConfirmarMapa");
@@ -2533,7 +2534,6 @@ CONTROLADORES JAVASCRIPT:
                 }
                 loteBasicoCentroide = { lat: cLat, lon: cLon };
                 const ha = (areaM2 / 10000).toFixed(2);
-                const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
                 const labelCent = isEn ? 'Centroid:' : 'Centroide:';
                 document.getElementById("superficieBasicoHa").textContent = `${ha} ha`;
                 document.getElementById("badgeCoordenadasBasico").textContent = `${labelCent} [${cLat.toFixed(4)}, ${cLon.toFixed(4)}] · ${ha} ha`;
@@ -2561,21 +2561,22 @@ CONTROLADORES JAVASCRIPT:
         }
 
         function irACoordenadasGoogle() {
+            const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
             const input = document.getElementById("inputCoordGoogle");
             if (!input || !input.value.trim()) {
-                mostrarToast("Por favor pega o ingresa las coordenadas (ej: -33.68, -65.42)", "warning");
+                mostrarToast(isEn ? "Please paste or enter coordinates (e.g. -33.68, -65.42)" : "Por favor pega o ingresa las coordenadas (ej: -33.68, -65.42)", "warning");
                 return;
             }
             const txt = input.value.trim().replace(/;/g, ",").replace(/[\t]+/g, " ");
             const matches = txt.match(/[-+]?\d*\.?\d+/g);
             if (!matches || matches.length < 2) {
-                mostrarToast("No se pudieron interpretar las coordenadas. Formato esperado: latitud, longitud (ej: -33.68, -65.42)", "error");
+                mostrarToast(isEn ? "Could not parse coordinates. Expected format: latitude, longitude (e.g. -33.68, -65.42)" : "No se pudieron interpretar las coordenadas. Formato esperado: latitud, longitud (ej: -33.68, -65.42)", "error");
                 return;
             }
             const lat = parseFloat(matches[0]);
             const lon = parseFloat(matches[1]);
             if (isNaN(lat) || isNaN(lon) || Math.abs(lat) > 90 || Math.abs(lon) > 180) {
-                mostrarToast("Coordenadas fuera de rango geográfico válido (-90 a 90, -180 a 180).", "error");
+                mostrarToast(isEn ? "Coordinates outside valid geographical range (-90 to 90, -180 to 180)." : "Coordenadas fuera de rango geográfico válido (-90 a 90, -180 a 180).", "error");
                 return;
             }
             if (mapaBasico) {
@@ -2591,7 +2592,7 @@ CONTROLADORES JAVASCRIPT:
                         iconAnchor: null
                     })
                 }).addTo(mapaBasico);
-                mostrarToast(`Mapa centrado en [${lat.toFixed(4)}, ${lon.toFixed(4)}]. Usa las herramientas de la izquierda para dibujar tu lote.`, "success");
+                mostrarToast(isEn ? `Map centered at [${lat.toFixed(4)}, ${lon.toFixed(4)}]. Use the tools on the left to draw your parcel.` : `Mapa centrado en [${lat.toFixed(4)}, ${lon.toFixed(4)}]. Usa las herramientas de la izquierda para dibujar tu lote.`, "success");
             }
         }
 
@@ -2617,8 +2618,9 @@ CONTROLADORES JAVASCRIPT:
         }
 
         function irAPasoBasico2() {
+            const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
             if (!loteBasicoGeoJSON) {
-                mostrarToast("Primero debes dibujar un polígono en el mapa.", "warning");
+                mostrarToast(isEn ? "First you must draw a parcel polygon on the map." : "Primero debes dibujar un polígono en el mapa.", "warning");
                 return;
             }
             document.getElementById("pasoBasico1").classList.add("hidden");
@@ -2639,15 +2641,22 @@ CONTROLADORES JAVASCRIPT:
             const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
             const labelPrev = isEn ? "Previous: " : "Previo: ";
             const cultNombre = typeof traducirNombreCultivo === 'function' ? traducirNombreCultivo(cultivo) : cultivo;
-            document.getElementById("badgeCultivoPrevioResumen").textContent = `${labelPrev}${cultNombre}`;
-            document.getElementById("textoCultivoPrevioRec").textContent = cultNombre;
+            const elBadge = document.getElementById("badgeCultivoPrevioResumen");
+            if (elBadge) elBadge.textContent = `${labelPrev}${cultNombre}`;
+            const elTxt = document.getElementById("textoCultivoPrevioRec");
+            if (elTxt) elTxt.textContent = cultNombre;
 
-            const haTxt = document.getElementById("superficieBasicoHa").textContent;
-            document.getElementById("resumenSuperficieHa").textContent = haTxt;
-            if (loteBasicoCentroide && loteBasicoCentroide.lat) {
-                document.getElementById("resumenCentroide").textContent = `[${loteBasicoCentroide.lat.toFixed(4)}, ${loteBasicoCentroide.lon.toFixed(4)}]`;
-            } else {
-                document.getElementById("resumenCentroide").textContent = "-";
+            const elHa = document.getElementById("superficieBasicoHa");
+            const haTxt = elHa ? elHa.textContent : "";
+            const elResHa = document.getElementById("resumenSuperficieHa");
+            if (elResHa) elResHa.textContent = haTxt;
+            const elResCent = document.getElementById("resumenCentroide");
+            if (elResCent) {
+                if (loteBasicoCentroide && loteBasicoCentroide.lat) {
+                    elResCent.textContent = `[${loteBasicoCentroide.lat.toFixed(4)}, ${loteBasicoCentroide.lon.toFixed(4)}]`;
+                } else {
+                    elResCent.textContent = "-";
+                }
             }
         }
 
@@ -2673,13 +2682,14 @@ CONTROLADORES JAVASCRIPT:
         }
 
         function ponerSpinnersEnTarjetasBasico() {
+            const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
             const spinnerHtml = `
                 <span class="inline-flex items-center gap-1.5 text-xs text-emerald-800 font-bold font-mono animate-pulse">
                     <svg class="animate-spin h-3.5 w-3.5 text-emerald-700" viewBox="0 0 24 24" fill="none">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                     </svg>
-                    Conectando con la NASA...
+                    ${isEn ? 'Connecting to NASA...' : 'Conectando con la NASA...'}
                 </span>
             `;
             const ids = ["basicoNdviValor", "basicoSmapValor", "basicoLluviaValor", "basicoTempValor", "basicoEtValor", "basicoRelieveValor"];
@@ -2688,12 +2698,12 @@ CONTROLADORES JAVASCRIPT:
                 if (el) el.innerHTML = spinnerHtml;
             });
             const notas = [
-                ["basicoNdviNota", "Consultando archivo HLS / MODIS..."],
-                ["basicoSmapNota", "Consultando radiómetro de microondas SMAP (9km EASE)..."],
-                ["basicoLluviaNota", "Consultando constelación GPM IMERG..."],
-                ["basicoTempNota", "Consultando sensor térmico VIIRS / MODIS..."],
-                ["basicoEtNota", "Consultando modelo agrometeorológico POWER..."],
-                ["basicoRelieveNota", "Consultando modelo digital de elevación NASADEM..."]
+                ["basicoNdviNota", isEn ? "Querying HLS / MODIS satellite archive..." : "Consultando archivo HLS / MODIS..."],
+                ["basicoSmapNota", isEn ? "Querying SMAP microwave radiometer (9km EASE)..." : "Consultando radiómetro de microondas SMAP (9km EASE)..."],
+                ["basicoLluviaNota", isEn ? "Querying GPM IMERG constellation..." : "Consultando constelación GPM IMERG..."],
+                ["basicoTempNota", isEn ? "Querying thermal sensor VIIRS / MODIS..." : "Consultando sensor térmico VIIRS / MODIS..."],
+                ["basicoEtNota", isEn ? "Querying POWER agrometeorological model..." : "Consultando modelo agrometeorológico POWER..."],
+                ["basicoRelieveNota", isEn ? "Querying NASADEM digital elevation model..." : "Consultando modelo digital de elevación NASADEM..."]
             ];
             notas.forEach(([id, txt]) => {
                 const el = document.getElementById(id);
@@ -2876,6 +2886,34 @@ CONTROLADORES JAVASCRIPT:
                 actualizarTarjetaEt(window._ultimasObservacionesTarjetas);
                 actualizarTarjetaRelieve(window._ultimasObservacionesTarjetas);
             }
+            const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
+            const tarjetas = [
+                { badge: "badgeGraficoNdvi" },
+                { badge: "badgeGraficoSmap" },
+                { badge: "badgeGraficoLluvia" },
+                { badge: "badgeGraficoTemp" },
+                { badge: "badgeGraficoEt" }
+            ];
+            tarjetas.forEach(t => {
+                const b = document.getElementById(t.badge);
+                if (b) {
+                    if (_descargaHistorica5AniosCompleta) {
+                        b.textContent = isEn ? "📈 View Chart (5y)" : "📈 Ver Gráfico (5a)";
+                    } else {
+                        b.textContent = isEn ? "⏳ Downloading 5 years..." : "⏳ Descargando 5 años...";
+                    }
+                }
+            });
+            const btnPdf = document.getElementById("btnExportarPDF");
+            if (btnPdf) {
+                if (_descargaHistorica5AniosCompleta) {
+                    btnPdf.title = isEn ? "Export Complete 5-Year PDF Report" : "Exportar Reporte Completo de 5 Años en PDF";
+                    btnPdf.innerHTML = `<span>📄 ${isEn ? "Export PDF Report" : "Exportar Reporte PDF"}</span>`;
+                } else {
+                    btnPdf.title = isEn ? "Waiting for 5-year satellite data download..." : "Aguardando descarga de 5 años de datos satelitales...";
+                    btnPdf.innerHTML = `<span>${isEn ? "⏳ Waiting for data (5y)..." : "⏳ Aguardando datos (5a)..."}</span>`;
+                }
+            }
         };
 
         function actualizarTarjetasBasico(data) {
@@ -2948,6 +2986,7 @@ CONTROLADORES JAVASCRIPT:
             const desdeRecienteIso = new Date(hoyObj.getTime() - 45 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
             const desde5aIso = new Date(hoyObj.getTime() - 5 * 365.25 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 
+            const isEnAnalisis = (typeof idiomaActual !== 'undefined' ? idiomaActual : 'en') === 'en';
             const estadoLabel = document.getElementById("estadoConsultaBasico");
             if (estadoLabel) {
                 estadoLabel.innerHTML = `
@@ -2956,7 +2995,7 @@ CONTROLADORES JAVASCRIPT:
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                         </svg>
-                        Descargando última pasada de la NASA...
+                        ${isEnAnalisis ? 'Downloading latest NASA pass...' : 'Descargando última pasada de la NASA...'}
                     </span>
                 `;
             }
@@ -2973,7 +3012,13 @@ CONTROLADORES JAVASCRIPT:
             let fuentesCargadas = 0;
             const todasLasObs = [];
 
-            // 1. Poblado progresivo e inmediato por satélite conforme llega cada respuesta
+            const cLat = loteBasicoCentroide?.lat || -33.7;
+            const cLon = loteBasicoCentroide?.lon || -65.42;
+
+            // 1. Consulta inmediata del Motor de Recomendación para Agrónomos (Spec 064)
+            solicitarRecomendacionAgronomica(cLat, cLon, cultivo, []);
+
+            // 2. Poblado progresivo e inmediato por satélite conforme llega cada respuesta
             const promesas = satelites.map(async (sat) => {
                 try {
                     const res = await authFetch("/api/rotaterra/consulta", {
@@ -2992,7 +3037,7 @@ CONTROLADORES JAVASCRIPT:
                         todasLasObs.push(...obs);
                         fuentesCargadas++;
                         if (estadoLabel) {
-                            estadoLabel.innerHTML = `<span class="text-emerald-900 font-mono text-xs font-bold">Poblando tarjetas en vivo (${fuentesCargadas}/${satelites.length} satélites de la NASA)...</span>`;
+                            estadoLabel.innerHTML = `<span class="text-emerald-900 font-mono text-xs font-bold">${isEnAnalisis ? `Populating live cards (${fuentesCargadas}/${satelites.length} NASA satellites)...` : `Poblando tarjetas en vivo (${fuentesCargadas}/${satelites.length} satélites de la NASA)...`}</span>`;
                         }
                     }
                 } catch (err) {
@@ -3006,13 +3051,7 @@ CONTROLADORES JAVASCRIPT:
             window.observacionesTelemetria5Anios = [...todasLasObs];
             window.ultimasObservacionesCampo = [...todasLasObs];
 
-            // 2. Consulta inmediata del Motor de Recomendación para Agrónomos (Spec 064)
-            const cLat = loteBasicoCentroide?.lat || -33.7;
-            const cLon = loteBasicoCentroide?.lon || -65.42;
-            solicitarRecomendacionAgronomica(cLat, cLon, cultivo, todasLasObs);
-
             // 3. Carga asincrónica de la serie histórica de 5 años en segundo plano
-            const isEnAnalisis = (typeof idiomaActual !== 'undefined' ? idiomaActual : 'en') === 'en';
             if (estadoLabel) {
                 estadoLabel.innerHTML = `
                     <span class="inline-flex items-center gap-1.5 text-amber-900 font-bold font-mono text-xs">
@@ -3132,11 +3171,11 @@ CONTROLADORES JAVASCRIPT:
                     cont.innerHTML = `
                         <div class="p-5 rounded-2xl bg-amber-50 border-2 border-amber-500 text-amber-950 text-xs flex items-center justify-between gap-4 shadow-sm">
                             <div>
-                                <strong class="block text-[#140d07] text-sm font-bold">Aviso del Motor Agronómico</strong>
-                                <span class="text-[#2b1b11] font-medium">No se pudo conectar con el motor de recomendación en este momento (${escapeHtml(err.message)}). Por favor intenta nuevamente.</span>
+                                <strong class="block text-[#140d07] text-sm font-bold">${isEn ? 'Agronomic Engine Notice' : 'Aviso del Motor Agronómico'}</strong>
+                                <span class="text-[#2b1b11] font-medium">${isEn ? `Could not connect to the recommendation engine at this time (${escapeHtml(err.message)}). Please try again.` : `No se pudo conectar con el motor de recomendación en este momento (${escapeHtml(err.message)}). Por favor intenta nuevamente.`}</span>
                             </div>
                             <button type="button" onclick="solicitarRecomendacionAgronomica(${lat}, ${lon}, '${escapeHtml(cultivoPrevio)}', [])" class="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold transition shadow-xs">
-                                Reintentar ↺
+                                ${isEn ? 'Retry ↺' : 'Reintentar ↺'}
                             </button>
                         </div>
                     `;
@@ -3309,11 +3348,11 @@ CONTROLADORES JAVASCRIPT:
                         ? ('🥈 ' + (isEn ? '2nd Choice' : '2ª Opción'))
                         : (c.posicion_ranking === 3
                             ? ('🥉 ' + (isEn ? '3rd Choice' : '3ª Opción'))
-                            : `${c.posicion_ranking}ª ${isEn ? 'Choice' : 'Opción'}`));
+                            : (isEn ? `${c.posicion_ranking}th Choice` : `${c.posicion_ranking}ª Opción`)));
 
                 const iconoEstado = esRec ? "✓" : (esCui ? "⚠️" : "✕");
-                const nombreTraducido = typeof traducirNombreCultivo === 'function' ? traducirNombreCultivo(c.nombre) : c.nombre;
-                const estadoTraducido = esRec ? (isEn ? 'Recommended' : 'Recomendable') : (esCui ? (isEn ? 'With caution' : 'Con cuidado') : (isEn ? 'Not recommended' : 'No recomendable'));
+                const nombreTraducido = isEn ? (c.nombre_en || (typeof traducirNombreCultivo === 'function' ? traducirNombreCultivo(c.nombre) : c.nombre)) : c.nombre;
+                const estadoTraducido = isEn ? (c.estado_en || (esRec ? 'Recommended' : (esCui ? 'With caution' : 'Not recommended'))) : c.estado;
 
                 const siembraStr = c.siembra_sugerida_desde
                     ? `${isEn ? 'Recommended sowing: from' : 'Siembra recomendada: desde el'} ${c.siembra_sugerida_desde}`
@@ -3372,8 +3411,8 @@ CONTROLADORES JAVASCRIPT:
                                             </summary>
                                             <ul class="space-y-2 mt-2 text-[#241810] font-sans">
                                                 ${c.reglas.map(r => {
-                                                    const reglaTitulo = typeof traducirNombreRegla === 'function' ? traducirNombreRegla(r.regla) : (isEn ? (r.regla_en || r.regla) : r.regla);
-                                                    const comparativaTexto = typeof traducirComparativaOptimo === 'function' ? traducirComparativaOptimo(r.comparativa_optimo || r.dato_del_lote || r.dato) : (r.comparativa_optimo || r.dato_del_lote || r.dato);
+                                                    const reglaTitulo = isEn ? (r.regla_en || (typeof traducirNombreRegla === 'function' ? traducirNombreRegla(r.regla) : r.regla)) : r.regla;
+                                                    const comparativaTexto = isEn ? (r.comparativa_optimo_en || (typeof traducirComparativaOptimo === 'function' ? traducirComparativaOptimo(r.comparativa_optimo || r.dato_del_lote || r.dato) : (r.comparativa_optimo || r.dato_del_lote || r.dato))) : (r.comparativa_optimo || r.dato_del_lote || r.dato);
                                                     return `
                                                     <li class="p-2.5 rounded-xl bg-[#faf6f0] border border-[#c4a994] space-y-1.5 shadow-xs font-sans">
                                                         <div class="flex items-center justify-between">
@@ -3786,7 +3825,10 @@ CONTROLADORES JAVASCRIPT:
 
                 const navModoLabel = document.getElementById("navModoLabel");
                 if (navModoLabel) {
-                    navModoLabel.textContent = modo === "admin" ? "Admin" : (modo === "basico" ? "Básico" : "Avanzado");
+                    const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
+                    if (modo === "basico") navModoLabel.textContent = isEn ? "Farmer" : "Agricultor";
+                    else if (modo === "avanzado") navModoLabel.textContent = isEn ? "Specialist" : "Técnico Agropecuario";
+                    else navModoLabel.textContent = "Admin";
                 }
 
                 configurarInterfazPorRol();

@@ -52,6 +52,7 @@ KE_CAPA_SIEMBRA = 0.9
 # Ventana alrededor de la fecha de siembra para buscar un día con humedad suficiente (se siembra después de una lluvia)
 VENTANA_SIEMBRA_DIAS = 15
 ESTADOS = {"no": "No recomendable", "aviso": "Con cuidado", "ok": "Recomendable"}
+ESTADOS_EN = {"Recomendable": "Recommended", "Con cuidado": "With caution", "No recomendable": "Not recommended"}
 ORDEN_ESTADO = {"Recomendable": 0, "Con cuidado": 1, "No recomendable": 2}
 
 
@@ -332,6 +333,67 @@ def simular(dias: dict, anios: list[int], cultivo: dict, siembra: tuple[int, int
 
 # ---------------------------------------------------------------- reglas
 
+REGLAS_EN = {
+    "Temperatura del suelo para sembrar": "Soil temperature for sowing",
+    "Grados día: llega a madurar": "Growing degree-days: reaches maturity",
+    "Grados dia: llega a madurar": "Growing degree-days: reaches maturity",
+    "Humedad del suelo a la siembra": "Soil moisture at sowing",
+    "Agua del ciclo (60 % de la demanda)": "Cycle water (60% of water demand)",
+    "Agua del ciclo (60% de la demanda)": "Cycle water (60% of water demand)",
+    "Textura": "Soil texture",
+    "Textura (arcilla)": "Soil texture (clay)",
+    "Profundidad del suelo": "Soil effective depth",
+    "pH": "Soil pH",
+    "No repetir la especie": "Do not repeat species (Rotation interval)",
+    "Sales": "Salinity (Electrical conductivity)",
+    "Helada después de sembrar": "Frost risk after sowing",
+    "Helada despues de sembrar": "Frost risk after sowing",
+    "Calor en el período crítico": "Heat stress in critical period",
+    "Calor en el periodo critico": "Heat stress in critical period",
+}
+
+
+def _traducir_comparativa_en(comp: str) -> str:
+    if not comp:
+        return ""
+    import re
+    res = comp
+    res = res.replace("Tu campo:", "Your field:")
+    res = res.replace("vs Óptimo:", "vs Optimal:")
+    res = res.replace("vs Óptimo ciclo:", "vs Optimal cycle:")
+    res = res.replace("vs Óptimo requerimiento:", "vs Optimal requirement:")
+    res = res.replace("· Óptimo:", "· Optimal:")
+
+    # Specific patterns before general ones
+    res = re.sub(r"madura antes de helada en (\d+)/(\d+) campañas", r"matures before frost in \1/\2 seasons", res)
+    res = re.sub(r"suelo con (\d+) °C en (\d+)/(\d+) campañas", r"soil at \1 °C in \2/\3 seasons", res)
+    res = re.sub(r"humedad de siembra estimada en (\d+)/(\d+) campañas", r"estimated sowing moisture in \1/\2 seasons", res)
+    res = re.sub(r"en (\d+)/(\d+) campañas", r"in \1/\2 seasons", res)
+    res = re.sub(r"en (\d+) de cada (\d+) campañas", r"in \1 out of \2 seasons", res)
+    res = re.sub(r"no alcanza (\d+) °C a fin de enero", r"does not reach \1 °C by late January", res)
+    res = re.sub(r"oferta media (\d+) mm", r"average water supply \1 mm", res)
+
+    res = res.replace("Mínimo de siembra:", "Minimum sowing temp:")
+    res = res.replace("Mínimo requerido:", "Minimum required:")
+    res = res.replace("Mínimo:", "Minimum:")
+    res = res.replace("Recomendado:", "Recommended:")
+    res = res.replace("Tolerancia:", "Tolerance:")
+    res = res.replace("de agua útil", "available water")
+    res = res.replace("de demanda", "of crop demand")
+    res = res.replace("madura hacia el", "matures around")
+    res = res.replace("sin serie térmica", "no thermal series available")
+    res = res.replace("sin serie de clima", "no climate series available")
+    res = res.replace("humedad de siembra estimada", "estimated sowing moisture")
+    res = res.replace("oferta media", "average water supply")
+    res = res.replace("sin pH medido", "no measured pH")
+    res = res.replace("sin análisis de conductividad", "no conductivity test")
+    res = res.replace("Falta la profundidad", "Missing depth")
+    res = res.replace("Suelo libre de sales", "Salt-free soil")
+    res = res.replace("rotación cruzada favorable sin repetir especie", "favorable cross-rotation without repeating species")
+    res = res.replace("cultivo previo", "previous crop")
+    return res
+
+
 def _regla(id_: str, nombre: str, resultado: str, dato: str, umbral: str, fuentes: list, cat: dict, detalle: str = "",
            comparativa_optimo: str = "") -> dict:
     claves: list[str] = []
@@ -339,9 +401,19 @@ def _regla(id_: str, nombre: str, resultado: str, dato: str, umbral: str, fuente
         for k in (f if isinstance(f, list) else [f]):
             if k in cat["fuentes"] and k not in claves:
                 claves.append(k)
-    return {"id": id_, "regla": nombre, "resultado": resultado, "dato_del_lote": dato, "umbral": umbral,
-            "comparativa_optimo": comparativa_optimo or f"Tu campo: {dato} · Óptimo: {umbral}",
-            "fuente": "; ".join(cat["fuentes"][k] for k in claves), "detalle": detalle}
+    comp = comparativa_optimo or f"Tu campo: {dato} · Óptimo: {umbral}"
+    return {
+        "id": id_,
+        "regla": nombre,
+        "regla_en": REGLAS_EN.get(nombre, nombre),
+        "resultado": resultado,
+        "dato_del_lote": dato,
+        "umbral": umbral,
+        "comparativa_optimo": comp,
+        "comparativa_optimo_en": _traducir_comparativa_en(comp),
+        "fuente": "; ".join(cat["fuentes"][k] for k in claves),
+        "detalle": detalle,
+    }
 
 
 def calcular_porcentaje_optimo(c: dict, filas: list[dict], suelo: dict, ph: dict, pedido: PedidoAgronomos,
@@ -670,7 +742,9 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
     estado_final = ESTADOS[peor]
     pct_coincidencia = calcular_porcentaje_optimo(c, filas, suelo, ph, pedido, estado_final, reglas)
 
-    return {"cultivo": clave, "nombre": c["nombre"], "estado": estado_final, "fecha_siembra": _ddmm(siembra),
+    return {"cultivo": clave, "nombre": c["nombre"], "nombre_en": _traducir_cultivo_en(clave, c["nombre"]),
+            "estado": estado_final, "estado_en": ESTADOS_EN.get(estado_final, estado_final),
+            "fecha_siembra": _ddmm(siembra),
             "siembra_sugerida_desde": sugerida,
             "porcentaje_coincidencia": pct_coincidencia,
             "no_pasa": [r["regla"] for r in reglas if r["resultado"] == "no"],

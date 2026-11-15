@@ -2109,7 +2109,9 @@ let puntosGraficoCache = [];
 const METRICAS_CONFIG = {
     ndvi: {
         titulo: "Índice de Vigor Vegetal (NDVI)",
+        titulo_en: "Active Vegetation Index (NDVI)",
         subtitulo: "Biomasa verde fotosintéticamente activa • Umbral 0.2 a 0.85",
+        subtitulo_en: "Photosynthetically active green biomass • Threshold 0.2 to 0.85",
         sensor: "HLS Sentinel-2 / MODIS (30m)",
         icono: "🌱",
         variables: ["ndvi", "ndvi_hls", "ndvi_modis"],
@@ -2120,7 +2122,9 @@ const METRICAS_CONFIG = {
     },
     smap: {
         titulo: "Humedad Radicular del Suelo",
+        titulo_en: "Root-Zone Soil Moisture",
         subtitulo: "Humedad en estrato radicular y superficial (0 a 100 cm)",
+        subtitulo_en: "Soil moisture in root and surface layers (0 to 100 cm)",
         sensor: "NASA SMAP L3/L4 (Radiómetro 9km)",
         icono: "💧",
         variables: [
@@ -2138,7 +2142,9 @@ const METRICAS_CONFIG = {
     },
     humedad: {
         titulo: "Humedad Radicular del Suelo",
+        titulo_en: "Root-Zone Soil Moisture",
         subtitulo: "Humedad en estrato radicular y superficial (0 a 100 cm)",
+        subtitulo_en: "Soil moisture in root and surface layers (0 to 100 cm)",
         sensor: "NASA SMAP L3/L4 (Radiómetro 9km)",
         icono: "💧",
         variables: [
@@ -2156,7 +2162,9 @@ const METRICAS_CONFIG = {
     },
     lluvia: {
         titulo: "Precipitación Diaria y Acumulada",
+        titulo_en: "Daily & Cumulative Precipitation",
         subtitulo: "Lluvias diarias satelitales y régimen hídrico de la parcela",
+        subtitulo_en: "Satellite daily rainfall and parcel water regime",
         sensor: "NASA GPM IMERG (10km)",
         icono: "🌧️",
         variables: ["lluvia_mm", "precipitacion_mm"],
@@ -2167,7 +2175,9 @@ const METRICAS_CONFIG = {
     },
     lluvia_mm: {
         titulo: "Precipitación Diaria y Acumulada",
+        titulo_en: "Daily & Cumulative Precipitation",
         subtitulo: "Lluvias diarias satelitales y régimen hídrico de la parcela",
+        subtitulo_en: "Satellite daily rainfall and parcel water regime",
         sensor: "NASA GPM IMERG (10km)",
         icono: "🌧️",
         variables: ["lluvia_mm", "precipitacion_mm"],
@@ -2178,7 +2188,9 @@ const METRICAS_CONFIG = {
     },
     estres: {
         titulo: "Demanda Evaporativa y Balance Hídrico",
+        titulo_en: "Evaporative Demand & Water Balance",
         subtitulo: "Evapotranspiración de referencia ET₀ y radiación solar incidente",
+        subtitulo_en: "Reference evapotranspiration ET₀ and incident solar radiation",
         sensor: "ECOSTRESS / POWER (NASA)",
         icono: "🌿",
         variables: [
@@ -2197,7 +2209,9 @@ const METRICAS_CONFIG = {
     },
     et0_mm_dia: {
         titulo: "Demanda Evaporativa y Balance Hídrico",
+        titulo_en: "Evaporative Demand & Water Balance",
         subtitulo: "Evapotranspiración de referencia ET₀",
+        subtitulo_en: "Reference evapotranspiration ET₀",
         sensor: "ECOSTRESS / POWER (NASA)",
         icono: "🌿",
         variables: [
@@ -2216,7 +2230,9 @@ const METRICAS_CONFIG = {
     },
     evapotranspiracion: {
         titulo: "Demanda Evaporativa y Balance Hídrico",
+        titulo_en: "Evaporative Demand & Water Balance",
         subtitulo: "Evapotranspiración y radiación solar",
+        subtitulo_en: "Evapotranspiration and solar radiation",
         sensor: "ECOSTRESS / POWER (NASA)",
         icono: "🌿",
         variables: [
@@ -2235,7 +2251,9 @@ const METRICAS_CONFIG = {
     },
     heladas: {
         titulo: "Piso Térmico y Temperatura de Superficie",
+        titulo_en: "Soil Temperature & Thermal Regime",
         subtitulo: "Monitoreo térmico satelital • Umbrales agrometeorológicos de daño y heladas",
+        subtitulo_en: "Satellite thermal monitoring • Frost risk and agrometeorological thresholds",
         sensor: "VIIRS / POWER (NASA)",
         icono: "❄️",
         variables: [
@@ -2298,9 +2316,13 @@ const METRICAS_CONFIG = {
 async function abrirModalGrafico(metricaKey, tituloCustom) {
     metricaActivaGrafico = (metricaKey || "ndvi").toLowerCase();
     const cfg = METRICAS_CONFIG[metricaActivaGrafico] || METRICAS_CONFIG.ndvi;
+    const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
 
-    setText("modalGraficoTitulo", tituloCustom || cfg.titulo);
-    setText("modalGraficoSubtitulo", cfg.subtitulo);
+    const titFinal = tituloCustom || (isEn ? (cfg.titulo_en || cfg.titulo) : cfg.titulo);
+    const subFinal = isEn ? (cfg.subtitulo_en || cfg.subtitulo) : cfg.subtitulo;
+
+    setText("modalGraficoTitulo", titFinal);
+    setText("modalGraficoSubtitulo", subFinal);
     setText("modalGraficoIconoBadge", cfg.icono);
     setText("modalGraficoSensorBadge", cfg.sensor);
     setText("modalGraficoUltimoValor", "--");
