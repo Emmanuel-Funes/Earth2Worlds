@@ -3012,6 +3012,7 @@ CONTROLADORES JAVASCRIPT:
             solicitarRecomendacionAgronomica(cLat, cLon, cultivo, todasLasObs);
 
             // 3. Carga asincrónica de la serie histórica de 5 años en segundo plano
+            const isEnAnalisis = (typeof idiomaActual !== 'undefined' ? idiomaActual : 'en') === 'en';
             if (estadoLabel) {
                 estadoLabel.innerHTML = `
                     <span class="inline-flex items-center gap-1.5 text-amber-900 font-bold font-mono text-xs">
@@ -3019,7 +3020,7 @@ CONTROLADORES JAVASCRIPT:
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                         </svg>
-                        Descargando archivo histórico de 5 años en segundo plano...
+                        ${isEnAnalisis ? 'Downloading 5-year historical archive in background...' : 'Descargando archivo histórico de 5 años en segundo plano...'}
                     </span>
                 `;
             }
@@ -3047,22 +3048,26 @@ CONTROLADORES JAVASCRIPT:
                             }
                         }
                     }
+                    const isEnOk = (typeof idiomaActual !== 'undefined' ? idiomaActual : 'en') === 'en';
                     if (estadoLabel) {
-                        estadoLabel.innerHTML = `<span class="text-emerald-900 font-mono font-bold text-xs">&#10003; Descarga histórica de 5 años completada con éxito</span>`;
+                        estadoLabel.innerHTML = `<span class="text-emerald-900 font-mono font-bold text-xs">&#10003; ${isEnOk ? '5-year historical download completed successfully' : 'Descarga histórica de 5 años completada con éxito'}</span>`;
                     }
                     desbloquearTarjetasTelemetriaListas();
-                    mostrarToast("Descarga histórica de 5 años completada con éxito.", "success");
+                    mostrarToast(isEnOk ? "5-year historical download completed successfully." : "Descarga histórica de 5 años completada con éxito.", "success");
                 }
             } catch (errHist) {
                 console.warn("[Basico] Descarga histórica diferida:", errHist);
+                const isEnErr = (typeof idiomaActual !== 'undefined' ? idiomaActual : 'en') === 'en';
                 if (estadoLabel) {
-                    estadoLabel.innerHTML = `<span class="text-emerald-900 font-mono font-bold text-xs">&#10003; Telemetría satelital en línea</span>`;
+                    estadoLabel.innerHTML = `<span class="text-emerald-900 font-mono font-bold text-xs">&#10003; ${isEnErr ? 'Satellite telemetry online' : 'Telemetría satelital en línea'}</span>`;
                 }
             }
         }
 
         async function solicitarRecomendacionAgronomica(lat, lon, cultivoPrevio, observaciones) {
             const cont = document.getElementById("contenidoRecomendacionCultivo");
+            const isEn = (typeof idiomaActual !== 'undefined' ? idiomaActual : 'en') === 'en';
+            const cultNombre = typeof traducirNombreCultivo === 'function' ? traducirNombreCultivo(cultivoPrevio) : cultivoPrevio;
             if (cont) {
                 cont.innerHTML = `
                     <div class="p-6 sm:p-7 rounded-2xl bg-[#faf6f0] border-2 border-[#8c6547] flex items-center gap-4 sm:gap-5 shadow-md">
@@ -3074,13 +3079,15 @@ CONTROLADORES JAVASCRIPT:
                         </div>
                         <div class="space-y-1">
                             <h4 class="text-base sm:text-lg font-bold text-[#140d07] font-heading">
-                                Evaluando rotación con el Motor Agronómico Rotaterra...
+                                ${isEn ? 'Evaluating rotation with RotaTerra Agronomic Engine...' : 'Evaluando rotación con el Motor Agronómico Rotaterra...'}
                             </h4>
                             <p class="text-xs sm:text-sm text-[#2b1b11] leading-relaxed font-semibold">
-                                Analizando serie histórica de NASA POWER (34 campañas), física de suelo (GeoINTA) y alternancia biológica contra cultivo previo (<strong>${escapeHtml(cultivoPrevio)}</strong>)...
+                                ${isEn 
+                                    ? `Analyzing historical NASA POWER series (34 seasons), soil physics (GeoINTA), and biological alternation against previous crop (<strong>${escapeHtml(cultNombre)}</strong>)...` 
+                                    : `Analizando serie histórica de NASA POWER (34 campañas), física de suelo (GeoINTA) y alternancia biológica contra cultivo previo (<strong>${escapeHtml(cultNombre)}</strong>)...`}
                             </p>
                             <span class="inline-flex items-center gap-1.5 text-[11px] font-mono text-emerald-900 font-bold bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-400 mt-1">
-                                🌱 Procesando modelos fisiológicos y balances de agua...
+                                🌱 ${isEn ? 'Processing physiological models and water balances...' : 'Procesando modelos fisiológicos y balances de agua...'}
                             </span>
                         </div>
                     </div>
@@ -3364,18 +3371,22 @@ CONTROLADORES JAVASCRIPT:
                                                 <span class="text-[11px] font-sans text-[#8c532b] font-bold">${isEn ? 'Your field vs Optimal' : 'Tu campo vs Óptimo'}</span>
                                             </summary>
                                             <ul class="space-y-2 mt-2 text-[#241810] font-sans">
-                                                ${c.reglas.map(r => `
+                                                ${c.reglas.map(r => {
+                                                    const reglaTitulo = typeof traducirNombreRegla === 'function' ? traducirNombreRegla(r.regla) : (isEn ? (r.regla_en || r.regla) : r.regla);
+                                                    const comparativaTexto = typeof traducirComparativaOptimo === 'function' ? traducirComparativaOptimo(r.comparativa_optimo || r.dato_del_lote || r.dato) : (r.comparativa_optimo || r.dato_del_lote || r.dato);
+                                                    return `
                                                     <li class="p-2.5 rounded-xl bg-[#faf6f0] border border-[#c4a994] space-y-1.5 shadow-xs font-sans">
                                                         <div class="flex items-center justify-between">
-                                                            <strong class="text-[#241810] text-xs font-sans font-bold">${escapeHtml(r.regla)}</strong>
+                                                            <strong class="text-[#241810] text-xs font-sans font-bold">${escapeHtml(reglaTitulo)}</strong>
                                                             <span>${r.resultado === 'ok' ? '✅' : (r.resultado === 'aviso' ? '⚠️' : (r.resultado === 'no' ? '❌' : 'ℹ️'))}</span>
                                                         </div>
                                                         <div class="p-2.5 rounded-lg bg-white border border-[#b8977e] text-xs font-sans shadow-2xs">
                                                             <span class="text-[10px] font-sans font-bold uppercase tracking-wider text-[#8c532b] block mb-1">${isEn ? 'Your field vs Crop optimal requirement:' : 'Tu campo vs Óptimo del cultivo:'}</span>
-                                                            <span class="text-[#241810] font-sans font-medium text-xs leading-relaxed block">${escapeHtml(r.comparativa_optimo || r.dato_del_lote || r.dato)}</span>
+                                                            <span class="text-[#241810] font-sans font-medium text-xs leading-relaxed block">${escapeHtml(comparativaTexto)}</span>
                                                         </div>
                                                     </li>
-                                                `).join('')}
+                                                    `;
+                                                }).join('')}
                                             </ul>
                                         </details>
                                     ` : ''}
@@ -3491,7 +3502,7 @@ CONTROLADORES JAVASCRIPT:
                             <div style="display: inline-block; background: #ecfdf5; border: 1px solid #86efac; color: #166534; font-size: 9px; font-weight: bold; border-radius: 5px; padding: 1.5px 5px; margin-bottom: 5px;">
                                 ${pr.porcentaje_coincidencia}% ${isEn ? 'Optimal Match' : 'Coincidencia Óptima'}
                             </div>
-                            <p style="margin: 0; font-size: 9px; color: #2b1b11; line-height: 1.3;">${escapeHtml(pr.por_que_se_eligio)}</p>
+                            <p style="margin: 0; font-size: 9px; color: #2b1b11; line-height: 1.3;">${escapeHtml(isEn ? (pr.por_que_se_eligio_en || (typeof traducirExplicacionSeleccion === 'function' ? traducirExplicacionSeleccion(pr.por_que_se_eligio) : pr.por_que_se_eligio)) : pr.por_que_se_eligio)}</p>
                         </div>
                     `;
                 });
@@ -3512,7 +3523,7 @@ CONTROLADORES JAVASCRIPT:
                     { key: "ndvi", titulo: isEn ? "Active Vegetation Index (NDVI)" : "Índice de Vigor Vegetal (NDVI)", sensor: "HLS Sentinel-2 / Landsat (30m)", vars: ["ndvi", "ndvi_hls", "ndvi_modis"], color: "#16a34a", unidad: "" },
                     { key: "humedad", titulo: isEn ? "Sowing Root-Zone Moisture" : "Humedad Radicular del Suelo", sensor: "NASA SMAP L3/L4 (9km)", vars: ["humedad_superficial", "humedad_zona_raiz", "humedad_suelo_pct", "humedad_radicular"], color: "#0284c7", unidad: "m³/m³" },
                     { key: "lluvia", titulo: isEn ? "Daily & Accumulated Precipitation" : "Precipitación Diaria y Acumulada", sensor: "NASA GPM IMERG (10km)", vars: ["lluvia_mm", "precipitacion_mm"], color: "#2563eb", unidad: "mm" },
-                    { key: "estres", titulo: isEn ? "Soil Evaporation & Water Demand" : "Demanda Evaporativa y Balance Hídrico", sensor: "ECOSTRESS / POWER (NASA)", vars: ["et0_mm_dia", "et_mm_dia", "evapotranspiracion_mm", "pet_mm_dia"], color: "#0d9488", unidad: "mm/día" },
+                    { key: "estres", titulo: isEn ? "Soil Evaporation & Water Demand" : "Demanda Evaporativa y Balance Hídrico", sensor: "ECOSTRESS / POWER (NASA)", vars: ["et0_mm_dia", "et_mm_dia", "evapotranspiracion_mm", "pet_mm_dia"], color: "#0d9488", unidad: isEn ? "mm/day" : "mm/día" },
                     { key: "heladas", titulo: isEn ? "Soil Surface Temperature & Thermal Threshold" : "Temperatura de Superficie y Piso Térmico", sensor: "VIIRS / POWER (NASA)", vars: ["temperatura", "temp_media", "temp_min", "temperatura_c", "temp_sup_min_c"], color: "#ea580c", unidad: "°C" }
                 ];
 

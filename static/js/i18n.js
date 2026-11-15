@@ -607,6 +607,77 @@ function traducirRumbo(rumbo) {
     return map[clean] || rumbo;
 }
 
+const TRADUCCION_REGLAS = {
+    "temperatura del suelo para sembrar": { en: "Soil temperature for sowing", es: "Temperatura del suelo para sembrar" },
+    "grados día: llega a madurar": { en: "Growing degree-days: reaches maturity", es: "Grados día: llega a madurar" },
+    "grados dia: llega a madurar": { en: "Growing degree-days: reaches maturity", es: "Grados día: llega a madurar" },
+    "humedad del suelo a la siembra": { en: "Soil moisture at sowing", es: "Humedad del suelo a la siembra" },
+    "agua del ciclo (60 % de la demanda)": { en: "Cycle water (60% of water demand)", es: "Agua del ciclo (60 % de la demanda)" },
+    "agua del ciclo (60% de la demanda)": { en: "Cycle water (60% of water demand)", es: "Agua del ciclo (60 % de la demanda)" },
+    "textura": { en: "Soil texture", es: "Textura" },
+    "textura (arcilla)": { en: "Soil texture (clay)", es: "Textura (arcilla)" },
+    "profundidad del suelo": { en: "Soil effective depth", es: "Profundidad del suelo" },
+    "ph": { en: "Soil pH", es: "pH" },
+    "no repetir la especie": { en: "Do not repeat species (Rotation interval)", es: "No repetir la especie" },
+    "sales": { en: "Salinity (Electrical conductivity)", es: "Sales" },
+    "helada después de sembrar": { en: "Frost risk after sowing", es: "Helada después de sembrar" },
+    "helada despues de sembrar": { en: "Frost risk after sowing", es: "Helada después de sembrar" },
+    "calor en el período crítico": { en: "Heat stress in critical period", es: "Calor en el período crítico" },
+    "calor en el periodo critico": { en: "Heat stress in critical period", es: "Calor en el período crítico" }
+};
+
+function traducirNombreRegla(regla) {
+    if (!regla) return "";
+    const clean = String(regla).trim().toLowerCase();
+    if (TRADUCCION_REGLAS[clean] && TRADUCCION_REGLAS[clean][idiomaActual]) {
+        return TRADUCCION_REGLAS[clean][idiomaActual];
+    }
+    return regla;
+}
+
+function traducirComparativaOptimo(texto) {
+    if (!texto) return "";
+    if (idiomaActual !== "en") return texto;
+
+    let res = String(texto);
+    res = res.replace(/Tu campo:/g, "Your field:");
+    res = res.replace(/vs Óptimo:/g, "vs Optimal:");
+    res = res.replace(/vs Óptimo ciclo:/g, "vs Optimal cycle:");
+    res = res.replace(/vs Óptimo requerimiento:/g, "vs Optimal requirement:");
+
+    res = res.replace(/suelo con (\d+) °C en (\d+)\/(\d+) campañas/g, "soil at $1 °C in $2/$3 seasons");
+    res = res.replace(/en (\d+)\/(\d+) campañas/g, "in $1/$2 seasons");
+    res = res.replace(/en (\d+) de cada (\d+) campañas/g, "in $1 out of $2 seasons");
+    res = res.replace(/no alcanza (\d+) °C a fin de enero/g, "does not reach $1 °C by late January");
+    res = res.replace(/Mínimo de siembra:/g, "Minimum sowing temp:");
+    res = res.replace(/Mínimo requerido:/g, "Minimum required:");
+    res = res.replace(/Mínimo:/g, "Minimum:");
+    res = res.replace(/Recomendado:/g, "Recommended:");
+
+    res = res.replace(/madura antes de helada en (\d+)\/(\d+) campañas/g, "matures before frost in $1/$2 seasons");
+    res = res.replace(/madura hacia el/g, "matures around");
+    res = res.replace(/sin serie térmica/g, "no thermal series available");
+    res = res.replace(/sin serie de clima/g, "no climate series available");
+
+    res = res.replace(/humedad de siembra estimada en (\d+)\/(\d+) campañas/g, "estimated sowing moisture in $1/$2 seasons");
+    res = res.replace(/humedad de siembra estimada/g, "estimated sowing moisture");
+    res = res.replace(/de agua útil/g, "available water");
+    res = res.replace(/oferta media (\d+) mm/g, "average water supply $1 mm");
+    res = res.replace(/oferta media/g, "average water supply");
+    res = res.replace(/de demanda/g, "of crop demand");
+
+    res = res.replace(/sin pH medido/g, "no measured pH");
+    res = res.replace(/sin análisis de conductividad/g, "no conductivity test");
+    res = res.replace(/Falta la profundidad/g, "Missing profile depth");
+    res = res.replace(/profundidad del suelo/g, "soil depth");
+    res = res.replace(/Tope por cultivo/g, "Crop threshold");
+
+    res = res.replace(/cultivo previo/g, "previous crop");
+    res = res.replace(/no repetir la misma especie/g, "do not repeat the same species");
+
+    return res;
+}
+
 /**
  * Cambia el idioma activo en la sesión (sin persistencia).
  * Aplica los cambios a todo el DOM y re-renderiza componentes dinámicos.
@@ -747,5 +818,7 @@ window.traducirEstadoCultivo = traducirEstadoCultivo;
 window.traducirEtiquetaAnio = traducirEtiquetaAnio;
 window.traducirExplicacionSeleccion = traducirExplicacionSeleccion;
 window.traducirRumbo = traducirRumbo;
+window.traducirNombreRegla = traducirNombreRegla;
+window.traducirComparativaOptimo = traducirComparativaOptimo;
 window.obtenerNombresMesesI18n = obtenerNombresMesesI18n;
 window.DICCIONARIO_I18N = DICCIONARIO_I18N;
