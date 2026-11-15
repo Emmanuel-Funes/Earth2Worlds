@@ -1,14 +1,13 @@
 {
   "version": "1.0",
-  "estado": "provisional: las reglas sin fuente publicada son criterio de la agrónoma del equipo y falta que ella confirme las que descartan",
+  "estado": "provisional: las reglas sin fuente publicada son criterio agronómico del equipo",
   "aviso": "Es una ayuda para el ingeniero agrónomo. No reemplaza su criterio ni la recorrida del lote.",
   "fuentes": {
-    "revision_agronomica_equipo": "Revisión agronómica del motor por la Ing. Agrónoma del equipo Earth2Worlds (Alicia), 08/11/2026: temperatura mínima del suelo para sembrar y umbral de agua del 60 % de la demanda. Ella cita al INTA y a ASAGIR",
-    "cosas_a_agregar_2026_11_14": "Leandro y la Ing. Agrónoma del equipo (Alicia), documento \"Cosas a agregar\" (14/11/2026): grados día del ciclo, fórmula de grados día con tope de 30 °C en maíz, texturas bloqueadas y humedad del suelo a la siembra. Criterio de la agrónoma, sin fuente publicada salvo donde se indica",
+    "criterio_agronomico_equipo": "Criterio agronómico del equipo Rotaterra (14/11/2026), sin fuente publicada. Se contrasta con INTA, ASAGIR, MAIZAR, UNRC y FAO donde se indica",
     "maizar_2023": "Andrade F., Otegui M. E., Cirilo A. y Uhart S. (eds.) (2023). Ecofisiología y manejo del cultivo de maíz. MAIZAR. Tb ≈ 8 °C; ciclo total 1.200–1.700 °Cd en la región pampeana; ecuación 2.1 de tiempo térmico",
     "unrc_mani_2017": "Fernandez E. M. y Giayetto O. (comps.) (2017). El cultivo del maní en Córdoba, 2ª ed. UNRC. Tb 11 °C para el ciclo; tipo runner ≈1.580–1.680 °Cd, erectos ≈1.280 °Cd (Haro et al.)",
     "bonadeo_2017": "Bonadeo E. et al. (2017). Sistema suelo-planta. UniRío Editora (UNRC), tabla 8.2: temperatura base de emergencia (maíz 9,8; sorgo 10,6; maní 13,3 °C)",
-    "asagir_temperatura": "ASAGIR, \"El factor temperatura\" y Díaz-Zorita, Duarte y Plante (2003) El cultivo de girasol: Tb 6–8 °C, 1.600–1.700 °Cd de ciclo; no recomendable en suelos de menos de 40 cm",
+    "asagir_temperatura": "ASAGIR, \"El factor temperatura\" y Díaz-Zorita, Duarte y Plante (2003) El cultivo de girasol: Tb 6–8 °C, 1.600–1.700 °Cd de ciclo; temperatura del suelo de 8–10 °C para sembrar; no recomendable en suelos de menos de 40 cm",
     "inta_sl_it183_sorgo": "Colazo J. C., Garay J. A. y Veneciano J. H. (2012). Guía para la producción de sorgo granífero en San Luis. INTA EEA San Luis, Información Técnica 183: Tb 10 °C; 18 °C de suelo 3 días seguidos (desde la 1ª quincena de noviembre en Villa Mercedes); >38 °C en floración",
     "inta_sl_it188_maiz": "Garay J. A. y Colazo J. C. (2015). Guía para la producción de maíz en San Luis. INTA EEA San Luis, Información Técnica 188: salinidad mayor de 2 dS/m baja el rinde",
     "inta_mj_soja_sales": "INTA Marcos Juárez: con pH mayor de 8 y conductividad mayor de 0,5 dS/m el rinde de la soja puede caer mucho",
@@ -17,8 +16,7 @@
     "riglos_2023_calor": "Riglos (2023), tesis FAUBA-INTA, Villa Mercedes: días con máxima de más de 35 °C en el período crítico",
     "nasa_power": "NASA POWER, serie diaria (MERRA-2 e IMERG): T2M_MAX, T2M_MIN, PRECTOTCORR y TSOIL1 (temperatura media del suelo de 0 a 10 cm)",
     "fao56": "Allen et al. (1998), FAO-56: agua útil por textura, evaporación del suelo sin cultivo y ETo de Hargreaves (ecuación 52)",
-    "inta_rotacion": "Recomendaciones generales de rotación del INTA: girasol y maní no repetir antes de 3 campañas libres; soja, maíz y sorgo no más de 2 campañas seguidas para prevenir enfermedades, malezas y cuidar el suelo",
-    "leandro_final_2026_11_14": "Leandro, \"Final de Leandro\" (14/11/2026): tabla de parámetros duros por cultivo (temperatura mínima y óptima del suelo, temperatura máxima del aire y letal, humedad mínima y óptima, agua mínima, óptima y máxima del ciclo, pH mínimo, óptimo y máximo, y regla 1 en 3 de no repetición). Criterio del equipo, sin fuente publicada citada"
+    "inta_rotacion": "Recomendaciones generales de rotación del INTA: girasol y maní no repetir antes de 3 campañas libres; soja, maíz y sorgo no más de 2 campañas seguidas para prevenir enfermedades, malezas y cuidar el suelo"
   },
   "fechas_siembra_tipicas": {
     "nota": "Fecha que se usa si el agrónomo no carga otra. Salen de la ficha técnica de los 5 cultivos (14/11/2026): maní a principios de noviembre (fecha más común de la región), girasol entre el 17/10 y el 04/11 (red INTA-ASAGIR en La Pampa), sorgo desde la 1ª quincena de noviembre (INTA San Luis IT 183), soja y maíz según el calendario del motor de rotación",
@@ -38,8 +36,8 @@
         "minimo_c": 10,
         "recomendado_c": 12,
         "dias_seguidos": 3,
-        "fuente": "revision_agronomica_equipo",
-        "rango": "10 a 12 °C, 3 días; óptimo 22 °C (Leandro)",
+        "fuente": "criterio_agronomico_equipo",
+        "rango": "10 a 12 °C, 3 días; óptimo 22 °C",
         "optimo_c": 22
       },
       "grados_dia": {
@@ -49,7 +47,7 @@
           1500,
           1750
         ],
-        "fuente": "cosas_a_agregar_2026_11_14",
+        "fuente": "criterio_agronomico_equipo",
         "fuente_tb": "maizar_2023",
         "contraste": "MAIZAR da 1.200–1.700 °Cd de ciclo total para la región pampeana (el tope de 1.750 pasa un poco lo publicado)",
         "fraccion_floracion": 0.45
@@ -57,7 +55,7 @@
       "humedad_siembra_pct_au": {
         "minimo": 35,
         "rango": "35 a 40 %",
-        "fuente": "cosas_a_agregar_2026_11_14",
+        "fuente": "criterio_agronomico_equipo",
         "capa_cm": [
           2,
           8
@@ -68,7 +66,7 @@
         "bloquea_secano": [
           "arenoso"
         ],
-        "fuente": "cosas_a_agregar_2026_11_14",
+        "fuente": "criterio_agronomico_equipo",
         "texto": "En secano no se siembra en suelo arenoso (la clase arenoso; areno franco sí se siembra, Hernán 14/11/2026)"
       },
       "sales": {
@@ -81,18 +79,21 @@
         "letal_c": 45,
         "etapa": "floracion",
         "texto": "floración",
-        "fuente": "leandro_final_2026_11_14"
+        "fuente": [
+          "riglos_2023_calor",
+          "criterio_agronomico_equipo"
+        ]
       },
       "agua_ciclo": {
         "optimo_mm": 700,
         "maximo_mm": 1800,
-        "fuente": "leandro_final_2026_11_14"
+        "fuente": "criterio_agronomico_equipo"
       },
       "ph": {
         "minimo": 5.0,
         "optimo": 6.2,
         "maximo": 8.5,
-        "fuente": "leandro_final_2026_11_14"
+        "fuente": "criterio_agronomico_equipo"
       },
       "no_repetir": {
         "especie": "maiz",
@@ -110,8 +111,8 @@
         "minimo_c": 14,
         "recomendado_c": 18,
         "dias_seguidos": 3,
-        "fuente": "revision_agronomica_equipo",
-        "rango": "14 a 18 °C, 3 días; óptimo 22 °C (Leandro)",
+        "fuente": "criterio_agronomico_equipo",
+        "rango": "14 a 18 °C, 3 días; óptimo 22 °C",
         "optimo_c": 22
       },
       "grados_dia": {
@@ -121,7 +122,7 @@
           1350,
           1550
         ],
-        "fuente": "cosas_a_agregar_2026_11_14",
+        "fuente": "criterio_agronomico_equipo",
         "fuente_tb": "maizar_2023",
         "contraste": "MAIZAR da 1.200–1.700 °Cd de ciclo total para la región pampeana",
         "fraccion_floracion": 0.45
@@ -129,7 +130,7 @@
       "humedad_siembra_pct_au": {
         "minimo": 35,
         "rango": "35 a 40 %",
-        "fuente": "cosas_a_agregar_2026_11_14",
+        "fuente": "criterio_agronomico_equipo",
         "capa_cm": [
           2,
           8
@@ -140,7 +141,7 @@
         "bloquea_secano": [
           "arenoso"
         ],
-        "fuente": "cosas_a_agregar_2026_11_14",
+        "fuente": "criterio_agronomico_equipo",
         "texto": "En secano no se siembra en suelo arenoso (la clase arenoso; areno franco sí se siembra, Hernán 14/11/2026)"
       },
       "sales": {
@@ -153,18 +154,21 @@
         "letal_c": 45,
         "etapa": "floracion",
         "texto": "floración",
-        "fuente": "leandro_final_2026_11_14"
+        "fuente": [
+          "riglos_2023_calor",
+          "criterio_agronomico_equipo"
+        ]
       },
       "agua_ciclo": {
         "optimo_mm": 700,
         "maximo_mm": 1800,
-        "fuente": "leandro_final_2026_11_14"
+        "fuente": "criterio_agronomico_equipo"
       },
       "ph": {
         "minimo": 5.0,
         "optimo": 6.2,
         "maximo": 8.5,
-        "fuente": "leandro_final_2026_11_14"
+        "fuente": "criterio_agronomico_equipo"
       },
       "no_repetir": {
         "especie": "maiz",
@@ -182,8 +186,8 @@
         "minimo_c": 15,
         "recomendado_c": 15,
         "dias_seguidos": 3,
-        "fuente": "revision_agronomica_equipo",
-        "rango": "15 °C; óptimo 22 °C (Leandro)",
+        "fuente": "criterio_agronomico_equipo",
+        "rango": "15 °C; óptimo 22 °C",
         "optimo_c": 22
       },
       "grados_dia": {
@@ -193,15 +197,15 @@
           1200,
           1500
         ],
-        "fuente": "cosas_a_agregar_2026_11_14",
-        "fuente_tb": "revision_agronomica_equipo",
-        "contraste": "No hay un total publicado para Argentina: es criterio de la agrónoma",
+        "fuente": "criterio_agronomico_equipo",
+        "fuente_tb": "criterio_agronomico_equipo",
+        "contraste": "No hay un total publicado para Argentina: es criterio agronómico del equipo",
         "fraccion_floracion": 0.4
       },
       "humedad_siembra_pct_au": {
         "minimo": 30,
         "rango": "30 a 35 %",
-        "fuente": "cosas_a_agregar_2026_11_14",
+        "fuente": "criterio_agronomico_equipo",
         "capa_cm": [
           2,
           8
@@ -212,7 +216,7 @@
         "bloquea_secano": [
           "arenoso"
         ],
-        "fuente": "cosas_a_agregar_2026_11_14",
+        "fuente": "criterio_agronomico_equipo",
         "texto": "En secano no se siembra en suelo arenoso (la clase arenoso; areno franco sí se siembra, Hernán 14/11/2026)"
       },
       "sales": {
@@ -226,18 +230,18 @@
         "letal_c": 38,
         "etapa": "llenado",
         "texto": "formación de vainas y granos (R3 a R6)",
-        "fuente": "leandro_final_2026_11_14"
+        "fuente": "criterio_agronomico_equipo"
       },
       "agua_ciclo": {
         "optimo_mm": 600,
         "maximo_mm": 1800,
-        "fuente": "leandro_final_2026_11_14"
+        "fuente": "criterio_agronomico_equipo"
       },
       "ph": {
         "minimo": 5.0,
         "optimo": 6.5,
         "maximo": 8.4,
-        "fuente": "leandro_final_2026_11_14"
+        "fuente": "criterio_agronomico_equipo"
       },
       "no_repetir": {
         "especie": "soja",
@@ -256,7 +260,7 @@
         "recomendado_c": 18,
         "dias_seguidos": 3,
         "fuente": "inta_sl_it183_sorgo",
-        "rango": "15 °C mínimo, 18 °C recomendado, 3 días; óptimo 19 °C (Leandro)",
+        "rango": "15 °C mínimo, 18 °C recomendado, 3 días; óptimo 19 °C",
         "optimo_c": 19
       },
       "grados_dia": {
@@ -266,15 +270,15 @@
           1400,
           1650
         ],
-        "fuente": "cosas_a_agregar_2026_11_14",
+        "fuente": "criterio_agronomico_equipo",
         "fuente_tb": "inta_sl_it183_sorgo",
-        "contraste": "No hay un total publicado para Argentina: es criterio de la agrónoma",
+        "contraste": "No hay un total publicado para Argentina: es criterio agronómico del equipo",
         "fraccion_floracion": 0.42
       },
       "humedad_siembra_pct_au": {
         "minimo": 25,
         "rango": "25 %",
-        "fuente": "cosas_a_agregar_2026_11_14",
+        "fuente": "criterio_agronomico_equipo",
         "capa_cm": [
           2,
           8
@@ -283,7 +287,7 @@
       },
       "textura": {
         "bloquea_secano": [],
-        "fuente": "cosas_a_agregar_2026_11_14",
+        "fuente": "criterio_agronomico_equipo",
         "texto": "Franco-arenoso a arcilloso; ninguna textura bloqueada"
       },
       "sales": null,
@@ -293,18 +297,21 @@
         "letal_c": 40,
         "etapa": "floracion",
         "texto": "floración",
-        "fuente": "leandro_final_2026_11_14"
+        "fuente": [
+          "inta_sl_it183_sorgo",
+          "criterio_agronomico_equipo"
+        ]
       },
       "agua_ciclo": {
         "optimo_mm": 550,
         "maximo_mm": 1000,
-        "fuente": "leandro_final_2026_11_14"
+        "fuente": "criterio_agronomico_equipo"
       },
       "ph": {
         "minimo": 5.0,
         "optimo": 7.0,
         "maximo": 8.8,
-        "fuente": "leandro_final_2026_11_14"
+        "fuente": "criterio_agronomico_equipo"
       },
       "no_repetir": {
         "especie": "sorgo",
@@ -322,8 +329,8 @@
         "minimo_c": 18,
         "recomendado_c": 18,
         "dias_seguidos": 3,
-        "fuente": "revision_agronomica_equipo",
-        "rango": "18 °C mínimo (Alicia; INTA Manfredi: 16 °C, 3 días); óptimo 28 °C (Leandro)",
+        "fuente": "criterio_agronomico_equipo",
+        "rango": "18 °C mínimo (INTA Manfredi: 16 °C, 3 días); óptimo 28 °C",
         "optimo_c": 28
       },
       "grados_dia": {
@@ -333,15 +340,15 @@
           1600,
           1850
         ],
-        "fuente": "cosas_a_agregar_2026_11_14",
+        "fuente": "criterio_agronomico_equipo",
         "fuente_tb": "unrc_mani_2017",
-        "contraste": "Decisión de Hernán (14/11/2026): Tb 11 °C publicada (UNRC: 9–11 °C en la mayoría de las etapas, 11 °C para el ciclo), no los 15 °C del documento. UNRC da ≈1.580–1.680 °Cd en tipo runner",
+        "contraste": "Decisión de Hernán (14/11/2026): Tb 11 °C publicada (UNRC: 9–11 °C en la mayoría de las etapas, 11 °C para el ciclo), no los 15 °C propuestos por el equipo. UNRC da ≈1.580–1.680 °Cd en tipo runner",
         "fraccion_floracion": 0.41
       },
       "humedad_siembra_pct_au": {
         "minimo": 30,
         "rango": "30 a 35 %",
-        "fuente": "cosas_a_agregar_2026_11_14",
+        "fuente": "criterio_agronomico_equipo",
         "capa_cm": [
           2,
           8
@@ -357,7 +364,7 @@
         "cuidado": [
           "franco_arcilloso"
         ],
-        "fuente": "cosas_a_agregar_2026_11_14",
+        "fuente": "criterio_agronomico_equipo",
         "texto": "Arenoso a franco-arenoso; no se siembra con más de 35 % de arcilla (INTA Manfredi: suelos sueltos, con poca arcilla)"
       },
       "sales": null,
@@ -367,18 +374,18 @@
         "letal_c": 39,
         "etapa": "floracion",
         "texto": "floración",
-        "fuente": "leandro_final_2026_11_14"
+        "fuente": "criterio_agronomico_equipo"
       },
       "agua_ciclo": {
         "optimo_mm": 650,
         "maximo_mm": 1500,
-        "fuente": "leandro_final_2026_11_14"
+        "fuente": "criterio_agronomico_equipo"
       },
       "ph": {
         "minimo": 5.5,
         "optimo": 6.2,
         "maximo": 8.5,
-        "fuente": "leandro_final_2026_11_14"
+        "fuente": "criterio_agronomico_equipo"
       },
       "no_repetir": {
         "especie": "mani",
@@ -396,8 +403,11 @@
         "minimo_c": 8,
         "recomendado_c": 10,
         "dias_seguidos": 3,
-        "fuente": "revision_agronomica_equipo",
-        "rango": "8 a 10 °C (ASAGIR 2001: 15 °C estabilizado); óptimo 15 °C (Leandro)",
+        "fuente": [
+          "asagir_temperatura",
+          "criterio_agronomico_equipo"
+        ],
+        "rango": "8 a 10 °C (ASAGIR 2001: 15 °C estabilizado); óptimo 15 °C",
         "optimo_c": 15
       },
       "grados_dia": {
@@ -409,13 +419,13 @@
         ],
         "fuente": "asagir_temperatura",
         "fuente_tb": "asagir_temperatura",
-        "contraste": "Decisión de Hernán (14/11/2026): se usan los grados día de ASAGIR (1.600–1.700 °Cd, base 6–8 °C) en lugar de los 1.300–1.550 del documento",
+        "contraste": "Decisión de Hernán (14/11/2026): se usan los grados día de ASAGIR (1.600–1.700 °Cd, base 6–8 °C) en lugar de los 1.300–1.550 propuestos por el equipo",
         "fraccion_floracion": 0.46
       },
       "humedad_siembra_pct_au": {
         "minimo": 20,
         "rango": "20 a 25 %",
-        "fuente": "cosas_a_agregar_2026_11_14",
+        "fuente": "criterio_agronomico_equipo",
         "capa_cm": [
           2,
           8
@@ -435,18 +445,18 @@
         "letal_c": 45,
         "etapa": "floracion",
         "texto": "floración",
-        "fuente": "leandro_final_2026_11_14"
+        "fuente": "criterio_agronomico_equipo"
       },
       "agua_ciclo": {
         "optimo_mm": 550,
         "maximo_mm": 1600,
-        "fuente": "leandro_final_2026_11_14"
+        "fuente": "criterio_agronomico_equipo"
       },
       "ph": {
         "minimo": 5.5,
         "optimo": 7.0,
         "maximo": 8.7,
-        "fuente": "leandro_final_2026_11_14"
+        "fuente": "criterio_agronomico_equipo"
       },
       "no_repetir": {
         "especie": "girasol",
