@@ -1526,8 +1526,6 @@ def ejecutar_consulta_rotaterra(
         completada_sensor: List[str] = []
         rellenada_sensor: List[str] = []
 
-        sat_nombre_real = "VIIRS_LST" if nombre_sat.upper() == "VIIRS" else nombre_sat
-
         for d_v, h_v in ventanas:
             if nombre_sat.upper() in ("MODIS", "HLS:MODIS"):
                 sat_mod = next((s for s in unidos.satelites if s.nombre == "HLS:MODIS"), None)
@@ -1540,14 +1538,14 @@ def ejecutar_consulta_rotaterra(
                     except Exception:
                         pass
             try:
-                r_sub = rt_consulta.consultar(lote, sat_nombre_real, d_v, h_v, unidos.satelites)
+                r_sub = rt_consulta.consultar(lote, nombre_sat, d_v, h_v, unidos.satelites)
                 todas_obs_sensor.extend(r_sub.observaciones)
                 fuente_final = r_sub.fuente_usada or fuente_final
                 intentos_sensor.extend(r_sub.intentos)
                 completada_sensor.extend(r_sub.completada_con)
                 rellenada_sensor.extend(r_sub.rellenada_con)
             except Exception as e:
-                intentos_sensor.append(rt_consulta.Intento(sat_nombre_real, "error", 0, str(e)))
+                intentos_sensor.append(rt_consulta.Intento(nombre_sat, "error", 0, str(e)))
 
         return nombre_sat, rt_consulta.Respuesta(
             fuente_usada=fuente_final or nombre_sat,
