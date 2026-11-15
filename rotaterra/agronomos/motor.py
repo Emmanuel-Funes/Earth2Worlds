@@ -398,11 +398,14 @@ def calcular_porcentaje_optimo(c: dict, filas: list[dict], suelo: dict, ph: dict
     pts_rotacion = 10.0
     nr = c.get("no_repetir")
     if nr and pedido.historial:
-        previas = [h.replace("maiz_tardio", "maiz") for h in pedido.historial[:nr["campanas_libres"]]]
-        if nr["especie"] in previas:
-            pts_rotacion = 0.0
-        else:
+        if any(h and h.lower() in ("otro", "otros", "ninguno") for h in pedido.historial):
             pts_rotacion = 10.0
+        else:
+            previas = [h.replace("maiz_tardio", "maiz") for h in pedido.historial[:nr["campanas_libres"]]]
+            if nr["especie"] in previas:
+                pts_rotacion = 0.0
+            else:
+                pts_rotacion = 10.0
 
     total_bruto = pts_agua + pts_termico + pts_suelo + pts_siembra + pts_rotacion
 
@@ -596,6 +599,9 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
         if not pedido.historial:
             res, dato = "sin_dato", "Falta el historial del lote (cultivos de las campañas anteriores)"
             comp_nr = f"Tu campo: sin historial previo vs Óptimo: rotación biológica sin repetir {nr['especie']}"
+        elif any(h and h.lower() in ("otro", "otros", "ninguno") for h in pedido.historial):
+            res, dato = "ok", "Sin monocultivo previo: lote con rotación libre y favorable"
+            comp_nr = f"Tu campo: sin restricciones de especies previas vs Óptimo: rotación biológica sin repetir {nr['especie']}"
         else:
             previas = [h.replace("maiz_tardio", "maiz") for h in pedido.historial[:nr["campanas_libres"]]]
             if nr["especie"] in previas:

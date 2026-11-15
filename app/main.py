@@ -1520,32 +1520,42 @@ def ejecutar_consulta_rotaterra(
         ventanas = [(desde_req, hasta_req)]
 
     def _ejecutar_sensor(nombre_sat: str):
+        def _consultar_una_ventana(d_v: date, h_v: date):
+            if nombre_sat.upper() in ("MODIS", "HLS:MODIS"):
+                sat_mod = next((s for s in unidos.satelites if s.nombre == "HLS:MODIS"), None)
+                if sat_mod:
+                    try:
+                        return sat_mod.pedir(lote, d_v, h_v), "MODIS", [], [], []
+                    except Exception:
+                        pass
+            try:
+                r_sub = rt_consulta.consultar(lote, nombre_sat, d_v, h_v, unidos.satelites)
+                return r_sub.observaciones, r_sub.fuente_usada, r_sub.intentos, r_sub.completada_con, r_sub.rellenada_con
+            except Exception as e:
+                return [], nombre_sat, [rt_consulta.Intento(nombre_sat, "error", 0, str(e))], [], []
+
         todas_obs_sensor: List[Any] = []
         fuente_final = None
         intentos_sensor: List[Any] = []
         completada_sensor: List[str] = []
         rellenada_sensor: List[str] = []
 
-        for d_v, h_v in ventanas:
-            if nombre_sat.upper() in ("MODIS", "HLS:MODIS"):
-                sat_mod = next((s for s in unidos.satelites if s.nombre == "HLS:MODIS"), None)
-                if sat_mod:
-                    try:
-                        obs_sub = sat_mod.pedir(lote, d_v, h_v)
-                        todas_obs_sensor.extend(obs_sub)
-                        fuente_final = "MODIS"
-                        continue
-                    except Exception:
-                        pass
-            try:
-                r_sub = rt_consulta.consultar(lote, nombre_sat, d_v, h_v, unidos.satelites)
-                todas_obs_sensor.extend(r_sub.observaciones)
-                fuente_final = r_sub.fuente_usada or fuente_final
-                intentos_sensor.extend(r_sub.intentos)
-                completada_sensor.extend(r_sub.completada_con)
-                rellenada_sensor.extend(r_sub.rellenada_con)
-            except Exception as e:
-                intentos_sensor.append(rt_consulta.Intento(nombre_sat, "error", 0, str(e)))
+        if len(ventanas) == 1:
+            obs_w, f_w, int_w, comp_w, rell_w = _consultar_una_ventana(ventanas[0][0], ventanas[0][1])
+            todas_obs_sensor.extend(obs_w)
+            fuente_final = f_w
+            intentos_sensor.extend(int_w)
+            completada_sensor.extend(comp_w)
+            rellenada_sensor.extend(rell_w)
+        else:
+            with ThreadPoolExecutor(max_workers=min(5, len(ventanas))) as w_pool:
+                resultados = list(w_pool.map(lambda v: _consultar_una_ventana(v[0], v[1]), ventanas))
+                for obs_w, f_w, int_w, comp_w, rell_w in resultados:
+                    todas_obs_sensor.extend(obs_w)
+                    fuente_final = f_w or fuente_final
+                    intentos_sensor.extend(int_w)
+                    completada_sensor.extend(comp_w)
+                    rellenada_sensor.extend(rell_w)
 
         return nombre_sat, rt_consulta.Respuesta(
             fuente_usada=fuente_final or nombre_sat,

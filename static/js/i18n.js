@@ -41,14 +41,15 @@ const DICCIONARIO_I18N = {
         perfil_tecnico_item3: "Temporal series chart generator (Chart.js)",
         perfil_tecnico_item4: "Ephemeral session without dirtying the database",
         perfil_tecnico_btn: "Enter as Agricultural Specialist →",
+        perfil_tecnico_btn_mini: "Agricultural Specialist Access",
 
         // --- 3-STEP WIZARD (FARMER MODE) ---
-        step1_titulo: "Create Parcel (Global)",
+        step1_titulo: "Create Parcel",
         step2_titulo: "Previous Planting",
-        step3_titulo: "Telemetry & Recommendation",
+        step3_titulo: "Information & Recommendation",
         
         paso1_cabecera: "Step 1: Delimit your Field in Argentina",
-        paso1_instrucciones: "Navigate the map, use the polygon tool on the left to draw the parcel boundaries, or select a predefined demo parcel.",
+        paso1_instrucciones: "Navigate the map, use the polygon tool on the left to draw the parcel boundaries.",
         btn_dibujar_poligono: "Draw Parcel Polygon",
         btn_limpiar_poligono: "Clear Polygon",
         btn_confirmar_paso1: "Confirm Parcel and Continue →",
@@ -67,23 +68,28 @@ const DICCIONARIO_I18N = {
         cultivo_mani: "Peanut",
         cultivo_alfalfa: "Alfalfa / Pasture",
         cultivo_barbecho: "Fallow (Unplanted)",
+        cultivo_otro: "Other / None (all crops available)",
         btn_volver_paso1: "← Back to Map",
         btn_confirmar_paso2: "Analyze 5-Year Telemetry & Rotations →",
 
-        paso3_cabecera: "Step 3: 5-Year NASA Telemetry & Recommended Rotations",
+        paso3_cabecera: "Step 3: 5-Year NASA Satellite Information and Recommended Rotations",
         paso3_desc: "Multi-satellite query across 5 years of history. Click on each card to inspect continuous or interannual charts.",
         banner_espera_analisis: "Evaluating 5 years of NASA satellite telemetry (HLS, SMAP, IMERG, POWER, ET) and computing optimal rotations...",
+        banner_34_anios_titulo: "34 years of NASA data at your service",
+        banner_34_anios_desc: "NASA POWER historical series (1991 to 2025) with water balance, solar radiation, temperature, and high-precision agroclimatic telemetry.",
+        btn_pdf_esperando: "⏳ Waiting for data (5y)...",
+        sec_satelital_titulo: "Current Satellite Information",
 
         // --- 6 TELEMETRY CARDS ---
-        card1_titulo: "NDVI Vegetation Vigor",
+        card1_titulo: "Active Vegetation",
         card1_sensor: "NASA HLS Sentinel-2 (30m)",
         card1_desc: "Current photosynthetic vigor vs 5-year historical anomaly.",
         
-        card2_titulo: "Root-Zone Soil Moisture",
+        card2_titulo: "Sowing Moisture",
         card2_sensor: "NASA SMAP L3 / SPL4SMGP (9km/36km)",
         card2_desc: "Root-zone water retention (0-100 cm) and topsoil moisture.",
 
-        card3_titulo: "Surface Temperature & Frost",
+        card3_titulo: "Soil Temperature",
         card3_sensor: "NASA POWER Daily (AgClimatology)",
         card3_desc: "Surface thermal extremes and frost risk monitoring.",
 
@@ -94,16 +100,16 @@ const DICCIONARIO_I18N = {
         card4_pendiente_label: "Slope",
         card4_orientacion_label: "Drainage runoff:",
 
-        card5_titulo: "Daily & Accumulated Rainfall",
+        card5_titulo: "Accumulated Precipitation",
         card5_sensor: "NASA GPM IMERG (10km)",
         card5_desc: "Satellite rainfall records and parcel water regime.",
 
-        card6_titulo: "Evapotranspiration & Stress",
-        card6_sensor: "NASA ECOSTRESS / ET (70m/1km)",
+        card6_titulo: "Soil Evaporation",
+        card6_sensor: "NASA POWER / ECOSTRESS (0.5°/70m)",
         card6_desc: "Daily atmospheric water demand and crop water stress.",
 
         badge_descargando_5y: "⏳ Downloading 5 years...",
-        badge_ver_grafico_5y: "📈 View Chart (5 Years)",
+        badge_ver_grafico_5y: "📈 View Chart (5y)",
 
         // --- CROP ROTATION RECOMMENDATION ENGINE ---
         rotacion_seccion_titulo: "Agronomic Crop Recommendations for Next Season",
@@ -216,14 +222,15 @@ const DICCIONARIO_I18N = {
         perfil_tecnico_item3: "Generador de gráficos de series temporales Chart.js",
         perfil_tecnico_item4: "Sesión efímera sin ensuciar la base de datos",
         perfil_tecnico_btn: "Ingresar como Técnico Agropecuario →",
+        perfil_tecnico_btn_mini: "Acceso Técnico Agropecuario",
 
         // --- 3-STEP WIZARD (FARMER MODE) ---
-        step1_titulo: "Crear Lote (Global)",
+        step1_titulo: "Crear Parcela",
         step2_titulo: "Última Plantación",
-        step3_titulo: "Telemetría y Recomendación",
+        step3_titulo: "Información y Recomendación",
 
         paso1_cabecera: "Paso 1: Delimita tu Parcela en Argentina",
-        paso1_instrucciones: "Navega por el mapa, utiliza la herramienta de polígono a la izquierda para trazar el límite del lote o selecciona una parcela de demostración.",
+        paso1_instrucciones: "Navega por el mapa y utiliza las herramientas de la izquierda para trazar el límite del lote.",
         btn_dibujar_poligono: "Dibujar Polígono del Lote",
         btn_limpiar_poligono: "Limpiar Polígono",
         btn_confirmar_paso1: "Confirmar Parcela y Continuar →",
@@ -242,43 +249,48 @@ const DICCIONARIO_I18N = {
         cultivo_mani: "Maní",
         cultivo_alfalfa: "Alfalfa / Pastura",
         cultivo_barbecho: "Barbecho (Sin siembra)",
+        cultivo_otro: "Otro / Ninguno (todos los cultivos disponibles)",
         btn_volver_paso1: "← Volver al Mapa",
         btn_confirmar_paso2: "Analizar Telemetría 5 Años y Rotaciones →",
 
-        paso3_cabecera: "Paso 3: Telemetría Satelital NASA 5 Años y Rotaciones Sugeridas",
+        paso3_cabecera: "Paso 3: Información Satelital de 5 Años y Recomendación de Rotaciones",
         paso3_desc: "Consulta multi-satelital de 5 años de historia. Haz clic en cada tarjeta para inspeccionar los gráficos continuos o interanuales.",
         banner_espera_analisis: "Evaluando 5 años de telemetría satelital NASA (HLS, SMAP, IMERG, POWER, ET) y calculando rotaciones óptimas...",
+        banner_34_anios_titulo: "34 años de datos de la NASA a tu servicio",
+        banner_34_anios_desc: "Serie histórica NASA POWER (1991 a 2025) con balance hídrico, radiación, temperaturas y registro agroclimático de alta precisión.",
+        btn_pdf_esperando: "⏳ Aguardando datos (5a)...",
+        sec_satelital_titulo: "Información Satelital actual",
 
         // --- 6 TELEMETRY CARDS ---
-        card1_titulo: "Índice de Vigor NDVI",
+        card1_titulo: "Vegetación Activa",
         card1_sensor: "NASA HLS Sentinel-2 (30m)",
         card1_desc: "Vigor fotosintético actual vs anomalía histórica de 5 años.",
 
-        card2_titulo: "Humedad Radicular del Suelo",
+        card2_titulo: "Humedad para Siembra",
         card2_sensor: "NASA SMAP L3 / SPL4SMGP (9km/36km)",
         card2_desc: "Retención de agua en zona radicular (0-100 cm) y suelo superficial.",
 
-        card3_titulo: "Temperatura de Superficie y Heladas",
+        card3_titulo: "Temperatura de Suelo",
         card3_sensor: "NASA POWER Daily (AgClimatología)",
         card3_desc: "Extremos térmicos superficiales y monitoreo de riesgo de heladas.",
 
-        card4_titulo: "Altimetría y Pendiente de Drenaje",
+        card4_titulo: "Topografía y Pendiente de Drenaje",
         card4_sensor: "NASADEM SRTM (30m)",
         card4_desc: "Cota del campo, pendiente de escurrimiento y rumbo topográfico.",
         card4_cota_label: "Cota",
         card4_pendiente_label: "Pendiente",
         card4_orientacion_label: "Escurrimiento hacia:",
 
-        card5_titulo: "Precipitación Diaria y Acumulada",
+        card5_titulo: "Precipitación acumulada",
         card5_sensor: "NASA GPM IMERG (10km)",
         card5_desc: "Registro satelital de lluvias y régimen hídrico de la parcela.",
 
-        card6_titulo: "Evapotranspiración y Estrés",
-        card6_sensor: "NASA ECOSTRESS / ET (70m/1km)",
+        card6_titulo: "Evaporación del Suelo",
+        card6_sensor: "NASA POWER / ECOSTRESS (0.5°/70m)",
         card6_desc: "Demanda atmosférica diaria de agua y estrés hídrico de cultivos.",
 
         badge_descargando_5y: "⏳ Descargando 5 años...",
-        badge_ver_grafico_5y: "📈 Ver Gráfico (5 Años)",
+        badge_ver_grafico_5y: "📈 Ver Gráfico (5a)",
 
         // --- CROP ROTATION RECOMMENDATION ENGINE ---
         rotacion_seccion_titulo: "Recomendaciones Agronómicas para la Próxima Campaña",
