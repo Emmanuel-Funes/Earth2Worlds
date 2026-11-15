@@ -2347,7 +2347,9 @@ async function cargarYRenderizarGraficoTelemetria() {
         desdeStr = inpDesde?.value || new Date(baseHasta.getTime() - dias * 86400000).toISOString().slice(0, 10);
         hastaStr = inpHasta?.value || hastaStr;
     } else {
-        const baseDesde = new Date(baseHasta.getTime() - dias * 86400000);
+        // En modo comparativo interanual, siempre usamos la serie multi-anual completa de 5 años
+        const diasEfectivos = (modoGraficoActivo === "comparativo") ? 1825 : dias;
+        const baseDesde = new Date(baseHasta.getTime() - diasEfectivos * 86400000);
         desdeStr = baseDesde.toISOString().slice(0, 10);
     }
 
@@ -2377,16 +2379,21 @@ async function cargarYRenderizarGraficoTelemetria() {
     ];
 
     if (puntos.length < 2 && poolMemoria.length > 0) {
-        puntos = poolMemoria.filter((o) => {
-            if (!o || o.valor === null || o.calidad === "descartada") return false;
+        const mapaObs = new Map();
+        poolMemoria.forEach((o) => {
+            if (!o || o.valor === null || o.calidad === "descartada") return;
             const coincideVar = cfg.variables.includes(o.variable);
-            if (!coincideVar) return false;
-            if (o.fecha) {
-                if (desdeStr && o.fecha < desdeStr) return false;
-                if (hastaStr && o.fecha > hastaStr) return false;
+            if (!coincideVar) return;
+            const fStr = typeof o.fecha === "string" ? o.fecha.slice(0, 10) : "";
+            if (!fStr) return;
+            if (desdeStr && fStr < desdeStr) return;
+            if (hastaStr && fStr > hastaStr) return;
+            // Deduplicar: una sola observación por fecha (priorizando calidad buena)
+            if (!mapaObs.has(fStr) || o.calidad === "buena") {
+                mapaObs.set(fStr, { ...o, fecha: fStr });
             }
-            return true;
         });
+        puntos = Array.from(mapaObs.values()).sort((a, b) => a.fecha.localeCompare(b.fecha));
     }
 
     puntosGraficoCache = puntos;
@@ -2454,11 +2461,11 @@ function renderizarGraficoTelemetria() {
                     data: valoresNum,
                     borderColor: cfg.color,
                     backgroundColor: cfg.bgColor,
-                    borderWidth: 2.5,
-                    pointRadius: puntos.length > 90 ? 1.5 : 3.5,
-                    pointHoverRadius: 6,
+                    borderWidth: 2,
+                    pointRadius: puntos.length > 365 ? 0.8 : (puntos.length > 90 ? 1.5 : 3),
+                    pointHoverRadius: 5,
                     fill: cfg.tipoChart === "line",
-                    tension: 0.3,
+                    tension: 0.25,
                 },
             ],
         };
@@ -2491,7 +2498,7 @@ function renderizarGraficoTelemetria() {
                     borderWidth: 2.2,
                     spanGaps: true,
                     tension: 0.3,
-                    pointRadius: 2.5,
+                    pointRadius: 1.5,
                     fill: false,
                 };
             });
@@ -2542,6 +2549,29 @@ function renderizarGraficoTelemetria() {
                     color: "#523725",
                     font: { family: "Fira Code", size: 10 },
                     maxTicksLimit: 12,
+                    callback: function (val, index, ticks) {
+                        const raw = this.getLabelForValue(val);
+                        if (!raw || typeof raw !== "string") return "";
+                        if (modoGraficoActivo === "comparativo") {
+                            const partes = raw.split("/");
+                            if (partes.length === 2) {
+                                const meses = ["", "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+                                const mIdx = parseInt(partes[1], 10);
+                                return meses[mIdx] || raw;
+                            }
+                            return raw;
+                        } else {
+                            // Modo continuo
+                            const partes = raw.split("-");
+                            if (partes.length === 3) {
+                                if (puntos.length > 365) {
+                                    return `${partes[1]}/${partes[0]}`; // MM/AAAA
+                                }
+                                return `${partes[2]}/${partes[1]}`; // DD/MM
+                            }
+                            return raw;
+                        }
+                    },
                 },
                 grid: { color: "rgba(140, 101, 71, 0.12)" },
             },

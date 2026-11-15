@@ -393,12 +393,12 @@ CONTROLADORES JAVASCRIPT:
                 <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-400 text-emerald-800 text-xs font-mono font-bold max-w-full">
                     <span>🌍 RotaTerra</span> &bull; <span>Plataforma Agroclimática</span>
                 </div>
-                <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#241810] tracking-tight block w-full py-1 leading-normal overflow-visible">
+                <p class="text-xs sm:text-sm font-bold uppercase tracking-widest text-[#785843]">
                     Elige tu Modalidad de Acceso
-                </h2>
-                <p class="text-sm sm:text-base font-bold text-emerald-800 tracking-wide mt-1">
-                    ¡Cuida tu tierra, potencia tu futuro con RotaTerra!
                 </p>
+                <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#241810] tracking-tight block w-full py-1 leading-normal overflow-visible">
+                    ¡Cuida tu tierra, potencia tu futuro con RotaTerra!
+                </h2>
                 <p class="text-xs sm:text-sm text-[#5c4636] max-w-2xl mx-auto leading-relaxed">
                     Selecciona cómo deseas explorar la plataforma. Las sesiones de prueba no requieren registro ni guardan datos permanentes en el sistema.
                 </p>
@@ -847,99 +847,116 @@ CONTROLADORES JAVASCRIPT:
 
                     <div id="grillaTarjetasBasico" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                         <!-- Tarjeta 1: Vigor Vegetal (NDVI) -->
-                        <div onclick="abrirModalGrafico('ndvi')" class="cursor-pointer group bg-slate-900/80 border border-slate-800 hover:border-emerald-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
+                        <div onclick="intentarAbrirGrafico('ndvi')" id="tarjetaGraficoNdvi" class="cursor-pointer group bg-white border-2 border-[#8c6547] hover:border-emerald-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-xs font-mono text-emerald-700 font-bold flex items-center gap-1">🌱 VEGETACIÓN</span>
-                                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold group-hover:bg-emerald-600 group-hover:text-white transition">📈 Ver Gráfico</span>
+                                    <span class="text-xs font-mono text-emerald-800 font-bold flex items-center gap-1">🌱 VEGETACIÓN</span>
+                                    <span id="badgeGraficoNdvi" class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-300 font-bold">⏳ Descargando 5 años...</span>
                                 </div>
-                                <h4 class="font-heading font-bold text-white text-base mt-2 group-hover:text-emerald-700 transition">Índice de Vigor (NDVI)</h4>
+                                <h4 class="font-heading font-bold text-[#241810] text-base mt-2 group-hover:text-emerald-700 transition">Índice de Vigor (NDVI)</h4>
                                 <div class="flex items-baseline gap-2 mt-1">
                                     <span id="basicoNdviValor" class="font-heading font-extrabold text-2xl text-emerald-700">-</span>
-                                    <span class="text-xs text-slate-500 font-mono">HLS Sentinel-2 (30m)</span>
+                                    <span class="text-xs text-[#5c4636] font-mono font-bold">HLS Sentinel-2 (30m)</span>
                                 </div>
                             </div>
-                            <p id="basicoNdviNota" class="text-xs text-slate-400 pt-2 border-t border-[#dfd2c6]">Consultando archivo histórico...</p>
+                            <p id="basicoNdviNota" class="text-xs text-[#785843] pt-2 border-t border-[#dfd2c6]">Consultando archivo histórico...</p>
                         </div>
 
                         <!-- Tarjeta 2: Humedad de Suelo (SMAP) -->
-                        <div onclick="abrirModalGrafico('smap')" class="cursor-pointer group bg-slate-900/80 border border-slate-800 hover:border-sky-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
+                        <div onclick="intentarAbrirGrafico('smap')" id="tarjetaGraficoSmap" class="cursor-pointer group bg-white border-2 border-[#8c6547] hover:border-sky-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-xs font-mono text-sky-700 font-bold flex items-center gap-1">💧 SUELO RADICULAR</span>
-                                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-sky-300 font-bold group-hover:bg-sky-600 group-hover:text-white transition">📈 Ver Gráfico</span>
+                                    <span class="text-xs font-mono text-sky-800 font-bold flex items-center gap-1">💧 SUELO RADICULAR</span>
+                                    <span id="badgeGraficoSmap" class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-300 font-bold">⏳ Descargando 5 años...</span>
                                 </div>
-                                <h4 class="font-heading font-bold text-white text-base mt-2 group-hover:text-sky-700 transition">Humedad Radicular</h4>
+                                <h4 class="font-heading font-bold text-[#241810] text-base mt-2 group-hover:text-sky-700 transition">Humedad Radicular</h4>
                                 <div class="flex items-baseline gap-2 mt-1">
                                     <span id="basicoSmapValor" class="font-heading font-extrabold text-2xl text-sky-700">-</span>
-                                    <span class="text-xs text-slate-500 font-mono">m³/m³ (SMAP L3)</span>
+                                    <span class="text-xs text-[#5c4636] font-mono font-bold">m³/m³ (SMAP L3)</span>
                                 </div>
                             </div>
-                            <p id="basicoSmapNota" class="text-xs text-slate-400 pt-2 border-t border-[#dfd2c6]">Consultando radiómetro de microondas...</p>
+                            <p id="basicoSmapNota" class="text-xs text-[#785843] pt-2 border-t border-[#dfd2c6]">Consultando radiómetro de microondas...</p>
                         </div>
 
                         <!-- Tarjeta 3: Lluvias Acumuladas (IMERG) -->
-                        <div onclick="abrirModalGrafico('lluvia')" class="cursor-pointer group bg-slate-900/80 border border-slate-800 hover:border-blue-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
+                        <div onclick="intentarAbrirGrafico('lluvia')" id="tarjetaGraficoLluvia" class="cursor-pointer group bg-white border-2 border-[#8c6547] hover:border-blue-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-xs font-mono text-blue-700 font-bold flex items-center gap-1">🌧️ PRECIPITACIONES</span>
-                                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-50 text-blue-800 border border-blue-300 font-bold group-hover:bg-blue-600 group-hover:text-white transition">📈 Ver Gráfico</span>
+                                    <span class="text-xs font-mono text-blue-800 font-bold flex items-center gap-1">🌧️ PRECIPITACIONES</span>
+                                    <span id="badgeGraficoLluvia" class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-300 font-bold">⏳ Descargando 5 años...</span>
                                 </div>
-                                <h4 class="font-heading font-bold text-white text-base mt-2 group-hover:text-blue-700 transition">Régimen de Lluvia</h4>
+                                <h4 class="font-heading font-bold text-[#241810] text-base mt-2 group-hover:text-blue-700 transition">Régimen de Lluvia</h4>
                                 <div class="flex items-baseline gap-2 mt-1">
                                     <span id="basicoLluviaValor" class="font-heading font-extrabold text-2xl text-blue-700">-</span>
-                                    <span class="text-xs text-slate-500 font-mono">mm (GPM IMERG)</span>
+                                    <span class="text-xs text-[#5c4636] font-mono font-bold">mm (GPM IMERG)</span>
                                 </div>
                             </div>
-                            <p id="basicoLluviaNota" class="text-xs text-slate-400 pt-2 border-t border-[#dfd2c6]">Consultando constelación GPM...</p>
+                            <p id="basicoLluviaNota" class="text-xs text-[#785843] pt-2 border-t border-[#dfd2c6]">Consultando constelación GPM...</p>
                         </div>
 
                         <!-- Tarjeta 4: Temperatura y Heladas (VIIRS / MODIS) -->
-                        <div onclick="abrirModalGrafico('heladas')" class="cursor-pointer group bg-slate-900/80 border border-slate-800 hover:border-cyan-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
+                        <div onclick="intentarAbrirGrafico('heladas')" id="tarjetaGraficoTemp" class="cursor-pointer group bg-white border-2 border-[#8c6547] hover:border-cyan-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-xs font-mono text-cyan-700 font-bold flex items-center gap-1">❄️ TEMPERATURA / HELADAS</span>
-                                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-50 text-cyan-800 border border-cyan-300 font-bold group-hover:bg-cyan-600 group-hover:text-white transition">📈 Ver Gráfico</span>
+                                    <span class="text-xs font-mono text-cyan-800 font-bold flex items-center gap-1">❄️ TEMPERATURA / HELADAS</span>
+                                    <span id="badgeGraficoTemp" class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-300 font-bold">⏳ Descargando 5 años...</span>
                                 </div>
-                                <h4 class="font-heading font-bold text-white text-base mt-2 group-hover:text-cyan-700 transition">Temperatura de Superficie</h4>
+                                <h4 class="font-heading font-bold text-[#241810] text-base mt-2 group-hover:text-cyan-700 transition">Temperatura de Superficie</h4>
                                 <div class="flex items-baseline gap-2 mt-1">
                                     <span id="basicoTempValor" class="font-heading font-extrabold text-2xl text-cyan-700">-</span>
-                                    <span class="text-xs text-slate-500 font-mono">°C (VIIRS LST)</span>
+                                    <span class="text-xs text-[#5c4636] font-mono font-bold">°C (VIIRS / POWER)</span>
                                 </div>
                             </div>
-                            <p id="basicoTempNota" class="text-xs text-slate-400 pt-2 border-t border-[#dfd2c6]">Analizando sensor infrarrojo térmico...</p>
+                            <p id="basicoTempNota" class="text-xs text-[#785843] pt-2 border-t border-[#dfd2c6]">Analizando sensor infrarrojo térmico...</p>
                         </div>
 
                         <!-- Tarjeta 5: Balance Hídrico (POWER / ECOSTRESS) -->
-                        <div onclick="abrirModalGrafico('estres')" class="cursor-pointer group bg-slate-900/80 border border-slate-800 hover:border-teal-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
+                        <div onclick="intentarAbrirGrafico('estres')" id="tarjetaGraficoEt" class="cursor-pointer group bg-white border-2 border-[#8c6547] hover:border-teal-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-xs font-mono text-teal-700 font-bold flex items-center gap-1">🌿 ESTRÉS HÍDRICO</span>
-                                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-teal-50 text-teal-800 border border-teal-300 font-bold group-hover:bg-teal-600 group-hover:text-white transition">📈 Ver Gráfico</span>
+                                    <span class="text-xs font-mono text-teal-800 font-bold flex items-center gap-1">🌿 ESTRÉS HÍDRICO</span>
+                                    <span id="badgeGraficoEt" class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-300 font-bold">⏳ Descargando 5 años...</span>
                                 </div>
-                                <h4 class="font-heading font-bold text-white text-base mt-2 group-hover:text-teal-700 transition">Evapotranspiración / Balance</h4>
+                                <h4 class="font-heading font-bold text-[#241810] text-base mt-2 group-hover:text-teal-700 transition">Evapotranspiración / Balance</h4>
                                 <div class="flex items-baseline gap-2 mt-1">
                                     <span id="basicoEtValor" class="font-heading font-extrabold text-2xl text-teal-700">-</span>
-                                    <span class="text-xs text-slate-500 font-mono">mm/día (ECOSTRESS / ET₀)</span>
+                                    <span class="text-xs text-[#5c4636] font-mono font-bold">mm/día (ECOSTRESS / ET₀)</span>
                                 </div>
                             </div>
-                            <p id="basicoEtNota" class="text-xs text-slate-400 pt-2 border-t border-[#dfd2c6]">Calculando balance agrometeorológico...</p>
+                            <p id="basicoEtNota" class="text-xs text-[#785843] pt-2 border-t border-[#dfd2c6]">Calculando balance agrometeorológico...</p>
                         </div>
 
-                        <!-- Tarjeta 6: Relieve y Altimetría (NASADEM) -->
-                        <div onclick="abrirModalGrafico('altimetria')" class="cursor-pointer group bg-slate-900/80 border border-slate-800 hover:border-purple-600 rounded-2xl p-5 space-y-3 transition-all duration-200 hover:scale-[1.015] hover:shadow-xl select-none flex flex-col justify-between">
+                        <!-- Tarjeta 6: Relieve y Topografía (NASADEM) - Sin apertura de gráfico -->
+                        <div class="bg-white border-2 border-[#8c6547] rounded-2xl p-5 space-y-3 shadow-md select-none flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-xs font-mono text-purple-700 font-bold flex items-center gap-1">⛰️ TOPOGRAFÍA</span>
-                                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-50 text-purple-800 border border-purple-300 font-bold group-hover:bg-purple-600 group-hover:text-white transition">📈 Ver Gráfico</span>
+                                    <span class="text-xs font-mono text-purple-800 font-bold flex items-center gap-1">⛰️ TOPOGRAFÍA</span>
+                                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-50 text-purple-800 border border-purple-300 font-bold">NASA 30m</span>
                                 </div>
-                                <h4 class="font-heading font-bold text-white text-base mt-2 group-hover:text-purple-700 transition">Altimetría</h4>
+                                <h4 class="font-heading font-bold text-[#241810] text-base mt-2">Relieve y Altimetría</h4>
                                 <div class="flex items-baseline gap-2 mt-1">
                                     <span id="basicoRelieveValor" class="font-heading font-extrabold text-2xl text-purple-700">-</span>
-                                    <span class="text-xs text-slate-500 font-mono">m (NASADEM)</span>
+                                    <span class="text-xs text-[#5c4636] font-mono font-bold">m s. n. m. (NASADEM)</span>
                                 </div>
                             </div>
-                            <p id="basicoRelieveNota" class="text-xs text-slate-400 pt-2 border-t border-[#dfd2c6]">Consultando modelo digital de elevación...</p>
+                            <div class="pt-2 border-t border-[#dfd2c6] space-y-2">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-lg bg-purple-100 border border-purple-300 flex items-center justify-center text-lg text-purple-900 font-bold shrink-0">
+                                        <span id="basicoFlechaOrientacion" class="inline-block transition-transform duration-300">🧭</span>
+                                    </div>
+                                    <div class="min-w-0 flex-1 text-xs">
+                                        <div class="font-bold text-[#241810] flex items-center justify-between">
+                                            <span>Pendiente:</span>
+                                            <span id="basicoPendienteValor" class="font-mono text-purple-800 font-extrabold">-</span>
+                                        </div>
+                                        <div class="text-[11px] text-[#5c4636] truncate flex items-center justify-between">
+                                            <span>Orientación:</span>
+                                            <span id="basicoOrientacionTexto" class="font-semibold text-[#3b2a1f]">-</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p id="basicoRelieveNota" class="text-[11px] text-[#785843]">Consultando modelo digital de elevación...</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2437,6 +2454,7 @@ CONTROLADORES JAVASCRIPT:
         }
 
         function ponerSpinnersEnTarjetasBasico() {
+            bloquearTarjetasGrafico5Anios();
             const spinnerHtml = `
                 <span class="inline-flex items-center gap-1.5 text-xs text-emerald-800 font-bold font-mono animate-pulse">
                     <svg class="animate-spin h-3.5 w-3.5 text-emerald-700" viewBox="0 0 24 24" fill="none">
@@ -2544,24 +2562,110 @@ CONTROLADORES JAVASCRIPT:
             }
         }
 
+        window.telemetria5AniosLista = false;
+
+        function bloquearTarjetasGrafico5Anios() {
+            window.telemetria5AniosLista = false;
+            const badgeIds = ["badgeGraficoNdvi", "badgeGraficoSmap", "badgeGraficoLluvia", "badgeGraficoTemp", "badgeGraficoEt"];
+            badgeIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.className = "text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-300 font-bold opacity-90 cursor-wait";
+                    el.textContent = "⏳ Descargando 5 años...";
+                }
+            });
+            const cardIds = ["tarjetaGraficoNdvi", "tarjetaGraficoSmap", "tarjetaGraficoLluvia", "tarjetaGraficoTemp", "tarjetaGraficoEt"];
+            cardIds.forEach(id => {
+                const card = document.getElementById(id);
+                if (card) {
+                    card.classList.add("cursor-wait");
+                    card.classList.remove("cursor-pointer");
+                }
+            });
+        }
+
+        function habilitarTarjetasGrafico5Anios() {
+            window.telemetria5AniosLista = true;
+            const badgeIds = ["badgeGraficoNdvi", "badgeGraficoSmap", "badgeGraficoLluvia", "badgeGraficoTemp", "badgeGraficoEt"];
+            badgeIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.className = "text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold group-hover:bg-emerald-600 group-hover:text-white transition cursor-pointer";
+                    el.textContent = "📈 Ver Gráfico (5 Años)";
+                }
+            });
+            const cardIds = ["tarjetaGraficoNdvi", "tarjetaGraficoSmap", "tarjetaGraficoLluvia", "tarjetaGraficoTemp", "tarjetaGraficoEt"];
+            cardIds.forEach(id => {
+                const card = document.getElementById(id);
+                if (card) {
+                    card.classList.remove("cursor-wait");
+                    card.classList.add("cursor-pointer");
+                }
+            });
+        }
+
+        function intentarAbrirGrafico(metrica) {
+            if (!window.telemetria5AniosLista) {
+                mostrarToast("Descargando serie histórica de 5 años de la NASA. Estará disponible para graficar en unos segundos...", "info");
+                return;
+            }
+            if (typeof abrirModalGrafico === "function") {
+                abrirModalGrafico(metrica);
+            }
+        }
+
         function actualizarTarjetaRelieve(obs) {
             const oRel = (obs || []).find(item => (item.variable.includes("altura") || item.variable.includes("cota") || item.variable.includes("relieve")) && item.valor !== null && item.calidad !== "descartada");
             const oPend = (obs || []).find(item => item.variable.includes("pendiente") && item.valor !== null && item.calidad !== "descartada");
             const vEl = document.getElementById("basicoRelieveValor");
             const nEl = document.getElementById("basicoRelieveNota");
+            const pEl = document.getElementById("basicoPendienteValor");
+            const oEl = document.getElementById("basicoOrientacionTexto");
+            const fEl = document.getElementById("basicoFlechaOrientacion");
+
             if (oRel) {
-                let orientacion = "";
-                if (oPend && oPend.nota) {
-                    const match = oPend.nota.match(/hacia el ([A-Za-z]+)/i);
-                    if (match) orientacion = match[1];
-                }
-                const oriStr = orientacion ? ` hacia el ${orientacion}` : "";
-                const pendStr = oPend ? ` · Pendiente: ${Number(oPend.valor).toFixed(1)}%${oriStr}` : "";
                 if (vEl) vEl.textContent = Math.round(oRel.valor);
-                if (nEl) nEl.textContent = `${oRel.fuente} · Altimetría${pendStr}`;
             } else {
                 if (vEl) vEl.textContent = "-";
-                if (nEl) nEl.textContent = "Altimetría no disponible para el cuadrante";
+            }
+
+            if (oPend && oPend.valor !== null) {
+                if (pEl) pEl.textContent = `${Number(oPend.valor).toFixed(1)}%`;
+                let rumbo = "";
+                let angulo = null;
+                if (oPend.nota) {
+                    const matchRumbo = oPend.nota.match(/hacia el ([A-Za-z]+)/i);
+                    if (matchRumbo) rumbo = matchRumbo[1];
+                    const matchAng = oPend.nota.match(/\((\d+)°\)/);
+                    if (matchAng) angulo = parseInt(matchAng[1], 10);
+                }
+
+                const flechasPorRumbo = {
+                    "norte": "↑",
+                    "noreste": "↗",
+                    "este": "→",
+                    "sureste": "↘",
+                    "sur": "↓",
+                    "suroeste": "↙",
+                    "oeste": "←",
+                    "noroeste": "↖"
+                };
+                const flecha = flechasPorRumbo[(rumbo || "").toLowerCase()] || (angulo !== null ? "↑" : "🧭");
+                if (fEl) {
+                    fEl.textContent = flecha;
+                    if (angulo !== null && !flechasPorRumbo[(rumbo || "").toLowerCase()]) {
+                        fEl.style.transform = `rotate(${angulo}deg)`;
+                    } else {
+                        fEl.style.transform = "none";
+                    }
+                }
+                if (oEl) oEl.textContent = rumbo ? `${rumbo}${angulo !== null ? ' (' + angulo + '°)' : ''}` : "Plano";
+                if (nEl) nEl.textContent = "NASADEM · Topografía satelital (30m)";
+            } else {
+                if (pEl) pEl.textContent = "-";
+                if (oEl) oEl.textContent = "Sin datos";
+                if (fEl) fEl.textContent = "🧭";
+                if (nEl) nEl.textContent = oRel ? "NASADEM · Altimetría procesada" : "Altimetría no disponible para el cuadrante";
             }
         }
 
@@ -2670,7 +2774,7 @@ CONTROLADORES JAVASCRIPT:
                         poligono: loteBasicoGeoJSON.geometry,
                         desde: desde5aIso,
                         hasta: hastaIso,
-                        satelites: ["POWER", "IMERG", "NASADEM", "SMAP", "MODIS", "VIIRS"],
+                        satelites: ["POWER", "IMERG", "NASADEM", "SMAP", "MODIS", "VIIRS", "ET"],
                     }),
                 });
                 if (resHist.ok) {
@@ -2678,20 +2782,26 @@ CONTROLADORES JAVASCRIPT:
                     if (Array.isArray(dataHist.observaciones) && dataHist.observaciones.length > 0) {
                         window.observacionesTelemetria5Anios = dataHist.observaciones;
                         window.ultimasObservacionesCampo = dataHist.observaciones;
+                        habilitarTarjetasGrafico5Anios();
                         const modalGraf = document.getElementById("modalGraficoTelemetria");
                         if (modalGraf && !modalGraf.classList.contains("hidden")) {
                             if (typeof window.cargarYRenderizarGraficoTelemetria === "function") {
                                 window.cargarYRenderizarGraficoTelemetria();
                             }
                         }
+                    } else {
+                        habilitarTarjetasGrafico5Anios();
                     }
                     if (estadoLabel) {
                         estadoLabel.innerHTML = `<span class="text-emerald-900 font-mono font-bold text-xs">&#10003; Descarga histórica de 5 años completada con éxito</span>`;
                     }
-                    mostrarToast("Descarga histórica de 5 años completada con éxito.", "success");
+                    mostrarToast("Descarga histórica de 5 años completada con éxito. Ya puedes consultar los gráficos interactivos.", "success");
+                } else {
+                    habilitarTarjetasGrafico5Anios();
                 }
             } catch (errHist) {
                 console.warn("[Basico] Descarga histórica diferida:", errHist);
+                habilitarTarjetasGrafico5Anios();
                 if (estadoLabel) {
                     estadoLabel.innerHTML = `<span class="text-emerald-900 font-mono font-bold text-xs">&#10003; Telemetría satelital en línea</span>`;
                 }

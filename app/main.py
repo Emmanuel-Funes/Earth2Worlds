@@ -1487,8 +1487,9 @@ def ejecutar_consulta_rotaterra(
     hasta_req = payload.hasta
     if desde_req > hasta_req:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="La fecha 'desde' es posterior a 'hasta'.")
-    if (hasta_req - desde_req).days + 1 > 366:
-        desde_req = hasta_req - timedelta(days=365)
+    MAX_DIAS_CONSULTA = 1850  # Permitir hasta 5 años completos de telemetría histórica satelital
+    if (hasta_req - desde_req).days + 1 > MAX_DIAS_CONSULTA:
+        desde_req = hasta_req - timedelta(days=MAX_DIAS_CONSULTA)
 
     try:
         validar_poligono(poligono_geojson)
@@ -1508,18 +1509,53 @@ def ejecutar_consulta_rotaterra(
             detail=f"No existe el satélite o fuente '{sensores_pedidos[0]}' en Earth2Worlds.",
         )
 
+    # Particionar en ventanas de máximo 365 días para respetar MAX_DIAS de los satélites (soporta hasta 5 años completos)
+    ventanas: List[Tuple[date, date]] = []
+    curr_d = desde_req
+    while curr_d < hasta_req:
+        curr_h = min(hasta_req, curr_d + timedelta(days=365))
+        ventanas.append((curr_d, curr_h))
+        curr_d = curr_h + timedelta(days=1)
+    if not ventanas:
+        ventanas = [(desde_req, hasta_req)]
+
     def _ejecutar_sensor(nombre_sat: str):
-        # Acceso directo y ultra rápido a MODIS (250m de la NASA) para NDVI sin demoras
-        if nombre_sat.upper() in ("MODIS", "HLS:MODIS"):
-            sat_mod = next((s for s in unidos.satelites if s.nombre == "HLS:MODIS"), None)
-            if sat_mod:
-                obs = sat_mod.pedir(lote, desde_req, hasta_req)
-                return nombre_sat, rt_consulta.Respuesta(
-                    fuente_usada="MODIS",
-                    observaciones=obs,
-                    intentos=[rt_consulta.Intento("HLS:MODIS", "ok", len(obs))],
-                )
-        return nombre_sat, rt_consulta.consultar(lote, nombre_sat, desde_req, hasta_req, unidos.satelites)
+        todas_obs_sensor: List[Any] = []
+        fuente_final = None
+        intentos_sensor: List[Any] = []
+        completada_sensor: List[str] = []
+        rellenada_sensor: List[str] = []
+
+        sat_nombre_real = "VIIRS_LST" if nombre_sat.upper() == "VIIRS" else nombre_sat
+
+        for d_v, h_v in ventanas:
+            if nombre_sat.upper() in ("MODIS", "HLS:MODIS"):
+                sat_mod = next((s for s in unidos.satelites if s.nombre == "HLS:MODIS"), None)
+                if sat_mod:
+                    try:
+                        obs_sub = sat_mod.pedir(lote, d_v, h_v)
+                        todas_obs_sensor.extend(obs_sub)
+                        fuente_final = "MODIS"
+                        continue
+                    except Exception:
+                        pass
+            try:
+                r_sub = rt_consulta.consultar(lote, sat_nombre_real, d_v, h_v, unidos.satelites)
+                todas_obs_sensor.extend(r_sub.observaciones)
+                fuente_final = r_sub.fuente_usada or fuente_final
+                intentos_sensor.extend(r_sub.intentos)
+                completada_sensor.extend(r_sub.completada_con)
+                rellenada_sensor.extend(r_sub.rellenada_con)
+            except Exception as e:
+                intentos_sensor.append(rt_consulta.Intento(sat_nombre_real, "error", 0, str(e)))
+
+        return nombre_sat, rt_consulta.Respuesta(
+            fuente_usada=fuente_final or nombre_sat,
+            observaciones=todas_obs_sensor,
+            intentos=intentos_sensor or [rt_consulta.Intento(nombre_sat, "ok", len(todas_obs_sensor))],
+            completada_con=list(set(completada_sensor)),
+            rellenada_con=list(set(rellenada_sensor)),
+        )
 
     sensores_validos = [s for s in sensores_pedidos if s in nombres_conocidos]
     respuestas_por_sensor: Dict[str, rt_consulta.Respuesta] = {}
