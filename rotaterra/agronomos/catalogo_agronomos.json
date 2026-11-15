@@ -17,6 +17,7 @@
     "riglos_2023_calor": "Riglos (2023), tesis FAUBA-INTA, Villa Mercedes: días con máxima de más de 35 °C en el período crítico",
     "nasa_power": "NASA POWER, serie diaria (MERRA-2 e IMERG): T2M_MAX, T2M_MIN, PRECTOTCORR y TSOIL1 (temperatura media del suelo de 0 a 10 cm)",
     "fao56": "Allen et al. (1998), FAO-56: agua útil por textura, evaporación del suelo sin cultivo y ETo de Hargreaves (ecuación 52)",
+    "inta_rotacion": "Recomendaciones generales de rotación del INTA: girasol y maní no repetir antes de 3 campañas libres; soja, maíz y sorgo no más de 2 campañas seguidas para prevenir enfermedades, malezas y cuidar el suelo",
     "leandro_final_2026_11_14": "Leandro, \"Final de Leandro\" (14/11/2026): tabla de parámetros duros por cultivo (temperatura mínima y óptima del suelo, temperatura máxima del aire y letal, humedad mínima y óptima, agua mínima, óptima y máxima del ciclo, pH mínimo, óptimo y máximo, y regla 1 en 3 de no repetición). Criterio del equipo, sin fuente publicada citada"
   },
   "fechas_siembra_tipicas": {
@@ -96,8 +97,9 @@
       "no_repetir": {
         "especie": "maiz",
         "campanas_libres": 2,
-        "fuente": "leandro_final_2026_11_14",
-        "texto": "Regla 1 en 3: 2 campañas libres de la misma especie"
+        "tipo": "blanda",
+        "fuente": "inta_rotacion",
+        "texto": "Maíz: no más de 2 campañas seguidas (INTA: previene enfermedades y plagas)"
       }
     },
     "maiz_tardio": {
@@ -167,8 +169,9 @@
       "no_repetir": {
         "especie": "maiz",
         "campanas_libres": 2,
-        "fuente": "leandro_final_2026_11_14",
-        "texto": "Regla 1 en 3: 2 campañas libres de la misma especie"
+        "tipo": "blanda",
+        "fuente": "inta_rotacion",
+        "texto": "Maíz: no más de 2 campañas seguidas (INTA: previene enfermedades y plagas)"
       }
     },
     "soja": {
@@ -239,8 +242,9 @@
       "no_repetir": {
         "especie": "soja",
         "campanas_libres": 2,
-        "fuente": "leandro_final_2026_11_14",
-        "texto": "Regla 1 en 3: 2 campañas libres de la misma especie"
+        "tipo": "blanda",
+        "fuente": "inta_rotacion",
+        "texto": "Soja: no más de 2 campañas seguidas (INTA: previene enfermedades y cuida el suelo)"
       }
     },
     "sorgo": {
@@ -305,8 +309,9 @@
       "no_repetir": {
         "especie": "sorgo",
         "campanas_libres": 2,
-        "fuente": "leandro_final_2026_11_14",
-        "texto": "Regla 1 en 3: 2 campañas libres de la misma especie"
+        "tipo": "blanda",
+        "fuente": "inta_rotacion",
+        "texto": "Sorgo: no más de 2 campañas seguidas (INTA: previene presión de malezas gramíneas y enfermedades)"
       }
     },
     "mani": {
@@ -378,8 +383,9 @@
       "no_repetir": {
         "especie": "mani",
         "campanas_libres": 3,
-        "fuente": "leandro_final_2026_11_14",
-        "texto": "Regla 1 en 4: 3 campañas libres de la misma especie"
+        "tipo": "dura",
+        "fuente": "inta_rotacion",
+        "texto": "Maní no se repite antes de 3 campañas libres (INTA: previene carbón del maní y cuida el suelo)"
       }
     },
     "girasol": {
@@ -444,9 +450,10 @@
       },
       "no_repetir": {
         "especie": "girasol",
-        "campanas_libres": 2,
-        "fuente": "leandro_final_2026_11_14",
-        "texto": "Regla 1 en 3: 2 campañas libres de la misma especie"
+        "campanas_libres": 3,
+        "tipo": "dura",
+        "fuente": "inta_rotacion",
+        "texto": "Girasol no se repite antes de 3 campañas libres (INTA: previene esclerotinia, verticilosis, phomopsis)"
       }
     }
   },

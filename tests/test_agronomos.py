@@ -228,3 +228,17 @@ def test_ph_de_la_tabla_de_leandro():
     assert "pH" not in r["sorgo"]["no_pasa"]       # sorgo hasta 8,8
     assert "pH" not in r["girasol"]["no_pasa"]     # girasol hasta 8,7 (+0,3 tolerable)
     assert "pH" in r["soja"]["no_pasa"]            # soja hasta 8,4: 8,8 se pasa 0,4 (más que la tolerancia de 0,3)
+
+
+def test_plan_rotacion_trienal():
+    r = recomendar(pedido(historial=["maiz"]), POWER)
+    assert "plan_rotacion" in r
+    assert len(r["plan_rotacion"]) == 3
+    assert "rotaciones" in r
+    assert all(k in r["rotaciones"] for k in ("1", "2", "3"))
+    # Los 3 años deben tener cultivo recomendado asignado
+    for paso in r["plan_rotacion"]:
+        assert paso["anio"] in (1, 2, 3)
+        assert paso["cultivo"] in motor.CULTIVOS
+        assert paso["porcentaje_coincidencia"] > 0
+

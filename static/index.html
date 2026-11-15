@@ -68,6 +68,7 @@ CONTROLADORES JAVASCRIPT:
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@2.17.0/dist/leaflet-geoman.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="/static/js/san_luis_geo.js"></script>
     <script src="/static/js/i18n.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -450,18 +451,19 @@ CONTROLADORES JAVASCRIPT:
             </div>
 
             <div class="text-center space-y-2.5 px-2">
+                <img src="/static/img/logo_rotaterra.jpg" class="w-24 h-24 sm:w-28 sm:h-28 object-contain rounded-2xl mx-auto shadow-md border-2 border-[#8c6547]/40 mb-1" alt="RotaTerra Logo">
                 <div
                     class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-400 text-emerald-800 text-xs font-mono font-bold max-w-full">
                     <span data-i18n="modal_selector_badge">🌍 RotaTerra &bull; Agroclimatic Platform</span>
                 </div>
-                <p data-i18n="modal_selector_subtitulo" class="text-xs sm:text-sm font-bold uppercase tracking-widest text-[#785843]">
-                    Choose your Access Mode
-                </p>
                 <h2
                     data-i18n="modal_selector_titulo"
                     class="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#241810] tracking-tight block w-full py-1 leading-normal overflow-visible">
-                    Care for your land, empower your future with RotaTerra!
+                    Choose your Access Mode
                 </h2>
+                <p data-i18n="modal_selector_subtitulo" class="text-sm sm:text-base font-bold text-emerald-800 tracking-wide">
+                    Care for your land, empower your future with RotaTerra!
+                </p>
                 <p data-i18n="modal_selector_desc" class="text-xs sm:text-sm text-[#5c4636] max-w-2xl mx-auto leading-relaxed">
                     Select how you want to explore the platform. Test sessions do not require registration or store permanent data in the system.
                 </p>
@@ -574,52 +576,52 @@ CONTROLADORES JAVASCRIPT:
     <!-- [SEC-00.1] MODAL DE ACCESO ADMINISTRADOR                           -->
     <!-- =================================================================== -->
     <div id="modalLoginAdmin"
-        class="fixed inset-0 z-[99990] hidden items-center justify-center bg-slate-950/85 backdrop-blur-md p-4">
-        <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8 space-y-6">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        class="fixed inset-0 z-[99990] hidden items-center justify-center bg-stone-900/60 backdrop-blur-sm p-4">
+        <div class="w-full max-w-md bg-white border-2 border-[#8c6547] rounded-3xl shadow-2xl p-6 sm:p-8 space-y-6 text-[#241810]">
+            <div class="flex items-center justify-between border-b border-[#dfd2c6] pb-4">
                 <div class="flex items-center gap-2">
                     <span class="text-lg">🔒</span>
-                    <h3 class="font-heading text-xl font-bold text-white">Acceso Administrador</h3>
+                    <h3 class="font-heading text-xl font-bold text-[#241810]">Acceso Administrador</h3>
                 </div>
                 <button type="button" onclick="cerrarModal('modalLoginAdmin')"
-                    class="text-slate-400 hover:text-white text-sm font-mono">
+                    class="text-[#785843] hover:text-[#241810] text-sm font-mono font-bold">
                     ESC &#10005;
                 </button>
             </div>
 
             <form id="formLoginAdmin" onsubmit="ejecutarLoginAdmin(event)" class="space-y-4">
                 <div>
-                    <label for="admin_login_email" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                    <label for="admin_login_email" class="block text-xs font-semibold uppercase text-[#5c4636] mb-1.5">
                         Usuario o Correo Institucional
                     </label>
                     <input type="text" id="admin_login_email" value="admin@earth2worlds.com" required
-                        class="w-full rounded-xl bg-slate-950 border border-slate-800 px-3.5 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-purple-500 font-mono" />
+                        class="w-full rounded-xl bg-white border border-[#8c6547] px-3.5 py-2.5 text-sm text-[#241810] focus:outline-none focus:border-emerald-600 font-mono" />
                 </div>
                 <div>
-                    <label for="admin_login_pass" class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">
+                    <label for="admin_login_pass" class="block text-xs font-semibold uppercase text-[#5c4636] mb-1.5">
                         Contraseña de Administrador
                     </label>
                     <div class="relative">
                         <input type="password" id="admin_login_pass" placeholder="Contraseña..." required
-                            class="w-full rounded-xl bg-slate-950 border border-slate-800 px-3.5 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-purple-500" />
+                            class="w-full rounded-xl bg-white border border-[#8c6547] px-3.5 py-2.5 text-sm text-[#241810] focus:outline-none focus:border-emerald-600" />
                         <button type="button" onclick="togglePasswordVisibility('admin_login_pass', this)"
-                            class="absolute right-3 top-2.5 text-xs text-slate-400 hover:text-slate-200">
+                            class="absolute right-3 top-2.5 text-xs text-[#785843] hover:text-[#241810] font-semibold">
                             Ver
                         </button>
                     </div>
                 </div>
 
                 <div id="adminLoginError"
-                    class="hidden text-xs text-rose-400 bg-rose-500/10 border border-rose-500/20 p-2.5 rounded-lg">
+                    class="hidden text-xs text-rose-700 bg-rose-50 border border-rose-300 p-2.5 rounded-xl font-semibold">
                 </div>
 
                 <div class="flex items-center justify-between gap-3 pt-2">
                     <button type="button" onclick="cerrarModal('modalLoginAdmin')"
-                        class="px-4 py-2.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+                        class="px-4 py-2.5 rounded-xl text-xs font-semibold bg-[#faf7f2] hover:bg-[#ede6dc] text-[#5c4636] border border-[#8c6547]/50 transition">
                         Volver al Selector
                     </button>
                     <button type="submit" id="btnSubmitLoginAdmin"
-                        class="px-5 py-2.5 rounded-xl bg-purple-500 hover:bg-purple-400 text-slate-950 font-heading font-bold text-sm shadow-lg shadow-purple-500/25 transition">
+                        class="px-5 py-2.5 rounded-xl bg-[#785843] hover:bg-[#5f4534] text-white font-heading font-bold text-sm shadow-md transition">
                         Ingresar &rarr;
                     </button>
                 </div>
@@ -633,10 +635,7 @@ CONTROLADORES JAVASCRIPT:
     <nav class="sticky top-0 z-30 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
             <div class="flex items-center gap-3">
-                <div
-                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-sky-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 font-heading font-extrabold text-slate-950 text-lg">
-                    RT
-                </div>
+                <img src="/static/img/logo_rotaterra.jpg" class="w-10 h-10 rounded-xl object-cover border border-[#8c6547]/50 shadow-sm" alt="RotaTerra">
                 <div>
                     <div class="flex items-center gap-2">
                         <span
@@ -859,13 +858,17 @@ CONTROLADORES JAVASCRIPT:
                             &bull; Centroide: <span id="resumenCentroide" class="font-mono text-slate-300">-</span>
                         </p>
                     </div>
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2.5 flex-wrap">
+                        <button type="button" onclick="exportarReportePDF()" id="btnExportarPDF"
+                            class="px-4 py-2.5 rounded-xl text-xs font-mono font-bold bg-[#16a34a] hover:bg-[#15803d] text-white shadow-md transition flex items-center gap-2 cursor-pointer">
+                            <span>📄 Exportar Reporte PDF</span>
+                        </button>
                         <button type="button" onclick="reiniciarAsistenteBasico()"
-                            class="px-4 py-2.5 rounded-xl text-xs font-mono font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+                            class="px-4 py-2.5 rounded-xl text-xs font-mono font-semibold bg-white hover:bg-[#faf7f2] text-[#5c4636] border-2 border-[#8c6547] transition">
                             ↺ Analizar Otro Lote
                         </button>
                         <button type="button" onclick="iniciarModoDesdeSelector('avanzado')"
-                            class="px-4 py-2.5 rounded-xl text-xs font-mono font-semibold bg-sky-500/15 hover:bg-sky-500/25 text-sky-300 border border-sky-500/30 transition">
+                            class="px-4 py-2.5 rounded-xl text-xs font-mono font-semibold bg-amber-50 hover:bg-amber-100 text-amber-900 border-2 border-amber-500/50 transition">
                             Abrir en Modo Técnico Agropecuario GIS &rarr;
                         </button>
                     </div>
@@ -2091,8 +2094,12 @@ CONTROLADORES JAVASCRIPT:
         </div>
     </div>
 
-    <footer class="border-t border-[#dfd2c6] py-5 mt-12 text-center text-xs text-[#523725] font-mono">
-        RotaTerra &bull; Arquitectura Agroclimática + Telemetría Satelital NASA &amp; INTA
+    <footer class="border-t border-[#dfd2c6] py-6 mt-12 text-center text-xs text-[#523725] font-mono bg-[#fdfbf7]/60">
+        <div class="flex flex-col items-center justify-center gap-2 max-w-xl mx-auto px-4">
+            <img src="/static/img/logo_nasa_spaceapps.png" class="h-10 object-contain mx-auto opacity-95 transition hover:opacity-100" alt="NASA Space Apps Challenge">
+            <p>RotaTerra &bull; Arquitectura Agroclimática + Telemetría Satelital NASA &amp; INTA</p>
+            <p class="text-[10px] text-[#785843]">Desarrollado para NASA Space Apps Challenge &bull; Creado con datos abiertos de la NASA</p>
+        </div>
     </footer>
 
     <!-- =================================================================== -->
@@ -2699,6 +2706,44 @@ CONTROLADORES JAVASCRIPT:
             actualizarTarjetaRelieve(obs);
         }
 
+        let _descargaHistorica5AniosCompleta = false;
+        function intentarAbrirGrafico(metricaKey) {
+            if (!_descargaHistorica5AniosCompleta) {
+                mostrarToast(typeof idiomaActual !== 'undefined' && idiomaActual === 'en' 
+                    ? "Downloading 5-year historical data. Please wait a moment..." 
+                    : "Descargando datos históricos de 5 años. Por favor espera un momento...", "info");
+                return;
+            }
+            if (typeof abrirModalGrafico === 'function') {
+                abrirModalGrafico(metricaKey);
+            }
+        }
+
+        function desbloquearTarjetasTelemetriaListas() {
+            _descargaHistorica5AniosCompleta = true;
+            const tarjetas = [
+                { id: "tarjetaGraficoNdvi", badge: "badgeGraficoNdvi" },
+                { id: "tarjetaGraficoSmap", badge: "badgeGraficoSmap" },
+                { id: "tarjetaGraficoLluvia", badge: "badgeGraficoLluvia" },
+                { id: "tarjetaGraficoTemp", badge: "badgeGraficoTemp" },
+                { id: "tarjetaGraficoEt", badge: "badgeGraficoEt" }
+            ];
+            const isEn = typeof idiomaActual !== 'undefined' && idiomaActual === 'en';
+            tarjetas.forEach(t => {
+                const el = document.getElementById(t.id);
+                if (el) {
+                    el.classList.remove("cursor-wait");
+                    el.classList.add("cursor-pointer");
+                }
+                const b = document.getElementById(t.badge);
+                if (b) {
+                    b.classList.remove("cursor-wait", "bg-amber-50", "text-amber-800", "border-amber-300");
+                    b.classList.add("cursor-pointer", "bg-emerald-50", "text-emerald-800", "border-emerald-300");
+                    b.textContent = isEn ? "📈 View Chart (5y)" : "📈 Ver Gráfico (5a)";
+                }
+            });
+        }
+
         async function ejecutarAnalisisBasico() {
             const select = document.getElementById("selectCultivoPrevio");
             const cultivo = select ? select.value : "Maíz";
@@ -2812,6 +2857,7 @@ CONTROLADORES JAVASCRIPT:
                     if (estadoLabel) {
                         estadoLabel.innerHTML = `<span class="text-emerald-900 font-mono font-bold text-xs">&#10003; Descarga histórica de 5 años completada con éxito</span>`;
                     }
+                    desbloquearTarjetasTelemetriaListas();
                     mostrarToast("Descarga histórica de 5 años completada con éxito.", "success");
                 }
             } catch (errHist) {
@@ -2903,8 +2949,18 @@ CONTROLADORES JAVASCRIPT:
             setTimeout(() => { _sincronizandoDetalles = false; }, 50);
         }
 
+        function cambiarAnioRotacion(anio) {
+            window._anioRotacionActivo = anio;
+            if (window._ultimasRecomendacionesCache) {
+                renderizarRecomendacionAgronomica(window._ultimasRecomendacionesCache.data, window._ultimasRecomendacionesCache.cultivoPrevio);
+            }
+        }
+
         function renderizarRecomendacionAgronomica(data, cultivoPrevio) {
             window._ultimasRecomendacionesCache = { data, cultivoPrevio };
+            window._anioRotacionActivo = window._anioRotacionActivo || 1;
+            const anioActivo = String(window._anioRotacionActivo);
+
             window.renderizarTarjetasRecomendaciones = function() {
                 if (window._ultimasRecomendacionesCache) {
                     renderizarRecomendacionAgronomica(window._ultimasRecomendacionesCache.data, window._ultimasRecomendacionesCache.cultivoPrevio);
@@ -2923,9 +2979,14 @@ CONTROLADORES JAVASCRIPT:
                 "mani": "🥜"
             };
 
-            const rec = data.resumen?.["Recomendable"] || [];
-            const cui = data.resumen?.["Con cuidado"] || [];
-            const noRec = data.resumen?.["No recomendable"] || [];
+            const datosAnio = (data.rotaciones && data.rotaciones[anioActivo]) ? data.rotaciones[anioActivo] : {
+                cultivos: data.cultivos || [],
+                resumen: data.resumen || {}
+            };
+            const rec = datosAnio.resumen?.["Recomendable"] || [];
+            const cui = datosAnio.resumen?.["Con cuidado"] || [];
+            const noRec = datosAnio.resumen?.["No recomendable"] || [];
+            const cultivosAMostrar = datosAnio.cultivos || [];
 
             const isEn = (typeof idiomaActual !== 'undefined' ? idiomaActual : 'en') === 'en';
             const campanasTxt = data.clima ? `${data.clima.campanas} ${isEn ? 'seasons' : 'campañas'} (${data.clima.desde} ${isEn ? 'to' : 'a'} ${data.clima.hasta})` : (isEn ? "34 seasons" : "34 campañas");
@@ -2933,6 +2994,66 @@ CONTROLADORES JAVASCRIPT:
 
             const html = `
                 <div class="space-y-5">
+                    ${data.plan_rotacion && data.plan_rotacion.length > 0 ? `
+                        <!-- Banner Plan Trienal de Rotación -->
+                        <div class="p-4 sm:p-5 rounded-2xl bg-[#faf7f2] border-2 border-[#8c6547] shadow-sm space-y-3">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xl">🔄</span>
+                                    <div>
+                                        <h4 class="font-heading font-extrabold text-[#241810] text-base sm:text-lg">
+                                            ${isEn ? '3-Year Crop Rotation Plan (INTA & FAO-33 Rules)' : 'Plan Trienal de Rotación de Cultivos (Reglas INTA y FAO-33)'}
+                                        </h4>
+                                        <p class="text-[11px] text-[#785843]">
+                                            ${isEn ? 'Automatic biological succession preventing soil degradation, weeds, and diseases.' : 'Sucesión biológica automática para prevenir degradación de suelo, malezas y plagas.'}
+                                        </p>
+                                    </div>
+                                </div>
+                                <span class="px-2.5 py-1 rounded-xl text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-400">
+                                    ${isEn ? 'Optimized 3-Year Horizon' : 'Horizonte Trienal Optimizado'}
+                                </span>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+                                ${data.plan_rotacion.map((pr) => `
+                                    <div onclick="cambiarAnioRotacion(${pr.anio})" class="cursor-pointer select-none p-3.5 rounded-xl bg-white border-2 ${Number(anioActivo) === pr.anio ? 'border-emerald-600 ring-2 ring-emerald-500/20 shadow-md' : 'border-[#8c6547]/50 hover:border-[#8c6547] shadow-xs'} transition flex flex-col justify-between space-y-2">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-[#785843]">${escapeHtml(pr.etiqueta || `Año ${pr.anio}`)}</span>
+                                            <span class="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-300">${pr.porcentaje_coincidencia}%</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-2xl">${iconMap[pr.cultivo] || '🌱'}</span>
+                                            <div>
+                                                <strong class="font-heading text-base font-extrabold text-[#241810] block">${escapeHtml(typeof traducirNombreCultivo === 'function' ? traducirNombreCultivo(pr.nombre) : pr.nombre)}</strong>
+                                                <span class="text-[10px] font-mono text-[#5c4636] font-semibold">${pr.estado}</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-[10px] text-[#382a21] leading-tight font-sans border-t border-[#dfd2c6] pt-1.5">${escapeHtml(pr.por_que_se_eligio)}</p>
+                                        <div class="text-[9px] font-mono text-emerald-700 font-bold">👉 ${isEn ? 'Click to inspect this year' : 'Clic para ver detalles de este año'}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Selector de Años de la Rotación (Tabs) -->
+                        <div class="flex items-center justify-between flex-wrap gap-2 border-b-2 border-[#dfd2c6] pb-3">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold uppercase tracking-wider text-[#785843] mr-1">${isEn ? 'Select Year:' : 'Elegir Campaña:'}</span>
+                                <button type="button" onclick="cambiarAnioRotacion(1)" class="tab-rot-btn px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition ${Number(anioActivo) === 1 ? 'bg-[#16a34a] text-white shadow-sm' : 'bg-white text-[#523725] border-2 border-[#8c6547] hover:bg-[#faf7f2]'}">
+                                    🌾 ${isEn ? 'Year 1 (Next)' : 'Año 1 (Próxima)'}
+                                </button>
+                                <button type="button" onclick="cambiarAnioRotacion(2)" class="tab-rot-btn px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition ${Number(anioActivo) === 2 ? 'bg-[#16a34a] text-white shadow-sm' : 'bg-white text-[#523725] border-2 border-[#8c6547] hover:bg-[#faf7f2]'}">
+                                    🔄 ${isEn ? 'Year 2 (Subsequent)' : 'Año 2 (Siguiente)'}
+                                </button>
+                                <button type="button" onclick="cambiarAnioRotacion(3)" class="tab-rot-btn px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition ${Number(anioActivo) === 3 ? 'bg-[#16a34a] text-white shadow-sm' : 'bg-white text-[#523725] border-2 border-[#8c6547] hover:bg-[#faf7f2]'}">
+                                    📈 ${isEn ? 'Year 3 (Third)' : 'Año 3 (Tercera)'}
+                                </button>
+                            </div>
+                            <span class="text-[11px] font-mono text-[#785843]">
+                                ${isEn ? 'Showing technical rules for' : 'Mostrando reglas técnicas para:'} <strong>${isEn ? 'Year' : 'Año'} ${anioActivo}</strong>
+                            </span>
+                        </div>
+                    ` : ''}
+
                     <!-- Resumen del Dictamen Agronómico -->
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div class="p-4 rounded-xl bg-emerald-50 border-2 border-emerald-400 text-emerald-950 flex items-center justify-between shadow-xs">
@@ -2971,7 +3092,7 @@ CONTROLADORES JAVASCRIPT:
 
                     <!-- Grilla de Cultivos Evaluados -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
-                        ${(data.cultivos || []).map(c => {
+                        ${(cultivosAMostrar || []).map(c => {
                 const ico = iconMap[c.cultivo] || "🌱";
                 const esRec = c.estado === "Recomendable";
                 const esCui = c.estado === "Con cuidado";
@@ -3076,6 +3197,262 @@ CONTROLADORES JAVASCRIPT:
                 </div>
             `;
             cont.innerHTML = html;
+        }
+
+        async function exportarReportePDF() {
+            if (!window._ultimasRecomendacionesCache || !window._ultimasRecomendacionesCache.data) {
+                mostrarToast(typeof idiomaActual !== 'undefined' && idiomaActual === 'en' ? "Please generate crop recommendations first." : "Primero debes generar la recomendación del lote.", "warning");
+                return;
+            }
+            const btn = document.getElementById("btnExportarPDF");
+            const isEn = (typeof idiomaActual !== 'undefined' ? idiomaActual : 'en') === 'en';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<span>⏳ ${isEn ? 'Generating PDF...' : 'Generando PDF...'}</span>`;
+            }
+
+            try {
+                const recData = window._ultimasRecomendacionesCache.data;
+                const cultPrev = window._ultimasRecomendacionesCache.cultivoPrevio || "-";
+                const supHa = document.getElementById("resumenSuperficieHa")?.textContent || "0.00 ha";
+                const centroide = document.getElementById("resumenCentroide")?.textContent || "-";
+                const plan = recData.plan_rotacion || [];
+
+                // Contenedor temporal aislado para renderizado fiel en PDF
+                const pdfContainer = document.createElement("div");
+                pdfContainer.id = "tempPdfContainer";
+                pdfContainer.style.width = "780px";
+                pdfContainer.style.padding = "24px";
+                pdfContainer.style.background = "#ffffff";
+                pdfContainer.style.color = "#100b07";
+                pdfContainer.style.fontFamily = "sans-serif";
+                pdfContainer.style.fontSize = "12px";
+                pdfContainer.style.boxSizing = "border-box";
+
+                let contenidoHtml = `
+                    <div style="border-bottom: 2.5px solid #8c6547; padding-bottom: 14px; margin-bottom: 16px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 14px;">
+                                <img src="/static/img/logo_rotaterra.jpg" style="width: 58px; height: 58px; object-fit: contain; border-radius: 12px; border: 2px solid #8c6547;" alt="RotaTerra">
+                                <div>
+                                    <h1 style="margin: 0; font-size: 26px; font-weight: 800; color: #100b07;">RotaTerra</h1>
+                                    <p style="margin: 3px 0 0; font-size: 13px; font-weight: 700; color: #16a34a;">¡Cuida tu tierra, potencia tu futuro con RotaTerra!</p>
+                                </div>
+                            </div>
+                            <div style="text-align: right; font-size: 10px; color: #523725; font-family: monospace;">
+                                <strong>REPORTE AGROCLIMÁTICO SATELITAL</strong><br>
+                                Fecha: ${new Date().toLocaleDateString()}<br>
+                                Misión: NASA Earth Observation &bull; INTA
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Datos del Lote -->
+                    <div style="background: #faf7f2; border: 1.5px solid #8c6547; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px;">
+                        <h3 style="margin: 0 0 8px; font-size: 13px; font-weight: bold; color: #8c6547; text-transform: uppercase;">
+                            📍 Características Técnicas del Lote Analizado
+                        </h3>
+                        <table style="width: 100%; font-size: 11px; border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 4px 0; color: #523725; width: 50%;"><strong>Centroide:</strong> ${escapeHtml(centroide)}</td>
+                                <td style="padding: 4px 0; color: #523725; width: 50%;"><strong>Superficie:</strong> ${escapeHtml(supHa)}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 4px 0; color: #523725;"><strong>Última Plantación Declarada:</strong> ${escapeHtml(cultPrev)}</td>
+                                <td style="padding: 4px 0; color: #523725;"><strong>Régimen:</strong> Secano (Semiárido)</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 4px 0; color: #523725;"><strong>Textura del Suelo:</strong> ${escapeHtml(recData.lote?.textura_fuente || recData.lote?.textura || 'Franco arenoso')}</td>
+                                <td style="padding: 4px 0; color: #523725;"><strong>Capacidad Agua Útil:</strong> ${recData.lote?.agua_util_0_100cm_mm || 120} mm</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Plan Trienal de Rotación -->
+                    <div style="margin-bottom: 18px;">
+                        <h3 style="margin: 0 0 8px; font-size: 13px; font-weight: bold; color: #100b07; border-bottom: 1.5px solid #dfd2c6; padding-bottom: 4px;">
+                            🔄 Plan Trienal de Rotación de Cultivos (Reglas INTA y FAO-33)
+                        </h3>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                `;
+
+                plan.forEach((pr) => {
+                    const iconMap = { "maiz": "🌽", "soja": "🌱", "girasol": "🌻", "sorgo": "🌾", "mani": "🥜" };
+                    contenidoHtml += `
+                        <div style="border: 1.5px solid #8c6547; border-radius: 10px; padding: 10px; background: #ffffff;">
+                            <div style="font-size: 10px; font-weight: bold; color: #8c6547; text-transform: uppercase;">${escapeHtml(pr.etiqueta || `Año ${pr.anio}`)}</div>
+                            <div style="font-size: 14px; font-weight: bold; color: #100b07; margin: 4px 0;">
+                                ${iconMap[pr.cultivo] || '🌱'} ${escapeHtml(pr.nombre)}
+                            </div>
+                            <div style="display: inline-block; background: #ecfdf5; border: 1px solid #86efac; color: #166534; font-size: 10px; font-weight: bold; border-radius: 6px; padding: 2px 6px; margin-bottom: 6px;">
+                                ${pr.porcentaje_coincidencia}% Coincidencia Óptima
+                            </div>
+                            <p style="margin: 0; font-size: 10px; color: #2b1b11; line-height: 1.35;">${escapeHtml(pr.por_que_se_eligio)}</p>
+                        </div>
+                    `;
+                });
+
+                contenidoHtml += `
+                        </div>
+                    </div>
+
+                    <!-- Métricas Satelitales a 5 Años -->
+                    <div style="margin-bottom: 16px;">
+                        <h3 style="margin: 0 0 8px; font-size: 13px; font-weight: bold; color: #100b07; border-bottom: 1.5px solid #dfd2c6; padding-bottom: 4px;">
+                            🛰️ Métricas Satelitales Multiespectrales (5 Años NASA Earth Observation)
+                        </h3>
+                `;
+
+                // Capturas de gráficos offscreen Chart.js
+                const metricasPDF = [
+                    { key: "ndvi", titulo: "Índice de Vigor Vegetal (NDVI)", sensor: "HLS Sentinel-2 / Landsat (30m)", vars: ["ndvi", "ndvi_hls", "ndvi_modis"], color: "#16a34a", unidad: "" },
+                    { key: "humedad", titulo: "Humedad Radicular del Suelo", sensor: "NASA SMAP L3/L4 (9km)", vars: ["humedad_superficial", "humedad_zona_raiz", "humedad_suelo_pct", "humedad_radicular"], color: "#0284c7", unidad: "m³/m³" },
+                    { key: "lluvia", titulo: "Precipitación Diaria y Acumulada", sensor: "NASA GPM IMERG (10km)", vars: ["lluvia_mm", "precipitacion_mm"], color: "#2563eb", unidad: "mm" },
+                    { key: "estres", titulo: "Demanda Evaporativa y Balance Hídrico", sensor: "ECOSTRESS / POWER (NASA)", vars: ["et0_mm_dia", "et_mm_dia", "evapotranspiracion_mm", "pet_mm_dia"], color: "#0d9488", unidad: "mm/día" },
+                    { key: "heladas", titulo: "Temperatura de Superficie y Piso Térmico", sensor: "VIIRS / POWER (NASA)", vars: ["temperatura", "temp_media", "temp_min", "temperatura_c", "temp_sup_min_c"], color: "#ea580c", unidad: "°C" }
+                ];
+
+                const todasObs = window.observacionesTelemetria5Anios || [];
+
+                for (const m of metricasPDF) {
+                    const puntos = todasObs.filter(o => o && m.vars.includes(o.variable) && o.valor !== null && !isNaN(Number(o.valor)));
+                    if (puntos.length === 0) continue;
+
+                    const valores = puntos.map(p => Number(p.valor));
+                    const minV = Math.min(...valores);
+                    const maxV = Math.max(...valores);
+                    const promV = valores.reduce((a, b) => a + b, 0) / valores.length;
+
+                    // Gráfico continuo
+                    const cCanvas = document.createElement("canvas");
+                    cCanvas.width = 340;
+                    cCanvas.height = 140;
+                    const cChart = new Chart(cCanvas, {
+                        type: "line",
+                        data: {
+                            labels: puntos.map(p => p.fecha?.slice(0, 10)),
+                            datasets: [{
+                                label: "Continuo 5 Años",
+                                data: valores,
+                                borderColor: m.color,
+                                borderWidth: 1.5,
+                                pointRadius: 0,
+                                fill: false,
+                                tension: 0.1
+                            }]
+                        },
+                        options: {
+                            animation: false,
+                            responsive: false,
+                            scales: {
+                                x: { display: false },
+                                y: { ticks: { font: { size: 8 } } }
+                            },
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+                    const cImg = cCanvas.toDataURL("image/png");
+                    cChart.destroy();
+
+                    // Gráfico interanual
+                    const iCanvas = document.createElement("canvas");
+                    iCanvas.width = 340;
+                    iCanvas.height = 140;
+                    const aniosPuntos = {};
+                    puntos.forEach(p => {
+                        const y = p.fecha?.slice(0, 4);
+                        if (!aniosPuntos[y]) aniosPuntos[y] = [];
+                        aniosPuntos[y].push({ x: p.fecha?.slice(5, 10), y: Number(p.valor) });
+                    });
+                    const paletaAnios = ["#16a34a", "#2563eb", "#ea580c", "#7c3aed", "#0d9488"];
+                    const datasetsInter = Object.keys(aniosPuntos).sort().map((y, idx) => ({
+                        label: `Año ${y}`,
+                        data: aniosPuntos[y],
+                        borderColor: paletaAnios[idx % paletaAnios.length],
+                        borderWidth: 1.5,
+                        pointRadius: 0,
+                        fill: false,
+                        tension: 0.1
+                    }));
+
+                    const iChart = new Chart(iCanvas, {
+                        type: "line",
+                        data: { datasets: datasetsInter },
+                        options: {
+                            animation: false,
+                            responsive: false,
+                            scales: {
+                                x: { ticks: { font: { size: 7 }, maxTicksLimit: 6 } },
+                                y: { ticks: { font: { size: 8 } } }
+                            },
+                            plugins: {
+                                legend: { display: true, labels: { boxWidth: 8, font: { size: 8 } } }
+                            }
+                        }
+                    });
+                    const iImg = iCanvas.toDataURL("image/png");
+                    iChart.destroy();
+
+                    contenidoHtml += `
+                        <div style="background: #ffffff; border: 1px solid #dfd2c6; border-radius: 8px; padding: 10px; margin-bottom: 12px; page-break-inside: avoid;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                <div>
+                                    <strong style="font-size: 12px; color: #100b07;">${m.titulo}</strong>
+                                    <span style="font-size: 9px; color: #523725; margin-left: 6px;">(${m.sensor})</span>
+                                </div>
+                                <div style="font-size: 10px; font-family: monospace; color: #8c6547;">
+                                    Mín: ${minV.toFixed(2)}${m.unidad} &bull; Máx: ${maxV.toFixed(2)}${m.unidad} &bull; Prom: ${promV.toFixed(2)}${m.unidad}
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 10px; justify-content: space-between;">
+                                <div style="width: 48%; text-align: center;">
+                                    <div style="font-size: 9px; font-weight: bold; color: #523725; margin-bottom: 2px;">Serie Continua (5 Años)</div>
+                                    <img src="${cImg}" style="width: 100%; height: auto; border: 1px solid #ede6dc; border-radius: 4px;">
+                                </div>
+                                <div style="width: 48%; text-align: center;">
+                                    <div style="font-size: 9px; font-weight: bold; color: #523725; margin-bottom: 2px;">Curvas Interanuales Superpuestas</div>
+                                    <img src="${iImg}" style="width: 100%; height: auto; border: 1px solid #ede6dc; border-radius: 4px;">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                contenidoHtml += `
+                    </div>
+
+                    <!-- Pie de Página con Logo NASA Space Apps -->
+                    <div style="border-top: 1.5px solid #8c6547; padding-top: 12px; margin-top: 16px; text-align: center; font-size: 10px; color: #523725;">
+                        <img src="/static/img/logo_nasa_spaceapps.png" style="height: 35px; object-fit: contain; margin-bottom: 4px;" alt="NASA Space Apps Challenge"><br>
+                        <strong>RotaTerra &bull; Arquitectura Agroclimática + Telemetría Satelital NASA &amp; INTA</strong><br>
+                        Desarrollado para NASA Space Apps Challenge &bull; Reporte oficial generado automáticamente
+                    </div>
+                `;
+
+                pdfContainer.innerHTML = contenidoHtml;
+                document.body.appendChild(pdfContainer);
+
+                const opt = {
+                    margin: 8,
+                    filename: 'RotaTerra_Reporte_Lote.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+
+                await html2pdf().set(opt).from(pdfContainer).save();
+                document.body.removeChild(pdfContainer);
+
+                mostrarToast(isEn ? "PDF report generated successfully!" : "¡Reporte PDF exportado exitosamente!", "success");
+            } catch (err) {
+                console.error("[Exportar PDF] Error:", err);
+                mostrarToast(isEn ? "Could not generate PDF: " + err.message : "Error al generar el PDF: " + err.message, "error");
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = `<span>📄 ${typeof idiomaActual !== 'undefined' && idiomaActual === 'en' ? 'Export PDF Report' : 'Exportar Reporte PDF'}</span>`;
+                }
+            }
         }
 
         function reiniciarAsistenteBasico() {

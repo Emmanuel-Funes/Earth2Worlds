@@ -20,8 +20,8 @@ const DICCIONARIO_I18N = {
 
         // --- ACCESS MODE SELECTOR MODAL ---
         modal_selector_badge: "🌍 RotaTerra • Agroclimatic Platform",
-        modal_selector_subtitulo: "Choose your Access Mode",
-        modal_selector_titulo: "Care for your land, empower your future with RotaTerra!",
+        modal_selector_titulo: "Choose your Access Mode",
+        modal_selector_subtitulo: "Care for your land, empower your future with RotaTerra!",
         modal_selector_desc: "Select how you want to explore the platform. Test sessions do not require registration or store permanent data in the system.",
         
         perfil_agricultor_titulo: "Farmer",
@@ -195,8 +195,8 @@ const DICCIONARIO_I18N = {
 
         // --- ACCESS MODE SELECTOR MODAL ---
         modal_selector_badge: "🌍 RotaTerra • Plataforma Agroclimática",
-        modal_selector_subtitulo: "Elige tu Modalidad de Acceso",
-        modal_selector_titulo: "¡Cuida tu tierra, potencia tu futuro con RotaTerra!",
+        modal_selector_titulo: "Elige tu Modalidad de Acceso",
+        modal_selector_subtitulo: "¡Cuida tu tierra, potencia tu futuro con RotaTerra!",
         modal_selector_desc: "Selecciona cómo deseas explorar la plataforma. Las sesiones de prueba no requieren registro ni guardan datos permanentes en el sistema.",
 
         perfil_agricultor_titulo: "Agricultor",

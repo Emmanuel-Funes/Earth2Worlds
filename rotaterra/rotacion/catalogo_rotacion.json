@@ -253,7 +253,7 @@
      "nota": "Umbral = 60 % de la demanda de un ciclo normal (valor bajo del rango de la revisión). Oferta = agua útil del suelo a la siembra más la lluvia (y el riego) de los meses del ciclo. Se usan los mm de la revisión y no la ETc del motor, porque la ETo por Hargreaves en el semiárido da más alta",
      "texto": "Un cultivo va solo si en el año medio el agua del suelo más la lluvia del ciclo llega al 60 % de su demanda; si no, conviene uno más rústico", "fuente": "revision_agronomica_equipo"},
     {"id": "sorgo_seguido", "tipo": "blanda", "cultivo": "sorgo", "max_seguidas": 2,
-     "texto": "Más de 2 campañas seguidas con sorgo suben las malezas gramíneas y las enfermedades", "fuente": "revision_agronomica_equipo"},
+     "texto": "Más de 2 campañas seguidas con sorgo: previene presión de malezas gramíneas y enfermedades", "fuente": "inta_rotacion"},
     {"id": "centeno_seguido", "tipo": "blanda", "cultivo": "centeno_cobertura", "max_seguidas": 2,
      "texto": "Más de 2 campañas seguidas con centeno de cobertura: conviene cambiar de especie (vicia o avena)", "fuente": "revision_agronomica_equipo"},
     {"id": "soja_tras_girasol", "tipo": "blanda", "antes": "girasol", "despues": "soja",

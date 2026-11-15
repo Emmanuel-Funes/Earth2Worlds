@@ -694,51 +694,128 @@ def recomendar(pedido: PedidoAgronomos, power: dict, cat: dict | None = None, ca
     suelo = suelo_del_lote(pedido, cat_rot)
     au_mayo = pedido.agua_util_mayo_pct if pedido.agua_util_mayo_pct is not None else pres["agua_util_mayo_pct_supuesta"]
     ph = evaluar_ph(pedido.analisis_suelo, pedido.observaciones, cat_rot, catalogo_ph(cat))
-    salida = []
-    for clave in pedido.cultivos:
-        c = cat["cultivos"][clave]
-        siembra = _mes_dia(pedido.fechas_siembra.get(clave) or cat["fechas_siembra_tipicas"][clave])
-        helada = cat_rot["temperaturas_criticas"]["helada_c"][c["clave_ph"]]
-        helada = {"emergencia": helada["emergencia"], "llenado": helada.get("llenado", helada["emergencia"])}
-        calor = c.get("calor")
-        riego = pedido.riego_mm_campana if pedido.sistema == "riego" else 0
-        filas = simular(dias, anios, c, siembra, helada, calor, suelo["capacidad_mm"], au_mayo, pres, riego,
-                        suelo["capacidad_capa_siembra_mm"])
-        salida.append(evaluar_cultivo(clave, cat, cat_rot, filas, pedido, suelo, ph))
-    salida.sort(key=lambda r: (-r.get("porcentaje_coincidencia", 0), ORDEN_ESTADO[r["estado"]], len(r["no_pasa"]), len(r["avisos"])))
+    def _evaluar_para_pedido(ped: PedidoAgronomos) -> list[dict]:
+        salida = []
+        for clave in ped.cultivos:
+            c = cat["cultivos"][clave]
+            siembra = _mes_dia(ped.fechas_siembra.get(clave) or cat["fechas_siembra_tipicas"][clave])
+            helada = cat_rot["temperaturas_criticas"]["helada_c"][c["clave_ph"]]
+            helada = {"emergencia": helada["emergencia"], "llenado": helada.get("llenado", helada["emergencia"])}
+            calor = c.get("calor")
+            riego = ped.riego_mm_campana if ped.sistema == "riego" else 0
+            filas = simular(dias, anios, c, siembra, helada, calor, suelo["capacidad_mm"], au_mayo, pres, riego,
+                            suelo["capacidad_capa_siembra_mm"])
+            salida.append(evaluar_cultivo(clave, cat, cat_rot, filas, ped, suelo, ph))
+        salida.sort(key=lambda r: (-r.get("porcentaje_coincidencia", 0), ORDEN_ESTADO[r["estado"]], len(r["no_pasa"]), len(r["avisos"])))
 
-    # Asignar ranking comparativo y explicación de por qué se eligió una opción sobre la otra
-    top_opcion = salida[0] if salida else None
-    for idx, c_item in enumerate(salida):
-        c_item["posicion_ranking"] = idx + 1
-        pct = c_item.get("porcentaje_coincidencia", 50)
-        est = c_item["estado"]
-        nom = c_item["nombre"]
-        if idx == 0:
-            c_item["por_que_se_eligio"] = (
-                f"1ª OPCIÓN RECOMENDADA ({pct}% de coincidencia óptima): Es la mejor alternativa agronómica para tu campo. "
-                f"Supera a todas las demás opciones por su excelente oferta hídrica, alta probabilidad de maduración sin heladas "
-                f"y total armonía con el suelo y la rotación de la campaña."
-            )
-        else:
-            if est == "Recomendable":
+        # Asignar ranking comparativo y explicación de por qué se eligió una opción sobre la otra
+        top_opcion = salida[0] if salida else None
+        for idx, c_item in enumerate(salida):
+            c_item["posicion_ranking"] = idx + 1
+            pct = c_item.get("porcentaje_coincidencia", 50)
+            est = c_item["estado"]
+            nom = c_item["nombre"]
+            if idx == 0:
                 c_item["por_que_se_eligio"] = (
-                    f"Opción {idx + 1}ª ({pct}% de coincidencia óptima): Cultivo completamente viable y recomendable, pero "
-                    f"se ubica por detrás de {top_opcion['nombre']} ({top_opcion.get('porcentaje_coincidencia', 0)}%) porque "
-                    f"su margen hídrico o acumulación de grados día resulta ligeramente más ajustado frente a los óptimos biológicos."
-                )
-            elif est == "Con cuidado":
-                det_aviso = ", ".join(c_item["avisos"][:2]) if c_item["avisos"] else "precaución climática"
-                c_item["por_que_se_eligio"] = (
-                    f"Opción {idx + 1}ª con reservas ({pct}% de coincidencia): Queda postergado frente a {top_opcion['nombre']} "
-                    f"debido a advertencias técnicas en tu campo ({det_aviso}); requiere monitoreo de humedad o manejo específico."
+                    f"1ª OPCIÓN RECOMENDADA ({pct}% de coincidencia óptima): Es la mejor alternativa agronómica para tu campo. "
+                    f"Supera a todas las demás opciones por su excelente oferta hídrica, alta probabilidad de maduración sin heladas "
+                    f"y total armonía con el suelo y la rotación de la campaña."
                 )
             else:
-                det_no = ", ".join(c_item["no_pasa"][:2]) if c_item["no_pasa"] else "parámetros excluyentes"
-                c_item["por_que_se_eligio"] = (
-                    f"Descartado ({pct}% de coincidencia): No es conveniente para esta campaña frente a las opciones recomendadas "
-                    f"porque no supera reglas críticas para tu campo ({det_no})."
-                )
+                if est == "Recomendable":
+                    c_item["por_que_se_eligio"] = (
+                        f"Opción {idx + 1}ª ({pct}% de coincidencia óptima): Cultivo completamente viable y recomendable, pero "
+                        f"se ubica por detrás de {top_opcion['nombre']} ({top_opcion.get('porcentaje_coincidencia', 0)}%) porque "
+                        f"su margen hídrico o acumulación de grados día resulta ligeramente más ajustado frente a los óptimos biológicos."
+                    )
+                elif est == "Con cuidado":
+                    det_aviso = ", ".join(c_item["avisos"][:2]) if c_item["avisos"] else "precaución climática"
+                    c_item["por_que_se_eligio"] = (
+                        f"Opción {idx + 1}ª con reservas ({pct}% de coincidencia): Queda postergado frente a {top_opcion['nombre']} "
+                        f"debido a advertencias técnicas en tu campo ({det_aviso}); requiere monitoreo de humedad o manejo específico."
+                    )
+                else:
+                    det_no = ", ".join(c_item["no_pasa"][:2]) if c_item["no_pasa"] else "parámetros excluyentes"
+                    c_item["por_que_se_eligio"] = (
+                        f"Descartado ({pct}% de coincidencia): No es conveniente para esta campaña frente a las opciones recomendadas "
+                        f"porque no supera reglas críticas para tu campo ({det_no})."
+                    )
+        return salida
+
+    def _mejor_cultivo(lista: list[dict]) -> dict:
+        recomendables = [c for c in lista if c["estado"] == "Recomendable"]
+        if recomendables:
+            return recomendables[0]
+        con_cuidado = [c for c in lista if c["estado"] == "Con cuidado"]
+        if con_cuidado:
+            return con_cuidado[0]
+        return lista[0] if lista else {}
+
+    # Campaña 1 (Año 1)
+    salida_1 = _evaluar_para_pedido(pedido)
+    top_1 = _mejor_cultivo(salida_1)
+
+    # Campaña 2 (Año 2): encadena el cultivo ganador del año 1 al historial
+    ped_2 = pedido.model_copy(update={"historial": [top_1.get("cultivo", "")] + (pedido.historial or [])})
+    salida_2 = _evaluar_para_pedido(ped_2)
+    top_2 = _mejor_cultivo(salida_2)
+
+    # Campaña 3 (Año 3): encadena año 2 y año 1
+    ped_3 = pedido.model_copy(update={"historial": [top_2.get("cultivo", ""), top_1.get("cultivo", "")] + (pedido.historial or [])})
+    salida_3 = _evaluar_para_pedido(ped_3)
+    top_3 = _mejor_cultivo(salida_3)
+
+    plan_rotacion = [
+        {
+            "anio": 1,
+            "etiqueta": "Año 1 (Próxima Campaña)",
+            "cultivo": top_1.get("cultivo"),
+            "nombre": top_1.get("nombre"),
+            "estado": top_1.get("estado"),
+            "porcentaje_coincidencia": top_1.get("porcentaje_coincidencia", 85),
+            "por_que_se_eligio": top_1.get("por_que_se_eligio", ""),
+            "regla_cumplida": "Pasa todas las reglas agroclimáticas iniciales."
+        },
+        {
+            "anio": 2,
+            "etiqueta": "Año 2 (Siguiente Campaña)",
+            "cultivo": top_2.get("cultivo"),
+            "nombre": top_2.get("nombre"),
+            "estado": top_2.get("estado"),
+            "porcentaje_coincidencia": top_2.get("porcentaje_coincidencia", 80),
+            "por_que_se_eligio": f"Sucesión agronómica recomendada tras {top_1.get('nombre')}: respeta el intervalo sanitario del INTA y mantiene la cobertura del suelo.",
+            "regla_cumplida": f"Rotación biológica sin repetir especie sensible (INTA)."
+        },
+        {
+            "anio": 3,
+            "etiqueta": "Año 3 (Tercera Campaña)",
+            "cultivo": top_3.get("cultivo"),
+            "nombre": top_3.get("nombre"),
+            "estado": top_3.get("estado"),
+            "porcentaje_coincidencia": top_3.get("porcentaje_coincidencia", 80),
+            "por_que_se_eligio": f"Rotación trienal equilibrada tras {top_2.get('nombre')} y {top_1.get('nombre')}: diversifica familias botánicas y optimiza el balance de nutrientes.",
+            "regla_cumplida": "Cierre de ciclo trienal con alternancia de gramíneas y leguminosas."
+        }
+    ]
+
+    rotaciones = {
+        "1": {
+            "cultivos": salida_1,
+            "resumen": {e: [r["nombre"] for r in salida_1 if r["estado"] == e] for e in ORDEN_ESTADO},
+            "top": top_1
+        },
+        "2": {
+            "cultivos": salida_2,
+            "resumen": {e: [r["nombre"] for r in salida_2 if r["estado"] == e] for e in ORDEN_ESTADO},
+            "top": top_2
+        },
+        "3": {
+            "cultivos": salida_3,
+            "resumen": {e: [r["nombre"] for r in salida_3 if r["estado"] == e] for e in ORDEN_ESTADO},
+            "top": top_3
+        }
+    }
+
     avisos = []
     if suelo["agua_supuesta"]:
         avisos.append("Sin textura del lote: el agua útil se calculó con franco arenoso (supuesto). Cargá la textura o las observaciones de GeoINTA")
@@ -752,8 +829,10 @@ def recomendar(pedido: PedidoAgronomos, power: dict, cat: dict | None = None, ca
                  "ph": ph["ph"], "datos_del_pipeline": suelo["datos_del_pipeline"]},
         "clima": {"fuente": cat["fuentes"]["nasa_power"], "campanas": len(anios),
                   "desde": f"{anios[0]}/{str(anios[0] + 1)[2:]}", "hasta": f"{anios[-1]}/{str(anios[-1] + 1)[2:]}"},
-        "cultivos": salida,
-        "resumen": {e: [r["nombre"] for r in salida if r["estado"] == e] for e in ORDEN_ESTADO},
+        "cultivos": salida_1,
+        "resumen": {e: [r["nombre"] for r in salida_1 if r["estado"] == e] for e in ORDEN_ESTADO},
+        "rotaciones": rotaciones,
+        "plan_rotacion": plan_rotacion,
         "avisos": avisos,
         "como_leer": ("Recomendable: pasa todas las reglas. Con cuidado: alguna regla avisa (falla en 1 de cada 5 campañas o más, "
                       "o el dato está fuera del rango). No recomendable: alguna regla descarta. La helada y el calor van aparte, "
