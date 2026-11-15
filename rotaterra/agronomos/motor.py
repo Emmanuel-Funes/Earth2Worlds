@@ -436,7 +436,11 @@ def evaluar_cultivo(clave: str, cat: dict, cat_rot: dict, filas: list[dict], ped
         dato = (f"Al {_ddmm(siembra)} el suelo ya tiene {ts['minimo_c']} °C ({ts['dias_seguidos']} días) en {round(fr * 10)} de cada "
                 f"10 campañas. Se da en 8 de cada 10 desde el {_ddmm(desde_min) or '(nunca antes del 31/01)'}"
                 + (f"; {ts['recomendado_c']} °C, desde el {_ddmm(desde_rec)}" if ts["recomendado_c"] != ts["minimo_c"] and desde_rec else ""))
-        comp_ts = f"Tu campo: suelo con {ts['minimo_c']} °C en {round(fr * 10)}/10 campañas vs Óptimo: {ts.get('optimo_c', 22)} °C (Mínimo: {ts['minimo_c']} °C, Recomendado: {ts['recomendado_c']} °C)"
+        if ts.get("recomendado_c") and ts["recomendado_c"] != ts["minimo_c"]:
+            rango_req = f"Mínimo: {ts['minimo_c']} °C, Recomendado: {ts['recomendado_c']} °C"
+        else:
+            rango_req = f"Mínimo de siembra: {ts['minimo_c']} °C"
+        comp_ts = f"Tu campo: suelo con {ts['minimo_c']} °C en {round(fr * 10)}/10 campañas vs Óptimo: {ts.get('optimo_c', 22)} °C ({rango_req})"
     reglas.append(_regla("temperatura_suelo", "Temperatura del suelo para sembrar", res, dato, ts["rango"], [ts["fuente"], *fuentes_clima], cat,
                          "TSOIL1 es la media diaria de 0 a 10 cm del modelo MERRA-2, no la medida a la mañana en el lote",
                          comparativa_optimo=comp_ts))

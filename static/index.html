@@ -186,27 +186,49 @@ CONTROLADORES JAVASCRIPT:
             border-color: #16a34a !important;
         }
 
-        /* 3. TEXTOS LEGIBLES DE ALTO CONTRASTE */
+        /* 3. TEXTOS LEGIBLES DE MÁXIMO CONTRASTE */
         .bg-white h1, .bg-white h2, .bg-white h3, .bg-white h4,
         .bg-slate-900 h1, .bg-slate-900 h2, .bg-slate-900 h3, .bg-slate-900 h4,
         .bg-slate-950 h1, .bg-slate-950 h2, .bg-slate-950 h3, .bg-slate-950 h4,
-        .bg-white strong, .bg-slate-900 strong, .bg-slate-950 strong {
-            color: #22160f !important;
+        .bg-white strong, .bg-slate-900 strong, .bg-slate-950 strong,
+        h1, h2, h3, h4 {
+            color: #140d07 !important;
+            font-weight: 700;
+        }
+        p {
+            color: #24160e;
         }
         .text-slate-100:not(button *):not(button):not(a.bg-emerald-600) {
-            color: #22160f !important;
+            color: #140d07 !important;
         }
         .text-slate-200:not(button *):not(button) {
-            color: #3b281c !important;
+            color: #1a110b !important;
+            font-weight: 500;
         }
         .text-slate-300:not(button *):not(button) {
-            color: #553e2e !important;
+            color: #2b1b11 !important;
+            font-weight: 500;
         }
         .text-slate-400:not(button *):not(button) {
-            color: #715543 !important;
+            color: #3d281a !important;
+            font-weight: 500;
         }
         .text-slate-500 {
-            color: #8c705d !important;
+            color: #523725 !important;
+            font-weight: 500;
+        }
+
+        /* Modales siempre por encima de cualquier mapa Leaflet (z-index: 1000) */
+        #modalSelectorModo,
+        #modalLoginAdmin,
+        #modalCampo,
+        #modalEvaluacionCultivo,
+        #modalEditarUsuario,
+        #modalAsignarCampos,
+        #modalOperador,
+        #modalEditarCampo,
+        #modalGraficoHistorico {
+            z-index: 99990 !important;
         }
 
         /* 4. HOVER Y SELECCIONES */
@@ -325,7 +347,7 @@ CONTROLADORES JAVASCRIPT:
     <!-- =================================================================== -->
     <!-- [SEC-00] SELECTOR DE TIPO DE USUARIO (AGRICULTOR VS. TÉCNICO VS. ADMIN) -->
     <!-- =================================================================== -->
-    <div id="modalSelectorModo" class="fixed inset-0 z-50 overflow-y-auto bg-stone-900/60 backdrop-blur-sm p-3 sm:p-6 flex justify-center items-start">
+    <div id="modalSelectorModo" class="fixed inset-0 z-[99990] overflow-y-auto bg-stone-900/60 backdrop-blur-sm p-3 sm:p-6 flex justify-center items-start">
         <div class="w-full max-w-4xl bg-white border-2 border-[#8c6547] rounded-3xl shadow-2xl p-5 sm:p-8 space-y-5 my-6 sm:my-10 relative overflow-visible">
             <div class="text-center space-y-2.5 px-2">
                 <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-400 text-emerald-800 text-xs font-mono font-bold max-w-full">
@@ -434,7 +456,7 @@ CONTROLADORES JAVASCRIPT:
     <!-- =================================================================== -->
     <!-- [SEC-00.1] MODAL DE ACCESO ADMINISTRADOR                           -->
     <!-- =================================================================== -->
-    <div id="modalLoginAdmin" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/85 backdrop-blur-md p-4">
+    <div id="modalLoginAdmin" class="fixed inset-0 z-[99990] hidden items-center justify-center bg-slate-950/85 backdrop-blur-md p-4">
         <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8 space-y-6">
             <div class="flex items-center justify-between border-b border-slate-800 pb-4">
                 <div class="flex items-center gap-2">
@@ -745,28 +767,28 @@ CONTROLADORES JAVASCRIPT:
                 </div>
 
                 <!-- [SLOT-RECOMENDACION-CULTIVOS] -->
-                <div id="slotRecomendacionCultivos" class="bg-gradient-to-br from-emerald-950/40 via-slate-900/90 to-slate-950 border-2 border-emerald-500/40 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-emerald-500/20 pb-4">
+                <div id="slotRecomendacionCultivos" class="bg-white border-2 border-[#8c6547] rounded-3xl p-6 sm:p-8 shadow-xl space-y-5">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-[#dfd2c6] pb-4">
                         <div class="flex items-center gap-3">
-                            <span class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-xl">🌱</span>
+                            <span class="w-12 h-12 rounded-2xl bg-emerald-100 border border-emerald-400 flex items-center justify-center text-2xl shadow-xs">🌱</span>
                             <div>
-                                <span class="text-xs font-mono text-emerald-400 font-semibold">[SLOT-RECOMENDACION-CULTIVOS] ROTATERRA ENGINE</span>
-                                <h3 class="font-heading text-xl font-bold text-white">Recomendación Agronómica de Rotación de Cultivos</h3>
+                                <span class="text-xs font-mono text-emerald-800 font-bold uppercase tracking-wider block">[SLOT-RECOMENDACION-CULTIVOS] ROTATERRA ENGINE</span>
+                                <h3 class="font-heading text-xl sm:text-2xl font-extrabold text-[#140d07]">Recomendación Agronómica de Rotación de Cultivos</h3>
                             </div>
                         </div>
-                        <span class="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                            Ventana Satelital: 5 Años NASA
+                        <span class="px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-emerald-50 text-emerald-900 border border-emerald-400 self-start sm:self-auto shadow-xs">
+                            🛰️ Ventana Satelital: 5 Años NASA
                         </span>
                     </div>
 
                     <div id="contenidoRecomendacionCultivo" class="space-y-4">
-                        <p class="text-sm text-slate-300 leading-relaxed">
-                            Procesando observaciones históricas de la constelación de la NASA (NDVI HLS/MODIS, humedad radicular SMAP, régimen hídrico IMERG y riesgo de heladas VIIRS) cruzadas con el cultivo previo declarado (<strong id="textoCultivoPrevioRec" class="text-emerald-300">-</strong>)...
+                        <p class="text-sm text-[#2b1b11] leading-relaxed font-semibold">
+                            Procesando observaciones históricas de la constelación de la NASA (NDVI HLS/MODIS, humedad radicular SMAP, régimen hídrico IMERG y riesgo de heladas VIIRS) cruzadas con el cultivo previo declarado (<strong id="textoCultivoPrevioRec" class="text-emerald-800 font-bold">-</strong>)...
                         </p>
-                        <div class="p-4 rounded-xl bg-slate-950/70 border border-slate-800 flex items-start gap-3">
-                            <span class="text-emerald-400 text-lg">💡</span>
-                            <div class="text-xs text-slate-300 leading-relaxed">
-                                <strong class="text-white block mb-0.5">Estado del Motor de Rotación:</strong>
+                        <div class="p-4 rounded-xl bg-[#faf6f0] border-2 border-[#8c6547] flex items-start gap-3 shadow-xs">
+                            <span class="text-emerald-700 text-xl flex-shrink-0">💡</span>
+                            <div class="text-xs text-[#2b1b11] leading-relaxed font-medium">
+                                <strong class="text-[#140d07] font-bold block mb-0.5 text-sm">Estado del Motor de Rotación:</strong>
                                 Slot reservado e integrado para el nuevo motor agronómico de Rotaterra. Evalúa la sustentabilidad del suelo, reducción de monocultivo, disponibilidad de agua útil y balance hídrico acumulado de las últimas 5 campañas.
                             </div>
                         </div>
@@ -1919,6 +1941,18 @@ CONTROLADORES JAVASCRIPT:
                 modal.style.display = "flex";
             }
             cerrarModal("modalLoginAdmin");
+
+            // Ocultar vistas activas para que el mapa o paneles no queden debajo ni superpuestos
+            const vBasico = document.getElementById("vistaModoBasico");
+            const vAvanzado = document.getElementById("vistaModoAvanzado");
+            if (vBasico) {
+                vBasico.classList.add("hidden");
+                vBasico.style.display = "none";
+            }
+            if (vAvanzado) {
+                vAvanzado.classList.add("hidden");
+                vAvanzado.style.display = "none";
+            }
         }
 
         function cerrarSelectorModalidad() {
@@ -2316,8 +2350,8 @@ CONTROLADORES JAVASCRIPT:
 
         function ponerSpinnersEnTarjetasBasico() {
             const spinnerHtml = `
-                <span class="inline-flex items-center gap-1.5 text-xs text-sky-400 font-mono animate-pulse">
-                    <svg class="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" fill="none">
+                <span class="inline-flex items-center gap-1.5 text-xs text-emerald-800 font-bold font-mono animate-pulse">
+                    <svg class="animate-spin h-3.5 w-3.5 text-emerald-700" viewBox="0 0 24 24" fill="none">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                     </svg>
@@ -2468,8 +2502,8 @@ CONTROLADORES JAVASCRIPT:
             const estadoLabel = document.getElementById("estadoConsultaBasico");
             if (estadoLabel) {
                 estadoLabel.innerHTML = `
-                    <span class="inline-flex items-center gap-1.5 text-sky-400">
-                        <svg class="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" fill="none">
+                    <span class="inline-flex items-center gap-1.5 text-emerald-800 font-bold font-mono text-xs">
+                        <svg class="animate-spin h-3.5 w-3.5 text-emerald-700" viewBox="0 0 24 24" fill="none">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                         </svg>
@@ -2508,7 +2542,7 @@ CONTROLADORES JAVASCRIPT:
                         todasLasObs.push(...obs);
                         fuentesCargadas++;
                         if (estadoLabel) {
-                            estadoLabel.innerHTML = `<span class="text-sky-300 font-mono text-xs">Poblando tarjetas en vivo (${fuentesCargadas}/${satelites.length} satélites de la NASA)...</span>`;
+                            estadoLabel.innerHTML = `<span class="text-emerald-900 font-mono text-xs font-bold">Poblando tarjetas en vivo (${fuentesCargadas}/${satelites.length} satélites de la NASA)...</span>`;
                         }
                     }
                 } catch (err) {
@@ -2526,8 +2560,8 @@ CONTROLADORES JAVASCRIPT:
             // 3. Carga asincrónica de la serie histórica de 5 años en segundo plano
             if (estadoLabel) {
                 estadoLabel.innerHTML = `
-                    <span class="inline-flex items-center gap-1.5 text-amber-300">
-                        <svg class="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" fill="none">
+                    <span class="inline-flex items-center gap-1.5 text-amber-900 font-bold font-mono text-xs">
+                        <svg class="animate-spin h-3.5 w-3.5 text-amber-700" viewBox="0 0 24 24" fill="none">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                         </svg>
@@ -2549,14 +2583,14 @@ CONTROLADORES JAVASCRIPT:
                 });
                 if (resHist.ok) {
                     if (estadoLabel) {
-                        estadoLabel.innerHTML = `<span class="text-emerald-400 font-mono font-bold">&#10003; Descarga histórica de 5 años completada con éxito</span>`;
+                        estadoLabel.innerHTML = `<span class="text-emerald-900 font-mono font-bold text-xs">&#10003; Descarga histórica de 5 años completada con éxito</span>`;
                     }
                     mostrarToast("Descarga histórica de 5 años completada con éxito.", "success");
                 }
             } catch (errHist) {
                 console.warn("[Basico] Descarga histórica diferida:", errHist);
                 if (estadoLabel) {
-                    estadoLabel.innerHTML = `<span class="text-emerald-400 font-mono">&#10003; Telemetría satelital en línea</span>`;
+                    estadoLabel.innerHTML = `<span class="text-emerald-900 font-mono font-bold text-xs">&#10003; Telemetría satelital en línea</span>`;
                 }
             }
         }
@@ -2565,14 +2599,23 @@ CONTROLADORES JAVASCRIPT:
             const cont = document.getElementById("contenidoRecomendacionCultivo");
             if (cont) {
                 cont.innerHTML = `
-                    <div class="p-6 rounded-2xl bg-slate-950/80 border border-emerald-500/30 flex items-center gap-4 animate-pulse">
-                        <svg class="animate-spin h-7 w-7 text-emerald-400 flex-shrink-0" viewBox="0 0 24 24" fill="none">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                        </svg>
-                        <div>
-                            <p class="text-sm font-bold text-white">Evaluando rotación con el Motor Agronómico Rotaterra...</p>
-                            <p class="text-xs text-slate-400 mt-0.5">Analizando serie histórica de NASA POWER, física de suelo y alternancia de especies contra cultivo previo (${escapeHtml(cultivoPrevio)})...</p>
+                    <div class="p-6 sm:p-7 rounded-2xl bg-[#faf6f0] border-2 border-[#8c6547] flex items-center gap-4 sm:gap-5 shadow-md">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-100 border border-emerald-500 flex items-center justify-center flex-shrink-0 shadow-xs">
+                            <svg class="animate-spin h-6 w-6 text-emerald-800" viewBox="0 0 24 24" fill="none">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                            </svg>
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="text-base sm:text-lg font-bold text-[#140d07] font-heading">
+                                Evaluando rotación con el Motor Agronómico Rotaterra...
+                            </h4>
+                            <p class="text-xs sm:text-sm text-[#2b1b11] leading-relaxed font-semibold">
+                                Analizando serie histórica de NASA POWER (34 campañas), física de suelo (GeoINTA) y alternancia biológica contra cultivo previo (<strong>${escapeHtml(cultivoPrevio)}</strong>)...
+                            </p>
+                            <span class="inline-flex items-center gap-1.5 text-[11px] font-mono text-emerald-900 font-bold bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-400 mt-1">
+                                🌱 Procesando modelos fisiológicos y balances de agua...
+                            </span>
                         </div>
                     </div>
                 `;
@@ -2608,12 +2651,12 @@ CONTROLADORES JAVASCRIPT:
                 console.error("[Recomendacion] Error:", err);
                 if (cont) {
                     cont.innerHTML = `
-                        <div class="p-5 rounded-2xl bg-amber-950/40 border border-amber-500/40 text-amber-200 text-xs flex items-center justify-between gap-4">
+                        <div class="p-5 rounded-2xl bg-amber-50 border-2 border-amber-500 text-amber-950 text-xs flex items-center justify-between gap-4 shadow-sm">
                             <div>
-                                <strong class="block text-white text-sm">Aviso de Motor Agronómico</strong>
-                                <span>No se pudo conectar con el motor de recomendación en este momento (${escapeHtml(err.message)}). Por favor intenta nuevamente.</span>
+                                <strong class="block text-[#140d07] text-sm font-bold">Aviso del Motor Agronómico</strong>
+                                <span class="text-[#2b1b11] font-medium">No se pudo conectar con el motor de recomendación en este momento (${escapeHtml(err.message)}). Por favor intenta nuevamente.</span>
                             </div>
-                            <button type="button" onclick="solicitarRecomendacionAgronomica(${lat}, ${lon}, '${escapeHtml(cultivoPrevio)}', [])" class="px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 font-semibold text-amber-200 transition">
+                            <button type="button" onclick="solicitarRecomendacionAgronomica(${lat}, ${lon}, '${escapeHtml(cultivoPrevio)}', [])" class="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold transition shadow-xs">
                                 Reintentar ↺
                             </button>
                         </div>

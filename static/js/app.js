@@ -177,6 +177,19 @@ async function logout() {
         }
     }
     clearSession();
+
+    // Ocultar vistas activas para que el mapa o paneles no queden debajo ni superpuestos
+    const vBasico = document.getElementById("vistaModoBasico");
+    const vAvanzado = document.getElementById("vistaModoAvanzado");
+    if (vBasico) {
+        vBasico.classList.add("hidden");
+        vBasico.style.display = "none";
+    }
+    if (vAvanzado) {
+        vAvanzado.classList.add("hidden");
+        vAvanzado.style.display = "none";
+    }
+
     if (typeof mostrarSelectorModalidad === "function") {
         mostrarSelectorModalidad();
     } else {
